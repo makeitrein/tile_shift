@@ -66,3 +66,7 @@ body {
   border: 1px solid #333;
   box-sizing: border-box;
 }
+
+.moveable-line. > moveable-direction {
+  display: none;
+}
