@@ -1,5 +1,9 @@
+import { Input } from "antd";
 import * as React from "react";
 import Moveable from "react-moveable";
+import { Editor } from "./editor";
+
+const { TextArea } = Input;
 
 const borderRadius = "104px 63px 47px 103px / 48.947px 77.053px 121.947px 68px";
 
@@ -20,13 +24,8 @@ export const MovableCard = ({ id, movableCards }) => {
   }, []);
   return (
     <div>
-      <div
-        contentEditable={true}
-        id={cardID(id)}
-        style={{ borderRadius }}
-        className="target"
-      >
-        Target
+      <div id={cardID(id)} style={{ borderRadius }} className="target">
+        <Editor />
       </div>
       <Moveable
         target={target}
@@ -45,12 +44,12 @@ export const MovableCard = ({ id, movableCards }) => {
         draggable={true}
         resizable={true}
         throttleDrag={0}
-        startDragRotate={0}
-        throttleDragRotate={0}
         zoom={1}
-        origin={true}
+        origin={false}
         padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
+        onClick={() => {}}
         onDragStart={({ set, inputEvent }) => {
+          console.log(inputEvent.target.nodeName);
           if (inputEvent.target.nodeName === "DIV") {
             stop();
           }
