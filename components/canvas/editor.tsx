@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { fromHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
+import { editorID } from "./movable-card";
 
 const Button = () => {
   // `autoUpdate` means that every editor update will recalculate the output
@@ -36,22 +37,26 @@ const EditorDiv = styled.div`
   }
 `;
 
-const EditorInner = () => {
+const ToolbarDiv = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -30px;
+  bottom: 0;
+`;
+
+const EditorInner = ({ id }) => {
   // The `getRootProps` adds the ref to the div element below to inject the
   // ProseMirror dom. You have full control over where it should be placed.
   // The first call is the one that is used.
   const { getRootProps, focus } = useRemirror();
 
-  useEffect(() => {
-    focus("end"); // Autofocus to the end of the editor text when this component loads.
-  }, []);
-
-  return <EditorDiv {...getRootProps()} />;
+  return <EditorDiv id={editorID(id)} {...getRootProps()} />;
 };
 
 const extensionTemplate = () => [new BoldExtension()];
 
-export const Editor = () => {
+export const EditorManager = ({ children }) => {
   const manager = useManager(extensionTemplate);
 
   // Store the editor value in a state variable.
@@ -73,8 +78,18 @@ export const Editor = () => {
         setValue(parameter.state);
       }}
     >
-      <Button />
-      <EditorInner />
+      {children}
     </RemirrorProvider>
+  );
+};
+
+export const Editor = ({ id }) => {
+  return (
+    <>
+      <ToolbarDiv>
+        <Button />
+      </ToolbarDiv>
+      <EditorInner id={id} />
+    </>
   );
 };

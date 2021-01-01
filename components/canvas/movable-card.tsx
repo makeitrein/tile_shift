@@ -1,9 +1,9 @@
-import { Input } from "antd";
 import * as React from "react";
 import Moveable from "react-moveable";
+import { useRemirror } from "remirror/react";
 import { Editor } from "./editor";
 
-const { TextArea } = Input;
+export const editorID = (id: number) => `editor-${id}`;
 
 const borderRadius = "104px 63px 47px 103px / 48.947px 77.053px 121.947px 68px";
 
@@ -13,6 +13,8 @@ export const MovableCard = ({ id, movableCards }) => {
   const [frame, setFrame] = React.useState({
     translate: [0, 0],
   });
+
+  const { focus } = useRemirror();
 
   const cardID = (id: number) => `card-${id}`;
 
@@ -25,7 +27,7 @@ export const MovableCard = ({ id, movableCards }) => {
   return (
     <div>
       <div id={cardID(id)} style={{ borderRadius }} className="target">
-        <Editor />
+        <Editor id={id} />
       </div>
       <Moveable
         target={target}
@@ -49,15 +51,21 @@ export const MovableCard = ({ id, movableCards }) => {
         padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
         onClick={() => {}}
         onDragStart={({ set, inputEvent }) => {
-          console.log(inputEvent.target.nodeName);
-          if (inputEvent.target.nodeName === "DIV") {
-            stop();
+          const editorEl = document.getElementById(editorID(id));
+          if (editorEl.contains(inputEvent.target)) {
+            set(frame.translate);
+          } else {
+            set(frame.translate);
           }
-          set(frame.translate);
         }}
         onDrag={({ target, beforeTranslate }) => {
           frame.translate = beforeTranslate;
           target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
+        }}
+        onDragEnd={(e) => {
+          if (!e.isDrag && e.inputEvent.srcElement.click instanceof Function) {
+            focus("end");
+          }
         }}
         onResizeStart={({ setOrigin, dragStart }) => {
           setOrigin(["%", "%"]);
