@@ -14,9 +14,14 @@
     "@loadable/component": "^5.14.1",
     "@panzoom/panzoom": "^4.3.2",
     "@remirror/pm": "^1.0.0-next.60",
+    "@tailwindcss/aspect-ratio": "^0.2.0",
+    "@tailwindcss/forms": "^0.2.1",
+    "@tailwindcss/typography": "^0.3.1",
     "antd": "^4.9.4",
+    "autoprefixer": "^10.1.0",
     "moveable-helper": "^0.4.0",
     "next": "10.0.4",
+    "postcss": "^8.2.2",
     "react": "17.0.1",
     "react-contenteditable": "^3.3.5",
     "react-dom": "17.0.1",
@@ -24,7 +29,8 @@
     "react-moveable": "^0.25.0",
     "react-selecto": "^1.10.2",
     "remirror": "^1.0.0-next.60",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "tailwindcss": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "^14.14.17",

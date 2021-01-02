@@ -1,3 +1,4 @@
+import { BoldOutlined } from "@ant-design/icons";
 import * as React from "react";
 import { MoveableManagerInterface, Renderer } from "react-moveable";
 
@@ -52,9 +53,9 @@ export const CustomArrowable = {
           position: absolute;
           text-align: center;
           padding: 0;
-          line-height: 18px;
-          width: 16px;
-          height: 16px;
+          line-height: 22px;
+          width: 20px;
+          height: 20px;
           margin-bottom: 4px;
           background: #4af;
           border-radius: 4px;
@@ -65,26 +66,26 @@ export const CustomArrowable = {
       }
 
       .moveable-button-left {
-        right: 8px;
+        right: 10px;
         top: ${rect.height / 2}px;
         transform: translateY(-50%);
       }
 
       .moveable-button-top {
-        top: -24px;
+        top: -28px;
         left: ${rect.width / 2}px;
         transform: translateX(-50%);
       }
 
       .moveable-button-right {
-        left: ${rect.width + 8}px;
+        left: ${rect.width + 10}px;
         top: ${rect.height / 2}px;
         transform: translateY(-50%);
       }
 
       .moveable-button-bottom {
         left: ${rect.width / 2}px;
-        top: ${rect.height + 8}px;
+        top: ${rect.height + 10}px;
         transform: translateX(-50%);
       }
       `
@@ -114,7 +115,7 @@ export const CustomArrowable = {
             alert("+");
           }}
         >
-          +
+          <BoldOutlined />
         </button>
 
         <button
