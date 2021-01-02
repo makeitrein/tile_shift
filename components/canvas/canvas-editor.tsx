@@ -11,6 +11,26 @@ const EditorJs = dynamic(() => import("react-editor-js"), { ssr: false });
 
 const Paragraph = dynamic(() => import("@editorjs/paragraph"), { ssr: false });
 
+function placeCaretAtEnd(el) {
+  el.focus();
+  if (
+    typeof window.getSelection != "undefined" &&
+    typeof document.createRange != "undefined"
+  ) {
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else if (typeof document.body.createTextRange != "undefined") {
+    var textRange = document.body.createTextRange();
+    textRange.moveToElementText(el);
+    textRange.collapse(false);
+    textRange.select();
+  }
+}
+
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
   const [isEditable, setIsEditable] = React.useState(false);
@@ -80,7 +100,7 @@ export default function CanvasEditor() {
           snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
-          // checkInput={true}
+          // checkInput={isEditable}
           snapElement={true}
           snapVertical={true}
           snapHorizontal={true}
@@ -135,19 +155,21 @@ export default function CanvasEditor() {
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
-          onClick={() => {
-            console.log("clicks");
-            setIsEditable(true);
-            setTimeout(() => setIsEditable(false), 200);
+          onClick={(e) => {
+            // if (isEditable) {
+            const article = e.target.querySelector("article");
+            placeCaretAtEnd(article);
+            // } else {
+            // setIsEditable(true);
+            // setTimeout(() => setIsEditable(false), 3000);
+            // }
           }}
           onDragStart={(e) => {
             const target = e.target;
 
-            console.log("drag start");
-
-            if (isEditable && e.inputEvent?.target?.isContentEditable) {
-              return false;
-            }
+            // if (isEditable && e.inputEvent?.target?.isContentEditable) {
+            //   return false;
+            // }
 
             if (!frameMap.has(target)) {
               frameMap.set(target, {
