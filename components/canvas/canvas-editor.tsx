@@ -1,10 +1,15 @@
 import Panzoom from "@panzoom/panzoom";
+import dynamic from "next/dynamic";
 import * as React from "react";
 import { useEffect } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
+import { ContentEditableEditor } from "./content-editable";
 import { Editable } from "./custom-moveables";
-import { Editor, EditorManager } from "./editor";
+
+const EditorJs = dynamic(() => import("react-editor-js"), { ssr: false });
+
+const Paragraph = dynamic(() => import("@editorjs/paragraph"), { ssr: false });
 
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
@@ -31,6 +36,15 @@ export default function CanvasEditor() {
           throw "disable panning hack";
         }
       },
+    });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("keyup", (e) => {
+      console.log(e);
+      console.log(moveableRef.current);
+      moveableRef.current.updateRect();
+      moveableRef.current.request("draggable", { deltaX: 0, deltaY: 0 }, true);
     });
   }, []);
 
@@ -119,6 +133,13 @@ export default function CanvasEditor() {
           onDragStart={(e) => {
             const target = e.target;
 
+            if (
+              e.inputEvent &&
+              !Array.from(e.inputEvent.target.classList).includes("cube")
+            ) {
+              return false;
+            }
+
             if (!frameMap.has(target)) {
               frameMap.set(target, {
                 translate: [0, 0],
@@ -201,9 +222,10 @@ export default function CanvasEditor() {
               className="cube target"
               key={i}
             >
-              <EditorManager>
+              {/* <EditorManager>
                 <Editor selected={selected} id={i} />
-              </EditorManager>
+              </EditorManager> */}
+              <ContentEditableEditor />
             </div>
           ))}
         </div>
