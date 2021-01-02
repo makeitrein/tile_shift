@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { fromHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
+import { ItalicExtension } from "remirror/extension/italic";
+import { UnderlineExtension } from "remirror/extension/underline";
+import { CorePreset } from "remirror/preset/core";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
 import { editorID } from "./movable-card";
@@ -54,7 +57,12 @@ const EditorInner = ({ id }) => {
   return <EditorDiv id={editorID(id)} {...getRootProps()} />;
 };
 
-const extensionTemplate = () => [new BoldExtension()];
+const extensionTemplate = () => [
+  new CorePreset({}),
+  new BoldExtension({}),
+  new ItalicExtension(),
+  new UnderlineExtension(),
+];
 
 export const EditorManager = ({ children }) => {
   const manager = useManager(extensionTemplate);
@@ -86,9 +94,9 @@ export const EditorManager = ({ children }) => {
 export const Editor = ({ id }) => {
   return (
     <>
-      <ToolbarDiv>
+      {/* <ToolbarDiv>
         <Button />
-      </ToolbarDiv>
+      </ToolbarDiv> */}
       <EditorInner id={id} />
     </>
   );

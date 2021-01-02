@@ -26,7 +26,11 @@ export const MovableCard = ({ id, movableCards }) => {
   }, []);
   return (
     <div>
-      <div id={cardID(id)} style={{ borderRadius }} className="target">
+      <div
+        id={cardID(id)}
+        style={{ borderRadius }}
+        className="target movable-card"
+      >
         <Editor id={id} />
       </div>
       <Moveable
@@ -49,6 +53,18 @@ export const MovableCard = ({ id, movableCards }) => {
         zoom={1}
         origin={false}
         padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
+        onResizeStart={({ setOrigin, dragStart }) => {
+          setOrigin(["%", "%"]);
+          dragStart && dragStart.set(frame.translate);
+        }}
+        onResize={({ target, width, height, drag }) => {
+          const beforeTranslate = drag.beforeTranslate;
+
+          frame.translate = beforeTranslate;
+          target.style.width = `${width}px`;
+          target.style.height = `${height}px`;
+          target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
+        }}
         onClick={() => {}}
         onDragStart={({ set, inputEvent }) => {
           const editorEl = document.getElementById(editorID(id));
@@ -66,18 +82,6 @@ export const MovableCard = ({ id, movableCards }) => {
           if (!e.isDrag && e.inputEvent.srcElement.click instanceof Function) {
             focus("end");
           }
-        }}
-        onResizeStart={({ setOrigin, dragStart }) => {
-          setOrigin(["%", "%"]);
-          dragStart && dragStart.set(frame.translate);
-        }}
-        onResize={({ target, width, height, drag }) => {
-          const beforeTranslate = drag.beforeTranslate;
-
-          frame.translate = beforeTranslate;
-          target.style.width = `${width}px`;
-          target.style.height = `${height}px`;
-          target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
         }}
       />
     </div>

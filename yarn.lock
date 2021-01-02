@@ -1049,7 +1049,7 @@
   dependencies:
     "@scena/event-emitter" "^1.0.2"
 
-"@scena/event-emitter@^1.0.2":
+"@scena/event-emitter@^1.0.2", "@scena/event-emitter@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@scena/event-emitter/-/event-emitter-1.0.5.tgz#047e3acef93cf238d7ce3a8cc5a12ec6bd9c3bb1"
   integrity sha512-AzY4OTb0+7ynefmWFQ6hxDdk0CySAq/D4efljfhtRHCOP7MBF9zUfhKG3TJiroVjASqVgkRJFdenS8ArZo6Olg==
@@ -3142,7 +3142,7 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-gesto@^1.2.1:
+gesto@^1.2.1, gesto@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/gesto/-/gesto-1.3.0.tgz#ff141964faecbbae38e0cfb008607c533a6c694f"
   integrity sha512-be9jSmhiDMjMzCQwBewOp/kBtKDB97d3e2lNkojMW9Ckgeu8c8Qglx7fopnLweoIGlIYsqDqwxHdJAkyL/TmFA==
@@ -3727,6 +3727,20 @@ jsonfile@^4.0.0:
   integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+keycode@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.0.tgz#3d0af56dc7b8b8e5cba8d0a97f107204eec22b04"
+  integrity sha1-PQr1bce4uOXLqNCpfxByBO7CKwQ=
+
+keycon@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/keycon/-/keycon-1.1.2.tgz#a7a9f5f22f32012fafd11e68c4283911d0738bce"
+  integrity sha512-yCoUAfwqmQUWrtOFuZhicxasF/4ae+M0aH8yV1wEKKZCZql8v6jWhlVF9dT5i1TfuHSmgt/GNuCaWIHT8wk6eQ==
+  dependencies:
+    "@daybrush/utils" "^1.0.0"
+    "@scena/event-emitter" "^1.0.2"
+    keycode "^2.2.0"
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
@@ -5343,6 +5357,13 @@ react-refresh@0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
+react-selecto@^1.10.2:
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/react-selecto/-/react-selecto-1.10.2.tgz#07978e2a7570e2c875bb742d948d6f716246544f"
+  integrity sha512-0g94PrAuE0GeqknhSKamFcQpIQQbZCQ3gFC8juBOC7rDxbsCsJOlXp2OFpzt1Y9HDi2gw/PK/1BIbER8CMYEPA==
+  dependencies:
+    selecto "^1.10.2"
+
 react-universal-interface@^0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/react-universal-interface/-/react-universal-interface-0.6.2.tgz#5e8d438a01729a4dbbcbeeceb0b86be146fe2b3b"
@@ -5709,6 +5730,21 @@ select@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"
   integrity sha1-DnNQrN7ICxEIUoeG7B1EGNEbOW0=
+
+selecto@^1.10.2:
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/selecto/-/selecto-1.10.2.tgz#0f03e93318377d0aeeec0dad0ac2c92f5f7750cb"
+  integrity sha512-KTNkf6KvvCphChCE+o4TwG/+ibj4qcT6COYFuJoX41BeSmK6DyPgH3BWpmIhucFhq2KtnPKuz6XmhKWNTEiPiA==
+  dependencies:
+    "@daybrush/utils" "^1.3.1"
+    "@egjs/children-differ" "^1.0.1"
+    "@scena/dragscroll" "^0.3.1"
+    "@scena/event-emitter" "^1.0.5"
+    css-styled "^1.0.0"
+    framework-utils "^0.3.4"
+    gesto "^1.3.0"
+    keycon "^1.1.2"
+    overlap-area "^1.0.0"
 
 semver@^5.4.1, semver@^5.5.1, semver@^5.6.0:
   version "5.7.1"

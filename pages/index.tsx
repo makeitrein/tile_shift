@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Canvas } from "../components/canvas";
+import CanvasEditor from "../components/canvas/canvas-editor";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Canvas />
+      <CanvasEditor />
     </div>
   );
 }

@@ -4,6 +4,10 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 a {
@@ -15,21 +19,46 @@ a {
   box-sizing: border-box;
 }
 
-.target {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  top: 150px;
-  left: 100px;
-  text-align: center;
-  font-size: 16px;
-  line-height: 24px;
-  background: #ee8;
-  color: #333;
-  border: 1px solid #333;
-  box-sizing: border-box;
+.container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* .moveable-line {
-  display: none;
-} */
+.cube {
+  display: inline-block;
+  position: absolute;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+  margin: 4px;
+  background: #eee;
+  --color: #4af;
+}
+
+.elements {
+  border: 2px solid #eee;
+}
+
+.selecto-area {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#selecto1 .cube {
+  transition: all ease 0.2s;
+}
+
+.moveable #selecto1 .cube {
+  transition: none;
+}
+
+.selecto-area .selected {
+  color: #fff;
+  background: var(--color);
+}
+
+.empty.elements {
+  border: none;
+}
