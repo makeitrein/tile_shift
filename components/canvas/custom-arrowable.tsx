@@ -53,7 +53,7 @@ export const CustomArrowable = {
           position: absolute;
           text-align: center;
           padding: 0;
-          line-height: 22px;
+          line-height: 20px;
           width: 20px;
           height: 20px;
           margin-bottom: 4px;
@@ -115,7 +115,7 @@ export const CustomArrowable = {
             alert("+");
           }}
         >
-          <BoldOutlined />
+          <BoldOutlined size={10} />
         </button>
 
         <button

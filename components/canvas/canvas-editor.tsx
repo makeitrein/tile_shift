@@ -107,7 +107,7 @@ export default function CanvasEditor() {
         setIsEditable(false);
       }}
     >
-      <div ref={canvasEditorRef} className="container">
+      <div ref={canvasEditorRef} className="canvas">
         <Moveable
           ref={moveableRef}
           ables={[CustomArrowable]}
