@@ -8,6 +8,7 @@ import { Editor, EditorManager } from "./editor";
 
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
+  const [selected, setSelected] = React.useState("");
   const [frameMap] = React.useState(() => new Map());
   const moveableRef = React.useRef(null);
   const selectoRef = React.useRef(null);
@@ -105,12 +106,11 @@ export default function CanvasEditor() {
             });
           }}
           onDragEnd={(e) => {
-            console.log(e.currentTarget);
             if (
               !e.isDrag &&
               e.inputEvent.srcElement.click instanceof Function
             ) {
-              alert("yee");
+              setSelected(e.currentTarget.props.target.id);
             }
           }}
           onClickGroup={(e) => {
@@ -197,12 +197,12 @@ export default function CanvasEditor() {
           {cubes.map((i) => (
             <div
               style={{ marginLeft: i * 50, marginTop: i * 50 }}
-              id={`cube-${i}`}
+              id={i}
               className="cube target"
               key={i}
             >
               <EditorManager>
-                <Editor id={i} />
+                <Editor selected={selected} id={i} />
               </EditorManager>
             </div>
           ))}

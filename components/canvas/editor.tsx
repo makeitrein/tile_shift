@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fromHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
 import { ItalicExtension } from "remirror/extension/italic";
@@ -48,11 +48,17 @@ const ToolbarDiv = styled.div`
   bottom: 0;
 `;
 
-const EditorInner = ({ id }) => {
+const EditorInner = ({ id, selected }) => {
   // The `getRootProps` adds the ref to the div element below to inject the
   // ProseMirror dom. You have full control over where it should be placed.
   // The first call is the one that is used.
   const { getRootProps, focus } = useRemirror();
+
+  useEffect(() => {
+    if (selected === String(id)) {
+      focus("end");
+    }
+  }, [selected, id, focus]);
 
   return <EditorDiv id={editorID(id)} {...getRootProps()} />;
 };
@@ -91,13 +97,13 @@ export const EditorManager = ({ children }) => {
   );
 };
 
-export const Editor = ({ id }) => {
+export const Editor = ({ id, selected }) => {
   return (
     <>
       {/* <ToolbarDiv>
         <Button />
       </ToolbarDiv> */}
-      <EditorInner id={id} />
+      <EditorInner selected={selected} id={id} />
     </>
   );
 };
