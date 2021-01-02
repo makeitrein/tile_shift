@@ -68,6 +68,7 @@ export default function CanvasEditor() {
           snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
+          checkInput={true}
           snapElement={true}
           snapVertical={true}
           snapHorizontal={true}
@@ -133,12 +134,12 @@ export default function CanvasEditor() {
           onDragStart={(e) => {
             const target = e.target;
 
-            if (
-              e.inputEvent &&
-              !Array.from(e.inputEvent.target.classList).includes("cube")
-            ) {
-              return false;
-            }
+            // if (
+            //   e.inputEvent &&
+            //   !Array.from(e.inputEvent.target.classList).includes("cube")
+            // ) {
+            //   return false;
+            // }
 
             if (!frameMap.has(target)) {
               frameMap.set(target, {
