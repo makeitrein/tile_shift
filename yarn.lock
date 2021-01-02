@@ -436,6 +436,11 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.14.0.tgz#c67fc20a4d891447ca1a855d7d70fa79a3533001"
   integrity sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
 
+"@panzoom/panzoom@^4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@panzoom/panzoom/-/panzoom-4.3.2.tgz#19d13edb858d05531bac54e1f8cf51f53d0dd9fa"
+  integrity sha512-6D4UDsYXowzMJ/1XSbylRj9BGhCR7mQQ5m/s6MiKx11ThLcEiU4kgq59vhS8+RnOGA789FcdmGvK1/hIxyRD+w==
+
 "@reach/auto-id@^0.11.0":
   version "0.11.2"
   resolved "https://registry.yarnpkg.com/@reach/auto-id/-/auto-id-0.11.2.tgz#c66a905c5401d1ac3da8d26165b8d27d6e778fa6"

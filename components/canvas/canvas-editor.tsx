@@ -1,4 +1,6 @@
+import Panzoom from "@panzoom/panzoom";
 import * as React from "react";
+import { useEffect } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 
@@ -7,6 +9,7 @@ export default function CanvasEditor() {
   const [frameMap] = React.useState(() => new Map());
   const moveableRef = React.useRef(null);
   const selectoRef = React.useRef(null);
+  const canvasEditorRef = React.useRef(null);
   const cubes = [];
 
   const [frame, setFrame] = React.useState({
@@ -17,11 +20,22 @@ export default function CanvasEditor() {
     cubes.push(i);
   }
 
+  useEffect(() => {
+    Panzoom(canvasEditorRef.current, {
+      panOnlyWhenZoomed: true,
+      handleStartEvent: (event) => {
+        if (Array.from(event.target.classList).includes("cube")) {
+          throw "disable panning hack";
+        }
+      },
+    });
+  }, []);
+
   if (!process.browser) return null;
 
   return (
     <div className="moveable app">
-      <div className="container">
+      <div ref={canvasEditorRef} className="container">
         <Moveable
           ref={moveableRef}
           draggable={true}
@@ -55,17 +69,34 @@ export default function CanvasEditor() {
             dragStart && dragStart.set(frame.translate);
           }}
           onResize={({ target, width, height, drag }) => {
-            console.log("onResize", target);
             const beforeTranslate = drag.beforeTranslate;
 
             const frame = frameMap.get(target);
-
-            console.log(frame);
 
             frame.translate = beforeTranslate;
             target.style.width = `${width}px`;
             target.style.height = `${height}px`;
             target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
+          }}
+          onResizeGroupStart={({ events }) => {
+            events.forEach((ev, i) => {
+              if (!frameMap.has(ev.target)) {
+                frameMap.set(ev.target, {
+                  translate: [0, 0],
+                });
+              }
+              const frame = frameMap.get(ev.target);
+              ev.dragStart && ev.dragStart.set(frame.translate);
+            });
+          }}
+          onResizeGroup={({ events }) => {
+            events.forEach((ev, i) => {
+              const frame = frameMap.get(ev.target);
+              frame.translate = ev.drag.beforeTranslate;
+              ev.target.style.width = `${ev.width}px`;
+              ev.target.style.height = `${ev.height}px`;
+              ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
+            });
           }}
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
