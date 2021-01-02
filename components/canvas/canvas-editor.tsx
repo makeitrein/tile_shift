@@ -3,6 +3,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
+import { Editable } from "./custom-moveables";
 
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
@@ -38,6 +39,10 @@ export default function CanvasEditor() {
       <div ref={canvasEditorRef} className="container">
         <Moveable
           ref={moveableRef}
+          ables={[Editable]}
+          props={{
+            editable: true,
+          }}
           draggable={true}
           target={targets}
           elementGuidelines={Array.from(document.querySelectorAll(".cube"))}
