@@ -63,8 +63,17 @@ export default function CanvasEditor() {
     window.addEventListener("keyup", (e) => {
       console.log(e);
       console.log(moveableRef.current);
-      moveableRef.current.updateRect();
-      moveableRef.current.request("draggable", { deltaX: 0, deltaY: 0 }, true);
+      // moveableRef.current.updateRect();
+      // moveableRef.current.request("draggable", { deltaX: 0, deltaY: 0 }, true);
+      const articleHeight = e.target.offsetHeight;
+      const rect = moveableRef.current.getRect();
+
+      if (rect.offsetHeight < articleHeight) {
+        moveableRef.current.request("resizable", {
+          offsetHeight: parseFloat(articleHeight),
+          isInstant: true,
+        });
+      }
     });
   }, []);
 
@@ -123,13 +132,17 @@ export default function CanvasEditor() {
             dragStart && dragStart.set(frame.translate);
           }}
           onResize={({ target, width, height, drag }) => {
+            const article = target.querySelector("article");
+
+            const MIN_WIDTH = 140;
+            const MIN_HEIGHT = article.offsetHeight;
             const beforeTranslate = drag.beforeTranslate;
 
             const frame = frameMap.get(target);
 
             frame.translate = beforeTranslate;
-            target.style.width = `${width}px`;
-            target.style.height = `${height}px`;
+            target.style.width = `${Math.max(MIN_WIDTH, width)}px`;
+            target.style.height = `${Math.max(MIN_HEIGHT, height)}px`;
             target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
           }}
           onResizeGroupStart={({ events }) => {
