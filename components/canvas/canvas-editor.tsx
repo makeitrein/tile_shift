@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import { Editable } from "./custom-moveables";
+import { Editor, EditorManager } from "./editor";
 
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
@@ -103,6 +104,15 @@ export default function CanvasEditor() {
               ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
             });
           }}
+          onDragEnd={(e) => {
+            console.log(e.currentTarget);
+            if (
+              !e.isDrag &&
+              e.inputEvent.srcElement.click instanceof Function
+            ) {
+              alert("yee");
+            }
+          }}
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
@@ -190,7 +200,11 @@ export default function CanvasEditor() {
               id={`cube-${i}`}
               className="cube target"
               key={i}
-            ></div>
+            >
+              <EditorManager>
+                <Editor id={i} />
+              </EditorManager>
+            </div>
           ))}
         </div>
       </div>
