@@ -13,7 +13,7 @@ const Paragraph = dynamic(() => import("@editorjs/paragraph"), { ssr: false });
 
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
-  const [selected, setSelected] = React.useState("");
+  const [isEditable, setIsEditable] = React.useState(false);
   const [frameMap] = React.useState(() => new Map());
   const moveableRef = React.useRef(null);
   const selectoRef = React.useRef(null);
@@ -50,6 +50,10 @@ export default function CanvasEditor() {
 
   if (!process.browser) return null;
 
+  console.log(targets && targets[0] && targets[0].id);
+
+  const activeIds = targets.map((t) => t.id);
+
   return (
     <div className="moveable app">
       <div ref={canvasEditorRef} className="container">
@@ -68,7 +72,7 @@ export default function CanvasEditor() {
           snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
-          checkInput={true}
+          // checkInput={true}
           snapElement={true}
           snapVertical={true}
           snapHorizontal={true}
@@ -120,26 +124,15 @@ export default function CanvasEditor() {
               ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
             });
           }}
-          onDragEnd={(e) => {
-            if (
-              !e.isDrag &&
-              e.inputEvent.srcElement.click instanceof Function
-            ) {
-              setSelected(e.currentTarget.props.target.id);
-            }
-          }}
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
           onDragStart={(e) => {
             const target = e.target;
 
-            // if (
-            //   e.inputEvent &&
-            //   !Array.from(e.inputEvent.target.classList).includes("cube")
-            // ) {
-            //   return false;
-            // }
+            if (isEditable && e.inputEvent?.target?.isContentEditable) {
+              return false;
+            }
 
             if (!frameMap.has(target)) {
               frameMap.set(target, {
@@ -156,6 +149,12 @@ export default function CanvasEditor() {
 
             frame.translate = e.beforeTranslate;
             target.style.transform = `translate(${frame.translate[0]}px, ${frame.translate[1]}px)`;
+          }}
+          onDragEnd={(e) => {
+            if (!e.isDrag && e.inputEvent.target.isContentEditable) {
+              setIsEditable(true);
+              setTimeout(() => setIsEditable(false), 200);
+            }
           }}
           onDragGroupStart={(e) => {
             e.events.forEach((ev) => {
@@ -226,7 +225,8 @@ export default function CanvasEditor() {
               {/* <EditorManager>
                 <Editor selected={selected} id={i} />
               </EditorManager> */}
-              <ContentEditableEditor />
+              <ContentEditableEditor disabled={false} />
+              {/* <ContentEditableEditor /> */}
             </div>
           ))}
         </div>
