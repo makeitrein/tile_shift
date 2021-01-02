@@ -72,8 +72,11 @@ export const Editable = {
       }
       .moveable-button {
           position: absolute;
-          width: 24px;
-          height: 24px;
+          text-align: center;
+          padding: 0;
+          line-height: 18px;
+          width: 16px;
+          height: 16px;
           margin-bottom: 4px;
           background: #4af;
           border-radius: 4px;
@@ -84,26 +87,26 @@ export const Editable = {
       }
 
       .moveable-button-left {
-        right: 10px;
+        right: 8px;
         top: ${rect.height / 2}px;
         transform: translateY(-50%);
       }
 
       .moveable-button-top {
-        top: -33px;
+        top: -24px;
         left: ${rect.width / 2}px;
         transform: translateX(-50%);
       }
 
       .moveable-button-right {
-        left: ${rect.width + 10}px;
+        left: ${rect.width + 8}px;
         top: ${rect.height / 2}px;
         transform: translateY(-50%);
       }
 
       .moveable-button-bottom {
         left: ${rect.width / 2}px;
-        top: ${rect.height + 10}px;
+        top: ${rect.height + 8}px;
         transform: translateX(-50%);
       }
       `
