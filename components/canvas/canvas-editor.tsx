@@ -55,7 +55,15 @@ export default function CanvasEditor() {
   const activeIds = targets.map((t) => t.id);
 
   return (
-    <div className="moveable app">
+    <div
+      className="moveable app"
+      onBlur={() => {
+        console.log("blur");
+        window.getSelection().removeAllRanges();
+
+        setIsEditable(false);
+      }}
+    >
       <div ref={canvasEditorRef} className="container">
         <Moveable
           ref={moveableRef}
@@ -127,8 +135,15 @@ export default function CanvasEditor() {
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
+          onClick={() => {
+            console.log("clicks");
+            setIsEditable(true);
+            setTimeout(() => setIsEditable(false), 200);
+          }}
           onDragStart={(e) => {
             const target = e.target;
+
+            console.log("drag start");
 
             if (isEditable && e.inputEvent?.target?.isContentEditable) {
               return false;
@@ -151,10 +166,10 @@ export default function CanvasEditor() {
             target.style.transform = `translate(${frame.translate[0]}px, ${frame.translate[1]}px)`;
           }}
           onDragEnd={(e) => {
-            if (!e.isDrag && e.inputEvent.target.isContentEditable) {
-              setIsEditable(true);
-              setTimeout(() => setIsEditable(false), 200);
-            }
+            // if (!e.isDrag && e.inputEvent.target.isContentEditable) {
+            //   setIsEditable(true);
+            //   setTimeout(() => setIsEditable(false), 300);
+            // }
           }}
           onDragGroupStart={(e) => {
             e.events.forEach((ev) => {
