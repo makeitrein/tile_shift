@@ -66,14 +66,12 @@ export const Editable = {
       "div",
       `
       {
-          position: absolute;
-          right: 10px;
-          top: ${rect.height / 2}px;
-          transform: translateY(-50%);
+
           will-change: transform;
           transform-origin: 0px 0px;
       }
       .moveable-button {
+          position: absolute;
           width: 24px;
           height: 24px;
           margin-bottom: 4px;
@@ -83,6 +81,30 @@ export const Editable = {
           border: 0;
           color: white;
           font-weight: bold;
+      }
+
+      .moveable-button-left {
+        right: 10px;
+        top: ${rect.height / 2}px;
+        transform: translateY(-50%);
+      }
+
+      .moveable-button-top {
+        top: -33px;
+        left: ${rect.width / 2}px;
+        transform: translateX(-50%);
+      }
+
+      .moveable-button-right {
+        left: ${rect.width + 10}px;
+        top: ${rect.height / 2}px;
+        transform: translateY(-50%);
+      }
+
+      .moveable-button-bottom {
+        left: ${rect.width / 2}px;
+        top: ${rect.height + 10}px;
+        transform: translateX(-50%);
       }
       `
     );
@@ -97,7 +119,34 @@ export const Editable = {
         }}
       >
         <button
-          className="moveable-button"
+          className="moveable-button moveable-button-left"
+          onClick={() => {
+            alert("+");
+          }}
+        >
+          +
+        </button>
+
+        <button
+          className="moveable-button moveable-button-top"
+          onClick={() => {
+            alert("+");
+          }}
+        >
+          +
+        </button>
+
+        <button
+          className="moveable-button moveable-button-right"
+          onClick={() => {
+            alert("+");
+          }}
+        >
+          +
+        </button>
+
+        <button
+          className="moveable-button moveable-button-bottom"
           onClick={() => {
             alert("+");
           }}
