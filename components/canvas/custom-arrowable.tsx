@@ -1,28 +1,6 @@
 import * as React from "react";
 import { MoveableManagerInterface, Renderer } from "react-moveable";
 
-const buttonPosition = {
-  top: (rect) =>
-    `right: 10px;
-    top: ${rect.height / 2}px;
-    transform: translateY(-50%);`,
-
-  left: (rect) =>
-    `right: 10px;
-  top: ${rect.height / 2}px;
-  transform: translateY(-50%);`,
-
-  right: (rect) =>
-    `right: 10px;
-top: ${rect.height / 2}px;
-transform: translateY(-50%);`,
-
-  bottom: (rect) =>
-    `right: 10px;
-top: ${rect.height / 2}px;
-transform: translateY(-50%);`,
-};
-
 const movableCSS = (
   moveable: MoveableManagerInterface<any, any>,
   position: "top" | "left" | "right" | "bottom"
@@ -53,7 +31,7 @@ const movableCSS = (
   );
 };
 
-export const Editable = {
+export const CustomArrowable = {
   name: "editable",
   props: {},
   events: {},

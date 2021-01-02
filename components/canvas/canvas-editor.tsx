@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import { ContentEditableEditor } from "./content-editable";
-import { Editable } from "./custom-moveables";
+import { CustomArrowable } from "./custom-arrowable";
 
 const EditorJs = dynamic(() => import("react-editor-js"), { ssr: false });
 
@@ -110,7 +110,7 @@ export default function CanvasEditor() {
       <div ref={canvasEditorRef} className="container">
         <Moveable
           ref={moveableRef}
-          ables={[Editable]}
+          ables={[CustomArrowable]}
           props={{
             editable: true,
           }}
