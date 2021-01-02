@@ -31,6 +31,20 @@ function placeCaretAtEnd(el) {
   }
 }
 
+const resizeTarget = (ev, frameMap) => {
+  const target = ev.target;
+  const article = target.querySelector("article");
+
+  const minWidth = 140;
+  const minHeight = article.offsetHeight;
+
+  const frame = frameMap.get(ev.target);
+  frame.translate = ev.drag.beforeTranslate;
+  target.style.width = `${Math.max(minWidth, ev.width)}px`;
+  target.style.height = `${Math.max(minHeight, ev.height)}px`;
+  ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
+};
+
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
   const [isEditable, setIsEditable] = React.useState(false);
@@ -131,21 +145,10 @@ export default function CanvasEditor() {
             const frame = frameMap.get(target);
             dragStart && dragStart.set(frame.translate);
           }}
-          onResize={({ target, width, height, drag }) => {
-            const article = target.querySelector("article");
-
-            const MIN_WIDTH = 140;
-            const MIN_HEIGHT = article.offsetHeight;
-            const beforeTranslate = drag.beforeTranslate;
-
-            const frame = frameMap.get(target);
-
-            frame.translate = beforeTranslate;
-            target.style.width = `${Math.max(MIN_WIDTH, width)}px`;
-            target.style.height = `${Math.max(MIN_HEIGHT, height)}px`;
-            target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
+          onResize={(ev) => {
+            resizeTarget(ev, frameMap);
           }}
-          onResizeGroupStart={({ events }) => {
+          onResizeGroupStart={({ events, setMin }) => {
             events.forEach((ev, i) => {
               if (!frameMap.has(ev.target)) {
                 frameMap.set(ev.target, {
@@ -158,11 +161,7 @@ export default function CanvasEditor() {
           }}
           onResizeGroup={({ events }) => {
             events.forEach((ev, i) => {
-              const frame = frameMap.get(ev.target);
-              frame.translate = ev.drag.beforeTranslate;
-              ev.target.style.width = `${ev.width}px`;
-              ev.target.style.height = `${ev.height}px`;
-              ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
+              resizeTarget(ev, frameMap);
             });
           }}
           onClickGroup={(e) => {
