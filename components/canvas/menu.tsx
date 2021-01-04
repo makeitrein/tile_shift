@@ -1,21 +1,36 @@
 import { Menu, Transition } from "@headlessui/react";
 import * as React from "react";
+import { useRemirror } from "remirror/react";
 
 export const TooltipMenu = ({ moveable }) => {
+  const { commands, active } = useRemirror({ autoUpdate: true });
+
   return (
-    <div className="flex items-center justify-center ">
-      <span className="rounded-md shadow-sm">
-        <span className="inline-flex justify-center w-full px-4 py-1 text-sm font-medium text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 font-bold rounded-l-md hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+    <div className="absolute top-0 w-full -mt-12	z-1000 left-0 flex items-center justify-center cursor-pointer">
+      <span
+        className="rounded-md shadow-sm"
+        onClick={() => commands.toggleBold()}
+        style={{ fontWeight: active.bold() ? "bold" : undefined }}
+      >
+        <span className="inline-flex justify-center w-full px-4 py-1 text-sm  text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-l-md hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
           <span>B</span>
         </span>
       </span>
-      <span className="-ml-px rounded-md shadow-sm">
-        <span className="inline-flex justify-center w-full px-4 py-1 text-sm font-medium text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 italic hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      <span
+        className="-ml-px rounded-md shadow-sm"
+        onClick={() => commands.toggleItalic()}
+        style={{ fontWeight: active.italic() ? "bold" : undefined }}
+      >
+        <span className="inline-flex justify-center w-full px-4 py-1 text-sm  text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 italic hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
           <span>I</span>
         </span>
       </span>
-      <span className="-ml-px rounded-md shadow-sm">
-        <span className="inline-flex justify-center w-full px-4 py-1 text-sm font-medium text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 underline hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      <span
+        className="-ml-px rounded-md shadow-sm"
+        onClick={() => commands.toggleUnderline()}
+        style={{ fontWeight: active.underline() ? "bold" : undefined }}
+      >
+        <span className="inline-flex justify-center w-full px-4 py-1 text-sm  text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 underline hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
           <span>U</span>
         </span>
       </span>

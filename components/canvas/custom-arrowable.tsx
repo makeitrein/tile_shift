@@ -1,6 +1,5 @@
 import * as React from "react";
 import { MoveableManagerInterface, Renderer } from "react-moveable";
-import { TooltipMenu } from "./menu";
 
 export const CustomArrowable = {
   name: "editable",
@@ -84,12 +83,6 @@ export const CustomArrowable = {
         >
           +
         </button>
-
-        {/* {moveable.props.showToolbar && ( */}
-        <div className="menu-top">
-          <TooltipMenu moveable={moveable} />
-        </div>
-        {/* )} */}
 
         <button
           className="moveable-button moveable-button-right"

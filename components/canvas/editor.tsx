@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { fromHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
 import { ItalicExtension } from "remirror/extension/italic";
@@ -6,7 +6,7 @@ import { UnderlineExtension } from "remirror/extension/underline";
 import { CorePreset } from "remirror/preset/core";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
-import { editorID } from "./movable-card";
+import { TooltipMenu } from "./menu";
 
 const Button = () => {
   // `autoUpdate` means that every editor update will recalculate the output
@@ -25,42 +25,32 @@ const Button = () => {
   );
 };
 
-const EditorDiv = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+const EditableArticle = styled.article`
+  padding: 12px;
+
   > div {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    cursor: text;
   }
 `;
 
-const ToolbarDiv = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -30px;
-  bottom: 0;
-`;
-
-const EditorInner = ({ id, selected }) => {
+const EditorInner = ({ showToolbar }) => {
   // The `getRootProps` adds the ref to the div element below to inject the
   // ProseMirror dom. You have full control over where it should be placed.
   // The first call is the one that is used.
   const { getRootProps, focus } = useRemirror();
 
-  useEffect(() => {
-    if (selected === String(id)) {
-      focus("end");
-    }
-  }, [selected, id, focus]);
+  // useEffect(() => {
+  //   if (selected === String(id)) {
+  //     focus("end");
+  //   }
+  // }, [selected, id, focus]);
 
-  return <EditorDiv id={editorID(id)} {...getRootProps()} />;
+  return (
+    <EditableArticle
+      style={{ pointerEvents: !showToolbar && "none" }}
+      {...getRootProps()}
+    />
+  );
 };
 
 const extensionTemplate = () => [
@@ -97,13 +87,16 @@ export const EditorManager = ({ children }) => {
   );
 };
 
-export const Editor = ({ id, selected }) => {
+export const Editor = ({ id, showToolbar }) => {
+  const { view } = useRemirror();
+
+  console.log(view.hasFocus());
+
   return (
     <>
-      {/* <ToolbarDiv>
-        <Button />
-      </ToolbarDiv> */}
-      <EditorInner selected={selected} id={id} />
+      {/* {showToolbar && view.hasFocus() && <TooltipMenu />} */}
+      {showToolbar && <TooltipMenu />}
+      <EditorInner showToolbar={showToolbar} id={id} />
     </>
   );
 };

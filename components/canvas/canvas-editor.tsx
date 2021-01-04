@@ -4,8 +4,8 @@ import * as React from "react";
 import { useEffect } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
-import { ContentEditableEditor } from "./content-editable";
 import { CustomArrowable } from "./custom-arrowable";
+import { Editor, EditorManager } from "./editor";
 
 const EditorJs = dynamic(() => import("react-editor-js"), { ssr: false });
 
@@ -47,7 +47,7 @@ const resizeTarget = (ev, frameMap) => {
 
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
-  const [showToolbar, setShowToolbar] = React.useState(false);
+  const [selectedCube, setSelectedCube] = React.useState(null);
   const [frameMap] = React.useState(() => new Map());
   const moveableRef = React.useRef(null);
   const selectoRef = React.useRef(null);
@@ -80,9 +80,10 @@ export default function CanvasEditor() {
       // moveableRef.current.updateRect();
       // moveableRef.current.request("draggable", { deltaX: 0, deltaY: 0 }, true);
       const articleHeight = e.target.offsetHeight;
+
       const rect = moveableRef.current.getRect();
 
-      if (rect.offsetHeight < articleHeight) {
+      if (e.target.isContentEditable && rect.offsetHeight < articleHeight) {
         moveableRef.current.request("resizable", {
           offsetHeight: parseFloat(articleHeight),
           isInstant: true,
@@ -96,6 +97,10 @@ export default function CanvasEditor() {
   console.log(targets && targets[0] && targets[0].id);
 
   const activeIds = targets.map((t) => t.id);
+
+  const currentTarget = activeIds.length === 1 && activeIds[0];
+
+  console.log(currentTarget);
 
   return (
     <div
@@ -111,7 +116,7 @@ export default function CanvasEditor() {
           ables={[CustomArrowable]}
           props={{
             editable: true,
-            showToolbar,
+            selectedCube,
           }}
           draggable={true}
           target={targets}
@@ -122,7 +127,7 @@ export default function CanvasEditor() {
           snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
-          // checkInput={showToolbar}
+          checkInput={true}
           snapElement={true}
           snapVertical={true}
           snapHorizontal={true}
@@ -134,7 +139,6 @@ export default function CanvasEditor() {
           origin={false}
           padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
           onResizeStart={({ target, setOrigin, dragStart }) => {
-            console.log("onResizeStart");
             setOrigin(["%", "%"]);
             if (!frameMap.has(target)) {
               frameMap.set(target, {
@@ -166,20 +170,19 @@ export default function CanvasEditor() {
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
-          onClick={(e) => {
-            // if (showToolbar) {
-            const article = e.target.querySelector("article");
-            placeCaretAtEnd(article);
-
-            // } else {
-            setShowToolbar(true);
-            // setTimeout(() => setShowToolbar(false), 3000);
-            // }
-          }}
+          // onClick={(e) => {
+          //   // if (selectedCube) {
+          //   // const article = e.target.querySelector("article");
+          //   // placeCaretAtEnd(article);
+          //   // // } else {
+          //   setSelectedCube(e.target);
+          //   // setTimeout(() => setSelectedCube(false), 3000);
+          //   // }
+          // }}
           onDragStart={(e) => {
             const target = e.target;
 
-            // if (showToolbar && e.inputEvent?.target?.isContentEditable) {
+            // if (selectedCube && e.inputEvent?.target?.isContentEditable) {
             //   return false;
             // }
 
@@ -196,15 +199,15 @@ export default function CanvasEditor() {
             const target = e.target;
             const frame = frameMap.get(target);
 
-            setShowToolbar(false);
+            setSelectedCube(false);
 
             frame.translate = e.beforeTranslate;
             target.style.transform = `translate(${frame.translate[0]}px, ${frame.translate[1]}px)`;
           }}
           onDragEnd={(e) => {
             // if (!e.isDrag && e.inputEvent.target.isContentEditable) {
-            //   setShowToolbar(true);
-            //   setTimeout(() => setShowToolbar(false), 300);
+            //   setSelectedCube(true);
+            //   setTimeout(() => setSelectedCube(false), 300);
             // }
           }}
           onDragGroupStart={(e) => {
@@ -252,6 +255,7 @@ export default function CanvasEditor() {
           }}
           onSelect={(e) => {
             setTargets(e.selected);
+            setSelectedCube(null);
           }}
           onSelectEnd={(e) => {
             const moveable = moveableRef.current;
@@ -273,10 +277,10 @@ export default function CanvasEditor() {
               className="cube target"
               key={i}
             >
-              {/* <EditorManager>
-                <Editor selected={selected} id={i} />
-              </EditorManager> */}
-              <ContentEditableEditor disabled={false} />
+              <EditorManager>
+                <Editor id={i} showToolbar={currentTarget === String(i)} />
+              </EditorManager>
+              {/* <ContentEditableEditor disabled={false} /> */}
               {/* <ContentEditableEditor /> */}
             </div>
           ))}
