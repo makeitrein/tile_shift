@@ -107,11 +107,46 @@ export default function CanvasEditor() {
 
   return (
     <Wrapper
+      className="wrapper"
       onBlur={() => {
         console.log("blur");
         window.getSelection().removeAllRanges();
       }}
     >
+      <Selecto
+        ref={selectoRef}
+        dragContainer={".wrapper"}
+        selectableTargets={[".cube"]}
+        hitRate={0}
+        selectByClick={true}
+        selectFromInside={false}
+        toggleContinueSelect={["shift"]}
+        ratio={0}
+        onDragStart={(e) => {
+          const moveable = moveableRef.current;
+          const target = e.inputEvent.target;
+          if (
+            moveable.isMoveableElement(target) ||
+            targets.some((t) => t === target || t.contains(target))
+          ) {
+            e.stop();
+          }
+        }}
+        onSelect={(e) => {
+          setTargets(e.selected);
+          setSelectedCube(null);
+        }}
+        onSelectEnd={(e) => {
+          const moveable = moveableRef.current;
+          if (e.isDragStart) {
+            e.inputEvent.preventDefault();
+
+            setTimeout(() => {
+              moveable.dragStart(e.inputEvent);
+            });
+          }
+        }}
+      ></Selecto>
       <Canvas ref={canvasEditorRef} className="canvas">
         <Moveable
           ref={moveableRef}
@@ -236,57 +271,21 @@ export default function CanvasEditor() {
             });
           }}
         ></Moveable>
-        <Selecto
-          ref={selectoRef}
-          dragContainer={".canvas"}
-          selectableTargets={[".cube"]}
-          hitRate={0}
-          selectByClick={true}
-          selectFromInside={false}
-          toggleContinueSelect={["shift"]}
-          ratio={0}
-          onDragStart={(e) => {
-            const moveable = moveableRef.current;
-            const target = e.inputEvent.target;
-            if (
-              moveable.isMoveableElement(target) ||
-              targets.some((t) => t === target || t.contains(target))
-            ) {
-              e.stop();
-            }
-          }}
-          onSelect={(e) => {
-            setTargets(e.selected);
-            setSelectedCube(null);
-          }}
-          onSelectEnd={(e) => {
-            const moveable = moveableRef.current;
-            if (e.isDragStart) {
-              e.inputEvent.preventDefault();
 
-              setTimeout(() => {
-                moveable.dragStart(e.inputEvent);
-              });
-            }
-          }}
-        ></Selecto>
-
-        <SelectoArea className="elements selecto-area">
-          {cubes.map((i) => (
-            <div
-              style={{ marginLeft: i * 50, marginTop: i * 50 }}
-              id={i}
-              className="cube target"
-              key={i}
-            >
-              <EditorManager>
-                <Editor id={i} showToolbar={currentTarget === String(i)} />
-              </EditorManager>
-              {/* <ContentEditableEditor disabled={false} /> */}
-              {/* <ContentEditableEditor /> */}
-            </div>
-          ))}
-        </SelectoArea>
+        {cubes.map((i) => (
+          <div
+            style={{ marginLeft: i * 50, marginTop: i * 50 }}
+            id={i}
+            className="cube target"
+            key={i}
+          >
+            <EditorManager>
+              <Editor id={i} showToolbar={currentTarget === String(i)} />
+            </EditorManager>
+            {/* <ContentEditableEditor disabled={false} /> */}
+            {/* <ContentEditableEditor /> */}
+          </div>
+        ))}
       </Canvas>
     </Wrapper>
   );
