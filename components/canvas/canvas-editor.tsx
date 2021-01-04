@@ -1,6 +1,7 @@
-import Panzoom from "@panzoom/panzoom";
+import Panzoom, { PanzoomObject } from "@panzoom/panzoom";
+import { Button } from "antd";
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import styled from "styled-components";
@@ -40,10 +41,15 @@ export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
   const [selectedCube, setSelectedCube] = React.useState(null);
   const [frameMap] = React.useState(() => new Map());
+
   const moveableRef = React.useRef(null);
   const selectoRef = React.useRef(null);
   const canvasEditorRef = React.useRef(null);
   const cubes = [];
+  const panzoomRef = useRef<PanzoomObject>(null);
+  const range = useRef<HTMLInputElement>(null);
+
+  let panzoom = panzoomRef.current;
 
   const [frame, setFrame] = React.useState({
     translate: [0, 0],
@@ -54,10 +60,11 @@ export default function CanvasEditor() {
   }
 
   useEffect(() => {
-    const panzoom = Panzoom(canvasEditorRef.current, {
+    panzoom = panzoomRef.current = Panzoom(canvasEditorRef.current, {
       disablePan: true,
       canvas: true,
       contain: "outside",
+      startScale: 1,
       // excludeClass: "cube",
       // startX: -window.outerWidth * 2,
       // startY: -window.outerHeight * 2,
@@ -113,6 +120,48 @@ export default function CanvasEditor() {
         window.getSelection().removeAllRanges();
       }}
     >
+      <div className="absolute bottom-0 right-0 z-1000">
+        <Button
+          onClick={() => {
+            panzoom.zoomIn();
+            if (range.current) range.current.value = panzoom.getScale() + "";
+          }}
+        >
+          Zoom in
+        </Button>
+        <Button
+          onClick={() => {
+            panzoom.zoomOut();
+            if (range.current) range.current.value = panzoom.getScale() + "";
+          }}
+        >
+          Zoom out
+        </Button>
+        <Button
+          onClick={() => {
+            panzoom.reset();
+            if (range.current) range.current.value = panzoom.getScale() + "";
+          }}
+        >
+          Reset
+        </Button>
+
+        <input
+          ref={range}
+          onInput={(event) => {
+            panzoom.zoom((event.target as HTMLInputElement).valueAsNumber);
+          }}
+          onChange={(event) => {
+            panzoom.zoom((event.target as HTMLInputElement).valueAsNumber);
+          }}
+          className="range-input"
+          type="range"
+          min="0.1"
+          max="4"
+          step="0.1"
+          defaultValue="1"
+        />
+      </div>
       <Selecto
         ref={selectoRef}
         dragContainer={".wrapper"}

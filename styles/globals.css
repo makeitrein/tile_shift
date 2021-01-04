@@ -8,6 +8,10 @@
   overflow: hidden;
 } */
 
+body {
+  overscroll-behavior-x: none;
+}
+
 .z-1000 {
   z-index: 1000;
 }
