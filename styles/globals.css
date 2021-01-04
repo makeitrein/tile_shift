@@ -8,6 +8,14 @@
   overflow: hidden;
 }
 
+.z-1000 {
+  z-index: 1000;
+}
+
+.hide-border {
+  display: none !important;
+}
+
 .cube {
   display: inline-block;
   position: absolute;

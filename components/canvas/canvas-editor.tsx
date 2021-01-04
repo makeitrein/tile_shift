@@ -47,7 +47,7 @@ const resizeTarget = (ev, frameMap) => {
 
 export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
-  const [isEditable, setIsEditable] = React.useState(false);
+  const [showToolbar, setShowToolbar] = React.useState(false);
   const [frameMap] = React.useState(() => new Map());
   const moveableRef = React.useRef(null);
   const selectoRef = React.useRef(null);
@@ -103,8 +103,6 @@ export default function CanvasEditor() {
       onBlur={() => {
         console.log("blur");
         window.getSelection().removeAllRanges();
-
-        setIsEditable(false);
       }}
     >
       <div ref={canvasEditorRef} className="canvas">
@@ -113,6 +111,7 @@ export default function CanvasEditor() {
           ables={[CustomArrowable]}
           props={{
             editable: true,
+            showToolbar,
           }}
           draggable={true}
           target={targets}
@@ -123,7 +122,7 @@ export default function CanvasEditor() {
           snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
-          // checkInput={isEditable}
+          // checkInput={showToolbar}
           snapElement={true}
           snapVertical={true}
           snapHorizontal={true}
@@ -168,18 +167,19 @@ export default function CanvasEditor() {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
           onClick={(e) => {
-            // if (isEditable) {
+            // if (showToolbar) {
             const article = e.target.querySelector("article");
             placeCaretAtEnd(article);
+
             // } else {
-            // setIsEditable(true);
-            // setTimeout(() => setIsEditable(false), 3000);
+            setShowToolbar(true);
+            // setTimeout(() => setShowToolbar(false), 3000);
             // }
           }}
           onDragStart={(e) => {
             const target = e.target;
 
-            // if (isEditable && e.inputEvent?.target?.isContentEditable) {
+            // if (showToolbar && e.inputEvent?.target?.isContentEditable) {
             //   return false;
             // }
 
@@ -196,13 +196,15 @@ export default function CanvasEditor() {
             const target = e.target;
             const frame = frameMap.get(target);
 
+            setShowToolbar(false);
+
             frame.translate = e.beforeTranslate;
             target.style.transform = `translate(${frame.translate[0]}px, ${frame.translate[1]}px)`;
           }}
           onDragEnd={(e) => {
             // if (!e.isDrag && e.inputEvent.target.isContentEditable) {
-            //   setIsEditable(true);
-            //   setTimeout(() => setIsEditable(false), 300);
+            //   setShowToolbar(true);
+            //   setTimeout(() => setShowToolbar(false), 300);
             // }
           }}
           onDragGroupStart={(e) => {

@@ -16,7 +16,7 @@ export class ContentEditableEditor extends React.Component {
     const { disabled } = this.props;
     return (
       <ContentEditable
-        style={{ padding: 12, outline: 0, border: 0 }}
+        style={{ padding: "8px 12px", outline: 0, border: 0 }}
         innerRef={this.contentEditable}
         html={this.state.html} // innerHTML of the editable div
         disabled={disabled} // use true to disable editing

@@ -1,36 +1,6 @@
-import { BoldOutlined } from "@ant-design/icons";
 import * as React from "react";
 import { MoveableManagerInterface, Renderer } from "react-moveable";
-
-const movableCSS = (
-  moveable: MoveableManagerInterface<any, any>,
-  position: "top" | "left" | "right" | "bottom"
-) => {
-  const rect = moveable.getRect();
-
-  return moveable.useCSS(
-    "div",
-    `
-  {
-      position: absolute;
-
-      will-change: transform;
-      transform-origin: 0px 0px;
-  }
-  .moveable-button {
-      width: 24px;
-      height: 24px;
-      margin-bottom: 4px;
-      background: #4af;
-      border-radius: 4px;
-      appearance: none;
-      border: 0;
-      color: white;
-      font-weight: bold;
-  }
-  `
-  );
-};
+import { TooltipMenu } from "./menu";
 
 export const CustomArrowable = {
   name: "editable",
@@ -48,14 +18,18 @@ export const CustomArrowable = {
 
           will-change: transform;
           transform-origin: 0px 0px;
+          z-index: 1000;
+          position: relative;
       }
       .moveable-button {
           position: absolute;
+          z-index: 100;
           text-align: center;
           padding: 0;
           line-height: 20px;
           width: 20px;
           height: 20px;
+          font-size: 14px;
           margin-bottom: 4px;
           background: #4af;
           border-radius: 4px;
@@ -71,9 +45,11 @@ export const CustomArrowable = {
         transform: translateY(-50%);
       }
 
-      .moveable-button-top {
-        top: -28px;
+      .menu-top {
+        position: absolute;
+        top: -40px;
         left: ${rect.width / 2}px;
+        z-index: 1000;
         transform: translateX(-50%);
       }
 
@@ -109,14 +85,11 @@ export const CustomArrowable = {
           +
         </button>
 
-        <button
-          className="moveable-button moveable-button-top"
-          onClick={() => {
-            alert("+");
-          }}
-        >
-          <BoldOutlined size={10} />
-        </button>
+        {/* {moveable.props.showToolbar && ( */}
+        <div className="menu-top">
+          <TooltipMenu moveable={moveable} />
+        </div>
+        {/* )} */}
 
         <button
           className="moveable-button moveable-button-right"
