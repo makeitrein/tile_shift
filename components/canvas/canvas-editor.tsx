@@ -16,6 +16,7 @@ const Wrapper = styled.div`
 const Canvas = styled.div`
   width: 500vw;
   height: 500vh;
+  padding: 200px;
 `;
 
 const SelectoArea = styled.div`
@@ -55,7 +56,7 @@ export default function CanvasEditor() {
     translate: [0, 0],
   });
 
-  for (let i = 0; i < 30; ++i) {
+  for (let i = 0; i < 1; ++i) {
     cubes.push(i);
   }
 
@@ -63,7 +64,7 @@ export default function CanvasEditor() {
     panzoom = panzoomRef.current = Panzoom(canvasEditorRef.current, {
       disablePan: true,
       canvas: true,
-      contain: "outside",
+      // contain: "outside",
       startScale: 1,
       // excludeClass: "cube",
       // startX: -window.outerWidth * 2,
@@ -76,11 +77,25 @@ export default function CanvasEditor() {
       },
     });
 
-    window.addEventListener("wheel", (e) => {
-      const x = -e.deltaX;
-      const y = -e.deltaY;
-      panzoom.pan(x, y, { relative: true, force: true });
-    });
+    window.addEventListener(
+      "mousewheel",
+      (e) => {
+        const isPinchZoom = e.ctrlKey;
+
+        e.preventDefault();
+
+        console.log(e);
+
+        if (isPinchZoom) {
+          panzoom.zoomWithWheel(e);
+        } else {
+          const x = -e.deltaX;
+          const y = -e.deltaY;
+          panzoom.pan(x, y, { relative: true, force: true });
+        }
+      },
+      { passive: false }
+    );
   }, []);
 
   useEffect(() => {
