@@ -1,35 +1,26 @@
 import Panzoom from "@panzoom/panzoom";
-import dynamic from "next/dynamic";
 import * as React from "react";
 import { useEffect } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
+import styled from "styled-components";
 import { CustomArrowable } from "./custom-arrowable";
 import { Editor, EditorManager } from "./editor";
 
-const EditorJs = dynamic(() => import("react-editor-js"), { ssr: false });
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
 
-const Paragraph = dynamic(() => import("@editorjs/paragraph"), { ssr: false });
+const Canvas = styled.div`
+  width: 500vw;
+  height: 500vh;
+`;
 
-function placeCaretAtEnd(el) {
-  el.focus();
-  if (
-    typeof window.getSelection != "undefined" &&
-    typeof document.createRange != "undefined"
-  ) {
-    var range = document.createRange();
-    range.selectNodeContents(el);
-    range.collapse(false);
-    var sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-  } else if (typeof document.body.createTextRange != "undefined") {
-    var textRange = document.body.createTextRange();
-    textRange.moveToElementText(el);
-    textRange.collapse(false);
-    textRange.select();
-  }
-}
+const SelectoArea = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 const resizeTarget = (ev, frameMap) => {
   const target = ev.target;
@@ -63,13 +54,25 @@ export default function CanvasEditor() {
   }
 
   useEffect(() => {
-    Panzoom(canvasEditorRef.current, {
-      panOnlyWhenZoomed: true,
+    const panzoom = Panzoom(canvasEditorRef.current, {
+      disablePan: true,
+      canvas: true,
+      contain: "outside",
+      // excludeClass: "cube",
+      // startX: -window.outerWidth * 2,
+      // startY: -window.outerHeight * 2,
+      // startScale: 1.5,
       handleStartEvent: (event) => {
         if (Array.from(event.target.classList).includes("cube")) {
           throw "disable panning hack";
         }
       },
+    });
+
+    window.addEventListener("wheel", (e) => {
+      const x = -e.deltaX;
+      const y = -e.deltaY;
+      panzoom.pan(x, y, { relative: true, force: true });
     });
   }, []);
 
@@ -103,14 +106,13 @@ export default function CanvasEditor() {
   console.log(currentTarget);
 
   return (
-    <div
-      className="moveable app"
+    <Wrapper
       onBlur={() => {
         console.log("blur");
         window.getSelection().removeAllRanges();
       }}
     >
-      <div ref={canvasEditorRef} className="canvas">
+      <Canvas ref={canvasEditorRef} className="canvas">
         <Moveable
           ref={moveableRef}
           ables={[CustomArrowable]}
@@ -236,8 +238,8 @@ export default function CanvasEditor() {
         ></Moveable>
         <Selecto
           ref={selectoRef}
-          dragContainer={".elements"}
-          selectableTargets={[".selecto-area .cube"]}
+          dragContainer={".canvas"}
+          selectableTargets={[".cube"]}
           hitRate={0}
           selectByClick={true}
           selectFromInside={false}
@@ -269,7 +271,7 @@ export default function CanvasEditor() {
           }}
         ></Selecto>
 
-        <div className="elements selecto-area">
+        <SelectoArea className="elements selecto-area">
           {cubes.map((i) => (
             <div
               style={{ marginLeft: i * 50, marginTop: i * 50 }}
@@ -284,8 +286,8 @@ export default function CanvasEditor() {
               {/* <ContentEditableEditor /> */}
             </div>
           ))}
-        </div>
-      </div>
-    </div>
+        </SelectoArea>
+      </Canvas>
+    </Wrapper>
   );
 }

@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-.canvas {
+/* .canvas {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-}
+} */
 
 .z-1000 {
   z-index: 1000;
@@ -31,11 +31,11 @@
   border: 2px solid #eee;
 }
 
-.selecto-area {
+/* .selecto-area {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-}
+} */
 
 #selecto1 .cube {
   transition: all ease 0.2s;
