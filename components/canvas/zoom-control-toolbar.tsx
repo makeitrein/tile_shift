@@ -1,16 +1,28 @@
 import React from "react";
 import { Button, ButtonGroup } from "./general/button";
 
-export const ZoomControlToolbar = ({ panzoom, range, toggleDisablePan }) => {
+export const ZoomControlToolbar = ({
+  panzoom,
+  range,
+  disablePan,
+  toggleDisablePan,
+}) => {
   return (
     <div className="fixed bottom-4 right-4 z-1000 flex">
       <Button onClick={toggleDisablePan} className="rounded-md mr-3 shadow-sm">
+        Recenter Canvas
+      </Button>
+      <Button
+        onClick={toggleDisablePan}
+        active={!disablePan}
+        className={`rounded-md mr-3 shadow-sm transition`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
-          width={20}
           viewBox="0 0 24 24"
           stroke="currentColor"
+          className="w-5 -ml-1 mr-2"
         >
           <path
             strokeLinecap="round"
@@ -19,20 +31,12 @@ export const ZoomControlToolbar = ({ panzoom, range, toggleDisablePan }) => {
             d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"
           />
         </svg>
+        Pan Mode
       </Button>
       <ButtonGroup>
         <Button className="rounded-l-md">
           <input
             ref={range}
-            onInput={(event) => {
-              panzoom.zoomToPoint(
-                (event.target as HTMLInputElement).valueAsNumber,
-                {
-                  clientX: window.innerWidth / 2,
-                  clientY: window.innerHeight / 2,
-                }
-              );
-            }}
             onChange={(event) => {
               panzoom.zoomToPoint(
                 (event.target as HTMLInputElement).valueAsNumber,
@@ -46,7 +50,7 @@ export const ZoomControlToolbar = ({ panzoom, range, toggleDisablePan }) => {
             type="range"
             min="0.3"
             max="3"
-            step="0.1"
+            step="0.3"
             defaultValue="1"
           />
         </Button>
@@ -64,8 +68,8 @@ export const ZoomControlToolbar = ({ panzoom, range, toggleDisablePan }) => {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            width={20}
             stroke="currentColor"
+            className="w-5"
           >
             <path
               strokeLinecap="round"
@@ -88,7 +92,7 @@ export const ZoomControlToolbar = ({ panzoom, range, toggleDisablePan }) => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            width={20}
+            className="w-5"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >

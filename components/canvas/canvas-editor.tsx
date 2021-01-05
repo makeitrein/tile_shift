@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 const Canvas = styled.div`
   width: 400vw;
   height: 400vh;
-  border: 10px solid blue;
+  border: 10px solid #4af;
 `;
 
 const SelectoArea = styled.div`
@@ -46,6 +46,7 @@ export default function CanvasEditor() {
   const [frameMap] = React.useState(() => new Map());
 
   const moveableRef = React.useRef(null);
+  const wrapperRef = React.useRef(null);
   const selectoRef = React.useRef(null);
   const canvasEditorRef = React.useRef(null);
   const cubes = [];
@@ -74,7 +75,10 @@ export default function CanvasEditor() {
       // startY: -window.outerHeight * 2,
       // startScale: 1.5,
       handleStartEvent: (event) => {
-        if (Array.from(event.target.classList).includes("cube")) {
+        if (
+          !disablePan &&
+          Array.from(event.target.classList).includes("cube")
+        ) {
           throw "disable panning hack";
         }
       },
@@ -131,6 +135,7 @@ export default function CanvasEditor() {
 
   return (
     <Wrapper
+      ref={wrapperRef}
       className="wrapper"
       onBlur={() => {
         console.log("blur");
@@ -138,6 +143,7 @@ export default function CanvasEditor() {
       }}
     >
       <ZoomControlToolbar
+        disablePan={disablePan}
         toggleDisablePan={() => setDisablePan((pan) => !pan)}
         range={range}
         panzoom={panzoom}
@@ -182,6 +188,12 @@ export default function CanvasEditor() {
       <Canvas ref={canvasEditorRef} className="canvas">
         <Moveable
           ref={moveableRef}
+          bounds={{
+            left: 40,
+            top: 40,
+            right: window.innerWidth * 4 - 40,
+            bottom: window.innerHeight * 4 - 40,
+          }}
           ables={[CustomArrowable]}
           props={{
             editable: true,
