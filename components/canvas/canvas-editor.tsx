@@ -11,18 +11,27 @@ import { ZoomControlToolbar } from "./zoom-control-toolbar";
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  background: white;
+  background: rgb(240, 242, 245);
 `;
 
 const Canvas = styled.div`
   width: 400vw;
   height: 400vh;
-  border: 10px solid #4af;
+  // border: 10px solid #4af;
 `;
 
-const SelectoArea = styled.div`
-  width: 100%;
-  height: 100%;
+const Cube = styled.div`
+  display: inline-block;
+  position: absolute;
+  border-radius: 5px;
+  width: 140px;
+  height: 76px;
+  margin: 4px;
+  background: #fff;
+  --color: #4af;
+  box-shadow: ${(props) =>
+    props.selected &&
+    "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
 `;
 
 const resizeTarget = (ev, frameMap) => {
@@ -43,6 +52,7 @@ export default function CanvasEditor() {
   const [targets, setTargets] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
   const [selectedCube, setSelectedCube] = React.useState(null);
+  const [scrollOffset, setScrollOffset] = React.useState({ x: 0, y: 0 });
   const [frameMap] = React.useState(() => new Map());
 
   const moveableRef = React.useRef(null);
@@ -99,6 +109,9 @@ export default function CanvasEditor() {
           const y = -e.deltaY;
           panzoom.pan(x, y, { relative: true, force: true });
         }
+
+        console.log(e);
+        setScrollOffset({ x: e.offsetX, y: e.offsetY });
       },
       { passive: false }
     );
@@ -147,6 +160,30 @@ export default function CanvasEditor() {
         toggleDisablePan={() => setDisablePan((pan) => !pan)}
         range={range}
         panzoom={panzoom}
+      />
+
+      <div
+        style={{
+          position: "fixed",
+          top: 20,
+          background: "black",
+          width: 10,
+          right: 10,
+          height: (scrollOffset.y / (window.innerHeight * 4)) * 100 + "%",
+          zIndex: 100,
+        }}
+      />
+
+      <div
+        style={{
+          position: "fixed",
+          bottom: 20,
+          background: "black",
+          width: (scrollOffset.x / (window.innerWidth * 4)) * 100 + "%",
+          left: 10,
+          height: 10,
+          zIndex: 100,
+        }}
       />
 
       {disablePan && (
@@ -280,7 +317,7 @@ export default function CanvasEditor() {
             const target = e.target;
             const frame = frameMap.get(target);
 
-            setSelectedCube(false);
+            setSelectedCube(e.target.id);
 
             frame.translate = e.beforeTranslate;
             target.style.transform = `translate(${frame.translate[0]}px, ${frame.translate[1]}px)`;
@@ -290,6 +327,7 @@ export default function CanvasEditor() {
             //   setSelectedCube(true);
             //   setTimeout(() => setSelectedCube(false), 300);
             // }
+            setSelectedCube(null);
           }}
           onDragGroupStart={(e) => {
             e.events.forEach((ev) => {
@@ -317,18 +355,19 @@ export default function CanvasEditor() {
         ></Moveable>
 
         {cubes.map((i) => (
-          <div
+          <Cube
             style={{ marginLeft: i * 50, marginTop: i * 50 }}
             id={i}
             className="cube target"
             key={i}
+            selected={selectedCube === String(i)}
           >
             <EditorManager>
               <Editor id={i} showToolbar={currentTarget === String(i)} />
             </EditorManager>
             {/* <ContentEditableEditor disabled={false} /> */}
             {/* <ContentEditableEditor /> */}
-          </div>
+          </Cube>
         ))}
       </Canvas>
     </Wrapper>

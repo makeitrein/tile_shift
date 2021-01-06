@@ -20,17 +20,6 @@ body {
   display: none !important;
 }
 
-.cube {
-  display: inline-block;
-  position: absolute;
-  border-radius: 5px;
-  width: 140px;
-  height: 76px;
-  margin: 4px;
-  background: #eee;
-  --color: #4af;
-}
-
 .elements {
   border: 2px solid #eee;
 }
