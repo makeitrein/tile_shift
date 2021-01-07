@@ -4,11 +4,15 @@ const syncStorageEffect = () => ({ setSelf, trigger }) => {
   // Initialize atom value to the remote storage state
   if (trigger === "get") {
     // Avoid expensive initialization
-    setSelf(["alpha", "betta", "kenny"]); // Call synchronously to initialize
+    setSelf([
+      { id: "alpha", x: 0, y: 0 },
+      { id: "betta", x: 150, y: 150 },
+      { id: "kenny", x: 350, y: 350 },
+    ]); // Call synchronously to initialize
   }
 };
 
-export const canvasCardIds = atom({
+export const canvasCards = atom({
   key: "CANVAS/card",
   default: [],
   effects_UNSTABLE: [syncStorageEffect()],

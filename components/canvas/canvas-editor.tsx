@@ -5,8 +5,8 @@ import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { canvasCardIds } from "../state/canvas";
-import { CanvasCard } from "./canvas-card";
+import { canvasCards } from "../state/canvas";
+import { CanvasCard, cardHeight, cardWidth } from "./canvas-card";
 import { CustomArrowable } from "./custom-arrowable";
 import { ZoomControlToolbar } from "./zoom-control-toolbar";
 
@@ -37,7 +37,7 @@ const resizeTarget = (ev, frameMap) => {
 };
 
 export default function CanvasEditor() {
-  const [cardIds] = useRecoilState(canvasCardIds);
+  const [cards, setCards] = useRecoilState(canvasCards);
   const [selectedCards, setSelectedCards] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
   const [draggingCardId, setDraggingCardId] = React.useState(null);
@@ -52,12 +52,6 @@ export default function CanvasEditor() {
   const range = useRef<HTMLInputElement>(null);
 
   let panzoom = panzoomRef.current;
-
-  const [frame, setFrame] = React.useState({
-    translate: [0, 0],
-  });
-
-  console.log(cardIds);
 
   useEffect(() => {
     panzoom = panzoomRef.current = Panzoom(canvasEditorRef.current, {
@@ -130,7 +124,16 @@ export default function CanvasEditor() {
 
   const selectedCardIds = selectedCards.map((t) => t.id);
 
-  const currentTarget = selectedCardIds.length === 1 && selectedCardIds[0];
+  const addItem = (e) => {
+    setCards((oldTodoList) => [
+      ...oldTodoList,
+      {
+        id: Math.random(),
+        x: e.nativeEvent.offsetX - cardWidth / 2,
+        y: e.nativeEvent.offsetY - cardHeight / 2,
+      },
+    ]);
+  };
 
   return (
     <Wrapper
@@ -140,7 +143,7 @@ export default function CanvasEditor() {
         console.log("blur");
         window.getSelection().removeAllRanges();
       }}
-      onDoubleClick={() => alert("hi")}
+      onDoubleClick={addItem}
     >
       <ZoomControlToolbar
         disablePan={disablePan}
@@ -148,7 +151,7 @@ export default function CanvasEditor() {
         range={range}
         panzoom={panzoom}
       />
-
+      {/*
       <div
         style={{
           position: "fixed",
@@ -173,7 +176,7 @@ export default function CanvasEditor() {
           height: 10,
           zIndex: 100,
         }}
-      />
+      /> */}
 
       {disablePan && (
         <Selecto
@@ -345,8 +348,10 @@ export default function CanvasEditor() {
           }}
         ></Moveable>
 
-        {cardIds.map((id) => (
+        {cards.map(({ id, x, y }) => (
           <CanvasCard
+            x={x}
+            y={y}
             key={id}
             id={id}
             isDragging={String(id) === draggingCardId}
