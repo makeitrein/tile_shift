@@ -3,7 +3,9 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { canvasCardIds } from "../state/canvas";
 import { CanvasCard } from "./canvas-card";
 import { CustomArrowable } from "./custom-arrowable";
 import { ZoomControlToolbar } from "./zoom-control-toolbar";
@@ -35,7 +37,8 @@ const resizeTarget = (ev, frameMap) => {
 };
 
 export default function CanvasEditor() {
-  const [selectedcards, setTargets] = React.useState([]);
+  const [cardIds] = useRecoilState(canvasCardIds);
+  const [selectedCards, setSelectedCards] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
   const [draggingCardId, setDraggingCardId] = React.useState(null);
   const [scrollOffset, setScrollOffset] = React.useState({ x: 0, y: 0 });
@@ -45,7 +48,6 @@ export default function CanvasEditor() {
   const wrapperRef = React.useRef(null);
   const selectoRef = React.useRef(null);
   const canvasEditorRef = React.useRef(null);
-  const cubes = [];
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
@@ -55,9 +57,7 @@ export default function CanvasEditor() {
     translate: [0, 0],
   });
 
-  for (let i = 0; i < 3; ++i) {
-    cubes.push(i);
-  }
+  console.log(cardIds);
 
   useEffect(() => {
     panzoom = panzoomRef.current = Panzoom(canvasEditorRef.current, {
@@ -128,7 +128,7 @@ export default function CanvasEditor() {
 
   if (!process.browser) return null;
 
-  const selectedCardIds = selectedcards.map((t) => t.id);
+  const selectedCardIds = selectedCards.map((t) => t.id);
 
   const currentTarget = selectedCardIds.length === 1 && selectedCardIds[0];
 
@@ -190,13 +190,13 @@ export default function CanvasEditor() {
             const target = e.inputEvent.target;
             if (
               moveable.isMoveableElement(target) ||
-              selectedcards.some((t) => t === target || t.contains(target))
+              selectedCards.some((t) => t === target || t.contains(target))
             ) {
               e.stop();
             }
           }}
           onSelect={(e) => {
-            setTargets(e.selected);
+            setSelectedCards(e.selected);
             setDraggingCardId(null);
           }}
           onSelectEnd={(e) => {
@@ -226,7 +226,7 @@ export default function CanvasEditor() {
             draggingCardId,
           }}
           draggable={true}
-          target={selectedcards}
+          target={selectedCards}
           elementGuidelines={Array.from(
             document.querySelectorAll(".cube")
           ).filter((el) => !selectedCardIds.includes(el.id))}
@@ -345,7 +345,7 @@ export default function CanvasEditor() {
           }}
         ></Moveable>
 
-        {cubes.map((id) => (
+        {cardIds.map((id) => (
           <CanvasCard
             key={id}
             id={id}
