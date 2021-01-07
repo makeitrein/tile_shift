@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Editor, EditorManager } from "./editor";
 
 export const cardWidth = 140;
 export const cardHeight = 76;
@@ -25,9 +24,10 @@ const Card = styled.div`
 export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
   return (
     <Card id={id} x={x} y={y} className="cube target" isDragging={isDragging}>
-      <EditorManager>
+      <article />
+      {/* <EditorManager>
         <Editor id={id} showToolbar={isOnlySelectedCard} />
-      </EditorManager>
+      </EditorManager> */}
     </Card>
   );
 };

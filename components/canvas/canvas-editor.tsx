@@ -41,8 +41,8 @@ export default function CanvasEditor() {
   const [selectedCards, setSelectedCards] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
   const [draggingCardId, setDraggingCardId] = React.useState(null);
-  const [scrollOffset, setScrollOffset] = React.useState({ x: 0, y: 0 });
   const [frameMap] = React.useState(() => new Map());
+  const [zoom, setZoom] = React.useState(1);
 
   const moveableRef = React.useRef(null);
   const wrapperRef = React.useRef(null);
@@ -89,12 +89,20 @@ export default function CanvasEditor() {
           const y = -e.deltaY;
           panzoom.pan(x, y, { relative: true, force: true });
         }
-
-        console.log(e);
-        setScrollOffset({ x: e.offsetX, y: e.offsetY });
       },
       { passive: false }
     );
+
+    canvasEditorRef.current.addEventListener("panzoomzoom", ({ detail }) => {
+      console.log(detail.scale);
+      if (detail.scale < 0.5) {
+        setZoom(2);
+      } else if (detail.scale < 1) {
+        setZoom(1.5);
+      } else {
+        setZoom(1);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -135,6 +143,8 @@ export default function CanvasEditor() {
     ]);
   };
 
+  console.log(zoom);
+
   return (
     <Wrapper
       ref={wrapperRef}
@@ -151,32 +161,6 @@ export default function CanvasEditor() {
         range={range}
         panzoom={panzoom}
       />
-      {/*
-      <div
-        style={{
-          position: "fixed",
-          top: 10,
-          background: "#183055",
-          width: 10,
-          right: 10,
-          height: (scrollOffset.y / (window.innerHeight * 3.5)) * 100 + "%",
-          zIndex: 100,
-          borderRadius: 4,
-        }}
-      />
-
-      <div
-        style={{
-          position: "fixed",
-          bottom: 10,
-          borderRadius: 4,
-          background: "#183055",
-          width: (scrollOffset.x / (window.innerWidth * 3.5)) * 100 + "%",
-          left: 10,
-          height: 10,
-          zIndex: 100,
-        }}
-      /> */}
 
       {disablePan && (
         <Selecto
@@ -247,7 +231,7 @@ export default function CanvasEditor() {
           snapDigit={0}
           resizable={true}
           throttleDrag={0}
-          zoom={1}
+          zoom={zoom}
           origin={false}
           padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
           onResizeStart={({ target, setOrigin, dragStart }) => {
