@@ -1,10 +1,10 @@
 import Head from "next/head";
+import { RecoilRoot } from "recoil";
 import CanvasEditor from "../components/canvas/canvas-editor";
-import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <RecoilRoot>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -12,6 +12,6 @@ export default function Home() {
       </Head>
 
       <CanvasEditor />
-    </div>
+    </RecoilRoot>
   );
 }

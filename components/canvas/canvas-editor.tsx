@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import styled from "styled-components";
+import { CanvasCard } from "./canvas-card";
 import { CustomArrowable } from "./custom-arrowable";
-import { Editor, EditorManager } from "./editor";
 import { ZoomControlToolbar } from "./zoom-control-toolbar";
 
 const Wrapper = styled.div`
@@ -18,20 +18,6 @@ const Canvas = styled.div`
   width: 400vw;
   height: 400vh;
   // border: 10px solid #4af;
-`;
-
-const Cube = styled.div`
-  display: inline-block;
-  position: absolute;
-  border-radius: 5px;
-  width: 140px;
-  height: 76px;
-  margin: 4px;
-  background: #fff;
-  --color: #4af;
-  box-shadow: ${(props) =>
-    props.selected &&
-    "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
 `;
 
 const resizeTarget = (ev, frameMap) => {
@@ -49,9 +35,9 @@ const resizeTarget = (ev, frameMap) => {
 };
 
 export default function CanvasEditor() {
-  const [targets, setTargets] = React.useState([]);
+  const [selectedcards, setTargets] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
-  const [selectedCube, setSelectedCube] = React.useState(null);
+  const [draggingCardId, setDraggingCardId] = React.useState(null);
   const [scrollOffset, setScrollOffset] = React.useState({ x: 0, y: 0 });
   const [frameMap] = React.useState(() => new Map());
 
@@ -69,7 +55,7 @@ export default function CanvasEditor() {
     translate: [0, 0],
   });
 
-  for (let i = 0; i < 1; ++i) {
+  for (let i = 0; i < 3; ++i) {
     cubes.push(i);
   }
 
@@ -142,9 +128,9 @@ export default function CanvasEditor() {
 
   if (!process.browser) return null;
 
-  const activeIds = targets.map((t) => t.id);
+  const selectedCardIds = selectedcards.map((t) => t.id);
 
-  const currentTarget = activeIds.length === 1 && activeIds[0];
+  const currentTarget = selectedCardIds.length === 1 && selectedCardIds[0];
 
   return (
     <Wrapper
@@ -154,6 +140,7 @@ export default function CanvasEditor() {
         console.log("blur");
         window.getSelection().removeAllRanges();
       }}
+      onDoubleClick={() => alert("hi")}
     >
       <ZoomControlToolbar
         disablePan={disablePan}
@@ -165,21 +152,23 @@ export default function CanvasEditor() {
       <div
         style={{
           position: "fixed",
-          top: 20,
-          background: "black",
+          top: 10,
+          background: "#183055",
           width: 10,
           right: 10,
-          height: (scrollOffset.y / (window.innerHeight * 4)) * 100 + "%",
+          height: (scrollOffset.y / (window.innerHeight * 3.5)) * 100 + "%",
           zIndex: 100,
+          borderRadius: 4,
         }}
       />
 
       <div
         style={{
           position: "fixed",
-          bottom: 20,
-          background: "black",
-          width: (scrollOffset.x / (window.innerWidth * 4)) * 100 + "%",
+          bottom: 10,
+          borderRadius: 4,
+          background: "#183055",
+          width: (scrollOffset.x / (window.innerWidth * 3.5)) * 100 + "%",
           left: 10,
           height: 10,
           zIndex: 100,
@@ -201,14 +190,14 @@ export default function CanvasEditor() {
             const target = e.inputEvent.target;
             if (
               moveable.isMoveableElement(target) ||
-              targets.some((t) => t === target || t.contains(target))
+              selectedcards.some((t) => t === target || t.contains(target))
             ) {
               e.stop();
             }
           }}
           onSelect={(e) => {
             setTargets(e.selected);
-            setSelectedCube(null);
+            setDraggingCardId(null);
           }}
           onSelectEnd={(e) => {
             const moveable = moveableRef.current;
@@ -234,14 +223,16 @@ export default function CanvasEditor() {
           ables={[CustomArrowable]}
           props={{
             editable: true,
-            selectedCube,
+            draggingCardId,
           }}
           draggable={true}
-          target={targets}
-          elementGuidelines={Array.from(document.querySelectorAll(".cube"))}
+          target={selectedcards}
+          elementGuidelines={Array.from(
+            document.querySelectorAll(".cube")
+          ).filter((el) => !selectedCardIds.includes(el.id))}
           snappable={true}
-          verticalGuidelines={[0, 200, 400]}
-          horizontalGuidelines={[0, 200, 400]}
+          // verticalGuidelines={[0, 200, 400]}
+          // horizontalGuidelines={[0, 200, 400]}
           snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
@@ -289,18 +280,18 @@ export default function CanvasEditor() {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
           // onClick={(e) => {
-          //   // if (selectedCube) {
+          //   // if (draggingCardId) {
           //   // const article = e.target.querySelector("article");
           //   // placeCaretAtEnd(article);
           //   // // } else {
-          //   setSelectedCube(e.target);
-          //   // setTimeout(() => setSelectedCube(false), 3000);
+          //   setDraggingCardId(e.target);
+          //   // setTimeout(() => setDraggingCardId(false), 3000);
           //   // }
           // }}
           onDragStart={(e) => {
             const target = e.target;
 
-            // if (selectedCube && e.inputEvent?.target?.isContentEditable) {
+            // if (draggingCardId && e.inputEvent?.target?.isContentEditable) {
             //   return false;
             // }
 
@@ -317,17 +308,17 @@ export default function CanvasEditor() {
             const target = e.target;
             const frame = frameMap.get(target);
 
-            setSelectedCube(e.target.id);
+            setDraggingCardId(e.target.id);
 
             frame.translate = e.beforeTranslate;
             target.style.transform = `translate(${frame.translate[0]}px, ${frame.translate[1]}px)`;
           }}
           onDragEnd={(e) => {
             // if (!e.isDrag && e.inputEvent.target.isContentEditable) {
-            //   setSelectedCube(true);
-            //   setTimeout(() => setSelectedCube(false), 300);
+            //   setDraggingCardId(true);
+            //   setTimeout(() => setDraggingCardId(false), 300);
             // }
-            setSelectedCube(null);
+            setDraggingCardId(null);
           }}
           onDragGroupStart={(e) => {
             e.events.forEach((ev) => {
@@ -354,20 +345,15 @@ export default function CanvasEditor() {
           }}
         ></Moveable>
 
-        {cubes.map((i) => (
-          <Cube
-            style={{ marginLeft: i * 50, marginTop: i * 50 }}
-            id={i}
-            className="cube target"
-            key={i}
-            selected={selectedCube === String(i)}
-          >
-            <EditorManager>
-              <Editor id={i} showToolbar={currentTarget === String(i)} />
-            </EditorManager>
-            {/* <ContentEditableEditor disabled={false} /> */}
-            {/* <ContentEditableEditor /> */}
-          </Cube>
+        {cubes.map((id) => (
+          <CanvasCard
+            key={id}
+            id={id}
+            isDragging={String(id) === draggingCardId}
+            isOnlySelectedCard={
+              String(id) === selectedCardIds[0] && selectedCardIds.length === 1
+            }
+          />
         ))}
       </Canvas>
     </Wrapper>
