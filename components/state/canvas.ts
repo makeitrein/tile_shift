@@ -1,5 +1,5 @@
 import { atom, atomFamily, selectorFamily } from "recoil";
-import { colorThemes } from "../canvas/menu";
+import { colorThemes } from "../canvas/card/color-picker";
 
 const syncStorageEffect = () => ({ setSelf, trigger }) => {
   // Initialize atom value to the remote storage state

@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { canvasCard, canvasCardStyle } from "../state/canvas";
+import { canvasCard, canvasCardStyle } from "../../state/canvas";
 import { EditorManager } from "./editor";
 
 export const cardWidth = 140;
@@ -15,8 +15,10 @@ const Card = styled.div`
   height: ${cardHeight}px;
   margin: 4px;
   background: #fff;
+  border-width: 1px;
+  border-style: solid;
   --color: #4af;
-  transition: 0.2s box-shadow;
+  transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
   top: ${(props) => props.y}px;
   left: ${(props) => props.x}px;
   box-shadow: ${(props) =>
@@ -33,7 +35,7 @@ export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
       x={card.x}
       y={card.y}
       style={style}
-      className="cube target border border-solid"
+      className="canvas-card"
       isDragging={isDragging}
     >
       <EditorManager id={card.id} showToolbar={isOnlySelectedCard} />

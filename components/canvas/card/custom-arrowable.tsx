@@ -14,12 +14,12 @@ export const CustomArrowable = {
       "div",
       `
       {
-
-          will-change: transform;
-          transform-origin: 0px 0px;
-          z-index: 1000;
-          position: relative;
+        will-change: transform;
+        transform-origin: 0px 0px;
+        z-index: 1000;
+        position: relative;
       }
+
       .moveable-button {
           position: absolute;
           z-index: 100;
@@ -65,8 +65,6 @@ export const CustomArrowable = {
       }
       `
     );
-    // Add key (required)
-    // Add class prefix moveable-(required)
     return (
       <EditableViewer
         key="editable-viewer"

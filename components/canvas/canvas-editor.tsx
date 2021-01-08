@@ -6,9 +6,9 @@ import Selecto from "react-selecto";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { canvasCards } from "../state/canvas";
-import { CanvasCard, cardHeight, cardWidth } from "./canvas-card";
-import { CustomArrowable } from "./custom-arrowable";
-import { articlePadding } from "./editor";
+import { CanvasCard, cardHeight, cardWidth } from "./card/canvas-card";
+import { CustomArrowable } from "./card/custom-arrowable";
+import { articlePadding } from "./card/editor";
 import { ZoomControlToolbar } from "./zoom-control-toolbar";
 
 const Wrapper = styled.div`
@@ -61,14 +61,14 @@ export default function CanvasEditor() {
       contain: "outside",
       maxScale: 3,
       minScale: 0.3,
-      // excludeClass: "cube",
+      // excludeClass: "canvas-card",
       // startX: -window.outerWidth * 2,
       // startY: -window.outerHeight * 2,
       // startScale: 1.5,
       handleStartEvent: (event) => {
         if (
           !disablePan &&
-          Array.from(event.target.classList).includes("cube")
+          Array.from(event.target.classList).includes("canvas-card")
         ) {
           throw "disable panning hack";
         }
@@ -170,7 +170,7 @@ export default function CanvasEditor() {
         <Selecto
           ref={selectoRef}
           dragContainer={".wrapper"}
-          selectableTargets={[".cube"]}
+          selectableTargets={[".canvas-card"]}
           hitRate={0}
           selectByClick={true}
           selectFromInside={false}
@@ -219,7 +219,7 @@ export default function CanvasEditor() {
           draggable={true}
           target={selectedCards}
           elementGuidelines={Array.from(
-            document.querySelectorAll(".cube")
+            document.querySelectorAll(".canvas-card")
           ).filter((el) => !selectedCardIds.includes(el.id))}
           snappable={true}
           // verticalGuidelines={[0, 200, 400]}
