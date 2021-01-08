@@ -1,4 +1,5 @@
 import { atom, atomFamily, selectorFamily } from "recoil";
+import { colorThemes } from "../canvas/menu";
 
 const syncStorageEffect = () => ({ setSelf, trigger }) => {
   // Initialize atom value to the remote storage state
@@ -24,7 +25,14 @@ export const canvasCard = atomFamily({
     key: "MyAtom/Default",
     get: (id) => ({ get }) => {
       const cards = get(canvasCards);
-      return cards.find((card) => card.id === id);
+      return { ...cards.find((card) => card.id === id), theme: "white" };
     },
   }),
+});
+
+export const canvasCardStyle = selectorFamily({
+  key: "CANVAS/card-style",
+  get: (id) => ({ get }) => {
+    return colorThemes[get(canvasCard(id)).theme];
+  },
 });

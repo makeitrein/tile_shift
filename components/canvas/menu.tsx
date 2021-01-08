@@ -1,31 +1,173 @@
 import { Popover } from "antd";
 import * as React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useRemirror } from "remirror/react";
-import { canvasCard } from "../state/canvas";
+import { canvasCard, canvasCardStyle } from "../state/canvas";
 
-const ColorPicker = ({ onClick }) => {
-  const colors = [
-    "#ffffff",
-    "#d9d9d9",
-    "#597ef7",
-    "#9254de",
-    "#f759ab",
-    "#73d13d",
-    "#36cfc9",
-    "#40a9ff",
-    "#ffc53d",
-    "#ffec3d",
-    "#bae637",
-    "#000",
-  ];
+export const colorThemes = {
+  pink: {
+    color: "#eb2f96",
+    background: "#fff0f6",
+    borderColor: "#ffadd2",
+  },
+  pinkInverse: {
+    color: "#fff",
+    background: "#eb2f96",
+    borderColor: "#eb2f96",
+  },
+  magenta: {
+    color: "#eb2f96",
+    background: "#fff0f6",
+    borderColor: "#ffadd2",
+  },
+  magentaInverse: {
+    color: "#fff",
+    background: "#eb2f96",
+    borderColor: "#eb2f96",
+  },
+  red: {
+    color: "#f5222d",
+    background: "#fff1f0",
+    borderColor: "#ffa39e",
+  },
+  redInverse: {
+    color: "#fff",
+    background: "#f5222d",
+    borderColor: "#f5222d",
+  },
+  volcano: {
+    color: "#fa541c",
+    background: "#fff2e8",
+    borderColor: "#ffbb96",
+  },
+  volcanoInverse: {
+    color: "#fff",
+    background: "#fa541c",
+    borderColor: "#fa541c",
+  },
+  orange: {
+    color: "#fa8c16",
+    background: "#fff7e6",
+    borderColor: "#ffd591",
+  },
+  orangeInverse: {
+    color: "#fff",
+    background: "#fa8c16",
+    borderColor: "#fa8c16",
+  },
+  yellow: {
+    color: "#fadb14",
+    background: "#feffe6",
+    borderColor: "#fffb8f",
+  },
+  yellowInverse: {
+    color: "#fff",
+    background: "#fadb14",
+    borderColor: "#fadb14",
+  },
+  gold: {
+    color: "#faad14",
+    background: "#fffbe6",
+    borderColor: "#ffe58f",
+  },
+  goldInverse: {
+    color: "#fff",
+    background: "#faad14",
+    borderColor: "#faad14",
+  },
+  cyan: {
+    color: "#13c2c2",
+    background: "#e6fffb",
+    borderColor: "#87e8de",
+  },
+  cyanInverse: {
+    color: "#fff",
+    background: "#13c2c2",
+    borderColor: "#13c2c2",
+  },
+  lime: {
+    color: "#a0d911",
+    background: "#fcffe6",
+    borderColor: "#eaff8f",
+  },
+  limeInverse: {
+    color: "#fff",
+    background: "#a0d911",
+    borderColor: "#a0d911",
+  },
+  green: {
+    color: "#52c41a",
+    background: "#f6ffed",
+    borderColor: "#b7eb8f",
+  },
+  greenInverse: {
+    color: "#fff",
+    background: "#52c41a",
+    borderColor: "#52c41a",
+  },
+  blue: {
+    color: "#1890ff",
+    background: "#e6f7ff",
+    borderColor: "#91d5ff",
+  },
+  blueInverse: {
+    color: "#fff",
+    background: "#1890ff",
+    borderColor: "#1890ff",
+  },
+  geekblue: {
+    color: "#2f54eb",
+    background: "#f0f5ff",
+    borderColor: "#adc6ff",
+  },
+  geekblueInverse: {
+    color: "#fff",
+    background: "#2f54eb",
+    borderColor: "#2f54eb",
+  },
+  purple: {
+    color: "#722ed1",
+    background: "#f9f0ff",
+    borderColor: "#d3adf7",
+  },
+  purpleInverse: {
+    color: "#fff",
+    background: "#722ed1",
+    borderColor: "#722ed1",
+  },
+  success: {
+    color: "#52c41a",
+    background: "#f6ffed",
+    borderColor: "#b7eb8f",
+  },
+  processing: {
+    color: "#1890ff",
+    background: "#e6f7ff",
+    borderColor: "#91d5ff",
+  },
+  error: {
+    color: "#f5222d",
+    background: "#fff1f0",
+    borderColor: "#ffa39e",
+  },
+  warning: {
+    color: "#fa8c16",
+    background: "#fff7e6",
+    borderColor: "#ffd591",
+  },
+};
+
+const ColorPicker = ({ id }) => {
+  const [card, setCard] = useRecoilState(canvasCard(id));
+
   return (
     <div className="flex w-36 flex-wrap">
-      {colors.map((color) => (
+      {Object.entries(colorThemes).map(([theme, css]) => (
         <>
           <span
-            className={`w-8 h-8 mr-1 mb-1 `}
-            style={{ background: color }}
+            onClick={() => setCard((card) => ({ ...card, theme }))}
+            className={`w-8 h-8 mr-1 mb-1 border border-solid`}
+            style={css}
           />
         </>
       ))}
@@ -35,25 +177,26 @@ const ColorPicker = ({ onClick }) => {
 
 const TooltipMenuItem = ({ onClick, active, children, rounded = "" }) => {
   return (
-    <span
-      className={`rounded-${rounded} shadow-sm
+    <div
+      className={`rounded-${rounded} shadow-sm relative h-8
     ${!rounded && "-ml-px"}
     `}
       onClick={onClick}
     >
       <span
-        className={`rounded-${rounded} inline-flex justify-center w-full px-4 py-1 text-sm  text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800
+        className={`rounded-${rounded} inline-flex h-full justify-center w-full px-4 py-1 text-sm  text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800
           ${active && "font-bold bg-gray-100 text-gray-1000"}
         `}
       >
         <span>{children}</span>
       </span>
-    </span>
+    </div>
   );
 };
 
 export const TooltipMenu = ({ id }) => {
-  const [card, setCard] = useRecoilState(canvasCard(id));
+  const card = useRecoilValue(canvasCard(id));
+  const style = useRecoilValue(canvasCardStyle(id));
 
   const { commands, active } = useRemirror({ autoUpdate: true });
 
@@ -148,25 +291,15 @@ export const TooltipMenu = ({ id }) => {
       <Popover
         placement="topLeft"
         trigger="click"
-        content={<ColorPicker />}
+        content={<ColorPicker id={id} />}
         arrowPointAtCenter
       >
         <span>
-          <TooltipMenuItem>
-            <svg
-              className="w-5 h-5"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-              />
-            </svg>
+          <TooltipMenuItem rounded="r-md">
+            <div
+              className={`absolute left-0 top-0 right-0 bottom-0 rounded-r-md`}
+              style={style}
+            />
           </TooltipMenuItem>
         </span>
       </Popover>
