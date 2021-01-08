@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, atomFamily, selectorFamily } from "recoil";
 
 const syncStorageEffect = () => ({ setSelf, trigger }) => {
   // Initialize atom value to the remote storage state
@@ -13,16 +13,18 @@ const syncStorageEffect = () => ({ setSelf, trigger }) => {
 };
 
 export const canvasCards = atom({
-  key: "CANVAS/card",
+  key: "CANVAS/cards",
   default: [],
   effects_UNSTABLE: [syncStorageEffect()],
 });
 
-// export const canvasCard = atomFamily({
-//   key: "CANVAS/card",
-//   default: ({ id, x = 0, y = 0 }) => ({
-//     id,
-//     x,
-//     y,
-//   }),
-// });
+export const canvasCard = atomFamily({
+  key: "CANVAS/card",
+  default: selectorFamily({
+    key: "MyAtom/Default",
+    get: (id) => ({ get }) => {
+      const cards = get(canvasCards);
+      return cards.find((card) => card.id === id);
+    },
+  }),
+});

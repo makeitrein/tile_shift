@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { canvasCards } from "../state/canvas";
 import { CanvasCard, cardHeight, cardWidth } from "./canvas-card";
 import { CustomArrowable } from "./custom-arrowable";
+import { articlePadding } from "./editor";
 import { ZoomControlToolbar } from "./zoom-control-toolbar";
 
 const Wrapper = styled.div`
@@ -115,13 +116,13 @@ export default function CanvasEditor() {
       console.log(moveableRef.current);
       // moveableRef.current.updateRect();
       // moveableRef.current.request("draggable", { deltaX: 0, deltaY: 0 }, true);
-      const articleHeight = e.target.offsetHeight;
+      const articleHeight = e.target.offsetHeight + articlePadding;
 
       const rect = moveableRef.current.getRect();
 
-      if (e.target.isContentEditable && rect.offsetHeight < articleHeight) {
+      if (e.target.isContentEditable && rect.offsetHeight <= articleHeight) {
         moveableRef.current.request("resizable", {
-          offsetHeight: parseFloat(articleHeight),
+          offsetHeight: parseFloat(articleHeight) + articlePadding,
           isInstant: true,
         });
       }
@@ -133,11 +134,14 @@ export default function CanvasEditor() {
   const selectedCardIds = selectedCards.map((t) => t.id);
 
   const addItem = (e) => {
+    if (e.target !== canvasEditorRef.current) {
+      return;
+    }
     setCards((oldTodoList) => [
       ...oldTodoList,
       {
         id: Math.random(),
-        x: e.nativeEvent.offsetX - cardWidth / 2,
+        x: e.nativeEvent.offsetX - cardWidth / 3,
         y: e.nativeEvent.offsetY - cardHeight / 2,
       },
     ]);

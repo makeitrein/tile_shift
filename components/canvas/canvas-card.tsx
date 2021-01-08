@@ -1,5 +1,8 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { canvasCard } from "../state/canvas";
+import { EditorManager } from "./editor";
 
 export const cardWidth = 140;
 export const cardHeight = 76;
@@ -22,12 +25,16 @@ const Card = styled.div`
 `;
 
 export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
+  const card = useRecoilValue(canvasCard(id));
   return (
-    <Card id={id} x={x} y={y} className="cube target" isDragging={isDragging}>
-      <article />
-      {/* <EditorManager>
-        <Editor id={id} showToolbar={isOnlySelectedCard} />
-      </EditorManager> */}
+    <Card
+      id={card.id}
+      x={card.x}
+      y={card.y}
+      className="cube target"
+      isDragging={isDragging}
+    >
+      <EditorManager id={card.id} showToolbar={isOnlySelectedCard} />
     </Card>
   );
 };

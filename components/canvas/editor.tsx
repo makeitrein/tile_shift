@@ -1,35 +1,61 @@
 import React, { useState } from "react";
-import { fromHtml } from "remirror/core";
+import { fromHtml, toHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
+import { HeadingExtension } from "remirror/extension/heading";
 import { ItalicExtension } from "remirror/extension/italic";
+import { LinkExtension } from "remirror/extension/link";
 import { UnderlineExtension } from "remirror/extension/underline";
 import { CorePreset } from "remirror/preset/core";
+import { ListPreset } from "remirror/preset/list";
+import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
 import { TooltipMenu } from "./menu";
 
-const Button = () => {
-  // `autoUpdate` means that every editor update will recalculate the output
-  // from `active.bold()` and keep the bold status up to date in the editor.
-  const { active, commands } = useRemirror({ autoUpdate: true });
-
-  return (
-    <>
-      <button
-        onClick={() => commands.toggleBold()}
-        style={{ fontWeight: active.bold() ? "bold" : undefined }}
-      >
-        Bold
-      </button>
-    </>
-  );
-};
+export const articlePadding = 12;
 
 const EditableArticle = styled.article`
-  padding: 12px;
+  padding: ${articlePadding}px;
+  white-space: pre-wrap;
+  outline: none;
 
   > div {
     cursor: text;
+    outline: none;
+  }
+
+  h2 {
+    font-size: 1.75em;
+  }
+
+  li * {
+    display: inline;
+  }
+
+  ul li p {
+    margin-left: -6px;
+  }
+
+  blockquote {
+    font-size: 1.75em;
+  }
+
+  code {
+    background: #eee;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+  }
+
+  ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0.125rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.125rem * calc(1 - var(--tw-space-x-reverse)));
   }
 `;
 
@@ -58,9 +84,13 @@ const extensionTemplate = () => [
   new BoldExtension({}),
   new ItalicExtension(),
   new UnderlineExtension(),
+  new ListPreset({}),
+  new HeadingExtension({}),
+  new LinkExtension({}),
+  new WysiwygPreset({}),
 ];
 
-export const EditorManager = ({ children }) => {
+export const EditorManager = ({ id, showToolbar }) => {
   const manager = useManager(extensionTemplate);
 
   // Store the editor value in a state variable.
@@ -73,7 +103,7 @@ export const EditorManager = ({ children }) => {
   );
 
   // Add the value and change handler to the editor.
-  return (
+  return showToolbar ? (
     <RemirrorProvider
       manager={manager}
       value={value}
@@ -82,8 +112,14 @@ export const EditorManager = ({ children }) => {
         setValue(parameter.state);
       }}
     >
-      {children}
+      <Editor id={id} showToolbar={showToolbar} />
     </RemirrorProvider>
+  ) : (
+    <EditableArticle
+      dangerouslySetInnerHTML={{
+        __html: toHtml({ node: value.doc, schema: value.schema }),
+      }}
+    />
   );
 };
 
@@ -95,7 +131,7 @@ export const Editor = ({ id, showToolbar }) => {
   return (
     <>
       {/* {showToolbar && view.hasFocus() && <TooltipMenu />} */}
-      {showToolbar && <TooltipMenu />}
+      {showToolbar && <TooltipMenu id={id} />}
       <EditorInner showToolbar={showToolbar} id={id} />
     </>
   );
