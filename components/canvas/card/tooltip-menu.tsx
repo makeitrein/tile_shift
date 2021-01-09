@@ -43,6 +43,13 @@ export const TooltipMenu = ({ id }) => {
   const { commands, active } = useRemirror({ autoUpdate: true });
   const [altToolbar, setAltToolbar] = useState(false);
 
+  const [initialAnimation, setInitialAnimation] = useState(false);
+
+  const toggleAltToolbar = () => {
+    setInitialAnimation(true);
+    setAltToolbar((active) => !active);
+  };
+
   return (
     <div className="absolute top-0 w-full -mt-12	z-1000 left-0 cursor-pointer flex justify-center">
       <AnimatePresence>
@@ -50,7 +57,7 @@ export const TooltipMenu = ({ id }) => {
           <motion.div
             key={"toolbar"}
             variants={variants}
-            initial="exit"
+            initial={initialAnimation ? "exit" : false}
             animate="center"
             exit="enter"
             transition={{
@@ -160,7 +167,7 @@ export const TooltipMenu = ({ id }) => {
 
             <TooltipMenuItem
               rounded="r-md"
-              onClick={() => setAltToolbar(true)}
+              onClick={() => toggleAltToolbar()}
               active={active.strike()}
             >
               <svg
@@ -192,10 +199,7 @@ export const TooltipMenu = ({ id }) => {
             }}
             className="flex absolute justify-center "
           >
-            <TooltipMenuItem
-              rounded="l-md"
-              onClick={() => setAltToolbar(false)}
-            >
+            <TooltipMenuItem rounded="l-md" onClick={() => toggleAltToolbar()}>
               <svg
                 className="w-4 h-4"
                 xmlns="http://www.w3.org/2000/svg"
