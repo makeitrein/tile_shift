@@ -7,7 +7,7 @@ import { ColorBlock, ColorPicker } from "./color-picker";
 const TooltipMenuItem = ({ onClick, active, children, rounded = "" }) => {
   return (
     <div
-      className={`rounded-${rounded} shadow-sm relative h-8 -ml-px
+      className={`rounded-${rounded} shadow-sm relative h-8 -ml-px whitespace-nowrap
     `}
       onClick={onClick}
     >
@@ -159,6 +159,7 @@ export const TooltipMenu = ({ id }) => {
             </Popover>
 
             <TooltipMenuItem
+              rounded="r-md"
               onClick={() => setAltToolbar(true)}
               active={active.strike()}
             >
@@ -211,23 +212,23 @@ export const TooltipMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
-              onClick={() => commands.toggleBold()}
-              active={active.bold()}
-            >
-              Users
-            </TooltipMenuItem>
-            <TooltipMenuItem
-              onClick={() => commands.toggleItalic()}
-              active={active.italic()}
-            >
-              Date
-            </TooltipMenuItem>
-            <TooltipMenuItem
-              rounded="r-md"
               onClick={() => commands.toggleUnderline()}
               active={active.underline()}
             >
-              Banan
+              + Tags
+            </TooltipMenuItem>
+            <TooltipMenuItem
+              onClick={() => commands.toggleBold()}
+              active={active.bold()}
+            >
+              + Assignees
+            </TooltipMenuItem>
+            <TooltipMenuItem
+              rounded="r-md"
+              onClick={() => commands.toggleItalic()}
+              active={active.italic()}
+            >
+              + Due Date
             </TooltipMenuItem>
           </motion.div>
         )}
