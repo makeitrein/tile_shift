@@ -16,16 +16,26 @@ export const articlePadding = 12;
 
 const EditableArticle = styled.article`
   padding: ${articlePadding}px;
-  white-space: pre-wrap;
+  white-space: pre-line;
   outline: none;
+  font-weight: 500;
 
   > div {
     cursor: text;
     outline: none;
   }
 
+  p {
+    font-size: 0.875rem;
+    // line-height: 1.25rem;
+  }
+
   h2 {
-    font-size: 1.75em;
+    line-height: 1.5rem;
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: inherit;
   }
 
   li * {
@@ -34,10 +44,6 @@ const EditableArticle = styled.article`
 
   ul li p {
     margin-left: -6px;
-  }
-
-  blockquote {
-    font-size: 1.75em;
   }
 
   code {
@@ -125,8 +131,6 @@ export const EditorManager = ({ id, showToolbar }) => {
 
 export const Editor = ({ id, showToolbar }) => {
   const { view } = useRemirror();
-
-  console.log(view.hasFocus());
 
   return (
     <>

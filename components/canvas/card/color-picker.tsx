@@ -8,120 +8,121 @@ export const colorThemes = {
     borderColor: "",
   },
   black: {
-    color: "inherit",
-    background: "#e7e8ed",
-    borderColor: "#919194",
+    color: "#27303f",
+    background: "#f1f5f9",
+    borderColor: "#27303f",
   },
   pink: {
-    color: "#eb2f96",
-    background: "#fff0f6",
-    borderColor: "#ffadd2",
+    color: "#99154b",
+    background: "#fce8f3",
+    borderColor: "#99154b",
   },
   red: {
-    color: "#f5222d",
-    background: "#fff1f0",
-    borderColor: "#ffa39e",
+    color: "#9b1c1c",
+    background: "#fde8e8",
+    borderColor: "#9b1c1c",
   },
-  volcano: {
-    color: "#fa541c",
-    background: "#fff2e8",
-    borderColor: "#ffbb96",
-  },
+
   orange: {
-    color: "#fa8c16",
-    background: "#fff7e6",
-    borderColor: "#ffd591",
+    color: "#723b13",
+    background: "#fdf6b2",
+    borderColor: "#723b13",
   },
-  gold: {
-    color: "#faad14",
-    background: "#fffbe6",
-    borderColor: "#ffe58f",
-  },
+
   cyan: {
-    color: "#13c2c2",
-    background: "#e6fffb",
-    borderColor: "#87e8de",
+    color: "#05505c",
+    background: "#d5f5f6",
+    borderColor: "#05505c",
   },
   green: {
-    color: "#52c41a",
-    background: "#f6ffed",
-    borderColor: "#b7eb8f",
+    color: "#03543f",
+    background: "#def7ec",
+    borderColor: "#03543f",
   },
   blue: {
-    color: "#1890ff",
-    background: "#e6f7ff",
-    borderColor: "#91d5ff",
+    color: "#1e429f",
+    background: "#e1effe",
+    borderColor: "#1e429f",
   },
   geekblue: {
-    color: "#2f54eb",
-    background: "#f0f5ff",
-    borderColor: "#adc6ff",
+    color: "#42389d",
+    background: "#e5edff",
+    borderColor: "#42389d",
   },
   purple: {
-    color: "#722ed1",
-    background: "#f9f0ff",
-    borderColor: "#d3adf7",
+    color: "#5521b5",
+    background: "#edebfe",
+    borderColor: "#5521b5",
+  },
+
+  blackInverse: {
+    color: "#fff",
+    background: "#27303f",
+    borderColor: "#27303f",
   },
   pinkInverse: {
     color: "#fff",
-    background: "#eb2f96",
-    borderColor: "#eb2f96",
+    background: "#99154b",
+    borderColor: "#99154b",
   },
   redInverse: {
     color: "#fff",
-    background: "#f5222d",
-    borderColor: "#f5222d",
+    background: "#9b1c1c",
+    borderColor: "#9b1c1c",
   },
-  volcanoInverse: {
-    color: "#fff",
-    background: "#fa541c",
-    borderColor: "#fa541c",
-  },
+
   orangeInverse: {
     color: "#fff",
-    background: "#fa8c16",
-    borderColor: "#fa8c16",
+    background: "#723b13",
+    borderColor: "#723b13",
   },
-  goldInverse: {
-    color: "#fff",
-    background: "#faad14",
-    borderColor: "#faad14",
-  },
+
   cyanInverse: {
     color: "#fff",
-    background: "#13c2c2",
-    borderColor: "#13c2c2",
+    background: "#05505c",
+    borderColor: "#05505c",
   },
   greenInverse: {
     color: "#fff",
-    background: "#52c41a",
-    borderColor: "#52c41a",
+    background: "#03543f",
+    borderColor: "#03543f",
   },
   blueInverse: {
     color: "#fff",
-    background: "#1890ff",
-    borderColor: "#1890ff",
+    background: "#1e429f",
+    borderColor: "#1e429f",
   },
   geekblueInverse: {
     color: "#fff",
-    background: "#2f54eb",
-    borderColor: "#2f54eb",
-  },
-  indigoInverse: {
-    color: "#fff",
-    background: "#6875f5",
-    borderColor: "#6875f5",
+    background: "#42389d",
+    borderColor: "#42389d",
   },
   purpleInverse: {
     color: "#fff",
-    background: "#722ed1",
-    borderColor: "#722ed1",
+    background: "#5521b5",
+    borderColor: "#5521b5",
   },
-  blackInverse: {
-    color: "#fff",
-    background: "#181a22",
-    borderColor: "#181a22",
-  },
+};
+
+export const ColorPicker = ({ id }) => {
+  const [card, setCard] = useRecoilState(canvasCard(id));
+
+  return (
+    <div className="flex w-48 flex-wrap">
+      {Object.entries(colorThemes).map(([theme, css]) => (
+        <>
+          <span
+            onClick={() => setCard((card) => ({ ...card, theme }))}
+            className={`w-8 h-8 mr-1 mb-1 border cursor-pointer border-solid`}
+            style={{
+              ...css,
+              borderColor: css.borderColor || "rgba(209, 213, 219)",
+            }}
+          />
+        </>
+      ))}
+    </div>
+  );
 };
 
 export const ColorBlock = ({ id }) => {
@@ -137,26 +138,5 @@ export const ColorBlock = ({ id }) => {
         transition: ".2s background, .2s border",
       }}
     />
-  );
-};
-
-export const ColorPicker = ({ id }) => {
-  const [card, setCard] = useRecoilState(canvasCard(id));
-
-  return (
-    <div className="flex w-36 flex-wrap">
-      {Object.entries(colorThemes).map(([theme, css]) => (
-        <>
-          <span
-            onClick={() => setCard((card) => ({ ...card, theme }))}
-            className={`w-8 h-8 mr-1 mb-1 border border-solid`}
-            style={{
-              ...css,
-              borderColor: css.borderColor || "rgba(209, 213, 219)",
-            }}
-          />
-        </>
-      ))}
-    </div>
   );
 };

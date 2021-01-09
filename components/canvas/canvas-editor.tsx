@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { canvasCards } from "../state/canvas";
 import { CanvasCard, cardHeight, cardWidth } from "./card/canvas-card";
 import { CustomArrowable } from "./card/custom-arrowable";
-import { articlePadding } from "./card/editor";
+import { articlePadding } from "./card/wysiwig-editor";
 import { ZoomControlToolbar } from "./zoom-control-toolbar";
 
 const Wrapper = styled.div`
