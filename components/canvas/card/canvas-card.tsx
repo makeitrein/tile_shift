@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { canvasCard, canvasCardStyle } from "../../state/canvas";
-import { AddButton } from "./custom-arrowable";
+import { ConnectButton } from "./connect-button";
 import { EditorManager } from "./wysiwig-editor";
 
 export const cardWidth = 140;
@@ -32,6 +32,8 @@ export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
   const card = useRecoilValue(canvasCard(id));
   const style = useRecoilValue(canvasCardStyle(id));
 
+  console.log(card);
+
   return (
     <Card
       id={card.id}
@@ -45,10 +47,10 @@ export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
 
       {isOnlySelectedCard && (
         <>
-          <AddButton direction="left" />
-          <AddButton direction="top" />
-          <AddButton direction="right" />
-          <AddButton direction="bottom" />
+          <ConnectButton id={id} direction="left" />
+          <ConnectButton id={id} direction="top" />
+          <ConnectButton id={id} direction="right" />
+          <ConnectButton id={id} direction="bottom" />
         </>
       )}
       <CanvasCardBottom />

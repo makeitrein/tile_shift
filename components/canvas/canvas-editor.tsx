@@ -22,20 +22,6 @@ const Canvas = styled.div`
   // border: 10px solid #4af;
 `;
 
-const resizeTarget = (ev, frameMap) => {
-  const target = ev.target;
-  const article = target.querySelector("article");
-
-  const minWidth = 140;
-  const minHeight = article.offsetHeight;
-
-  const frame = frameMap.get(ev.target);
-  frame.translate = ev.drag.beforeTranslate;
-  target.style.width = `${Math.max(minWidth, ev.width)}px`;
-  target.style.height = `${Math.max(minHeight, ev.height)}px`;
-  ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
-};
-
 export default function CanvasEditor() {
   const [cards, setCards] = useRecoilState(canvasCards);
   const [selectedCards, setSelectedCards] = React.useState([]);
@@ -60,6 +46,36 @@ export default function CanvasEditor() {
       }));
     };
   });
+
+  const updateCardDimensions = useRecoilCallback(({ set }) => {
+    return (id: number | string, width: number, height: number) => {
+      set(canvasCard(id), (card) => ({
+        ...card,
+        width,
+        height,
+      }));
+    };
+  });
+
+  const resizeTarget = (ev, frameMap) => {
+    const target = ev.target;
+    const article = target.querySelector("article");
+
+    const minWidth = 140;
+    const minHeight = article.offsetHeight;
+
+    const newWidth = Math.max(minWidth, ev.width);
+    const newHeight = Math.max(minHeight, ev.height);
+
+    const frame = frameMap.get(ev.target);
+    frame.translate = ev.drag.beforeTranslate;
+
+    updateCardDimensions(target.id, newWidth, newHeight);
+
+    target.style.width = `${newWidth}px`;
+    target.style.height = `${newHeight}px`;
+    ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
+  };
 
   let panzoom = panzoomRef.current;
 
