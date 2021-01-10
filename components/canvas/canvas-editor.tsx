@@ -158,7 +158,7 @@ export default function CanvasEditor() {
     setCards((oldCards) => [
       ...oldCards,
       {
-        id: Math.random(),
+        id: "new-card-" + Math.random(),
         x: e.nativeEvent.offsetX - cardWidth / 3,
         y: e.nativeEvent.offsetY - cardHeight / 2,
       },
