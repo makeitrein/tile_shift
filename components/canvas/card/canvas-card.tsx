@@ -19,8 +19,7 @@ const Card = styled.div`
   border-style: solid;
   --color: #4af;
   transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
-  top: ${(props) => props.y}px;
-  left: ${(props) => props.x}px;
+  transform: translate(${(props) => props.x}px, ${(props) => props.y}px);
   box-shadow: ${(props) =>
     props.isDragging &&
     "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
@@ -29,6 +28,9 @@ const Card = styled.div`
 export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
   const card = useRecoilValue(canvasCard(id));
   const style = useRecoilValue(canvasCardStyle(id));
+
+  console.log(card);
+
   return (
     <Card
       id={card.id}

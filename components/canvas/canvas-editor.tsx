@@ -3,9 +3,9 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
-import { useRecoilState } from "recoil";
+import { useRecoilCallback, useRecoilState } from "recoil";
 import styled from "styled-components";
-import { canvasCards } from "../state/canvas";
+import { canvasCard, canvasCards } from "../state/canvas";
 import { CanvasCard, cardHeight, cardWidth } from "./card/canvas-card";
 import { CustomArrowable } from "./card/custom-arrowable";
 import { articlePadding } from "./card/wysiwig-editor";
@@ -52,6 +52,16 @@ export default function CanvasEditor() {
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
+  const updateCardCoordinates = useRecoilCallback(({ set }) => {
+    return (id: number | string, x: number, y: number) => {
+      set(canvasCard(id), (card) => ({
+        ...card,
+        x,
+        y,
+      }));
+    };
+  });
+
   let panzoom = panzoomRef.current;
 
   useEffect(() => {
@@ -61,10 +71,6 @@ export default function CanvasEditor() {
       contain: "outside",
       maxScale: 3,
       minScale: 0.3,
-      // excludeClass: "canvas-card",
-      // startX: -window.outerWidth * 2,
-      // startY: -window.outerHeight * 2,
-      // startScale: 1.5,
       handleStartEvent: (event) => {
         if (
           !disablePan &&
@@ -112,10 +118,6 @@ export default function CanvasEditor() {
 
   useEffect(() => {
     window.addEventListener("keyup", (e) => {
-      console.log(e);
-      console.log(moveableRef.current);
-      // moveableRef.current.updateRect();
-      // moveableRef.current.request("draggable", { deltaX: 0, deltaY: 0 }, true);
       const articleHeight = e.target.offsetHeight + articlePadding;
 
       const rect = moveableRef.current.getRect();
@@ -138,8 +140,8 @@ export default function CanvasEditor() {
     if (e.target !== canvasEditorRef.current) {
       return;
     }
-    setCards((oldTodoList) => [
-      ...oldTodoList,
+    setCards((oldCards) => [
+      ...oldCards,
       {
         id: Math.random(),
         x: e.nativeEvent.offsetX - cardWidth / 3,
@@ -152,10 +154,10 @@ export default function CanvasEditor() {
     <Wrapper
       ref={wrapperRef}
       className="wrapper"
-      onBlur={() => {
-        console.log("blur");
-        window.getSelection().removeAllRanges();
-      }}
+      // onBlur={() => {
+      //   console.log("blur");
+      //   window.getSelection().removeAllRanges();
+      // }}
       onDoubleClick={addItem}
     >
       <ZoomControlToolbar
@@ -268,21 +270,8 @@ export default function CanvasEditor() {
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
-          // onClick={(e) => {
-          //   // if (draggingCardId) {
-          //   // const article = e.target.querySelector("article");
-          //   // placeCaretAtEnd(article);
-          //   // // } else {
-          //   setDraggingCardId(e.target);
-          //   // setTimeout(() => setDraggingCardId(false), 3000);
-          //   // }
-          // }}
           onDragStart={(e) => {
             const target = e.target;
-
-            // if (draggingCardId && e.inputEvent?.target?.isContentEditable) {
-            //   return false;
-            // }
 
             if (!frameMap.has(target)) {
               frameMap.set(target, {
@@ -300,13 +289,14 @@ export default function CanvasEditor() {
             setDraggingCardId(e.target.id);
 
             frame.translate = e.beforeTranslate;
-            target.style.transform = `translate(${frame.translate[0]}px, ${frame.translate[1]}px)`;
+
+            const x = frame.translate[0];
+            const y = frame.translate[1];
+
+            updateCardCoordinates(e.target.id, x, y);
+            target.style.transform = `translate(${x}px, ${y}px)`;
           }}
           onDragEnd={(e) => {
-            // if (!e.isDrag && e.inputEvent.target.isContentEditable) {
-            //   setDraggingCardId(true);
-            //   setTimeout(() => setDraggingCardId(false), 300);
-            // }
             setDraggingCardId(null);
           }}
           onDragGroupStart={(e) => {

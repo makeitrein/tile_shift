@@ -1,11 +1,28 @@
 import * as React from "react";
 import { MoveableManagerInterface, Renderer } from "react-moveable";
+import { useRecoilState } from "recoil";
+import { canvasCards } from "../../state/canvas";
 
-const AddButton = ({ direction }) => {
+export const AddButton = ({ direction }) => {
+  const [cards, setCards] = useRecoilState(canvasCards);
+
+  const addNearbyCard = () => {
+    alert("hi");
+    setCards((oldCards) => [
+      ...oldCards,
+      {
+        id: Math.random(),
+        x: 0,
+        y: 0,
+      },
+    ]);
+  };
+
   return (
     <button
+      onClick={addNearbyCard}
       type="button"
-      className={`moveable-button moveable-button-${direction} inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+      className={`moveable-button-${direction} z-10 absolute inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
     >
       <svg
         className="h-3 w-3"
@@ -32,8 +49,6 @@ export const CustomArrowable = {
     const rect = moveable.getRect();
     const { pos2 } = moveable.state;
 
-    console.log(moveable.props.onlySelectedCard);
-
     // use css for able
     const EditableViewer = moveable.useCSS(
       "div",
@@ -43,24 +58,6 @@ export const CustomArrowable = {
         transform-origin: 0px 0px;
         z-index: 1000;
         position: relative;
-      }
-
-      .moveable-button {
-          position: absolute;
-          z-index: 100;
-          // text-align: center;
-          // padding: 0;
-          // line-height: 20px;
-          // width: 20px;
-          // height: 20px;
-          // font-size: 14px;
-          // margin-bottom: 4px;
-          // background: #4af;
-          // border-radius: 4px;
-          // appearance: none;
-          // border: 0;
-          // color: white;
-          // font-weight: bold;
       }
 
       .moveable-button-left {
