@@ -1,11 +1,11 @@
 import * as React from "react";
 import { MoveableManagerInterface, Renderer } from "react-moveable";
 
-const AddButton = () => {
+const AddButton = ({ direction }) => {
   return (
     <button
       type="button"
-      className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      className={`moveable-button moveable-button-${direction} inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
     >
       <svg
         className="h-3 w-3"
@@ -25,12 +25,14 @@ const AddButton = () => {
 };
 
 export const CustomArrowable = {
-  name: "editable",
+  name: "customArrowable",
   props: {},
   events: {},
   render(moveable: MoveableManagerInterface<any, any>, React: Renderer) {
     const rect = moveable.getRect();
     const { pos2 } = moveable.state;
+
+    console.log(moveable.props.onlySelectedCard);
 
     // use css for able
     const EditableViewer = moveable.useCSS(
@@ -94,41 +96,10 @@ export const CustomArrowable = {
           transform: `translate(${pos2[0]}px, (${pos2[1]}px) rotate((${rect.rotation}deg) translate(10px)`,
         }}
       >
-        <button
-          className="moveable-button moveable-button-left"
-          onClick={() => {
-            alert("+");
-          }}
-        >
-          <AddButton />
-        </button>
-
-        <button
-          className="moveable-button moveable-button-top"
-          onClick={() => {
-            alert("+");
-          }}
-        >
-          <AddButton />
-        </button>
-
-        <button
-          className="moveable-button moveable-button-right"
-          onClick={() => {
-            alert("+");
-          }}
-        >
-          <AddButton />
-        </button>
-
-        <button
-          className="moveable-button moveable-button-bottom"
-          onClick={() => {
-            alert("+");
-          }}
-        >
-          <AddButton />
-        </button>
+        <AddButton direction="left" />
+        <AddButton direction="top" />
+        <AddButton direction="right" />
+        <AddButton direction="bottom" />
       </EditableViewer>
     );
   },

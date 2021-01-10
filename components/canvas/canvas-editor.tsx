@@ -132,6 +132,7 @@ export default function CanvasEditor() {
   if (!process.browser) return null;
 
   const selectedCardIds = selectedCards.map((t) => t.id);
+  const onlySelectedCard = selectedCardIds.length === 1 && selectedCardIds[0];
 
   const addItem = (e) => {
     if (e.target !== canvasEditorRef.current) {
@@ -146,8 +147,6 @@ export default function CanvasEditor() {
       },
     ]);
   };
-
-  console.log(zoom);
 
   return (
     <Wrapper
@@ -213,7 +212,8 @@ export default function CanvasEditor() {
           }}
           ables={[CustomArrowable]}
           props={{
-            editable: true,
+            customArrowable: true,
+            onlySelectedCard: onlySelectedCard,
             draggingCardId,
           }}
           draggable={true}
@@ -222,8 +222,6 @@ export default function CanvasEditor() {
             document.querySelectorAll(".canvas-card")
           ).filter((el) => !selectedCardIds.includes(el.id))}
           snappable={true}
-          // verticalGuidelines={[0, 200, 400]}
-          // horizontalGuidelines={[0, 200, 400]}
           snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
@@ -343,9 +341,7 @@ export default function CanvasEditor() {
             key={id}
             id={id}
             isDragging={String(id) === draggingCardId}
-            isOnlySelectedCard={
-              String(id) === selectedCardIds[0] && selectedCardIds.length === 1
-            }
+            isOnlySelectedCard={String(id) === onlySelectedCard}
           />
         ))}
       </Canvas>
