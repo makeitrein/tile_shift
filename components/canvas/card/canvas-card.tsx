@@ -35,8 +35,6 @@ export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
   return (
     <Card
       id={card.id}
-      x={card.x}
-      y={card.y}
       className="canvas-card"
       isDragging={isDragging}
       style={{

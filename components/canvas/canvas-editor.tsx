@@ -27,7 +27,6 @@ export default function CanvasEditor() {
   const [selectedCards, setSelectedCards] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
   const [draggingCardId, setDraggingCardId] = React.useState(null);
-  const [frameMap] = React.useState(() => new Map());
   const [zoom, setZoom] = React.useState(1);
 
   const moveableRef = React.useRef(null);
@@ -47,6 +46,10 @@ export default function CanvasEditor() {
     };
   });
 
+  const getCard = useRecoilCallback(({ snapshot }) => (id: string) => {
+    return snapshot.getLoadable(canvasCard(id)).contents;
+  });
+
   const updateCardDimensions = useRecoilCallback(({ set }) => {
     return (id: number | string, width: number, height: number) => {
       set(canvasCard(id), (card) => ({
@@ -57,7 +60,7 @@ export default function CanvasEditor() {
     };
   });
 
-  const resizeTarget = (ev, frameMap) => {
+  const resizeTarget = (ev) => {
     const target = ev.target;
     const article = target.querySelector("article");
 
@@ -66,9 +69,6 @@ export default function CanvasEditor() {
 
     const newWidth = Math.max(minWidth, ev.width);
     const newHeight = Math.max(minHeight, ev.height);
-
-    const frame = frameMap.get(ev.target);
-    frame.translate = ev.drag.beforeTranslate;
 
     updateCardDimensions(target.id, newWidth, newHeight);
 
@@ -249,58 +249,39 @@ export default function CanvasEditor() {
           padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
           onResizeStart={({ target, setOrigin, dragStart }) => {
             setOrigin(["%", "%"]);
-            if (!frameMap.has(target)) {
-              frameMap.set(target, {
-                translate: [0, 0],
-              });
-            }
-            const frame = frameMap.get(target);
-            dragStart && dragStart.set(frame.translate);
+            const { x, y } = getCard(target.id);
+            dragStart && dragStart.set([x, y]);
           }}
           onResize={(ev) => {
-            resizeTarget(ev, frameMap);
+            resizeTarget(ev);
           }}
           onResizeGroupStart={({ events, setMin }) => {
-            events.forEach((ev, i) => {
-              if (!frameMap.has(ev.target)) {
-                frameMap.set(ev.target, {
-                  translate: [0, 0],
-                });
-              }
-              const frame = frameMap.get(ev.target);
-              ev.dragStart && ev.dragStart.set(frame.translate);
+            events.forEach((ev) => {
+              const { x, y } = getCard(ev.target.id);
+              ev.dragStart && ev.dragStart.set([x, y]);
             });
           }}
           onResizeGroup={({ events }) => {
-            events.forEach((ev, i) => {
-              resizeTarget(ev, frameMap);
+            events.forEach((ev) => {
+              resizeTarget(ev);
             });
           }}
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
-          onDragStart={(e) => {
-            const target = e.target;
+          onDragStart={(ev) => {
+            const target = ev.target;
 
-            if (!frameMap.has(target)) {
-              frameMap.set(target, {
-                translate: [0, 0],
-              });
-            }
-            const frame = frameMap.get(target);
-
-            e.set(frame.translate);
+            const { x, y } = getCard(target.id);
+            ev.set([x, y]);
           }}
           onDrag={(e) => {
             const target = e.target;
-            const frame = frameMap.get(target);
 
             setDraggingCardId(e.target.id);
 
-            frame.translate = e.beforeTranslate;
-
-            const x = frame.translate[0];
-            const y = frame.translate[1];
+            const x = e.beforeTranslate[0];
+            const y = e.beforeTranslate[1];
 
             updateCardCoordinates(e.target.id, x, y);
             target.style.transform = `translate(${x}px, ${y}px)`;
@@ -312,23 +293,19 @@ export default function CanvasEditor() {
             e.events.forEach((ev) => {
               const target = ev.target;
 
-              if (!frameMap.has(target)) {
-                frameMap.set(target, {
-                  translate: [0, 0],
-                });
-              }
-              const frame = frameMap.get(target);
-
-              ev.set(frame.translate);
+              const { x, y } = getCard(target.id);
+              ev.set([x, y]);
             });
           }}
           onDragGroup={(e) => {
             e.events.forEach((ev) => {
               const target = ev.target;
-              const frame = frameMap.get(target);
 
-              frame.translate = ev.beforeTranslate;
-              target.style.transform = `translate(${frame.translate[0]}px, ${frame.translate[1]}px)`;
+              const x = e.beforeTranslate[0];
+              const y = e.beforeTranslate[1];
+
+              updateCardCoordinates(target.id, x, y);
+              target.style.transform = `translate(${x}px, ${y}px)`;
             });
           }}
         ></Moveable>
