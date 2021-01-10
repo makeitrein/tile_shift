@@ -3,6 +3,29 @@ import { MoveableManagerInterface, Renderer } from "react-moveable";
 import { useRecoilState } from "recoil";
 import { canvasCards } from "../../state/canvas";
 
+const positionStyle = {
+  left: {
+    left: "-34px",
+    top: "50%",
+    transform: "translateY(-50%)",
+  },
+  right: {
+    right: "-34px",
+    top: "50%",
+    transform: "translateY(-50%)",
+  },
+  top: {
+    left: "50%",
+    top: "-38px",
+    transform: "translateX(-50%)",
+  },
+  bottom: {
+    left: "50%",
+    bottom: "-34px",
+    transform: "translateX(-50%)",
+  },
+};
+
 export const AddButton = ({ direction }) => {
   const [cards, setCards] = useRecoilState(canvasCards);
 
@@ -22,7 +45,8 @@ export const AddButton = ({ direction }) => {
     <button
       onClick={addNearbyCard}
       type="button"
-      className={`moveable-button-${direction} z-10 absolute inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+      className={`z-1000 absolute inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+      style={positionStyle[direction]}
     >
       <svg
         className="h-3 w-3"

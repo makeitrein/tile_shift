@@ -7,7 +7,6 @@ import { useRecoilCallback, useRecoilState } from "recoil";
 import styled from "styled-components";
 import { canvasCard, canvasCards } from "../state/canvas";
 import { CanvasCard, cardHeight, cardWidth } from "./card/canvas-card";
-import { CustomArrowable } from "./card/custom-arrowable";
 import { articlePadding } from "./card/wysiwig-editor";
 import { ZoomControlToolbar } from "./zoom-control-toolbar";
 
@@ -211,12 +210,6 @@ export default function CanvasEditor() {
             top: 40,
             right: window.innerWidth * 4 - 40,
             bottom: window.innerHeight * 4 - 40,
-          }}
-          ables={[CustomArrowable]}
-          props={{
-            customArrowable: true,
-            onlySelectedCard: onlySelectedCard,
-            draggingCardId,
           }}
           draggable={true}
           target={selectedCards}
