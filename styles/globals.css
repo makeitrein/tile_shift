@@ -13,6 +13,10 @@ body {
   overscroll-behavior-x: none;
 }
 
+.moveable-control {
+  background: rgba(37, 99, 235, 1) !important;
+}
+
 .z-1000 {
   z-index: 1000;
 }

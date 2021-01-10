@@ -1,6 +1,29 @@
 import * as React from "react";
 import { MoveableManagerInterface, Renderer } from "react-moveable";
 
+const AddButton = () => {
+  return (
+    <button
+      type="button"
+      className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      <svg
+        className="h-3 w-3"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </button>
+  );
+};
+
 export const CustomArrowable = {
   name: "editable",
   props: {},
@@ -23,44 +46,42 @@ export const CustomArrowable = {
       .moveable-button {
           position: absolute;
           z-index: 100;
-          text-align: center;
-          padding: 0;
-          line-height: 20px;
-          width: 20px;
-          height: 20px;
-          font-size: 14px;
-          margin-bottom: 4px;
-          background: #4af;
-          border-radius: 4px;
-          appearance: none;
-          border: 0;
-          color: white;
-          font-weight: bold;
+          // text-align: center;
+          // padding: 0;
+          // line-height: 20px;
+          // width: 20px;
+          // height: 20px;
+          // font-size: 14px;
+          // margin-bottom: 4px;
+          // background: #4af;
+          // border-radius: 4px;
+          // appearance: none;
+          // border: 0;
+          // color: white;
+          // font-weight: bold;
       }
 
       .moveable-button-left {
-        right: 10px;
+        right: 12px;
         top: ${rect.height / 2}px;
         transform: translateY(-50%);
       }
 
-      .menu-top {
-        position: absolute;
-        top: -40px;
+      .moveable-button-top {
         left: ${rect.width / 2}px;
-        z-index: 1000;
+        top: -38px;
         transform: translateX(-50%);
       }
 
       .moveable-button-right {
-        left: ${rect.width + 10}px;
+        left: ${rect.width + 12}px;
         top: ${rect.height / 2}px;
         transform: translateY(-50%);
       }
 
       .moveable-button-bottom {
         left: ${rect.width / 2}px;
-        top: ${rect.height + 10}px;
+        top: ${rect.height + 12}px;
         transform: translateX(-50%);
       }
       `
@@ -79,7 +100,16 @@ export const CustomArrowable = {
             alert("+");
           }}
         >
-          +
+          <AddButton />
+        </button>
+
+        <button
+          className="moveable-button moveable-button-top"
+          onClick={() => {
+            alert("+");
+          }}
+        >
+          <AddButton />
         </button>
 
         <button
@@ -88,7 +118,7 @@ export const CustomArrowable = {
             alert("+");
           }}
         >
-          +
+          <AddButton />
         </button>
 
         <button
@@ -97,7 +127,7 @@ export const CustomArrowable = {
             alert("+");
           }}
         >
-          +
+          <AddButton />
         </button>
       </EditableViewer>
     );

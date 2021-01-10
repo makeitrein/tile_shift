@@ -235,7 +235,7 @@ export default function CanvasEditor() {
           snapDigit={0}
           resizable={true}
           throttleDrag={0}
-          zoom={zoom}
+          zoom={1}
           origin={false}
           padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
           onResizeStart={({ target, setOrigin, dragStart }) => {

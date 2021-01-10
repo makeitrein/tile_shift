@@ -46,32 +46,13 @@ export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
 
 export const CanvasCardBottom = () => {
   return (
-    <div className="border-white border-t  divide-y divide-gray-200">
-      <div className="pt-6 pb-8 px-6">
-        <div className="text-xs font-medium tracking-wide uppercase">
-          Assignee
-        </div>
-        <ul className="mt-6 space-y-4">
-          <li className="flex space-x-3">
-            <svg
-              className="flex-shrink-0 h-5 w-5 text-green-500"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span className="text-sm ">
-              Potenti felis, in cras at at ligula nunc.{" "}
-            </span>
-          </li>
-        </ul>
-      </div>
+    <div className="absolute bottom-2 right-2 whitespace-nowrap flex w-full justify-end align-middle text-center items-center">
+      <span className="inline-flex mr-1 items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-pink-100 text-pink-800">
+        High Priority
+      </span>
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-pink-100 text-pink-800">
+        Due 12/24/16
+      </span>
     </div>
   );
 };
