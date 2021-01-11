@@ -26,7 +26,6 @@ export default function CanvasEditor() {
   const [cards, setCards] = useRecoilState(canvasCards);
   const [selectedCards, setSelectedCards] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
-  const [draggingCardId, setDraggingCardId] = React.useState(null);
   const [zoom, setZoom] = React.useState(1);
 
   const moveableRef = React.useRef(null);
@@ -36,28 +35,17 @@ export default function CanvasEditor() {
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
-  const updateCardCoordinates = useRecoilCallback(({ set }) => {
-    return (id: number | string, x: number, y: number) => {
+  const updateCard = useRecoilCallback(({ set }) => {
+    return (id: number | string, data: Object) => {
       set(canvasCard(id), (card) => ({
         ...card,
-        x,
-        y,
+        ...data,
       }));
     };
   });
 
   const getCard = useRecoilCallback(({ snapshot }) => (id: string) => {
     return snapshot.getLoadable(canvasCard(id)).contents;
-  });
-
-  const updateCardDimensions = useRecoilCallback(({ set }) => {
-    return (id: number | string, width: number, height: number) => {
-      set(canvasCard(id), (card) => ({
-        ...card,
-        width,
-        height,
-      }));
-    };
   });
 
   const resizeTarget = (ev) => {
@@ -70,7 +58,7 @@ export default function CanvasEditor() {
     const newWidth = Math.max(minWidth, ev.width);
     const newHeight = Math.max(minHeight, ev.height);
 
-    updateCardDimensions(target.id, newWidth, newHeight);
+    updateCard(target.id, { width: newWidth, height: newHeight });
 
     target.style.width = `${newWidth}px`;
     target.style.height = `${newHeight}px`;
@@ -204,7 +192,6 @@ export default function CanvasEditor() {
           }}
           onSelect={(e) => {
             setSelectedCards(e.selected);
-            setDraggingCardId(null);
           }}
           onSelectEnd={(e) => {
             const moveable = moveableRef.current;
@@ -272,22 +259,22 @@ export default function CanvasEditor() {
           onDragStart={(ev) => {
             const target = ev.target;
 
+            console.log(ev.target);
+
             const { x, y } = getCard(target.id);
             ev.set([x, y]);
           }}
           onDrag={(e) => {
             const target = e.target;
 
-            setDraggingCardId(e.target.id);
-
             const x = e.beforeTranslate[0];
             const y = e.beforeTranslate[1];
 
-            updateCardCoordinates(e.target.id, x, y);
+            updateCard(e.target.id, { x, y, isDragging: true });
             target.style.transform = `translate(${x}px, ${y}px)`;
           }}
           onDragEnd={(e) => {
-            setDraggingCardId(null);
+            updateCard(e.target.id, { isDragging: false });
           }}
           onDragGroupStart={(e) => {
             e.events.forEach((ev) => {
@@ -301,10 +288,10 @@ export default function CanvasEditor() {
             e.events.forEach((ev) => {
               const target = ev.target;
 
-              const x = e.beforeTranslate[0];
-              const y = e.beforeTranslate[1];
+              const x = ev.beforeTranslate[0];
+              const y = ev.beforeTranslate[1];
 
-              updateCardCoordinates(target.id, x, y);
+              updateCard(target.id, { x, y });
               target.style.transform = `translate(${x}px, ${y}px)`;
             });
           }}
@@ -316,7 +303,6 @@ export default function CanvasEditor() {
             y={y}
             key={id}
             id={id}
-            isDragging={String(id) === draggingCardId}
             isOnlySelectedCard={String(id) === onlySelectedCard}
           />
         ))}

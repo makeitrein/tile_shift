@@ -25,7 +25,17 @@ export const canvasCard = atomFamily({
     key: "MyAtom/Default",
     get: (id) => ({ get }) => {
       const cards = get(canvasCards);
-      return { ...cards.find((card) => card.id === id), theme: "white" };
+      const card = cards.find((card) => card.id === id) || {};
+
+      const theme = card.theme || "white";
+      const width = card.width || 140;
+      const height = card.height || 100;
+
+      const x = card.x || 0;
+      const y = card.y || 0;
+
+      const isDragging = card.isDragging || false;
+      return { theme, width, height, x, y, isDragging };
     },
   }),
 });

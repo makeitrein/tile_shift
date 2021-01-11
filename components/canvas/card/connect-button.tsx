@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { canvasCard, canvasCards } from "../../state/canvas";
+import { cardHeight, cardWidth } from "./canvas-card";
 
 const positionStyle = {
   left: {
@@ -26,10 +27,19 @@ const positionStyle = {
 };
 
 const newCardLocationByPosition = {
-  left: ({ x = 0 }) => ({ x: x - 30 }),
-  right: ({ x = 0, width = 140 }) => ({ x: x + width + 30 }),
-  top: ({ y = 0 }) => ({ y: y - 30 }),
-  bottom: ({ y = 0 }) => ({ y: y - 30 }),
+  left: ({ x, y, height }) => ({
+    x: x - 200,
+    y: y + height / 2 - cardHeight / 2,
+  }),
+  right: ({ x, y, width, height }) => ({
+    x: x + width + 100,
+    y: y + height / 2 - cardHeight / 2,
+  }),
+  top: ({ y, x, width }) => ({ y: y - 140, x: x + width / 2 - cardWidth / 2 }),
+  bottom: ({ y, height, x, width }) => ({
+    y: y + height + 70,
+    x: x + width / 2 - cardWidth / 2,
+  }),
 };
 
 export const ConnectButton = ({ id, direction }) => {

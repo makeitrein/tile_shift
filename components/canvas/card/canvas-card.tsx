@@ -25,6 +25,8 @@ const Card = styled.div`
 `;
 
 export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
+  console.log(id);
+
   const card = useRecoilValue(canvasCard(id));
   const style = useRecoilValue(canvasCardStyle(id));
 
@@ -34,9 +36,9 @@ export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
 
   return (
     <Card
-      id={card.id}
+      id={id}
+      isDragging={card.isDragging}
       className="canvas-card"
-      isDragging={isDragging}
       style={{
         ...style,
         ...transformStyle,
