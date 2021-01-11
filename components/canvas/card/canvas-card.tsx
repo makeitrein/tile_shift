@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { canvasCard, canvasCardStyle } from "../../state/canvas";
 import { ConnectButton } from "./connect-button";
+import { EditorManager } from "./wysiwig-editor";
 
 export const cardWidth = 140;
 export const cardHeight = 76;
@@ -24,13 +25,16 @@ const Card = styled.div`
     "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
 `;
 
-export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
-  console.log(id);
+interface Props {
+  id: string;
+  isOnlySelectedCard: boolean;
+}
 
+export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
   const card = useRecoilValue(canvasCard(id));
   const style = useRecoilValue(canvasCardStyle(id));
 
-  const transformStyle = isDragging
+  const transformStyle = card.isDragging
     ? {}
     : { transform: `translate(${card.x}px, ${card.y}px)` };
 
@@ -45,7 +49,7 @@ export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
       }}
     >
       <article />
-      {/* <EditorManager id={card.id} showToolbar={isOnlySelectedCard} /> */}
+      <EditorManager id={id} showToolbar={isOnlySelectedCard} />
 
       {isOnlySelectedCard && (
         <>
@@ -55,15 +59,6 @@ export const CanvasCard = ({ id, x, y, isDragging, isOnlySelectedCard }) => {
           <ConnectButton id={id} direction="bottom" />
         </>
       )}
-      <div className="absolute bottom-2 right-2 whitespace-nowrap flex w-full justify-end align-middle text-center items-center">
-        <span className="inline-flex mr-1 items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-pink-100 text-pink-800">
-          {card.x}
-        </span>
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-pink-100 text-pink-800">
-          {card.y}
-        </span>
-      </div>
-      {/* <CanvasCardBottom /> */}
     </Card>
   );
 };

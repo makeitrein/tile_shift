@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fromHtml, toHtml } from "remirror/core";
+import { fromHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
 import { HeadingExtension } from "remirror/extension/heading";
 import { ItalicExtension } from "remirror/extension/italic";
@@ -109,7 +109,7 @@ export const EditorManager = ({ id, showToolbar }) => {
   );
 
   // Add the value and change handler to the editor.
-  return showToolbar ? (
+  return (
     <RemirrorProvider
       manager={manager}
       value={value}
@@ -120,12 +120,6 @@ export const EditorManager = ({ id, showToolbar }) => {
     >
       <Editor id={id} showToolbar={showToolbar} />
     </RemirrorProvider>
-  ) : (
-    <EditableArticle
-      dangerouslySetInnerHTML={{
-        __html: toHtml({ node: value.doc, schema: value.schema }),
-      }}
-    />
   );
 };
 
@@ -134,7 +128,6 @@ export const Editor = ({ id, showToolbar }) => {
 
   return (
     <>
-      {/* {showToolbar && view.hasFocus() && <TooltipMenu />} */}
       {showToolbar && <TooltipMenu id={id} />}
       <EditorInner showToolbar={showToolbar} id={id} />
     </>

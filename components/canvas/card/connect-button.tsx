@@ -42,7 +42,12 @@ const newCardLocationByPosition = {
   }),
 };
 
-export const ConnectButton = ({ id, direction }) => {
+interface Props {
+  id: string;
+  direction: string;
+}
+
+export const ConnectButton = ({ id, direction }: Props) => {
   const card = useRecoilValue(canvasCard(id));
 
   const [cards, setCards] = useRecoilState(canvasCards);

@@ -157,10 +157,9 @@ export default function CanvasEditor() {
     <Wrapper
       ref={wrapperRef}
       className="wrapper"
-      // onBlur={() => {
-      //   console.log("blur");
-      //   window.getSelection().removeAllRanges();
-      // }}
+      onBlur={() => {
+        window.getSelection().removeAllRanges();
+      }}
       onDoubleClick={addItem}
     >
       <ZoomControlToolbar
@@ -220,7 +219,7 @@ export default function CanvasEditor() {
             document.querySelectorAll(".canvas-card")
           ).filter((el) => !selectedCardIds.includes(el.id))}
           snappable={true}
-          snapThreshold={5}
+          // snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
           checkInput={true}
