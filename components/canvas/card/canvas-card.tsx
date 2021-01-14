@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { canvasCard, canvasCardStyle } from "../../state/canvas";
@@ -31,15 +31,21 @@ interface Props {
 }
 
 export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
+  const ref = useRef();
   const card = useRecoilValue(canvasCard(id));
   const style = useRecoilValue(canvasCardStyle(id));
 
-  const transformStyle = card.isDragging
-    ? {}
-    : { transform: `translate(${card.x}px, ${card.y}px)` };
+  // useEffect(() => {
+  //   if (!card.isDragging && ref.current) {
+  //     ref.current.style.transform = `translate(${card.x}px, ${card.y}px)`;
+  //   }
+  // }, [card.isDragging, card.x, card.y]);
+
+  const transformStyle = { transform: `translate(${card.x}px, ${card.y}px)` };
 
   return (
     <Card
+      ref={ref}
       id={id}
       isDragging={card.isDragging}
       className="canvas-card"
@@ -48,7 +54,6 @@ export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
         ...transformStyle,
       }}
     >
-      <article />
       <EditorManager id={id} showToolbar={isOnlySelectedCard} />
 
       {isOnlySelectedCard && (

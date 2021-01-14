@@ -258,9 +258,8 @@ export default function CanvasEditor() {
           onDragStart={(ev) => {
             const target = ev.target;
 
-            console.log(ev.target);
-
             const { x, y } = getCard(target.id);
+
             ev.set([x, y]);
           }}
           onDrag={(e) => {
