@@ -3,10 +3,11 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
-import { useRecoilCallback, useRecoilState } from "recoil";
+import { useRecoilCallback, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { canvasCard, canvasCards } from "../state/canvas";
-import { CanvasCard, cardHeight, cardWidth } from "./card/canvas-card";
+import { cardHeight, cardWidth } from "./card/canvas-card";
+import { CanvasCardList } from "./card/canvas-card-list";
 import { articlePadding } from "./card/wysiwig-editor";
 import { ZoomControlToolbar } from "./zoom-control-toolbar";
 
@@ -19,11 +20,10 @@ const Wrapper = styled.div`
 const Canvas = styled.div`
   width: 400vw;
   height: 400vh;
-  // border: 10px solid #4af;
 `;
 
 export default function CanvasEditor() {
-  const [cards, setCards] = useRecoilState(canvasCards);
+  const setCards = useSetRecoilState(canvasCards);
   const [selectedCards, setSelectedCards] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
   const [zoom, setZoom] = React.useState(1);
@@ -104,7 +104,6 @@ export default function CanvasEditor() {
     );
 
     canvasEditorRef.current.addEventListener("panzoomzoom", ({ detail }) => {
-      console.log(detail.scale);
       if (detail.scale < 0.5) {
         setZoom(2);
       } else if (detail.scale < 1) {
@@ -219,7 +218,6 @@ export default function CanvasEditor() {
             document.querySelectorAll(".canvas-card")
           ).filter((el) => !selectedCardIds.includes(el.id))}
           snappable={true}
-          // snapThreshold={5}
           isDisplaySnapDigit={true}
           snapGap={true}
           checkInput={true}
@@ -295,15 +293,7 @@ export default function CanvasEditor() {
           }}
         ></Moveable>
 
-        {cards.map(({ id, x, y }) => (
-          <CanvasCard
-            x={x}
-            y={y}
-            key={id}
-            id={id}
-            isOnlySelectedCard={String(id) === onlySelectedCard}
-          />
-        ))}
+        <CanvasCardList onlySelectedCard={onlySelectedCard} />
       </Canvas>
     </Wrapper>
   );

@@ -1,6 +1,6 @@
 import { atom, atomFamily, DefaultValue, selectorFamily } from "recoil";
 import { cardHeight, cardWidth } from "../canvas/card/canvas-card";
-import { colorThemes } from "../canvas/card/color-picker";
+import { colorThemes, ThemeMapOption } from "../canvas/card/color-picker";
 
 const syncStorageEffect = () => ({ setSelf, trigger }) => {
   // Initialize atom value to the remote storage state
@@ -42,7 +42,17 @@ const localStorageEffect = (key) => ({ setSelf, onSet }) => {
   });
 };
 
-export const canvasCards = atom({
+interface Card {
+  id: string;
+  x: number;
+  y: number;
+  theme: string;
+  width: number;
+  height: number;
+  isDragging: boolean;
+}
+
+export const canvasCards = atom<Partial<Card>[]>({
   key: "CANVAS/cards",
   default: [],
   effects_UNSTABLE: [
@@ -51,13 +61,13 @@ export const canvasCards = atom({
   ],
 });
 
-export const canvasCard = atomFamily({
+export const canvasCard = atomFamily<Card, string>({
   key: "CANVAS/card",
   default: selectorFamily({
     key: "MyAtom/Default",
     get: (id) => ({ get }) => {
       const cards = get(canvasCards);
-      const card = cards.find((card) => card.id === id) || {};
+      const card = cards.find((card) => card.id === id);
 
       const theme = card.theme || "white";
       const width = card.width || cardWidth;
@@ -67,13 +77,13 @@ export const canvasCard = atomFamily({
       const y = card.y || 0;
 
       const isDragging = card.isDragging || false;
-      return { theme, width, height, x, y, isDragging };
+      return { id, theme, width, height, x, y, isDragging };
     },
   }),
   effects_UNSTABLE: (id) => [localStorageEffect(`canvas-card-${String(id)}`)],
 });
 
-export const canvasCardStyle = selectorFamily({
+export const canvasCardStyle = selectorFamily<ThemeMapOption, string>({
   key: "CANVAS/card-style",
   get: (id) => ({ get }) => {
     return colorThemes[get(canvasCard(id)).theme];

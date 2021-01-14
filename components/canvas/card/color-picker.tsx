@@ -1,7 +1,15 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { canvasCard, canvasCardStyle } from "../../state/canvas";
 
-export const colorThemes = {
+export type ThemeMapOption = {
+  color: string;
+  background: string;
+  borderColor: string;
+};
+
+export type ThemeMap = Record<string, ThemeMapOption>;
+
+export const colorThemes: ThemeMap = {
   white: {
     color: "",
     background: "#fff",
