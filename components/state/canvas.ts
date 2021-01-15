@@ -114,6 +114,7 @@ export const canvasCard = atomFamily<Card, string>({
       const y = card.y || 0;
 
       const isDragging = card.isDragging || false;
+      console.log(card);
       const isWysiwygEditorFocused = card.isWysiwygEditorFocused || false;
 
       return {

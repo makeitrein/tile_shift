@@ -110,16 +110,15 @@ export const Editor = ({ id, showToolbar }) => {
   const { getRootProps } = useRemirror();
   const setCard = useSetRecoilState(canvasCard(id));
 
-  const handleFocus = (isWysiwygFocused) => {
-    setCard((card) => ({ ...card, isWysiwygFocused: true }));
+  const handleFocus = () => {
+    setCard((card) => {
+      console.log(card);
+      return { ...card, isWysiwygEditorFocused: true };
+    });
   };
 
-  const handleBlur = (isWysiwygFocused) => {
-    // A bit awkward, but need to prevent backspace from deleting card while editor is focused
-    setTimeout(
-      () => setCard((card) => ({ ...card, isWysiwygFocused: false })),
-      10
-    );
+  const handleBlur = () => {
+    setCard((card) => ({ ...card, isWysiwygEditorFocused: false }));
   };
 
   return (
