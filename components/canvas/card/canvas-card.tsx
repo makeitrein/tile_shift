@@ -1,7 +1,11 @@
 import React, { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { canvasCard, canvasCardStyle } from "../../state/canvas";
+import {
+  canvasCard,
+  canvasCardStyle,
+  selectedCanvasCardIds,
+} from "../../state/canvas";
 import { ConnectButton } from "./connect-button";
 import { EditorManager } from "./wysiwig-editor";
 
@@ -20,8 +24,9 @@ const Card = styled.div`
   border-style: solid;
   --color: #4af;
   transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
-  box-shadow: ${(props) =>
-    props.isDragging &&
+  z-index: ${({ isSelected }) => (isSelected ? 1000 : 100)};
+  box-shadow: ${({ isDragging }) =>
+    isDragging &&
     "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
 `;
 
@@ -33,21 +38,18 @@ interface Props {
 export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
   const ref = useRef();
   const card = useRecoilValue(canvasCard(id));
+  const selectedCardIds = useRecoilValue(selectedCanvasCardIds);
   const style = useRecoilValue(canvasCardStyle(id));
 
-  // useEffect(() => {
-  //   if (!card.isDragging && ref.current) {
-  //     ref.current.style.transform = `translate(${card.x}px, ${card.y}px)`;
-  //   }
-  // }, [card.isDragging, card.x, card.y]);
-
   const transformStyle = { transform: `translate(${card.x}px, ${card.y}px)` };
+  const isSelected = selectedCardIds.includes(card.id);
 
   return (
     <Card
       ref={ref}
       id={id}
       isDragging={card.isDragging}
+      isSelected={isSelected}
       className="canvas-card"
       style={{
         ...style,

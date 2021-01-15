@@ -15,6 +15,7 @@ import { CanvasCardList } from "../card/canvas-card-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { useAddCardViaClick } from "./use-add-card-via-click";
 import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
+import { useDeleteTextEffect } from "./use-deselect-text-effect";
 import { useDragResizeCard } from "./use-drag-resize-card";
 import { usePanzoomEffects } from "./use-panzoom-effects";
 import { useResizeCardEffect } from "./use-resize-card-effect";
@@ -43,13 +44,9 @@ export const Board = () => {
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
-  const updateCard = useUpdateCard();
-  const getCard = useGetCard();
-
-  const dragResizeCard = useDragResizeCard();
-  const addCardViaClick = useAddCardViaClick(canvasEditorRef.current);
-
   useDeleteCardsViaBackspace();
+  useResizeCardEffect(moveableRef.current);
+  useDeleteTextEffect(selectedCardIds);
 
   let panzoom = panzoomRef.current;
 
@@ -61,7 +58,11 @@ export const Board = () => {
     range,
   });
 
-  useResizeCardEffect(moveableRef.current);
+  const updateCard = useUpdateCard();
+  const getCard = useGetCard();
+
+  const dragResizeCard = useDragResizeCard();
+  const addCardViaClick = useAddCardViaClick(canvasEditorRef.current);
 
   if (!process.browser) return null;
 
@@ -69,7 +70,6 @@ export const Board = () => {
     <Wrapper
       ref={wrapperRef}
       className="wrapper"
-      onBlur={window.getSelection().removeAllRanges}
       onDoubleClick={addCardViaClick}
     >
       <ZoomControlToolbar
@@ -90,6 +90,7 @@ export const Board = () => {
           toggleContinueSelect={["shift"]}
           ratio={0}
           onDragStart={(e) => {
+            console.log(e);
             const moveable = moveableRef.current;
             const target = e.inputEvent.target;
             if (
@@ -131,7 +132,7 @@ export const Board = () => {
           snappable={true}
           isDisplaySnapDigit={true}
           snapGap={true}
-          checkInput={true}
+          checkInput={false}
           snapElement={true}
           snapVertical={true}
           snapHorizontal={true}
@@ -159,6 +160,10 @@ export const Board = () => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
           onDragStart={(ev) => {
+            if (ev.inputEvent?.target?.isContentEditable) {
+              return false;
+            }
+
             const target = ev.target;
 
             const { x, y } = getCard(target.id);
