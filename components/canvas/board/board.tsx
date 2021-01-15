@@ -14,6 +14,7 @@ import {
 import { CanvasCardList } from "../card/canvas-card-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { useAddCardViaClick } from "./use-add-card-via-click";
+import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
 import { useDragResizeCard } from "./use-drag-resize-card";
 import { usePanzoomEffects } from "./use-panzoom-effects";
 import { useResizeCardEffect } from "./use-resize-card-effect";
@@ -47,6 +48,8 @@ export const Board = () => {
 
   const dragResizeCard = useDragResizeCard();
   const addCardViaClick = useAddCardViaClick(canvasEditorRef.current);
+
+  useDeleteCardsViaBackspace();
 
   let panzoom = panzoomRef.current;
 

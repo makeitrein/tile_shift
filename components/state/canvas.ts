@@ -49,7 +49,7 @@ const localStorageEffect = (key) => ({ setSelf, onSet }) => {
   });
 };
 
-interface Card {
+export interface Card {
   id: string;
   x: number;
   y: number;
@@ -77,6 +77,7 @@ export const selectedCanvasCardIds = selector<string[]>({
   key: "CANVAS/selected-card-ids",
   get: ({ get }) => {
     const cards = get(selectedCanvasCards);
+    console.log(cards);
     return cards.map((card) => card.id);
   },
 });

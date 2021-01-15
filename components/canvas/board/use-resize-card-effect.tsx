@@ -4,6 +4,8 @@ import { articlePadding } from "../card/wysiwig-editor";
 export const useResizeCardEffect = (moveable) => {
   useEffect(() => {
     window.addEventListener("keyup", (e) => {
+      if (!moveable) return;
+
       const target = e.target as HTMLDivElement;
 
       const articleHeight = target.offsetHeight + articlePadding;
