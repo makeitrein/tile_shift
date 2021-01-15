@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { RecoilRoot } from "recoil";
-import CanvasEditor from "../components/canvas/canvas-editor";
+import { Board } from "../components/canvas/board/board";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </Head>
 
-      <CanvasEditor />
+      <Board />
     </RecoilRoot>
   );
 }

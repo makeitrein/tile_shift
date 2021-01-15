@@ -1,15 +1,16 @@
-import Panzoom, { PanzoomObject } from "@panzoom/panzoom";
+import { PanzoomObject } from "@panzoom/panzoom";
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
-import { useRecoilCallback, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { canvasCard, canvasCards } from "../state/canvas";
-import { cardHeight, cardWidth } from "./card/canvas-card";
-import { CanvasCardList } from "./card/canvas-card-list";
-import { articlePadding } from "./card/wysiwig-editor";
-import { ZoomControlToolbar } from "./zoom-control-toolbar";
+import { useGetCard, useUpdateCard } from "../../state/canvas";
+import { CanvasCardList } from "../card/canvas-card-list";
+import { ZoomControlToolbar } from "../zoom-control-toolbar";
+import { useAddCardViaClick } from "./use-add-card-via-click";
+import { useDragResizeCard } from "./use-drag-resize-card";
+import { usePanzoomEffects } from "./use-panzoom-effects";
+import { useResizeCardEffect } from "./use-resize-card-effect";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -22,8 +23,7 @@ const Canvas = styled.div`
   height: 400vh;
 `;
 
-export default function CanvasEditor() {
-  const setCards = useSetRecoilState(canvasCards);
+export const Board = () => {
   const [selectedCards, setSelectedCards] = React.useState([]);
   const [disablePan, setDisablePan] = React.useState(true);
   const [zoom, setZoom] = React.useState(1);
@@ -31,135 +31,39 @@ export default function CanvasEditor() {
   const moveableRef = React.useRef(null);
   const wrapperRef = React.useRef(null);
   const selectoRef = React.useRef(null);
-  const canvasEditorRef = React.useRef(null);
+  const canvasEditorRef = React.useRef<HTMLDivElement>(null);
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
-  const updateCard = useRecoilCallback(({ set }) => {
-    return (id: number | string, data: Object) => {
-      set(canvasCard(id), (card) => ({
-        ...card,
-        ...data,
-      }));
-    };
-  });
+  const updateCard = useUpdateCard();
+  const getCard = useGetCard();
 
-  const getCard = useRecoilCallback(({ snapshot }) => (id: string) => {
-    return snapshot.getLoadable(canvasCard(id)).contents;
-  });
-
-  const resizeTarget = (ev) => {
-    const target = ev.target;
-    const article = target.querySelector("article");
-
-    const minWidth = 140;
-    const minHeight = article.offsetHeight;
-
-    const newWidth = Math.max(minWidth, ev.width);
-    const newHeight = Math.max(minHeight, ev.height);
-
-    updateCard(target.id, { width: newWidth, height: newHeight });
-
-    target.style.width = `${newWidth}px`;
-    target.style.height = `${newHeight}px`;
-    ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
-  };
+  const dragResizeCard = useDragResizeCard();
+  const addCardViaClick = useAddCardViaClick(canvasEditorRef.current);
 
   let panzoom = panzoomRef.current;
 
-  useEffect(() => {
-    panzoom = panzoomRef.current = Panzoom(canvasEditorRef.current, {
-      disablePan: disablePan,
-      canvas: true,
-      contain: "outside",
-      maxScale: 3,
-      minScale: 0.3,
-      handleStartEvent: (event) => {
-        if (
-          !disablePan &&
-          Array.from(event.target.classList).includes("canvas-card")
-        ) {
-          throw "disable panning hack";
-        }
-      },
-    });
+  usePanzoomEffects({
+    panzoom,
+    panzoomRef,
+    canvasEditorRef,
+    disablePan,
+    range,
+  });
 
-    window.addEventListener(
-      "mousewheel",
-      (e) => {
-        const isPinchZoom = e.ctrlKey;
-
-        e.preventDefault();
-
-        if (isPinchZoom) {
-          panzoom.zoomWithWheel(e);
-          if (range.current) range.current.value = panzoom.getScale() + "";
-        } else {
-          const x = -e.deltaX;
-          const y = -e.deltaY;
-          panzoom.pan(x, y, { relative: true, force: true });
-        }
-      },
-      { passive: false }
-    );
-
-    canvasEditorRef.current.addEventListener("panzoomzoom", ({ detail }) => {
-      if (detail.scale < 0.5) {
-        setZoom(2);
-      } else if (detail.scale < 1) {
-        setZoom(1.5);
-      } else {
-        setZoom(1);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    panzoom.setOptions({ disablePan: disablePan });
-  }, [disablePan]);
-
-  useEffect(() => {
-    window.addEventListener("keyup", (e) => {
-      const articleHeight = e.target.offsetHeight + articlePadding;
-
-      const rect = moveableRef.current.getRect();
-
-      if (e.target.isContentEditable && rect.offsetHeight <= articleHeight) {
-        moveableRef.current.request("resizable", {
-          offsetHeight: parseFloat(articleHeight) + articlePadding,
-          isInstant: true,
-        });
-      }
-    });
-  }, []);
+  useResizeCardEffect(moveableRef.current);
 
   if (!process.browser) return null;
 
   const selectedCardIds = selectedCards.map((t) => t.id);
   const onlySelectedCard = selectedCardIds.length === 1 && selectedCardIds[0];
 
-  const addItem = (e) => {
-    if (e.target !== canvasEditorRef.current) {
-      return;
-    }
-    setCards((oldCards) => [
-      ...oldCards,
-      {
-        id: "new-card-" + Math.random(),
-        x: e.nativeEvent.offsetX - cardWidth / 3,
-        y: e.nativeEvent.offsetY - cardHeight / 2,
-      },
-    ]);
-  };
-
   return (
     <Wrapper
       ref={wrapperRef}
       className="wrapper"
-      onBlur={() => {
-        window.getSelection().removeAllRanges();
-      }}
-      onDoubleClick={addItem}
+      onBlur={window.getSelection().removeAllRanges}
+      onDoubleClick={addCardViaClick}
     >
       <ZoomControlToolbar
         disablePan={disablePan}
@@ -201,7 +105,7 @@ export default function CanvasEditor() {
               });
             }
           }}
-        ></Selecto>
+        />
       )}
       <Canvas ref={canvasEditorRef} className="canvas">
         <Moveable
@@ -236,20 +140,14 @@ export default function CanvasEditor() {
             const { x, y } = getCard(target.id);
             dragStart && dragStart.set([x, y]);
           }}
-          onResize={(ev) => {
-            resizeTarget(ev);
-          }}
+          onResize={dragResizeCard}
           onResizeGroupStart={({ events, setMin }) => {
             events.forEach((ev) => {
               const { x, y } = getCard(ev.target.id);
               ev.dragStart && ev.dragStart.set([x, y]);
             });
           }}
-          onResizeGroup={({ events }) => {
-            events.forEach((ev) => {
-              resizeTarget(ev);
-            });
-          }}
+          onResizeGroup={({ events }) => events.forEach(dragResizeCard)}
           onClickGroup={(e) => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
@@ -291,10 +189,10 @@ export default function CanvasEditor() {
               target.style.transform = `translate(${x}px, ${y}px)`;
             });
           }}
-        ></Moveable>
+        />
 
         <CanvasCardList onlySelectedCard={onlySelectedCard} />
       </Canvas>
     </Wrapper>
   );
-}
+};

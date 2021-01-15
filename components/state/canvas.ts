@@ -1,4 +1,10 @@
-import { atom, atomFamily, DefaultValue, selectorFamily } from "recoil";
+import {
+  atom,
+  atomFamily,
+  DefaultValue,
+  selectorFamily,
+  useRecoilCallback,
+} from "recoil";
 import { cardHeight, cardWidth } from "../canvas/card/canvas-card";
 import { colorThemes, ThemeMapOption } from "../canvas/card/color-picker";
 
@@ -82,6 +88,21 @@ export const canvasCard = atomFamily<Card, string>({
   }),
   effects_UNSTABLE: (id) => [localStorageEffect(`canvas-card-${String(id)}`)],
 });
+
+export const useUpdateCard = () =>
+  useRecoilCallback(({ set }) => {
+    return (id: string, data: Object) => {
+      set(canvasCard(id), (card) => ({
+        ...card,
+        ...data,
+      }));
+    };
+  });
+
+export const useGetCard = () =>
+  useRecoilCallback(({ snapshot }) => (id: string) => {
+    return snapshot.getLoadable(canvasCard(id)).contents;
+  });
 
 export const canvasCardStyle = selectorFamily<ThemeMapOption, string>({
   key: "CANVAS/card-style",
