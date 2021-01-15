@@ -2,6 +2,7 @@ import {
   atom,
   atomFamily,
   DefaultValue,
+  selector,
   selectorFamily,
   useRecoilCallback,
 } from "recoil";
@@ -65,6 +66,27 @@ export const canvasCards = atom<Partial<Card>[]>({
     syncStorageEffect(),
     localStorageEffect(`canvas-card-ids`),
   ],
+});
+
+export const selectedCanvasCards = atom<(HTMLElement | SVGElement)[]>({
+  key: "CANVAS/selected-cards",
+  default: [],
+});
+
+export const selectedCanvasCardIds = selector<string[]>({
+  key: "CANVAS/selected-card-ids",
+  get: ({ get }) => {
+    const cards = get(selectedCanvasCards);
+    return cards.map((card) => card.id);
+  },
+});
+
+export const singleSelectedCanvasCardId = selector<string | null>({
+  key: "CANVAS/single-selected-card-id",
+  get: ({ get }) => {
+    const cards = get(selectedCanvasCardIds);
+    return cards.length === 1 ? cards[0] : null;
+  },
 });
 
 export const canvasCard = atomFamily<Card, string>({

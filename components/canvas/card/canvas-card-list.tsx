@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useRecoilValue } from "recoil";
-import { canvasCards } from "../../state/canvas";
+import { canvasCards, singleSelectedCanvasCardId } from "../../state/canvas";
 import { CanvasCard } from "./canvas-card";
 
-export const CanvasCardList = ({ onlySelectedCard }) => {
+export const CanvasCardList = () => {
   const cards = useRecoilValue(canvasCards);
+  const singleSelectedCardId = useRecoilValue(singleSelectedCanvasCardId);
 
   return (
     <>
@@ -12,7 +13,7 @@ export const CanvasCardList = ({ onlySelectedCard }) => {
         <CanvasCard
           key={id}
           id={id}
-          isOnlySelectedCard={id === onlySelectedCard}
+          isOnlySelectedCard={id === singleSelectedCardId}
         />
       ))}
     </>

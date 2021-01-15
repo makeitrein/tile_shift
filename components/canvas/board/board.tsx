@@ -3,8 +3,14 @@ import * as React from "react";
 import { useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { useGetCard, useUpdateCard } from "../../state/canvas";
+import {
+  selectedCanvasCardIds,
+  selectedCanvasCards,
+  useGetCard,
+  useUpdateCard,
+} from "../../state/canvas";
 import { CanvasCardList } from "../card/canvas-card-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { useAddCardViaClick } from "./use-add-card-via-click";
@@ -24,7 +30,8 @@ const Canvas = styled.div`
 `;
 
 export const Board = () => {
-  const [selectedCards, setSelectedCards] = React.useState([]);
+  const [selectedCards, setSelectedCards] = useRecoilState(selectedCanvasCards);
+  const selectedCardIds = useRecoilValue(selectedCanvasCardIds);
   const [disablePan, setDisablePan] = React.useState(true);
   const [zoom, setZoom] = React.useState(1);
 
@@ -54,9 +61,6 @@ export const Board = () => {
   useResizeCardEffect(moveableRef.current);
 
   if (!process.browser) return null;
-
-  const selectedCardIds = selectedCards.map((t) => t.id);
-  const onlySelectedCard = selectedCardIds.length === 1 && selectedCardIds[0];
 
   return (
     <Wrapper
@@ -191,7 +195,7 @@ export const Board = () => {
           }}
         />
 
-        <CanvasCardList onlySelectedCard={onlySelectedCard} />
+        <CanvasCardList />
       </Canvas>
     </Wrapper>
   );
