@@ -110,23 +110,16 @@ export const Editor = ({ id, showToolbar }) => {
   const { getRootProps } = useRemirror();
   const setCard = useSetRecoilState(canvasCard(id));
 
-  const handleFocus = () => {
-    setCard((card) => {
-      console.log(card);
-      return { ...card, isWysiwygEditorFocused: true };
-    });
-  };
-
-  const handleBlur = () => {
-    setCard((card) => ({ ...card, isWysiwygEditorFocused: false }));
+  const setCardEditorFocus = (isWysiwygEditorFocused: boolean) => {
+    setCard((card) => ({ ...card, isWysiwygEditorFocused }));
   };
 
   return (
     <>
       {showToolbar && <TooltipMenu id={id} />}
       <EditableArticle
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={() => setCardEditorFocus(true)}
+        onBlur={() => setCardEditorFocus(false)}
         style={{ pointerEvents: !showToolbar && "none" }}
         {...getRootProps()}
       />
