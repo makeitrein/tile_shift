@@ -5,12 +5,14 @@ import {
   Card,
   selectedCanvasCardIds,
   selectedCanvasCards,
+  singleSelectedCanvasCard,
 } from "../../state/canvas";
 
 export const useDeleteCardsViaBackspace = () => {
   const setCards = useSetRecoilState(canvasCards);
   const setSelectedCards = useSetRecoilState(selectedCanvasCards);
   const selectedCardIds = useRecoilValue(selectedCanvasCardIds);
+  const singleSelectedCard = useRecoilValue(singleSelectedCanvasCard);
 
   const filterSelectedCards = (cards: Card[]) =>
     cards.filter((card) => !selectedCardIds.includes(card.id));
@@ -18,9 +20,11 @@ export const useDeleteCardsViaBackspace = () => {
   useHotkeys(
     "backspace",
     () => {
-      setCards(filterSelectedCards);
-      setSelectedCards([]);
+      if (!singleSelectedCard?.isWysiwygEditorFocused) {
+        setCards(filterSelectedCards);
+        setSelectedCards([]);
+      }
     },
-    [selectedCardIds]
+    [selectedCardIds, singleSelectedCard]
   );
 };

@@ -57,6 +57,7 @@ export interface Card {
   width: number;
   height: number;
   isDragging: boolean;
+  isWysiwygEditorFocused: boolean;
 }
 
 export const canvasCards = atom<Partial<Card>[]>({
@@ -77,7 +78,6 @@ export const selectedCanvasCardIds = selector<string[]>({
   key: "CANVAS/selected-card-ids",
   get: ({ get }) => {
     const cards = get(selectedCanvasCards);
-    console.log(cards);
     return cards.map((card) => card.id);
   },
 });
@@ -87,6 +87,14 @@ export const singleSelectedCanvasCardId = selector<string | null>({
   get: ({ get }) => {
     const cards = get(selectedCanvasCardIds);
     return cards.length === 1 ? cards[0] : null;
+  },
+});
+
+export const singleSelectedCanvasCard = selector<Card | null>({
+  key: "CANVAS/single-selected-card",
+  get: ({ get }) => {
+    const cardId = get(singleSelectedCanvasCardId);
+    return cardId ? get(canvasCard(cardId)) : null;
   },
 });
 
@@ -106,7 +114,18 @@ export const canvasCard = atomFamily<Card, string>({
       const y = card.y || 0;
 
       const isDragging = card.isDragging || false;
-      return { id, theme, width, height, x, y, isDragging };
+      const isWysiwygEditorFocused = card.isWysiwygEditorFocused || false;
+
+      return {
+        id,
+        theme,
+        width,
+        height,
+        x,
+        y,
+        isDragging,
+        isWysiwygEditorFocused,
+      };
     },
   }),
   effects_UNSTABLE: (id) => [localStorageEffect(`canvas-card-${String(id)}`)],
@@ -127,8 +146,8 @@ export const useGetCard = () =>
     return snapshot.getLoadable(canvasCard(id)).contents;
   });
 
-export const canvasCardStyle = selectorFamily<ThemeMapOption, string>({
-  key: "CANVAS/card-style",
+export const canvasCardColorTheme = selectorFamily<ThemeMapOption, string>({
+  key: "CANVAS/card-color-theme",
   get: (id) => ({ get }) => {
     return colorThemes[get(canvasCard(id)).theme];
   },

@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { canvasCard, canvasCardStyle } from "../../state/canvas";
+import { canvasCard, canvasCardColorTheme } from "../../state/canvas";
 
 export type ThemeMapOption = {
   color: string;
@@ -134,7 +134,7 @@ export const ColorPicker = ({ id }) => {
 };
 
 export const ColorBlock = ({ id }) => {
-  const style = useRecoilValue(canvasCardStyle(id));
+  const style = useRecoilValue(canvasCardColorTheme(id));
 
   return (
     <div className="w-4 ">

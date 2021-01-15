@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
 import { fromHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
 import { HeadingExtension } from "remirror/extension/heading";
@@ -10,6 +11,7 @@ import { ListPreset } from "remirror/preset/list";
 import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
+import { canvasCard } from "../../state/canvas";
 import { TooltipMenu } from "./tooltip-menu";
 
 export const articlePadding = 12;
@@ -65,26 +67,6 @@ const EditableArticle = styled.article`
   }
 `;
 
-const EditorInner = ({ showToolbar }) => {
-  // The `getRootProps` adds the ref to the div element below to inject the
-  // ProseMirror dom. You have full control over where it should be placed.
-  // The first call is the one that is used.
-  const { getRootProps, focus } = useRemirror();
-
-  // useEffect(() => {
-  //   if (selected === String(id)) {
-  //     focus("end");
-  //   }
-  // }, [selected, id, focus]);
-
-  return (
-    <EditableArticle
-      style={{ pointerEvents: !showToolbar && "none" }}
-      {...getRootProps()}
-    />
-  );
-};
-
 const extensionTemplate = () => [
   new CorePreset({}),
   new BoldExtension({}),
@@ -111,6 +93,7 @@ export const EditorManager = ({ id, showToolbar }) => {
   // Add the value and change handler to the editor.
   return (
     <RemirrorProvider
+      key={id}
       manager={manager}
       value={value}
       onChange={(parameter) => {
@@ -124,12 +107,30 @@ export const EditorManager = ({ id, showToolbar }) => {
 };
 
 export const Editor = ({ id, showToolbar }) => {
-  const { view } = useRemirror();
+  const { getRootProps } = useRemirror();
+  const setCard = useSetRecoilState(canvasCard(id));
+
+  const handleFocus = (isWysiwygFocused) => {
+    setCard((card) => ({ ...card, isWysiwygFocused: true }));
+  };
+
+  const handleBlur = (isWysiwygFocused) => {
+    // A bit awkward, but need to prevent backspace from deleting card while editor is focused
+    setTimeout(
+      () => setCard((card) => ({ ...card, isWysiwygFocused: false })),
+      10
+    );
+  };
 
   return (
     <>
       {showToolbar && <TooltipMenu id={id} />}
-      <EditorInner showToolbar={showToolbar} id={id} />
+      <EditableArticle
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        style={{ pointerEvents: !showToolbar && "none" }}
+        {...getRootProps()}
+      />
     </>
   );
 };

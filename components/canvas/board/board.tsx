@@ -90,7 +90,6 @@ export const Board = () => {
           toggleContinueSelect={["shift"]}
           ratio={0}
           onDragStart={(e) => {
-            console.log(e);
             const moveable = moveableRef.current;
             const target = e.inputEvent.target;
             if (

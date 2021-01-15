@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
   canvasCard,
-  canvasCardStyle,
+  canvasCardColorTheme,
   selectedCanvasCardIds,
 } from "../../state/canvas";
 import { ConnectButton } from "./connect-button";
@@ -39,7 +39,7 @@ export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
   const ref = useRef();
   const card = useRecoilValue(canvasCard(id));
   const selectedCardIds = useRecoilValue(selectedCanvasCardIds);
-  const style = useRecoilValue(canvasCardStyle(id));
+  const colorTheme = useRecoilValue(canvasCardColorTheme(id));
 
   const transformStyle = { transform: `translate(${card.x}px, ${card.y}px)` };
   const isSelected = selectedCardIds.includes(card.id);
@@ -52,7 +52,9 @@ export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
       isSelected={isSelected}
       className="canvas-card"
       style={{
-        ...style,
+        width: card.width,
+        height: card.height,
+        ...colorTheme,
         ...transformStyle,
       }}
     >
