@@ -1,4 +1,4 @@
-import { useUpdateCard } from "../../state/canvas";
+import { useUpdateCard } from "../../state/utils";
 
 export const useDragResizeCard = () => {
   const updateCard = useUpdateCard();
