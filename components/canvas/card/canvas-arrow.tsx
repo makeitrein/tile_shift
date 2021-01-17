@@ -2,7 +2,7 @@ import React from "react";
 import { ArrowSvg, LineOrientation } from "react-simple-arrows";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { Arrow, canvasCard } from "../../state/canvas";
+import { canvasArrow, canvasCard } from "../../state/canvas";
 
 export const cardWidth = 140;
 export const cardHeight = 76;
@@ -26,17 +26,36 @@ const Card = styled.div`
 `;
 
 interface Props {
-  arrow: Arrow;
+  id: string;
 }
 
-export const CanvasArrow = ({ arrow }: Props) => {
+const arrowLeft = ({ x, y, height }) => ({
+  x: x,
+  y: y + height / 2,
+});
+
+const arrowRight = ({ x, y, width, height }) => ({
+  x: x + width,
+  y: y + height / 2,
+});
+
+const arrowTop = ({ y, x, width }) => ({ y: y, x: x + width / 2 });
+
+const arrowBottom = ({ y, height, x, width }) => ({
+  y: y + height,
+  x: x + width / 2,
+});
+
+export const CanvasArrow = ({ id }: Props) => {
+  const arrow = useRecoilValue(canvasArrow(id));
+
   const startCard = useRecoilValue(canvasCard(arrow.start.cardId));
   const endCard = useRecoilValue(canvasCard(arrow.end.cardId));
 
   return (
     <ArrowSvg
-      start={{ x: startCard.x, y: startCard.y }}
-      end={{ x: endCard.x, y: endCard.y }}
+      start={arrowRight(startCard)}
+      end={arrowLeft(endCard)}
       orientation={LineOrientation.HORIZONTAL}
       strokeWidth="3"
       color="green"

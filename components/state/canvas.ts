@@ -17,6 +17,7 @@ export interface Card {
 export type ArrowPoint = "w" | "e" | "s" | "n";
 export type ArrowEnd = "w" | "e" | "s" | "n";
 export interface Arrow {
+  id: string;
   start: { cardId: string; point: ArrowPoint };
   end: { cardId: string; point: ArrowPoint };
 }
@@ -35,12 +36,27 @@ export const canvasArrows = atom<Arrow[]>({
       const cards = get(canvasCards);
       return [
         {
+          id: "faker",
           start: { cardId: cards[0].id || "", point: "w" },
           end: { cardId: cards[1].id || "", point: "e" },
         },
       ];
     },
   }),
+});
+
+export const canvasArrow = atomFamily<Arrow, string>({
+  key: "CANVAS/arrow",
+  default: selectorFamily({
+    key: "CANVAS/arrow-default",
+    get: (id) => ({ get }) => {
+      const arrows = get(canvasArrows);
+      const arrow = arrows.find((arrow) => arrow.id === id);
+
+      return arrow;
+    },
+  }),
+  effects_UNSTABLE: (id) => [localStorageEffect(`canvas-card-${String(id)}`)],
 });
 
 export const selectedCanvasCards = atom<(HTMLElement | SVGElement)[]>({

@@ -16,7 +16,7 @@ export const CanvasCardList = () => {
   return (
     <>
       {arrows.map((arrow) => (
-        <CanvasArrow arrow={arrow} />
+        <CanvasArrow id={arrow.id} />
       ))}
 
       {cards.map(({ id, x, y }) => (
