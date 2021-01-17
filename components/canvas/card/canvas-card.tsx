@@ -6,8 +6,8 @@ import {
   canvasCardColorTheme,
   selectedCanvasCardIds,
 } from "../../state/canvas";
+import { EditorManager } from "../text-editor/wysiwig-editor";
 import { ConnectButton } from "./connect-button";
-import { EditorManager } from "./wysiwig-editor";
 
 export const cardWidth = 140;
 export const cardHeight = 76;

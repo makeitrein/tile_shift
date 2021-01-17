@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { articlePadding } from "../card/wysiwig-editor";
+import { articlePadding } from "../text-editor/wysiwig-editor";
 
 export const useResizeCardEffect = (moveable) => {
   useEffect(() => {

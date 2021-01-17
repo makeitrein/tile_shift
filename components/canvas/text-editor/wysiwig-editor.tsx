@@ -13,8 +13,8 @@ import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
 import { canvasCard } from "../../state/canvas";
+import { TooltipMenu } from "../card/tooltip-menu";
 import { SocialEmojiComponent } from "./emoji-dropdown";
-import { TooltipMenu } from "./tooltip-menu";
 
 export const articlePadding = 12;
 
