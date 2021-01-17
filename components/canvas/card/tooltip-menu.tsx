@@ -198,7 +198,7 @@ export const TooltipMenu = ({ id }) => {
               arrowPointAtCenter
             >
               <span>
-                <TooltipMenuItem rounded="r-md">
+                <TooltipMenuItem>
                   <ColorBlock id={id} />
                 </TooltipMenuItem>
               </span>

@@ -113,6 +113,7 @@ export const Board = () => {
       <Canvas ref={canvasEditorRef} className="canvas">
         <Moveable
           ref={moveableRef}
+          // renderDirections={["nw", "ne", "se", "sw"]}
           bounds={{
             left: 40,
             top: 40,
@@ -127,7 +128,7 @@ export const Board = () => {
           snappable={true}
           isDisplaySnapDigit={true}
           snapGap={true}
-          checkInput={false}
+          checkInput={true}
           snapElement={true}
           snapVertical={true}
           snapHorizontal={true}
@@ -155,10 +156,6 @@ export const Board = () => {
             selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
           }}
           onDragStart={(ev) => {
-            if (ev.inputEvent?.target?.isContentEditable) {
-              return false;
-            }
-
             const target = ev.target;
 
             const { x, y } = getCard(target.id);

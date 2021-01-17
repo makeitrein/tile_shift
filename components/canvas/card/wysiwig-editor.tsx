@@ -8,10 +8,12 @@ import { LinkExtension } from "remirror/extension/link";
 import { UnderlineExtension } from "remirror/extension/underline";
 import { CorePreset } from "remirror/preset/core";
 import { ListPreset } from "remirror/preset/list";
+import { SocialPreset } from "remirror/preset/social";
 import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
 import { canvasCard } from "../../state/canvas";
+import { SocialEmojiComponent } from "./emoji-dropdown";
 import { TooltipMenu } from "./tooltip-menu";
 
 export const articlePadding = 12;
@@ -21,6 +23,8 @@ const EditableArticle = styled.article`
   white-space: pre-line;
   outline: none;
   font-weight: 500;
+  position: relative;
+  z-index: 3001;
 
   > div {
     cursor: text;
@@ -76,6 +80,7 @@ const extensionTemplate = () => [
   new HeadingExtension({}),
   new LinkExtension({}),
   new WysiwygPreset({}),
+  new SocialPreset({}),
 ];
 
 export const EditorManager = ({ id, showToolbar }) => {
@@ -117,6 +122,7 @@ export const Editor = ({ id, showToolbar }) => {
   return (
     <>
       {showToolbar && <TooltipMenu id={id} />}
+      {showToolbar && <SocialEmojiComponent />}
       <EditableArticle
         onFocus={() => setCardEditorFocus(true)}
         onBlur={() => setCardEditorFocus(false)}

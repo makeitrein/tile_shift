@@ -14,10 +14,33 @@ export interface Card {
   isWysiwygEditorFocused: boolean;
 }
 
+export type ArrowPoint = "w" | "e" | "s" | "n";
+export type ArrowEnd = "w" | "e" | "s" | "n";
+export interface Arrow {
+  start: { cardId: string; point: ArrowPoint };
+  end: { cardId: string; point: ArrowPoint };
+}
+
 export const canvasCards = atom<Partial<Card>[]>({
   key: "CANVAS/cards",
   default: [],
   effects_UNSTABLE: [localStorageEffect(`canvas-card-ids`)],
+});
+
+export const canvasArrows = atom<Arrow[]>({
+  key: "CANVAS/arrows",
+  default: selector({
+    key: "CANVAS/arrow-default",
+    get: ({ get }) => {
+      const cards = get(canvasCards);
+      return [
+        {
+          start: { cardId: cards[0].id || "", point: "w" },
+          end: { cardId: cards[1].id || "", point: "e" },
+        },
+      ];
+    },
+  }),
 });
 
 export const selectedCanvasCards = atom<(HTMLElement | SVGElement)[]>({

@@ -24,7 +24,7 @@ const Card = styled.div`
   border-style: solid;
   --color: #4af;
   transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
-  z-index: ${({ isSelected }) => (isSelected ? 1000 : 100)};
+  z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
   box-shadow: ${({ isDragging }) =>
     isDragging &&
     "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};

@@ -10,67 +10,34 @@ export type ThemeMapOption = {
 export type ThemeMap = Record<string, ThemeMapOption>;
 
 export const colorThemes: ThemeMap = {
-  white: {
-    color: "",
-    background: "#fff",
-    borderColor: "",
+  blackInverse: {
+    color: "#fff",
+    background: "#27303f",
+    borderColor: "#27303f",
   },
   black: {
     color: "#27303f",
     background: "#f1f5f9",
     borderColor: "#27303f",
   },
+  white: {
+    color: "#27303f",
+    background: "#fff",
+    borderColor: "",
+  },
+  pinkInverse: {
+    color: "#fff",
+    background: "#99154b",
+    borderColor: "#99154b",
+  },
   pink: {
     color: "#99154b",
     background: "#fce8f3",
     borderColor: "#99154b",
   },
-  red: {
-    color: "#9b1c1c",
-    background: "#fde8e8",
-    borderColor: "#9b1c1c",
-  },
-
-  orange: {
-    color: "#723b13",
-    background: "#fdf6b2",
-    borderColor: "#723b13",
-  },
-
-  cyan: {
-    color: "#05505c",
-    background: "#d5f5f6",
-    borderColor: "#05505c",
-  },
-  green: {
-    color: "#03543f",
-    background: "#def7ec",
-    borderColor: "#03543f",
-  },
-  blue: {
-    color: "#1e429f",
-    background: "#e1effe",
-    borderColor: "#1e429f",
-  },
-  geekblue: {
-    color: "#42389d",
-    background: "#e5edff",
-    borderColor: "#42389d",
-  },
-  purple: {
-    color: "#5521b5",
-    background: "#edebfe",
-    borderColor: "#5521b5",
-  },
-
-  blackInverse: {
-    color: "#fff",
-    background: "#27303f",
-    borderColor: "#27303f",
-  },
-  pinkInverse: {
-    color: "#fff",
-    background: "#99154b",
+  pinkBorder: {
+    color: "#99154b",
+    background: "",
     borderColor: "#99154b",
   },
   redInverse: {
@@ -78,16 +45,44 @@ export const colorThemes: ThemeMap = {
     background: "#9b1c1c",
     borderColor: "#9b1c1c",
   },
-
+  red: {
+    color: "#9b1c1c",
+    background: "#fde8e8",
+    borderColor: "#9b1c1c",
+  },
+  redBorder: {
+    color: "#9b1c1c",
+    background: "",
+    borderColor: "#9b1c1c",
+  },
   orangeInverse: {
     color: "#fff",
     background: "#723b13",
     borderColor: "#723b13",
   },
-
+  orange: {
+    color: "#723b13",
+    background: "#fdf6b2",
+    borderColor: "#723b13",
+  },
+  orangeBorder: {
+    color: "#723b13",
+    background: "",
+    borderColor: "#723b13",
+  },
   cyanInverse: {
     color: "#fff",
     background: "#05505c",
+    borderColor: "#05505c",
+  },
+  cyan: {
+    color: "#05505c",
+    background: "#d5f5f6",
+    borderColor: "#05505c",
+  },
+  cyanBorder: {
+    color: "#05505c",
+    background: "",
     borderColor: "#05505c",
   },
   greenInverse: {
@@ -95,9 +90,29 @@ export const colorThemes: ThemeMap = {
     background: "#03543f",
     borderColor: "#03543f",
   },
+  green: {
+    color: "#03543f",
+    background: "#def7ec",
+    borderColor: "#03543f",
+  },
+  greenBorder: {
+    color: "#03543f",
+    background: "",
+    borderColor: "#03543f",
+  },
   blueInverse: {
     color: "#fff",
     background: "#1e429f",
+    borderColor: "#1e429f",
+  },
+  blue: {
+    color: "#1e429f",
+    background: "#e1effe",
+    borderColor: "#1e429f",
+  },
+  blueBorder: {
+    color: "#1e429f",
+    background: "",
     borderColor: "#1e429f",
   },
   geekblueInverse: {
@@ -105,9 +120,31 @@ export const colorThemes: ThemeMap = {
     background: "#42389d",
     borderColor: "#42389d",
   },
+  geekblue: {
+    color: "#42389d",
+    background: "#e5edff",
+    borderColor: "#42389d",
+  },
+
+  geekblueBorder: {
+    color: "#42389d",
+    background: "",
+    borderColor: "#42389d",
+  },
   purpleInverse: {
     color: "#fff",
     background: "#5521b5",
+    borderColor: "#5521b5",
+  },
+  purple: {
+    color: "#5521b5",
+    background: "#edebfe",
+    borderColor: "#5521b5",
+  },
+
+  purpleBorder: {
+    color: "#5521b5",
+    background: "",
     borderColor: "#5521b5",
   },
 };
@@ -116,7 +153,7 @@ export const ColorPicker = ({ id }) => {
   const [card, setCard] = useRecoilState(canvasCard(id));
 
   return (
-    <div className="flex w-48 flex-wrap">
+    <div className="flex w-28 flex-wrap align-middle justify-center">
       {Object.entries(colorThemes).map(([theme, css]) => (
         <>
           <span
@@ -141,7 +178,7 @@ export const ColorBlock = ({ id }) => {
       <div
         className={`absolute left-0 top-0 right-0 bottom-0 border -mr-px z-10 border-solid text-center inline-flex items-center justify-center`}
         style={{
-          ...style,
+          background: style.background || "white",
           borderColor:
             style.borderColor ||
             "rgba(209, 213, 219, var(--tw-border-opacity))",
