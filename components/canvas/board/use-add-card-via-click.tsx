@@ -1,9 +1,9 @@
 import { useSetRecoilState } from "recoil";
-import { canvasCards } from "../../state/cards";
+import { canvasCardDefaults } from "../../state/cards";
 import { cardHeight, cardWidth } from "../card/canvas-card";
 
 export const useAddCardViaClick = (canvasEditor) => {
-  const setCards = useSetRecoilState(canvasCards);
+  const setCards = useSetRecoilState(canvasCardDefaults);
 
   return (e: React.MouseEvent) => {
     const isCanvas = e.target === canvasEditor;

@@ -1,5 +1,5 @@
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
-import { Arrow, canvasCards } from "./cards";
+import { Arrow, canvasCardDefaults } from "./cards";
 import { localStorageEffect } from "./utils";
 
 export const canvasArrows = atom<Arrow[]>({
@@ -7,7 +7,7 @@ export const canvasArrows = atom<Arrow[]>({
   default: selector({
     key: "CANVAS/arrow-default",
     get: ({ get }) => {
-      const cards = get(canvasCards);
+      const cards = get(canvasCardDefaults);
       return [
         {
           id: "faker",

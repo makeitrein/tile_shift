@@ -5,7 +5,10 @@ import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { selectedCanvasCardIds, selectedCanvasCards } from "../../state/cards";
+import {
+  selectedCanvasCardIds,
+  selectedCanvasCardTargets,
+} from "../../state/cards";
 import { useGetCard, useUpdateCard } from "../../state/utils";
 import { CanvasCardList } from "../card/canvas-card-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
@@ -28,7 +31,9 @@ const Canvas = styled.div`
 `;
 
 export const Board = () => {
-  const [selectedCards, setSelectedCards] = useRecoilState(selectedCanvasCards);
+  const [selectedCards, setSelectedCards] = useRecoilState(
+    selectedCanvasCardTargets
+  );
   const selectedCardIds = useRecoilValue(selectedCanvasCardIds);
   const [disablePan, setDisablePan] = React.useState(true);
   const [zoom, setZoom] = React.useState(1);

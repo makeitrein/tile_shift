@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { canvasCard, canvasCards } from "../../state/cards";
+import { canvasCard, canvasCardDefaults } from "../../state/cards";
 import { cardHeight, cardWidth } from "./canvas-card";
 
 const positionStyle = {
@@ -50,7 +50,7 @@ interface Props {
 export const ConnectButton = ({ id, direction }: Props) => {
   const card = useRecoilValue(canvasCard(id));
 
-  const [cards, setCards] = useRecoilState(canvasCards);
+  const [cards, setCards] = useRecoilState(canvasCardDefaults);
 
   const addNearbyCard = () => {
     setCards((oldCards) => [
