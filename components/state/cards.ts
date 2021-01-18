@@ -12,6 +12,7 @@ export interface Card {
   height: number;
   isDragging: boolean;
   isWysiwygEditorFocused: boolean;
+  editorHTML: string;
 }
 
 export type ArrowPoint = "w" | "e" | "s" | "n";
@@ -133,6 +134,8 @@ export const canvasCard = atomFamily<Card, string>({
       const x = card.x || 0;
       const y = card.y || 0;
 
+      const editorHTML = card.editorHTML || "";
+
       const isDragging = card.isDragging || false;
       const isWysiwygEditorFocused = card.isWysiwygEditorFocused || false;
 
@@ -145,6 +148,7 @@ export const canvasCard = atomFamily<Card, string>({
         y,
         isDragging,
         isWysiwygEditorFocused,
+        editorHTML,
       };
     },
   }),

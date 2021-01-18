@@ -21,6 +21,7 @@
     "antd": "^4.9.4",
     "autoprefixer": "^10.1.0",
     "framer-motion": "^3.2.0",
+    "html-react-parser": "^1.2.1",
     "memoize-one": "^5.1.1",
     "moveable-helper": "^0.4.0",
     "next": "10.0.4",

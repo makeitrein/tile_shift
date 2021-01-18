@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { fromHtml } from "remirror/core";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { fromHtml, toHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
 import { HeadingExtension } from "remirror/extension/heading";
 import { ItalicExtension } from "remirror/extension/italic";
@@ -18,9 +18,9 @@ import { SocialEmojiComponent } from "./emoji-dropdown";
 
 export const articlePadding = 12;
 
-const EditableArticle = styled.article`
+export const EditableArticle = styled.article`
   padding: ${articlePadding}px;
-  white-space: pre-line;
+  white-space: pre-wrap;
   outline: none;
   font-weight: 500;
   position: relative;
@@ -32,8 +32,8 @@ const EditableArticle = styled.article`
   }
 
   p {
-    font-size: 0.875rem;
-    // line-height: 1.25rem;
+    font-size: 1rem;
+    min-height: 1.5rem;
   }
 
   h2 {
@@ -84,13 +84,12 @@ const extensionTemplate = () => [
 ];
 
 export const EditorManager = ({ id, showToolbar }) => {
+  const [card, setCard] = useRecoilState(canvasCard(id));
   const manager = useManager(extensionTemplate);
 
-  // Store the editor value in a state variable.
-  const [value, setValue] = useState(() =>
-    // Use the `remirror` manager to create the state.
+  const [value, setValue] = useState(
     manager.createState({
-      content: "<p>This is the initial value</p>",
+      content: card.editorHTML || "",
       stringHandler: fromHtml,
     })
   );
@@ -101,9 +100,12 @@ export const EditorManager = ({ id, showToolbar }) => {
       key={id}
       manager={manager}
       value={value}
-      onChange={(parameter) => {
-        // Update the state to the latest value.
-        setValue(parameter.state);
+      onChange={({ state }) => {
+        setValue(state);
+        setCard((card) => ({
+          ...card,
+          editorHTML: toHtml({ node: state.doc, schema: state.schema }),
+        }));
       }}
     >
       <Editor id={id} showToolbar={showToolbar} />

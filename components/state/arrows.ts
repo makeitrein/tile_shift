@@ -8,6 +8,8 @@ export const canvasArrows = atom<Arrow[]>({
     key: "CANVAS/arrow-default",
     get: ({ get }) => {
       const cards = get(canvasCardDefaults);
+
+      if (!cards[0] || !cards[1]) return [];
       return [
         {
           id: "faker",

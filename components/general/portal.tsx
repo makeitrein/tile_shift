@@ -9,7 +9,6 @@ interface Props {
 export const Portal = memo(({ id, children }: Props) => {
   if (!id) return null;
   const el = useRef(document.getElementById(id));
-  console.log(el.current.parentElement);
   const [dynamic] = useState(!el.current.parentElement);
   useEffect(() => {
     if (dynamic) {

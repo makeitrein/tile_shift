@@ -22,7 +22,7 @@ import { useResizeCardEffect } from "./use-resize-card-effect";
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  background: rgb(240, 242, 245);
+  background: rgb(243, 240, 231);
 `;
 
 const Canvas = styled.div`

@@ -1,3 +1,4 @@
+import parse from "html-react-parser";
 import React, { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -6,6 +7,7 @@ import {
   canvasCardColorTheme,
   selectedCanvasCardIds,
 } from "../../state/cards";
+import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { ConnectButton } from "./connect-button";
 
 export const cardWidth = 140;
@@ -57,6 +59,9 @@ export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
         ...transformStyle,
       }}
     >
+      {!isOnlySelectedCard && (
+        <EditableArticle>{parse(card.editorHTML)}</EditableArticle>
+      )}
       {isOnlySelectedCard && (
         <>
           <ConnectButton id={id} direction="left" />
