@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { canvasCard, canvasCardDefaults } from "../../state/cards";
+import { useRecoilCallback, useRecoilValue, useSetRecoilState } from "recoil";
+import * as cardState from "../../state/cards";
 import { cardHeight, cardWidth } from "./canvas-card";
 
 const positionStyle = {
@@ -48,20 +48,16 @@ interface Props {
 }
 
 export const ConnectButton = ({ id, direction }: Props) => {
-  const card = useRecoilValue(canvasCard(id));
+  const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
 
-  const [cards, setCards] = useRecoilState(canvasCardDefaults);
+  const setCardIds = useSetRecoilState(cardState.cardIds);
 
-  const addNearbyCard = () => {
-    setCards((oldCards) => [
-      ...oldCards,
-      {
-        ...card,
-        ...newCardLocationByPosition[direction](card),
-        id: "new-card-" + Math.random(),
-      },
-    ]);
-  };
+  const addNearbyCard = useRecoilCallback(({ set }) => async () => {
+    const id = "new-card-" + Math.random();
+    const dimensions = newCardLocationByPosition[direction](cardDimensions);
+    setCardIds((ids) => [...ids, id]);
+    set(cardState.cardDimensions(id), dimensions);
+  });
 
   return (
     <button

@@ -5,11 +5,8 @@ import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {
-  selectedCanvasCardIds,
-  selectedCanvasCardTargets,
-} from "../../state/cards";
-import { useGetCard, useUpdateCard } from "../../state/utils";
+import * as cardState from "../../state/cards";
+import { useGetCardDimensions, useSetCardDimensions } from "../../state/utils";
 import { CanvasCardList } from "../card/canvas-card-list";
 import { useAddCardViaClick } from "./use-add-card-via-click";
 import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
@@ -31,9 +28,9 @@ const Canvas = styled.div`
 
 export const Board = () => {
   const [selectedCards, setSelectedCards] = useRecoilState(
-    selectedCanvasCardTargets
+    cardState.selectedCardTargets
   );
-  const selectedCardIds = useRecoilValue(selectedCanvasCardIds);
+  const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
   const [disablePan, setDisablePan] = React.useState(true);
   const [zoom, setZoom] = React.useState(1);
 
@@ -58,8 +55,8 @@ export const Board = () => {
     range,
   });
 
-  const updateCard = useUpdateCard();
-  const getCard = useGetCard();
+  const updateCard = useSetCardDimensions();
+  const getCardDimensions = useGetCardDimensions();
 
   const dragResizeCard = useDragResizeCard();
   const addCardViaClick = useAddCardViaClick(canvasEditorRef.current);
@@ -92,13 +89,13 @@ export const Board = () => {
 
   const onResizeStart = useCallback(({ target, setOrigin, dragStart }) => {
     setOrigin(["%", "%"]);
-    const { x, y } = getCard(target.id);
+    const { x, y } = getCardDimensions(target.id);
     dragStart && dragStart.set([x, y]);
   }, []);
 
   const onResizeGroupStart = useCallback(({ events, setMin }) => {
     events.forEach((ev) => {
-      const { x, y } = getCard(ev.target.id);
+      const { x, y } = getCardDimensions(ev.target.id);
       ev.dragStart && ev.dragStart.set([x, y]);
     });
   }, []);
@@ -115,7 +112,7 @@ export const Board = () => {
   const onDragStart = useCallback((ev) => {
     const target = ev.target;
 
-    const { x, y } = getCard(target.id);
+    const { x, y } = getCardDimensions(target.id);
 
     ev.set([x, y]);
   }, []);
@@ -138,7 +135,7 @@ export const Board = () => {
     e.events.forEach((ev) => {
       const target = ev.target;
 
-      const { x, y } = getCard(target.id);
+      const { x, y } = getCardDimensions(target.id);
       ev.set([x, y]);
     });
   }, []);

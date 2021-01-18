@@ -1,18 +1,13 @@
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  canvasCardDefaults,
-  Card,
-  selectedCanvasCardIds,
-  selectedCanvasCardTargets,
-  singleSelectedCanvasCard,
-} from "../../state/cards";
+import * as cardState from "../../state/cards";
+import { canvasCardIds, Card, selectedCardTargets } from "../../state/cards";
 
 export const useDeleteCardsViaBackspace = () => {
-  const setCards = useSetRecoilState(canvasCardDefaults);
-  const setSelectedCards = useSetRecoilState(selectedCanvasCardTargets);
-  const selectedCardIds = useRecoilValue(selectedCanvasCardIds);
-  const singleSelectedCard = useRecoilValue(singleSelectedCanvasCard);
+  const setCards = useSetRecoilState(canvasCardIds);
+  const setSelectedCards = useSetRecoilState(selectedCardTargets);
+  const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
+  const editableCardSettings = useRecoilValue(cardState.editableCardSettings);
 
   const filterSelectedCards = (cards: Card[]) =>
     cards.filter((card) => !selectedCardIds.includes(card.id));
@@ -20,11 +15,11 @@ export const useDeleteCardsViaBackspace = () => {
   useHotkeys(
     "backspace",
     () => {
-      if (!singleSelectedCard?.isWysiwygEditorFocused) {
+      if (!editableCardSettings?.isWysiwygEditorFocused) {
         setCards(filterSelectedCards);
         setSelectedCards([]);
       }
     },
-    [selectedCardIds, singleSelectedCard]
+    [selectedCardIds, editableCardSettings]
   );
 };

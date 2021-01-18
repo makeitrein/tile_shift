@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { useUpdateCard } from "../../state/utils";
+import { useSetCardDimensions } from "../../state/utils";
 
 export const useDragResizeCard = () => {
-  const updateCard = useUpdateCard();
+  const updateCard = useSetCardDimensions();
 
   return useCallback((ev) => {
     const target = ev.target as HTMLDivElement;

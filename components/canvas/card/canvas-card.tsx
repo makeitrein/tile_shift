@@ -2,11 +2,7 @@ import parse from "html-react-parser";
 import React, { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {
-  canvasCard,
-  canvasCardColorTheme,
-  selectedCanvasCardIds,
-} from "../../state/cards";
+import * as cardState from "../../state/cards";
 import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { ConnectButton } from "./connect-button";
 
@@ -38,29 +34,33 @@ interface Props {
 
 export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
   const ref = useRef();
-  const card = useRecoilValue(canvasCard(id));
-  const selectedCardIds = useRecoilValue(selectedCanvasCardIds);
-  const colorTheme = useRecoilValue(canvasCardColorTheme(id));
+  const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
+  const cardSettings = useRecoilValue(cardState.cardSettings(id));
+  const cardContent = useRecoilValue(cardState.cardContent(id));
+  const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
+  const colorTheme = useRecoilValue(cardState.cardColorTheme(id));
 
-  const transformStyle = { transform: `translate(${card.x}px, ${card.y}px)` };
-  const isSelected = selectedCardIds.includes(card.id);
+  const transformStyle = {
+    transform: `translate(${cardDimensions.x}px, ${cardDimensions.y}px)`,
+  };
+  const isSelected = selectedCardIds.includes(id);
 
   return (
     <Card
       ref={ref}
       id={id}
-      isDragging={card.isDragging}
+      isDragging={cardSettings.isDragging}
       isSelected={isSelected}
       className="canvas-card"
       style={{
-        width: card.width,
-        height: card.height,
+        width: cardDimensions.width,
+        height: cardDimensions.height,
         ...colorTheme,
         ...transformStyle,
       }}
     >
       {!isOnlySelectedCard && (
-        <EditableArticle>{parse(card.editorHTML)}</EditableArticle>
+        <EditableArticle>{parse(cardContent.content)}</EditableArticle>
       )}
       {isOnlySelectedCard && (
         <>

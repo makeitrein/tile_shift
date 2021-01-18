@@ -1,19 +1,19 @@
 import { DefaultValue, useRecoilCallback } from "recoil";
-import { canvasCard } from "./cards";
+import * as cardState from "./cards";
 
-export const useUpdateCard = () =>
+export const useSetCardDimensions = () =>
   useRecoilCallback(({ set }) => {
-    return (id: string, data: Object) => {
-      set(canvasCard(id), (card) => ({
+    return (id: string, dimensions: Partial<CardDimensions>) => {
+      set(cardState.cardDimensions(id), (card) => ({
         ...card,
-        ...data,
+        ...dimensions,
       }));
     };
   });
 
-export const useGetCard = () =>
+export const useGetCardDimensions = () =>
   useRecoilCallback(({ snapshot }) => (id: string) => {
-    return snapshot.getLoadable(canvasCard(id)).contents;
+    return snapshot.getLoadable(cardState.cardDimensions(id)).contents;
   });
 
 export const syncStorageEffect = () => ({ setSelf, trigger }) => {

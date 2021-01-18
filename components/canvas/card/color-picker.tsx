@@ -1,5 +1,5 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { canvasCard, canvasCardColorTheme } from "../../state/cards";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import * as cardState from "../../state/cards";
 
 export type ThemeMapOption = {
   color: string;
@@ -150,14 +150,16 @@ export const colorThemes: ThemeMap = {
 };
 
 export const ColorPicker = ({ id }) => {
-  const [card, setCard] = useRecoilState(canvasCard(id));
+  const setCardSettings = useSetRecoilState(cardState.cardSettings(id));
 
   return (
     <div className="flex w-28 flex-wrap align-middle justify-center">
       {Object.entries(colorThemes).map(([theme, css]) => (
         <>
           <span
-            onClick={() => setCard((card) => ({ ...card, theme }))}
+            onClick={() =>
+              setCardSettings((settings) => ({ ...settings, theme }))
+            }
             className={`w-8 h-8 mr-1 mb-1 border cursor-pointer border-solid`}
             style={{
               ...css,
@@ -171,7 +173,7 @@ export const ColorPicker = ({ id }) => {
 };
 
 export const ColorBlock = ({ id }) => {
-  const style = useRecoilValue(canvasCardColorTheme(id));
+  const style = useRecoilValue(cardState.cardColorTheme(id));
 
   return (
     <div className="w-4 ">

@@ -12,7 +12,7 @@ import { SocialPreset } from "remirror/preset/social";
 import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
-import { canvasCard } from "../../state/cards";
+import * as cardState from "../../state/cards";
 import { TooltipMenu } from "../card/tooltip-menu";
 import { SocialEmojiComponent } from "./emoji-dropdown";
 
@@ -84,12 +84,12 @@ const extensionTemplate = () => [
 ];
 
 export const EditorManager = ({ id, showToolbar }) => {
-  const [card, setCard] = useRecoilState(canvasCard(id));
+  const [card, setCard] = useRecoilState(cardState.cardContent(id));
   const manager = useManager(extensionTemplate);
 
   const [value, setValue] = useState(
     manager.createState({
-      content: card.editorHTML || "",
+      content: card.content || "",
       stringHandler: fromHtml,
     })
   );
@@ -115,10 +115,10 @@ export const EditorManager = ({ id, showToolbar }) => {
 
 export const Editor = ({ id, showToolbar }) => {
   const { getRootProps } = useRemirror();
-  const setCard = useSetRecoilState(canvasCard(id));
+  const setCardSettings = useSetRecoilState(cardState.cardSettings(id));
 
   const setCardEditorFocus = (isWysiwygEditorFocused: boolean) => {
-    setCard((card) => ({ ...card, isWysiwygEditorFocused }));
+    setCardSettings((settings) => ({ ...settings, isWysiwygEditorFocused }));
   };
 
   return (
