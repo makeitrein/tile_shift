@@ -11,7 +11,6 @@ import {
 } from "../../state/cards";
 import { useGetCard, useUpdateCard } from "../../state/utils";
 import { CanvasCardList } from "../card/canvas-card-list";
-import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { useAddCardViaClick } from "./use-add-card-via-click";
 import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
 import { useDeleteTextEffect } from "./use-deselect-text-effect";
@@ -73,12 +72,12 @@ export const Board = () => {
       className="wrapper"
       onDoubleClick={addCardViaClick}
     >
-      <ZoomControlToolbar
+      {/* <ZoomControlToolbar
         disablePan={disablePan}
         toggleDisablePan={() => setDisablePan((pan) => !pan)}
         range={range}
         panzoom={panzoom}
-      />
+      /> */}
 
       {disablePan && (
         <Selecto
