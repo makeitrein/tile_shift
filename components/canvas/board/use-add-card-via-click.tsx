@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
 import { canvasCardDefaults } from "../../state/cards";
 import { cardHeight, cardWidth } from "../card/canvas-card";
@@ -5,7 +6,7 @@ import { cardHeight, cardWidth } from "../card/canvas-card";
 export const useAddCardViaClick = (canvasEditor) => {
   const setCards = useSetRecoilState(canvasCardDefaults);
 
-  return (e: React.MouseEvent) => {
+  return useCallback((e: React.MouseEvent) => {
     const isCanvas = e.target === canvasEditor;
     if (!isCanvas) {
       return;
@@ -18,5 +19,5 @@ export const useAddCardViaClick = (canvasEditor) => {
         y: e.nativeEvent.offsetY - cardHeight / 2,
       },
     ]);
-  };
+  }, []);
 };

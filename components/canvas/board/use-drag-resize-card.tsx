@@ -1,9 +1,10 @@
+import { useCallback } from "react";
 import { useUpdateCard } from "../../state/utils";
 
 export const useDragResizeCard = () => {
   const updateCard = useUpdateCard();
 
-  return (ev) => {
+  return useCallback((ev) => {
     const target = ev.target as HTMLDivElement;
     const article = target.querySelector("article");
 
@@ -18,5 +19,5 @@ export const useDragResizeCard = () => {
     target.style.width = `${newWidth}px`;
     target.style.height = `${newHeight}px`;
     ev.target.style.transform = `translate(${ev.drag.beforeTranslate[0]}px, ${ev.drag.beforeTranslate[1]}px)`;
-  };
+  }, []);
 };
