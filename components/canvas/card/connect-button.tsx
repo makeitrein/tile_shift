@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { canvasCard, canvasCards } from "../../state/canvas";
+import { canvasCard, canvasCards } from "../../state/cards";
 import { cardHeight, cardWidth } from "./canvas-card";
 
 const positionStyle = {

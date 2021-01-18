@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { canvasCards } from "../../state/canvas";
+import { canvasCards } from "../../state/cards";
 import { cardHeight, cardWidth } from "../card/canvas-card";
 
 export const useAddCardViaClick = (canvasEditor) => {

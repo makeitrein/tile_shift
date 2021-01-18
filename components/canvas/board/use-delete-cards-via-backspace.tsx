@@ -6,7 +6,7 @@ import {
   selectedCanvasCardIds,
   selectedCanvasCards,
   singleSelectedCanvasCard,
-} from "../../state/canvas";
+} from "../../state/cards";
 
 export const useDeleteCardsViaBackspace = () => {
   const setCards = useSetRecoilState(canvasCards);

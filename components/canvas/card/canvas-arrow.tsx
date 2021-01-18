@@ -2,7 +2,8 @@ import React from "react";
 import { ArrowSvg, LineOrientation } from "react-simple-arrows";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { canvasArrow, canvasCard } from "../../state/canvas";
+import { canvasArrow } from "../../state/arrows";
+import { canvasCard } from "../../state/cards";
 
 export const cardWidth = 140;
 export const cardHeight = 76;

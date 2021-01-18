@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { canvasCard, canvasCardColorTheme } from "../../state/canvas";
+import { canvasCard, canvasCardColorTheme } from "../../state/cards";
 
 export type ThemeMapOption = {
   color: string;

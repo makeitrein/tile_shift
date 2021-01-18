@@ -5,8 +5,7 @@ import {
   canvasCard,
   canvasCardColorTheme,
   selectedCanvasCardIds,
-} from "../../state/canvas";
-import { EditorManager } from "../text-editor/wysiwig-editor";
+} from "../../state/cards";
 import { ConnectButton } from "./connect-button";
 
 export const cardWidth = 140;
@@ -58,8 +57,6 @@ export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
         ...transformStyle,
       }}
     >
-      <EditorManager id={id} showToolbar={isOnlySelectedCard} />
-
       {isOnlySelectedCard && (
         <>
           <ConnectButton id={id} direction="left" />

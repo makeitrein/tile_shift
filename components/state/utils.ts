@@ -1,5 +1,5 @@
 import { DefaultValue, useRecoilCallback } from "recoil";
-import { canvasCard } from "./canvas";
+import { canvasCard } from "./cards";
 
 export const useUpdateCard = () =>
   useRecoilCallback(({ set }) => {

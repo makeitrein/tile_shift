@@ -12,7 +12,7 @@ import { SocialPreset } from "remirror/preset/social";
 import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
-import { canvasCard } from "../../state/canvas";
+import { canvasCard } from "../../state/cards";
 import { TooltipMenu } from "../card/tooltip-menu";
 import { SocialEmojiComponent } from "./emoji-dropdown";
 
