@@ -237,7 +237,6 @@ export const TooltipMenu = ({ id }) => {
             </Popover>
 
             <Popover
-              visible={emojiPickerVisible}
               getPopupContainer={() => tooltipRef.current}
               placement="topLeft"
               trigger="click"
@@ -245,9 +244,7 @@ export const TooltipMenu = ({ id }) => {
               arrowPointAtCenter
             >
               <span>
-                <TooltipMenuItem
-                  onClick={() => setEmojiPickerVisible((visible) => !visible)}
-                >
+                <TooltipMenuItem>
                   <svg
                     viewBox="64 64 896 896"
                     focusable="false"
