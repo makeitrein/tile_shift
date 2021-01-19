@@ -18,11 +18,11 @@ export const articlePadding = 12;
 
 export const EditableArticle = styled.article`
   padding: ${articlePadding}px;
-  white-space: pre-wrap;
+  white-space: pre-line;
+  word-wrap: break-word;
   outline: none;
   font-weight: 500;
   position: relative;
-  z-index: 3001;
 
   > div {
     cursor: text;
@@ -50,9 +50,15 @@ export const EditableArticle = styled.article`
     margin-left: -6px;
   }
 
+  s {
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
+
   code {
-    background: #eee;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    font-family: inherit !important;
+    position: relative;
+    background: rgba(234, 221, 6, 0.3);
   }
 
   ol {

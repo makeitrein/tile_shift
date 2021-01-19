@@ -13,8 +13,11 @@ import {
 } from "../../state/utils";
 import { CanvasCardList } from "../card/canvas-card-list";
 import { useAddCardViaClick } from "./use-add-card-via-click";
+import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
+import { useDeleteTextEffect } from "./use-deselect-text-effect";
 import { useDragResizeCard } from "./use-drag-resize-card";
 import { usePanzoomEffects } from "./use-panzoom-effects";
+import { useResizeCardEffect } from "./use-resize-card-effect";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -42,9 +45,9 @@ export const Board = () => {
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
-  // useDeleteCardsViaBackspace();
-  // useResizeCardEffect(moveableRef.current);
-  // useDeleteTextEffect(selectedCardIds);
+  useDeleteCardsViaBackspace();
+  useResizeCardEffect(moveableRef.current);
+  useDeleteTextEffect(selectedCardIds);
 
   let panzoom = panzoomRef.current;
 

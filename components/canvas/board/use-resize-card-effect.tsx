@@ -19,5 +19,5 @@ export const useResizeCardEffect = (moveable) => {
         });
       }
     });
-  }, []);
+  }, [moveable]);
 };

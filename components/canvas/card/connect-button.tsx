@@ -59,7 +59,7 @@ export const ConnectButton = ({ id, direction }: Props) => {
     <button
       onClick={() => createInitialCard(newCardDimensions)}
       type="button"
-      className={`z-1000 absolute inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+      className={`z-overlay absolute inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
       style={positionStyle[direction]}
     >
       <svg

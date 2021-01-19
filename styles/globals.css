@@ -17,10 +17,6 @@ body {
   background: rgba(37, 99, 235, 1) !important;
 }
 
-.z-1000 {
-  z-index: 3001;
-}
-
 .hide-border {
   display: none !important;
 }
@@ -58,4 +54,8 @@ body {
 
 .emoji-mart-emoji:focus {
   outline: none;
+}
+
+.ant-popover {
+  z-index: 4000 !important;
 }

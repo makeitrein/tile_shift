@@ -8,7 +8,7 @@ export const ZoomControlToolbar = ({
   toggleDisablePan,
 }) => {
   return (
-    <div className="fixed bottom-4 right-4 z-1000 flex">
+    <div className="fixed bottom-4 right-4 z-overlay flex">
       <Button
         onClick={toggleDisablePan}
         active={!disablePan}
