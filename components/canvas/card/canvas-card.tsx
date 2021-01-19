@@ -29,13 +29,13 @@ const Card = styled.div`
 
 interface Props {
   id: string;
-  isOnlySelectedCard: boolean;
 }
 
-export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
+export const CanvasCard = ({ id }: Props) => {
   const ref = useRef();
   const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
   const cardSettings = useRecoilValue(cardState.cardSettings(id));
+  const editableCardId = useRecoilValue(cardState.editableCardId);
   const cardContent = useRecoilValue(cardState.cardContent(id));
   const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
   const colorTheme = useRecoilValue(cardState.cardColorTheme(id));
@@ -44,6 +44,7 @@ export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
     transform: `translate(${cardDimensions.x}px, ${cardDimensions.y}px)`,
   };
   const isSelected = selectedCardIds.includes(id);
+  const isEditable = editableCardId === id;
 
   return (
     <Card
@@ -59,10 +60,10 @@ export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
         ...transformStyle,
       }}
     >
-      {!isOnlySelectedCard && (
+      {!isEditable && (
         <EditableArticle>{parse(cardContent.content || "")}</EditableArticle>
       )}
-      {isOnlySelectedCard && (
+      {isEditable && (
         <>
           <ConnectButton id={id} direction="left" />
           <ConnectButton id={id} direction="top" />

@@ -13,11 +13,8 @@ import {
 } from "../../state/utils";
 import { CanvasCardList } from "../card/canvas-card-list";
 import { useAddCardViaClick } from "./use-add-card-via-click";
-import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
-import { useDeleteTextEffect } from "./use-deselect-text-effect";
 import { useDragResizeCard } from "./use-drag-resize-card";
 import { usePanzoomEffects } from "./use-panzoom-effects";
-import { useResizeCardEffect } from "./use-resize-card-effect";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -45,9 +42,9 @@ export const Board = () => {
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
-  useDeleteCardsViaBackspace();
-  useResizeCardEffect(moveableRef.current);
-  useDeleteTextEffect(selectedCardIds);
+  // useDeleteCardsViaBackspace();
+  // useResizeCardEffect(moveableRef.current);
+  // useDeleteTextEffect(selectedCardIds);
 
   let panzoom = panzoomRef.current;
 
@@ -118,6 +115,7 @@ export const Board = () => {
     const target = ev.target;
 
     const { x, y } = getCardDimensions(target.id);
+    setCardSettings(ev.target.id, { isDragging: true });
 
     ev.set([x, y]);
   }, []);
@@ -128,7 +126,7 @@ export const Board = () => {
     const x = e.beforeTranslate[0];
     const y = e.beforeTranslate[1];
 
-    setCardSettings(e.target.id, { x, y, isDragging: true });
+    setCardDimensions(e.target.id, { x, y });
     target.style.transform = `translate(${x}px, ${y}px)`;
   }, []);
 

@@ -28,7 +28,7 @@ export interface Arrow {
   end: { cardId: string; point: ArrowPoint };
 }
 
-export const initialCardValues = atom<Record<string, Partial<Card>>>({
+export const initialCardValues = atom<Record<string, Card>>({
   key: "CANVAS/initial-cards-query",
   default: {},
 });
@@ -124,8 +124,8 @@ export const selectedCardIds = selector<string[]>({
 export const editableCardId = selector<string | null>({
   key: "CANVAS/editable-card-id",
   get: ({ get }) => {
-    const cards = get(selectedCardIds);
-    return cards.length === 1 ? cards[0] : null;
+    const ids = get(selectedCardIds);
+    return ids.length === 1 ? ids[0] : null;
   },
 });
 

@@ -1,7 +1,19 @@
 import { DefaultValue, useRecoilCallback } from "recoil";
-import { cardWidth } from "../canvas/card/canvas-card";
+import { cardHeight, cardWidth } from "../canvas/card/canvas-card";
 import * as cardState from "./cards";
-import { CardDimensions } from "./cards";
+import { Card, CardDimensions } from "./cards";
+
+export const defaultCardValues: Card = {
+  id: "",
+  x: 0,
+  y: 0,
+  theme: "white",
+  width: cardWidth,
+  height: cardHeight,
+  content: "",
+  isDragging: false,
+  isWysiwygEditorFocused: false,
+};
 
 export const useCreateInitialCard = () =>
   useRecoilCallback(({ set }) => {
@@ -9,7 +21,7 @@ export const useCreateInitialCard = () =>
       const id = "new-card" + new Date().getTime();
       set(cardState.initialCardValues, (cards) => ({
         ...cards,
-        [id]: { id, ...dimensions },
+        [id]: { ...defaultCardValues, id, ...dimensions },
       }));
     };
   });

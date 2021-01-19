@@ -104,7 +104,7 @@ export const EditorManager = ({ id, showToolbar }) => {
         setValue(state);
         setCard((card) => ({
           ...card,
-          editorHTML: toHtml({ node: state.doc, schema: state.schema }),
+          content: toHtml({ node: state.doc, schema: state.schema }),
         }));
       }}
     >
