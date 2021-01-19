@@ -128,7 +128,7 @@ export const TooltipMenu = ({ id }) => {
 
             <TooltipMenuItem
               className="pr-5"
-              onClick={() => commands.toggleHeading({ level: 2 })}
+              onClick={() => commands.toggleCode()}
               active={active.heading()}
             >
               <svg

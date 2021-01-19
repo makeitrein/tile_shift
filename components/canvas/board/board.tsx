@@ -63,31 +63,37 @@ export const Board = () => {
   const dragResizeCard = useDragResizeCard();
   const addCardViaClick = useAddCardViaClick(canvasEditorRef.current);
 
-  const selectoOnDragStart = useCallback((e) => {
-    const moveable = moveableRef.current;
-    const target = e.inputEvent.target;
-    if (
-      moveable.isMoveableElement(target) ||
-      selectedCards.some((t) => t === target || t.contains(target))
-    ) {
-      e.stop();
-    }
-  }, []);
+  const selectoOnDragStart = useCallback(
+    (e) => {
+      const moveable = moveableRef.current;
+      const target = e.inputEvent.target;
+      if (
+        moveable.isMoveableElement(target) ||
+        selectedCards.some((t) => t === target || t.contains(target))
+      ) {
+        e.stop();
+      }
+    },
+    [selectedCards, moveableRef]
+  );
 
   const selectoOnSelect = useCallback((e) => {
     setSelectedCards(e.selected);
   }, []);
 
-  const selectoOnSelectEnd = useCallback((e) => {
-    const moveable = moveableRef.current;
-    if (e.isDragStart) {
-      e.inputEvent.preventDefault();
+  const selectoOnSelectEnd = useCallback(
+    (e) => {
+      const moveable = moveableRef.current;
+      if (e.isDragStart) {
+        e.inputEvent.preventDefault();
 
-      setTimeout(() => {
-        moveable.dragStart(e.inputEvent);
-      });
-    }
-  }, []);
+        setTimeout(() => {
+          moveable.dragStart(e.inputEvent);
+        });
+      }
+    },
+    [moveableRef]
+  );
 
   const onResizeStart = useCallback(({ target, setOrigin, dragStart }) => {
     setOrigin(["%", "%"]);
@@ -107,9 +113,12 @@ export const Board = () => {
     []
   );
 
-  const onClickGroup = useCallback((e) => {
-    selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
-  }, []);
+  const onClickGroup = useCallback(
+    (e) => {
+      selectoRef.current.clickTarget(e.inputEvent, e.inputTarget);
+    },
+    [selectoRef]
+  );
 
   const onDragStart = useCallback((ev) => {
     const target = ev.target;
