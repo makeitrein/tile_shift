@@ -51,3 +51,11 @@ body {
 .empty.elements {
   border: none;
 }
+
+.emoji-mart-emoji {
+  cursor: pointer;
+}
+
+.emoji-mart-emoji:focus {
+  outline: none;
+}

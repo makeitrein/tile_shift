@@ -8,13 +8,11 @@ import { LinkExtension } from "remirror/extension/link";
 import { UnderlineExtension } from "remirror/extension/underline";
 import { CorePreset } from "remirror/preset/core";
 import { ListPreset } from "remirror/preset/list";
-import { SocialPreset } from "remirror/preset/social";
 import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
 import { TooltipMenu } from "../card/tooltip-menu";
-import { SocialEmojiComponent } from "./emoji-dropdown";
 
 export const articlePadding = 12;
 
@@ -80,12 +78,13 @@ const extensionTemplate = () => [
   new HeadingExtension({}),
   new LinkExtension({}),
   new WysiwygPreset({}),
-  new SocialPreset({}),
 ];
 
 export const EditorManager = ({ id, showToolbar }) => {
   const [card, setCard] = useRecoilState(cardState.cardContent(id));
   const manager = useManager(extensionTemplate);
+
+  console.log(card);
 
   const [value, setValue] = useState(
     manager.createState({
@@ -124,7 +123,6 @@ export const Editor = ({ id, showToolbar }) => {
   return (
     <>
       {showToolbar && <TooltipMenu id={id} />}
-      {showToolbar && <SocialEmojiComponent />}
       <EditableArticle
         onFocus={() => setCardEditorFocus(true)}
         onBlur={() => setCardEditorFocus(false)}

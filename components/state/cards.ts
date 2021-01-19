@@ -12,6 +12,7 @@ export interface CardSettings {
   theme: string;
   isDragging: boolean;
   isWysiwygEditorFocused: boolean;
+  normalScroll: boolean;
 }
 
 export interface CardContent {
@@ -70,6 +71,7 @@ export const cardSettings = atomFamily<CardSettings, string>({
         theme: card.theme,
         isDragging: false,
         isWysiwygEditorFocused: false,
+        normalScroll: false,
       };
     },
   }),

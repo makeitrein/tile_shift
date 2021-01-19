@@ -88,7 +88,12 @@ export const SocialEmojiComponent: FC = () => {
               )}
               {...getItemProps({
                 onClick: () => {
-                  state?.command(emoji);
+                  console.log(emoji);
+                  state?.command({
+                    char: "😅",
+                    name: "sweat_smile",
+                    skinVariations: false,
+                  });
                   focus();
                   setState(null);
                 },
