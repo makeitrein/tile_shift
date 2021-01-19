@@ -19,6 +19,7 @@ const Card = styled.div`
   background: #fff;
   border-width: 1px;
   border-style: solid;
+  border-radius: 16px;
   --color: #4af;
   transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
   z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
