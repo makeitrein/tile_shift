@@ -28,19 +28,16 @@ export interface Arrow {
   end: { cardId: string; point: ArrowPoint };
 }
 
-export const initialCardsQuery = atom({
+export const initialCardValues = atom<Record<string, Partial<Card>>>({
   key: "CANVAS/initial-cards-query",
-  default: [],
+  default: {},
 });
 
-export const cardIds = atom<string[]>({
+export const cardIds = selector<string[]>({
   key: "CANVAS/cards-ids",
-  default: selector({
-    key: "CANVAS/card-ids-default",
-    get: ({ get }) => {
-      return get(initialCardsQuery).map((card) => card.id);
-    },
-  }),
+  get: ({ get }) => {
+    return Object.keys(get(initialCardValues));
+  },
 });
 
 export const cardDimensions = atomFamily<CardDimensions, string>({
@@ -48,9 +45,8 @@ export const cardDimensions = atomFamily<CardDimensions, string>({
   default: selectorFamily({
     key: "CANVAS/card-dimensions-default",
     get: (id) => ({ get }) => {
-      const cards = get(initialCardsQuery);
-
-      const card = cards.find((card) => card.id === id);
+      const cards = get(initialCardValues);
+      const card = cards[id];
 
       return {
         x: card.x,
@@ -67,9 +63,8 @@ export const cardSettings = atomFamily<CardSettings, string>({
   default: selectorFamily({
     key: "CANVAS/card-settings-default",
     get: (id) => ({ get }) => {
-      const cards = get(initialCardsQuery);
-
-      const card = cards.find((card) => card.id === id);
+      const cards = get(initialCardValues);
+      const card = cards[id];
 
       return {
         theme: card.theme,
@@ -85,9 +80,8 @@ export const cardContent = atomFamily<CardContent, string>({
   default: selectorFamily({
     key: "CANVAS/card-content-default",
     get: (id) => ({ get }) => {
-      const cards = get(initialCardsQuery);
-
-      const card = cards.find((card) => card.id === id);
+      const cards = get(initialCardValues);
+      const card = cards[id];
 
       return {
         content: card.content,

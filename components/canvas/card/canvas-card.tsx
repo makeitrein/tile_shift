@@ -60,7 +60,7 @@ export const CanvasCard = ({ id, isOnlySelectedCard }: Props) => {
       }}
     >
       {!isOnlySelectedCard && (
-        <EditableArticle>{parse(cardContent.content)}</EditableArticle>
+        <EditableArticle>{parse(cardContent.content || "")}</EditableArticle>
       )}
       {isOnlySelectedCard && (
         <>

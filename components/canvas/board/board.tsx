@@ -6,7 +6,11 @@ import Selecto from "react-selecto";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
-import { useGetCardDimensions, useSetCardDimensions } from "../../state/utils";
+import {
+  useGetCardDimensions,
+  useSetCardDimensions,
+  useSetCardSettings,
+} from "../../state/utils";
 import { CanvasCardList } from "../card/canvas-card-list";
 import { useAddCardViaClick } from "./use-add-card-via-click";
 import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
@@ -55,7 +59,8 @@ export const Board = () => {
     range,
   });
 
-  const updateCard = useSetCardDimensions();
+  const setCardDimensions = useSetCardDimensions();
+  const setCardSettings = useSetCardSettings();
   const getCardDimensions = useGetCardDimensions();
 
   const dragResizeCard = useDragResizeCard();
@@ -123,12 +128,12 @@ export const Board = () => {
     const x = e.beforeTranslate[0];
     const y = e.beforeTranslate[1];
 
-    updateCard(e.target.id, { x, y, isDragging: true });
+    setCardSettings(e.target.id, { x, y, isDragging: true });
     target.style.transform = `translate(${x}px, ${y}px)`;
   }, []);
 
   const onDragEnd = useCallback((e) => {
-    updateCard(e.target.id, { isDragging: false });
+    setCardSettings(e.target.id, { isDragging: false });
   }, []);
 
   const onDragGroupStart = useCallback((e) => {
@@ -147,7 +152,7 @@ export const Board = () => {
       const x = ev.beforeTranslate[0];
       const y = ev.beforeTranslate[1];
 
-      updateCard(target.id, { x, y });
+      setCardDimensions(target.id, { x, y });
       target.style.transform = `translate(${x}px, ${y}px)`;
     });
   }, []);

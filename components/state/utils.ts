@@ -1,5 +1,18 @@
 import { DefaultValue, useRecoilCallback } from "recoil";
+import { cardWidth } from "../canvas/card/canvas-card";
 import * as cardState from "./cards";
+import { CardDimensions } from "./cards";
+
+export const useCreateInitialCard = () =>
+  useRecoilCallback(({ set }) => {
+    return (dimensions: Partial<CardDimensions>) => {
+      const id = "new-card" + new Date().getTime();
+      set(cardState.initialCardValues, (cards) => ({
+        ...cards,
+        [id]: { id, ...dimensions },
+      }));
+    };
+  });
 
 export const useSetCardDimensions = () =>
   useRecoilCallback(({ set }) => {
@@ -7,6 +20,16 @@ export const useSetCardDimensions = () =>
       set(cardState.cardDimensions(id), (card) => ({
         ...card,
         ...dimensions,
+      }));
+    };
+  });
+
+export const useSetCardSettings = () =>
+  useRecoilCallback(({ set }) => {
+    return (id: string, settings: Partial<cardState.CardSettings>) => {
+      set(cardState.cardSettings(id), (card) => ({
+        ...card,
+        ...settings,
       }));
     };
   });
@@ -21,7 +44,7 @@ export const syncStorageEffect = () => ({ setSelf, trigger }) => {
   if (trigger === "get") {
     // Avoid expensive initialization
     setSelf([
-      { id: "alpha", x: 0, y: 0 },
+      { id: "alpha", x: 0, y: 0, width: cardWidth },
       { id: "betta", x: 150, y: 150 },
       { id: "kenny", x: 350, y: 350 },
     ]); // Call synchronously to initialize

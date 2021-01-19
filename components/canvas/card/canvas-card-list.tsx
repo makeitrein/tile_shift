@@ -4,11 +4,12 @@ import * as cardState from "../../state/cards";
 import { CanvasCard } from "./canvas-card";
 
 export const CanvasCardList = () => {
+  const initialCardValues = useRecoilValue(cardState.initialCardValues);
   const cardIds = useRecoilValue(cardState.cardIds);
   // const arrows = useRecoilValue(arrowState.arrows);
   // const editableCardId = useRecoilValue(cardState.editableCardId);
 
-  console.log(cardIds);
+  console.log(initialCardValues, cardIds);
 
   return (
     <>
