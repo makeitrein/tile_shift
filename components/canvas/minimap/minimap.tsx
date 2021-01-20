@@ -21,7 +21,10 @@ export const MiniMap = ({ panzoom, canvas }) => {
   console.log({ x, y });
   const scale = panzoom.getScale();
 
-  console.log(scale);
+  console.log("scale", scale);
+
+  const xPlusWidth = (Math.abs(x) / canvas.clientWidth) * 100;
+  const yPlusWidth = (Math.abs(y) / canvas.clientHeight) * 100;
 
   const canvasWidth = canvas.clientWidth * 10;
   const canvasHeight = canvas.clientHeight * 10;
@@ -29,17 +32,17 @@ export const MiniMap = ({ panzoom, canvas }) => {
   const viewportWidth = (canvas.clientWidth / canvasWidth / scale) * 100;
   const viewportHeight = (canvas.clientHeight / canvasHeight / scale) * 100;
 
-  const top = Math.abs((y / canvasHeight) * scale) * 1000 + "%";
-  const left = Math.abs((x / canvasWidth) * scale) * 1000 + "%";
+  const top = Math.abs(y / viewportHeight) / 10 + "%";
+  const left = Math.abs(x / viewportWidth) / 10 + "%";
 
-  console.log("top", top);
-  console.log("left", left);
+  console.log("yPlusWidth", yPlusWidth);
+  console.log("xPlusWidth", xPlusWidth);
   console.log("viewportWidth", viewportWidth);
   console.log("viewportHeight", viewportHeight);
 
   const viewportDimensions = {
-    top,
-    left,
+    top: yPlusWidth + "%",
+    left: xPlusWidth + "%",
     width: viewportWidth + "%",
     height: viewportHeight + "%",
   };
