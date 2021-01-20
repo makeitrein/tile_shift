@@ -3,29 +3,34 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
 
-export const MiniMap = ({ panzoom }) => {
+export const MiniMap = ({ panzoom, canvas }) => {
   const cardIds = useRecoilValue(cardState.cardIds);
   // const arrows = useRecoilValue(arrowState.arrows);
   const editableCardId = useRecoilValue(cardState.editableCardId);
 
   if (!panzoom) return null;
 
+  console.log("canvas", canvas.clientWidth);
+
   const mapDimensions = {
-    width: window.innerWidth / 10,
-    height: window.innerHeight / 10,
+    width: canvas.clientWidth / 100,
+    height: canvas.clientHeight / 100,
   };
 
   const { x, y } = panzoom.getPan();
+  console.log({ x, y });
   const scale = panzoom.getScale();
 
-  const canvasWidth = window.innerWidth * 10;
-  const canvasHeight = window.innerHeight * 10;
+  console.log(scale);
 
-  const viewportWidth = (window.innerWidth / canvasWidth / scale) * 100;
-  const viewportHeight = (window.innerHeight / canvasHeight / scale) * 100;
+  const canvasWidth = canvas.clientWidth * 10;
+  const canvasHeight = canvas.clientHeight * 10;
 
-  const top = Math.abs(y / viewportWidth) / 10 + "%";
-  const left = Math.abs(x / viewportHeight) / 10 + "%";
+  const viewportWidth = (canvas.clientWidth / canvasWidth / scale) * 100;
+  const viewportHeight = (canvas.clientHeight / canvasHeight / scale) * 100;
+
+  const top = Math.abs((y / canvasHeight) * scale) * 1000 + "%";
+  const left = Math.abs((x / canvasWidth) * scale) * 1000 + "%";
 
   console.log("top", top);
   console.log("left", left);

@@ -263,7 +263,7 @@ export const Board = () => {
 
         <CanvasCardList />
       </Canvas>
-      <MiniMap panzoom={panzoom} />
+      <MiniMap canvas={canvasEditorRef.current} panzoom={panzoom} />
     </Wrapper>
   );
 };
