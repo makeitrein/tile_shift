@@ -12,6 +12,7 @@ import {
   useSetCardSettings,
 } from "../../state/utils";
 import { CanvasCardList } from "../card/canvas-card-list";
+import { MiniMap } from "../minimap/minimap";
 import { useAddCardViaClick } from "./use-add-card-via-click";
 import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
 import { useDeleteTextEffect } from "./use-deselect-text-effect";
@@ -262,6 +263,7 @@ export const Board = () => {
 
         <CanvasCardList />
       </Canvas>
+      <MiniMap panzoom={panzoom} />
     </Wrapper>
   );
 };
