@@ -26,8 +26,8 @@ const Wrapper = styled.div`
 `;
 
 const Canvas = styled.div`
-  width: 400vw;
-  height: 400vh;
+  width: 1000vw;
+  height: 1000vh;
 `;
 
 export const Board = () => {
@@ -167,14 +167,15 @@ export const Board = () => {
     });
   }, []);
 
+  const boundPadding = 100;
   const bounds = useMemo(
     () =>
       process.browser
         ? {
-            left: 40,
-            top: 40,
-            right: window.innerWidth * 4 - 40,
-            bottom: window.innerHeight * 4 - 40,
+            left: boundPadding,
+            top: boundPadding,
+            right: window.innerWidth * 10 - boundPadding,
+            bottom: window.innerHeight * 10 - boundPadding,
           }
         : {},
     [process.browser]

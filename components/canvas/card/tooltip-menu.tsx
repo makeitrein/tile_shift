@@ -58,6 +58,7 @@ export const TooltipMenu = ({ id }) => {
   const { commands, active } = useRemirror({ autoUpdate: true });
   const [altToolbar, setAltToolbar] = useState(false);
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
+  const [, setWorkaround] = useState(false);
 
   const tooltipRef = useRef(null);
 
@@ -223,6 +224,7 @@ export const TooltipMenu = ({ id }) => {
             </TooltipMenuItem>
 
             <Popover
+              onVisibleChange={() => setEmojiPickerVisible((state) => !state)}
               placement="topLeft"
               trigger="click"
               getPopupContainer={() => tooltipRef.current}
@@ -237,6 +239,12 @@ export const TooltipMenu = ({ id }) => {
             </Popover>
 
             <Popover
+              visible={emojiPickerVisible}
+              onVisibleChange={(visible) => {
+                setEmojiPickerVisible(visible);
+                setTimeout(() => setWorkaround(Date.now()), 10);
+              }}
+              destroyTooltipOnHide={true}
               getPopupContainer={() => tooltipRef.current}
               placement="topLeft"
               trigger="click"

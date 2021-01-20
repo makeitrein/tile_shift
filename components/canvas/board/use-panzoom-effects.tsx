@@ -13,8 +13,8 @@ export const usePanzoomEffects = ({
       disablePan: disablePan,
       canvas: true,
       contain: "outside",
-      maxScale: 3,
-      minScale: 0.3,
+      maxScale: 1,
+      minScale: 0.1,
       handleStartEvent: (event) => {
         if (
           !disablePan &&
