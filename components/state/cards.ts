@@ -21,14 +21,6 @@ export interface CardContent {
 
 export type Card = { id: string } & CardDimensions & CardSettings & CardContent;
 
-export type ArrowPoint = "w" | "e" | "s" | "n";
-export type ArrowEnd = "w" | "e" | "s" | "n";
-export interface Arrow {
-  id: string;
-  start: { cardId: string; point: ArrowPoint };
-  end: { cardId: string; point: ArrowPoint };
-}
-
 export const initialCardValues = atom<Record<string, Card>>({
   key: "CANVAS/initial-cards-query",
   default: {},
