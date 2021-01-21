@@ -153,14 +153,17 @@ export const ColorPicker = ({ id }) => {
   const setCardSettings = useSetRecoilState(cardState.cardSettings(id));
 
   return (
-    <div className="flex w-28 flex-wrap align-middle justify-between">
+    <div
+      style={{ width: 340 }}
+      className="flex h-28 w-full flex-wrap flex-col align-middle justify-between"
+    >
       {Object.entries(colorThemes).map(([theme, css]) => (
         <>
           <span
             onClick={() =>
               setCardSettings((settings) => ({ ...settings, theme }))
             }
-            className={`w-8 h-8 mb-1 border cursor-pointer border-solid transform transition-transform hover:scale-110`}
+            className={`w-8 h-8 mb-1 px-1 border cursor-pointer border-solid transform transition-transform hover:scale-110`}
             style={{
               borderRadius: "40% 60% 70% 30% / 40% 40% 60% 50%",
 
