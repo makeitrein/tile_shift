@@ -13,6 +13,7 @@ import {
 } from "../../state/utils";
 import { CanvasCardList } from "../card/canvas-card-list";
 import { MiniMap } from "../minimap/minimap";
+import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { useAddCardViaClick } from "./use-add-card-via-click";
 import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
 import { useDeleteTextEffect } from "./use-deselect-text-effect";
@@ -27,8 +28,8 @@ const Wrapper = styled.div`
 `;
 
 const Canvas = styled.div`
-  width: 1000vw;
-  height: 1000vh;
+  width: 10000px;
+  height: 10000px;
 `;
 
 export const Board = () => {
@@ -175,8 +176,8 @@ export const Board = () => {
         ? {
             left: boundPadding,
             top: boundPadding,
-            right: window.innerWidth * 10 - boundPadding,
-            bottom: window.innerHeight * 10 - boundPadding,
+            right: 10000 - boundPadding,
+            bottom: 10000 - boundPadding,
           }
         : {},
     [process.browser]
@@ -197,6 +198,10 @@ export const Board = () => {
     [process.browser, selectedCardIds]
   );
 
+  React.useEffect(() => {
+    setInterval(() => setZoom((zoom) => zoom + 1), 100);
+  }, []);
+
   if (!process.browser) return null;
 
   return (
@@ -205,12 +210,12 @@ export const Board = () => {
       className="wrapper"
       onDoubleClick={addCardViaClick}
     >
-      {/* <ZoomControlToolbar
+      <ZoomControlToolbar
         disablePan={disablePan}
         toggleDisablePan={() => setDisablePan((pan) => !pan)}
         range={range}
         panzoom={panzoom}
-      /> */}
+      />
 
       {disablePan && (
         <Selecto
@@ -230,7 +235,6 @@ export const Board = () => {
       <Canvas ref={canvasEditorRef} className="canvas">
         <Moveable
           ref={moveableRef}
-          // renderDirections={["nw", "ne", "se", "sw"]}
           bounds={bounds}
           draggable={true}
           target={selectedCards}
