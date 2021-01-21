@@ -4,6 +4,7 @@ import * as React from "react";
 import { useRef, useState } from "react";
 import { useRemirror } from "remirror/react";
 import styled from "styled-components";
+import { Tooltip } from "../general/tooltip";
 import { EmojiPicker } from "../text-editor/emoji-picker";
 import { ColorBlock, ColorPicker } from "./color-picker";
 
@@ -22,7 +23,7 @@ const TooltipMenuItem = ({
 }) => {
   return (
     <div
-      className={`rounded-${rounded}  shadow-sm relative h-8 -ml-px whitespace-nowrap
+      className={`rounded-${rounded}  relative shadow-sm relative h-8 -ml-px whitespace-nowrap
     `}
       onClick={onClick}
     >
@@ -223,20 +224,12 @@ export const TooltipMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
 
-            <Popover
-              onVisibleChange={() => setEmojiPickerVisible((state) => !state)}
-              placement="topLeft"
-              trigger="click"
-              getPopupContainer={() => tooltipRef.current}
-              content={<ColorPicker id={id} />}
-              arrowPointAtCenter
-            >
-              <span>
-                <TooltipMenuItem>
-                  <ColorBlock id={id} />
-                </TooltipMenuItem>
-              </span>
-            </Popover>
+            <TooltipMenuItem>
+              <Tooltip>
+                <ColorPicker id={id} />
+              </Tooltip>
+              <ColorBlock id={id} />
+            </TooltipMenuItem>
 
             <Popover
               visible={emojiPickerVisible}
