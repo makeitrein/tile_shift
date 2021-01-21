@@ -1,5 +1,5 @@
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
-import { colorThemes, ThemeMapOption } from "../canvas/card/color-picker";
+import { colorThemes, ThemeMapOption } from "../canvas/card-menu/color-picker";
 import { localStorageEffect } from "./utils";
 
 export interface CardDimensions {

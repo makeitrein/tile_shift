@@ -5757,6 +5757,11 @@ react-contenteditable@^3.3.5:
     fast-deep-equal "^2.0.1"
     prop-types "^15.7.1"
 
+react-cool-onclickoutside@^1.5.9:
+  version "1.5.9"
+  resolved "https://registry.yarnpkg.com/react-cool-onclickoutside/-/react-cool-onclickoutside-1.5.9.tgz#2484a024a623031e5deb512d42eb2a016c6a8358"
+  integrity sha512-mNuPegHmQInKzTtal+8ye8FKLvX4Xl434N8cmzmasqIr73v+qllb51cdkdpSndh/Aaf2l7g+LZhfOIoyiMFPiw==
+
 react-css-styled@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-css-styled/-/react-css-styled-1.0.0.tgz#4b4272aa24f0a659e9723eac8263d2179dc6e886"

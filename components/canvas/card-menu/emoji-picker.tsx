@@ -1,6 +1,5 @@
 import "emoji-mart/css/emoji-mart.css";
 import { useRemirror } from "remirror/react";
-import { useSetCardSettings } from "../../state/utils";
 
 const emojis = [
   "👍",
@@ -54,15 +53,17 @@ const emojis = [
   "📅",
 ];
 
-export const EmojiPicker = ({ afterSelect }) => {
+export const EmojiPicker = () => {
   const { commands, focus } = useRemirror({ autoUpdate: true });
   const addEmoji = (emoji) => {
     commands.insertText(emoji);
     focus();
   };
-  const setCardSettings = useSetCardSettings();
   return (
-    <div className="w-36 flex justify-between align-center flex-wrap">
+    <div
+      style={{ width: 380 }}
+      className="flex h-36 w-full flex-wrap flex-col align-middle justify-between"
+    >
       {emojis.map((emoji, i) => (
         <div
           key={i}

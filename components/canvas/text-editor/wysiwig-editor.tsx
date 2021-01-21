@@ -12,7 +12,7 @@ import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
-import { TooltipMenu } from "../card/tooltip-menu";
+import { TooltipMenu } from "../card-menu/tooltip-menu";
 
 export const articlePadding = 12;
 
