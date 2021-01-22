@@ -1,6 +1,6 @@
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
 import { colorThemes, ThemeMapOption } from "../canvas/card-menu/color-picker";
-import { localStorageEffect } from "./utils";
+import { localStorageEffect } from "./effects";
 
 export interface CardDimensions {
   x: number;
@@ -85,18 +85,18 @@ export const cardContent = atomFamily<CardContent, string>({
 });
 
 // Provides default data for each initial canvas card, does not contain up-to-date data
-export const canvasCardIds = atom<Partial<Card>[]>({
+export const CardIds = atom<Partial<Card>[]>({
   key: "CANVAS/cards",
   default: [],
   effects_UNSTABLE: [localStorageEffect(`canvas-card-ids`)],
 });
 
 // // The actual card data found via the atomFamily
-// export const canvasCards = selector<Card[]>({
+// export const Cards = selector<Card[]>({
 //   key: "CANVAS/canvas-cards",
 //   get: ({ get }) => {
-//     const cardDefaults = get(canvasCardIds);
-//     return cardDefaults.map((card) => get(canvasCard(card.id)));
+//     const cardDefaults = get(CardIds);
+//     return cardDefaults.map((card) => get(Card(card.id)));
 //   },
 // });
 
@@ -106,7 +106,7 @@ export const selectedCardTargets = atom<(HTMLElement | SVGElement)[]>({
   default: [],
 });
 
-// IDs that correspond to both a DOM card and canvasCard
+// IDs that correspond to both a DOM card and Card
 export const selectedCardIds = selector<string[]>({
   key: "CANVAS/selected-card-ids",
   get: ({ get }) => {

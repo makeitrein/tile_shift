@@ -3,9 +3,9 @@ import { useRecoilValue } from "recoil";
 import { Portal } from "../../general/portal";
 import * as cardState from "../../state/cards";
 import { EditorManager } from "../text-editor/wysiwig-editor";
-import { CanvasCard } from "./canvas-card";
+import { Card } from "./card";
 
-export const CanvasCardList = () => {
+export const CardList = () => {
   const cardIds = useRecoilValue(cardState.cardIds);
   // const arrows = useRecoilValue(arrowState.arrows);
   const editableCardId = useRecoilValue(cardState.editableCardId);
@@ -22,7 +22,7 @@ export const CanvasCardList = () => {
         <CanvasArrow id={arrow.id} />
       ))} */}
       {cardIds.map((id) => (
-        <CanvasCard key={id} id={id} />
+        <Card key={id} id={id} />
       ))}
     </>
   );

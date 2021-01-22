@@ -1,43 +1,57 @@
 import * as React from "react";
 import { useRecoilValue } from "recoil";
+import { useCreateInitialArrow } from "../../state/arrow-utils";
+import { ArrowPoint } from "../../state/arrows";
+import { cardId, useCreateInitialCard } from "../../state/card-utils";
 import * as cardState from "../../state/cards";
-import { useCreateInitialCard } from "../../state/utils";
-import { cardHeight, cardWidth } from "./canvas-card";
+import { cardHeight, cardWidth } from "./card";
 
-const positionStyle = {
-  left: {
+const positionStyle: Record<
+  ArrowPoint,
+  {
+    left?: string;
+    top?: string;
+    transform?: string;
+    right?: string;
+    bottom?: string;
+  }
+> = {
+  e: {
     left: "-34px",
     top: "50%",
     transform: "translateY(-50%)",
   },
-  right: {
+  w: {
     right: "-34px",
     top: "50%",
     transform: "translateY(-50%)",
   },
-  top: {
+  n: {
     left: "50%",
     top: "-38px",
     transform: "translateX(-50%)",
   },
-  bottom: {
+  s: {
     left: "50%",
     bottom: "-34px",
     transform: "translateX(-50%)",
   },
 };
 
-const directionDimensionMap = {
-  left: ({ x, y, height }) => ({
+const directionDimensionMap: Record<
+  ArrowPoint,
+  (params: any) => { x: number; y: number }
+> = {
+  w: ({ x, y, height }) => ({
     x: x - 200,
     y: y + height / 2 - cardHeight / 2,
   }),
-  right: ({ x, y, width, height }) => ({
+  e: ({ x, y, width, height }) => ({
     x: x + width + 100,
     y: y + height / 2 - cardHeight / 2,
   }),
-  top: ({ y, x, width }) => ({ y: y - 140, x: x + width / 2 - cardWidth / 2 }),
-  bottom: ({ y, height, x, width }) => ({
+  n: ({ y, x, width }) => ({ y: y - 140, x: x + width / 2 - cardWidth / 2 }),
+  s: ({ y, height, x, width }) => ({
     y: y + height + 70,
     x: x + width / 2 - cardWidth / 2,
   }),
@@ -45,7 +59,7 @@ const directionDimensionMap = {
 
 interface Props {
   id: string;
-  direction: string;
+  direction: ArrowPoint;
 }
 
 export const ConnectButton = ({ id, direction }: Props) => {
@@ -54,13 +68,23 @@ export const ConnectButton = ({ id, direction }: Props) => {
   const newCardDimensions = directionDimensionMap[direction](cardDimensions);
 
   const createInitialCard = useCreateInitialCard();
+  const createInitialArrow = useCreateInitialArrow();
+
+  const createAndConnectCard = () => {
+    const newCardId = cardId();
+    createInitialCard(newCardDimensions, newCardId);
+    createInitialArrow({
+      start: { cardId: id, point: direction },
+      end: { cardId: newCardId, point: "w" },
+    });
+  };
 
   return (
     <button
-      onClick={() => createInitialCard(newCardDimensions)}
+      onClick={createAndConnectCard}
       type="button"
       className={`${
-        direction === "top" ? "z-force" : "z-overlay"
+        direction === "n" ? "z-force" : "z-overlay"
       } absolute inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
       style={positionStyle[direction]}
     >

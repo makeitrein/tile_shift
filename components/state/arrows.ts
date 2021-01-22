@@ -1,11 +1,10 @@
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
 
 export type ArrowPoint = "w" | "e" | "s" | "n";
-export type ArrowEnd = "w" | "e" | "s" | "n";
 export interface Arrow {
   id: string;
-  start: { arrowId: string; point: ArrowPoint };
-  end: { arrowId: string; point: ArrowPoint };
+  start: { cardId: string; point: ArrowPoint };
+  end: { cardId: string; point: ArrowPoint };
   theme: string;
   content: string;
 }

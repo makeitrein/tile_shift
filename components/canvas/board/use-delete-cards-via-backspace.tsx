@@ -1,10 +1,10 @@
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import * as cardState from "../../state/cards";
-import { canvasCardIds, Card, selectedCardTargets } from "../../state/cards";
+import { Card, CardIds, selectedCardTargets } from "../../state/cards";
 
 export const useDeleteCardsViaBackspace = () => {
-  const setCards = useSetRecoilState(canvasCardIds);
+  const setCards = useSetRecoilState(CardIds);
   const setSelectedCards = useSetRecoilState(selectedCardTargets);
   const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
   const editableCardSettings = useRecoilValue(cardState.editableCardSettings);

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useSetCardDimensions } from "../../state/utils";
+import { useSetCardDimensions } from "../../state/card-utils";
 
 export const useDragResizeCard = () => {
   const updateCard = useSetCardDimensions();

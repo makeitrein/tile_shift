@@ -9,7 +9,7 @@ import { ConnectButton } from "./connect-button";
 export const cardWidth = 140;
 export const cardHeight = 76;
 
-const Card = styled.div`
+const CardWrapper = styled.div`
   display: inline-block;
   position: absolute;
   border-radius: 5px;
@@ -32,7 +32,7 @@ interface Props {
   id: string;
 }
 
-export const CanvasCard = ({ id }: Props) => {
+export const Card = ({ id }: Props) => {
   const ref = useRef();
   const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
   const cardSettings = useRecoilValue(cardState.cardSettings(id));
@@ -48,7 +48,7 @@ export const CanvasCard = ({ id }: Props) => {
   const isEditable = editableCardId === id;
 
   return (
-    <Card
+    <CardWrapper
       ref={ref}
       id={id}
       isDragging={cardSettings.isDragging}
@@ -66,17 +66,17 @@ export const CanvasCard = ({ id }: Props) => {
       )}
       {isEditable && (
         <>
-          <ConnectButton id={id} direction="left" />
-          <ConnectButton id={id} direction="top" />
-          <ConnectButton id={id} direction="right" />
-          <ConnectButton id={id} direction="bottom" />
+          <ConnectButton id={id} direction="w" />
+          <ConnectButton id={id} direction="n" />
+          <ConnectButton id={id} direction="e" />
+          <ConnectButton id={id} direction="s" />
         </>
       )}
-    </Card>
+    </CardWrapper>
   );
 };
 
-export const CanvasCardBottom = () => {
+export const CardBottom = () => {
   return (
     <div className="absolute bottom-2 right-2 whitespace-nowrap flex w-full justify-end align-middle text-center items-center">
       <span className="inline-flex mr-1 items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-pink-100 text-pink-800">

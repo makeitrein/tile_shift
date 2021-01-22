@@ -5,13 +5,13 @@ import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import * as cardState from "../../state/cards";
 import {
   useGetCardDimensions,
   useSetCardDimensions,
   useSetCardSettings,
-} from "../../state/utils";
-import { CanvasCardList } from "../card/canvas-card-list";
+} from "../../state/card-utils";
+import * as cardState from "../../state/cards";
+import { CardList } from "../card/card-list";
 import { MiniMap } from "../minimap/minimap";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { useAddCardViaClick } from "./use-add-card-via-click";
@@ -265,7 +265,7 @@ export const Board = () => {
           onDragGroup={onDragGroup}
         />
 
-        <CanvasCardList />
+        <CardList />
       </Canvas>
       <MiniMap canvas={canvasEditorRef.current} panzoom={panzoom} />
     </Wrapper>

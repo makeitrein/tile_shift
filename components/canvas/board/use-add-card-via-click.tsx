@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useCreateInitialCard } from "../../state/utils";
-import { cardHeight, cardWidth } from "../card/canvas-card";
+import { useCreateInitialCard } from "../../state/card-utils";
+import { cardHeight, cardWidth } from "../card/card";
 
 export const useAddCardViaClick = (canvasEditor) => {
   const createInitialCard = useCreateInitialCard();

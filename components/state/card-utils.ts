@@ -1,5 +1,5 @@
-import { DefaultValue, useRecoilCallback } from "recoil";
-import { cardHeight, cardWidth } from "../canvas/card/canvas-card";
+import { useRecoilCallback } from "recoil";
+import { cardHeight, cardWidth } from "../canvas/card/card";
 import * as cardState from "./cards";
 import { Card, CardDimensions } from "./cards";
 
@@ -15,10 +15,11 @@ export const defaultCardValues: Card = {
   isWysiwygEditorFocused: false,
 };
 
+export const cardId = () => "new-card" + new Date().getTime();
+
 export const useCreateInitialCard = () =>
   useRecoilCallback(({ set }) => {
-    return (dimensions: Partial<CardDimensions>) => {
-      const id = "new-card" + new Date().getTime();
+    return (dimensions: Partial<CardDimensions>, id?: string) => {
       set(cardState.initialCardValues, (cards) => ({
         ...cards,
         [id]: { ...defaultCardValues, id, ...dimensions },
@@ -61,22 +62,4 @@ export const syncStorageEffect = () => ({ setSelf, trigger }) => {
       { id: "kenny", x: 350, y: 350 },
     ]); // Call synchronously to initialize
   }
-};
-
-export const localStorageEffect = (key) => ({ setSelf, onSet }) => {
-  if (!process.browser) {
-    return;
-  }
-  const savedValue = localStorage.getItem(key);
-  if (savedValue != null) {
-    setSelf(JSON.parse(savedValue));
-  }
-
-  onSet((newValue) => {
-    if (newValue instanceof DefaultValue) {
-      localStorage.removeItem(key);
-    } else {
-      localStorage.setItem(key, JSON.stringify(newValue));
-    }
-  });
 };
