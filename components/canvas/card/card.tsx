@@ -32,7 +32,7 @@ interface Props {
   id: string;
 }
 
-export const Card = ({ id }: Props) => {
+export const Card = React.memo(({ id }: Props) => {
   const ref = useRef();
   const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
   const cardSettings = useRecoilValue(cardState.cardSettings(id));
@@ -74,7 +74,7 @@ export const Card = ({ id }: Props) => {
       )}
     </CardWrapper>
   );
-};
+});
 
 export const CardBottom = () => {
   return (

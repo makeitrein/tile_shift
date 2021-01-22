@@ -62,7 +62,7 @@ interface Props {
   direction: ArrowPoint;
 }
 
-export const ConnectButton = ({ id, direction }: Props) => {
+export const ConnectButton = React.memo(({ id, direction }: Props) => {
   const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
 
   const newCardDimensions = directionDimensionMap[direction](cardDimensions);
@@ -103,4 +103,4 @@ export const ConnectButton = ({ id, direction }: Props) => {
       </svg>
     </button>
   );
-};
+});

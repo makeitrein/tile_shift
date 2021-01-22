@@ -25,9 +25,9 @@ export const arrow = atomFamily<Arrow, string>({
   key: "CANVAS/arrow-settings",
   default: selectorFamily({
     key: "CANVAS/arrow-settings-default",
-    get: (id) => ({ get }) => {
+    get: (arrowId) => ({ get }) => {
       const arrows = get(initialArrowValues);
-      const { id, theme, content, start, end } = arrows[id];
+      const { id, theme, content, start, end } = arrows[arrowId];
 
       return {
         id,

@@ -6,6 +6,8 @@ import { Arrow } from "./arrow";
 export const ArrowList = React.memo(() => {
   const arrowIds = useRecoilValue(arrowState.arrowIds);
 
+  console.log(arrowIds);
+
   return (
     <>
       {arrowIds.map((id) => (

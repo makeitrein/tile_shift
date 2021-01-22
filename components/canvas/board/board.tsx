@@ -11,6 +11,7 @@ import {
   useSetCardSettings,
 } from "../../state/card-utils";
 import * as cardState from "../../state/cards";
+import { ArrowList } from "../arrow/arrow-list";
 import { CardList } from "../card/card-list";
 import { MiniMap } from "../minimap/minimap";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
@@ -240,8 +241,9 @@ export const Board = () => {
           target={selectedCards}
           elementGuidelines={elementGuidelines}
           snappable={true}
-          isDisplaySnapDigit={true}
           snapGap={true}
+          snapThreshold={2}
+          isDisplaySnapDigit={true}
           checkInput={true}
           snapElement={true}
           snapVertical={true}
@@ -266,6 +268,7 @@ export const Board = () => {
         />
 
         <CardList />
+        <ArrowList />
       </Canvas>
       <MiniMap canvas={canvasEditorRef.current} panzoom={panzoom} />
     </Wrapper>

@@ -25,7 +25,7 @@ const arrowBottom = ({ y, height, x, width }) => ({
   x: x + width / 2,
 });
 
-export const Arrow = ({ id }: Props) => {
+export const Arrow = React.memo(({ id }: Props) => {
   const arrow = useRecoilValue(arrowState.arrow(id));
 
   const startCard = useRecoilValue(
@@ -42,4 +42,4 @@ export const Arrow = ({ id }: Props) => {
       color="green"
     />
   );
-};
+});
