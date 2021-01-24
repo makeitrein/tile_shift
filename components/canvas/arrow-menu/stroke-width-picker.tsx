@@ -5,23 +5,24 @@ export type ThemeMapOption = {
   color: string;
 };
 
-export const strokeWidths = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+export const strokeWidths = { SM: 1, MD: 3, LG: 6, XL: 9 };
+const strokeWidthsByWidth = { 1: "SM", 3: "MD", 6: "LG", 9: "XL" };
 
 export const StrokeWidthPicker = ({ id }) => {
   const setArrow = useSetRecoilState(arrowState.arrow(id));
 
   return (
     <div
-      style={{ width: 340 }}
+      style={{ width: 230 }}
       className="flex w-full flex-wrap align-middle justify-between"
     >
-      {strokeWidths.map((strokeWidth) => (
+      {Object.entries(strokeWidths).map(([name, strokeWidth]) => (
         <>
           <div
             onClick={() => setArrow((arrow) => ({ ...arrow, strokeWidth }))}
-            className={`w-8 h-8 leading-8 text-xl text-center border cursor-pointer border-solid transform transition-transform hover:scale-110`}
+            className={`p-1 w-12 leading-8 text-xl text-center border cursor-pointer border-solid transform transition-transform hover:scale-110`}
           >
-            {strokeWidth}
+            {name}
           </div>
         </>
       ))}
@@ -32,5 +33,7 @@ export const StrokeWidthPicker = ({ id }) => {
 export const CurrentStrokeWidth = ({ id }) => {
   const arrow = useRecoilValue(arrowState.arrow(id));
 
-  return <div className="w-4 ">{arrow.strokeWidth}</div>;
+  return (
+    <div className="text-xl">{strokeWidthsByWidth[arrow.strokeWidth]}</div>
+  );
 };

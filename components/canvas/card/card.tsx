@@ -53,7 +53,7 @@ export const Card = React.memo(({ id }: Props) => {
       id={id}
       isDragging={cardSettings.isDragging}
       isSelected={isSelected}
-      className="canvas-card"
+      className="canvas-card group"
       style={{
         width: cardDimensions.width,
         height: cardDimensions.height,

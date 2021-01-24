@@ -17,12 +17,16 @@ import { CardMenu } from "../card-menu/card-menu";
 export const articlePadding = 12;
 
 export const EditableArticle = styled.article`
-  padding: ${articlePadding}px;
+  margin: ${articlePadding / 2}px;
+  padding: ${articlePadding / 2}px;
+
   white-space: pre-line;
   word-wrap: break-word;
   outline: none;
   font-weight: 500;
   position: relative;
+  transition: 0.2s background;
+  border-radius: 6px;
 
   > div {
     cursor: text;
@@ -132,6 +136,7 @@ export const Editor = ({ id, showToolbar }) => {
     <>
       {showToolbar && <CardMenu id={id} />}
       <EditableArticle
+        className="group-hover:bg-gray-200 transition"
         onFocus={() => setCardEditorFocus(true)}
         onBlur={() => setCardEditorFocus(false)}
         style={{ pointerEvents: !showToolbar && "none" }}

@@ -21,6 +21,7 @@ export interface Arrow {
   theme: string;
   content: string;
   strokeWidth: number;
+  direction: string;
 }
 
 export const initialArrowValues = atom<Record<string, Arrow>>({
@@ -41,16 +42,7 @@ export const arrow = atomFamily<Arrow, string>({
     key: "CANVAS/arrow-settings-default",
     get: (arrowId) => ({ get }) => {
       const arrows = get(initialArrowValues);
-      const { id, theme, content, start, end, strokeWidth } = arrows[arrowId];
-
-      return {
-        id,
-        theme,
-        content,
-        start,
-        end,
-        strokeWidth,
-      };
+      return arrows[arrowId];
     },
   }),
 });

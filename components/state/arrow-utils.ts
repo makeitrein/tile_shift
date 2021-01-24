@@ -6,6 +6,7 @@ export const defaultArrowValues = {
   theme: "green",
   content: "",
   strokeWidth: 3,
+  direction: "right",
 };
 
 export const useCreateInitialArrow = () =>

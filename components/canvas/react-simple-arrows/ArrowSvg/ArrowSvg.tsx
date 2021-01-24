@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import useOnClickOutside from "react-cool-onclickoutside";
 import { v4 as uuidv4 } from "uuid";
 import { LineOrientation, Position } from "../constants";
 import { ArrowHeadMarkerSvg } from "./ArrowHeadMarkerSvg";
@@ -14,7 +15,7 @@ export const ArrowSvg = ({
   curviness = 0.6,
   color = "black",
   strokeWidth = "1",
-  handleLineClick,
+  toggleMenu,
   children,
 }: {
   start: Position;
@@ -23,12 +24,10 @@ export const ArrowSvg = ({
   curviness?: number;
   color?: string;
   strokeWidth?: string;
-  handleLineClick: () => void;
+  toggleMenu: () => void;
   children: React.ReactNode;
 }) => {
   const headId = uuidv4();
-
-  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   // define dimensions and coordinates of the svg plane
   const dimensions = {
@@ -61,9 +60,14 @@ export const ArrowSvg = ({
     y: end.y - paddedCoordinates.y,
   };
 
+  const arrowRef = useOnClickOutside(() => {
+    toggleMenu();
+  });
+
   // return arrow positioned absolutely at the viewport w/ arrows positioned internally
   return (
     <span
+      ref={arrowRef}
       style={{
         height: paddedDimensions.height,
         width: paddedDimensions.width,
@@ -83,8 +87,24 @@ export const ArrowSvg = ({
             color={color}
           />
         </defs>
+        {/* Provide a background path with bigger click radius that is transparent but clickable */}
         <path
-          onClick={handleLineClick}
+          style={{ cursor: "pointer" }}
+          onClick={toggleMenu}
+          d={calculateAestheticLinePath({
+            start: innerStart,
+            end: innerEnd,
+            orientation,
+            curviness,
+          })}
+          fill="none"
+          stroke={"transparent"}
+          strokeWidth={50}
+        />
+        {/* Visible path goodness */}
+        <path
+          style={{ cursor: "pointer" }}
+          onClick={toggleMenu}
           d={calculateAestheticLinePath({
             start: innerStart,
             end: innerEnd,
