@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fromHtml, toHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
 import { HeadingExtension } from "remirror/extension/heading";
@@ -89,8 +89,10 @@ const extensionTemplate = () => [
 export const EditorManager = ({ id, showToolbar }) => {
   const [card, setCard] = useRecoilState(cardState.cardContent(id));
   const manager = useManager(extensionTemplate);
+  const editableCardId = useRecoilValue(cardState.editableCardId);
+  const cardSettings = useRecoilValue(cardState.cardSettings(id));
 
-  console.log(card);
+  const isEditable = editableCardId === id && !cardSettings.isDragging;
 
   const [value, setValue] = useState(
     manager.createState({
@@ -113,7 +115,7 @@ export const EditorManager = ({ id, showToolbar }) => {
         }));
       }}
     >
-      <Editor id={id} showToolbar={showToolbar} />
+      <Editor id={id} showToolbar={true} />
     </RemirrorProvider>
   );
 };

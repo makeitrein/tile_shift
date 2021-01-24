@@ -129,6 +129,8 @@ export const Board = () => {
   const onDragStart = useCallback((ev) => {
     const target = ev.target;
 
+    console.log(target);
+
     const { x, y } = getCardDimensions(target.id);
     setCardSettings(ev.target.id, { isDragging: true });
 
