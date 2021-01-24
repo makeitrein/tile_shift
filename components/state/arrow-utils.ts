@@ -3,8 +3,9 @@ import * as arrowState from "./arrows";
 import { Arrow } from "./arrows";
 
 export const defaultArrowValues = {
-  theme: "white",
+  theme: "green",
   content: "",
+  strokeWidth: 3,
 };
 
 export const useCreateInitialArrow = () =>

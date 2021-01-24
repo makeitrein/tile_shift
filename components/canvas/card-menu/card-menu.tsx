@@ -25,7 +25,7 @@ const variants = {
   },
 };
 
-export const TooltipMenu = ({ id }) => {
+export const CardMenu = ({ id }) => {
   const { commands, active } = useRemirror({ autoUpdate: true });
   const [altToolbar, setAltToolbar] = useState(false);
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);

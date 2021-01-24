@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import uuid from "uuid";
-import { TooltipArrow } from "../../general/tooltip";
+import { v4 as uuidv4 } from "uuid";
 import { LineOrientation, Position } from "../constants";
 import { ArrowHeadMarkerSvg } from "./ArrowHeadMarkerSvg";
 import { calculateAestheticLinePath } from "./calculateAestheticLinePath";
 
 const ARROW_LENGTH = 15;
-const ARROW_WIDTH = 9;
+const ARROW_WIDTH = 14;
 
 export const ArrowSvg = ({
   start,
@@ -15,6 +14,8 @@ export const ArrowSvg = ({
   curviness = 0.6,
   color = "black",
   strokeWidth = "1",
+  handleLineClick,
+  children,
 }: {
   start: Position;
   end: Position;
@@ -22,8 +23,10 @@ export const ArrowSvg = ({
   curviness?: number;
   color?: string;
   strokeWidth?: string;
+  handleLineClick: () => void;
+  children: React.ReactNode;
 }) => {
-  const headId = uuid();
+  const headId = uuidv4();
 
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
@@ -69,7 +72,7 @@ export const ArrowSvg = ({
         left: paddedCoordinates.x,
       }}
     >
-      <TooltipArrow visible={tooltipVisible}>Hi</TooltipArrow>
+      {children}
 
       <svg height={paddedDimensions.height} width={paddedDimensions.width}>
         <defs>
@@ -81,7 +84,7 @@ export const ArrowSvg = ({
           />
         </defs>
         <path
-          onClick={() => setTooltipVisible((visible) => !visible)}
+          onClick={handleLineClick}
           d={calculateAestheticLinePath({
             start: innerStart,
             end: innerEnd,

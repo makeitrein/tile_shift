@@ -13,7 +13,6 @@ import {
 import * as cardState from "../../state/cards";
 import { ArrowList } from "../arrow/arrow-list";
 import { CardList } from "../card/card-list";
-import { MiniMap } from "../minimap/minimap";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { useAddCardViaClick } from "./use-add-card-via-click";
 import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
@@ -272,7 +271,7 @@ export const Board = () => {
         <CardList />
         <ArrowList />
       </Canvas>
-      <MiniMap canvas={canvasEditorRef.current} panzoom={panzoom} />
+      {/* <MiniMap canvas={canvasEditorRef.current} panzoom={panzoom} /> */}
     </Wrapper>
   );
 };

@@ -3,7 +3,7 @@ import useOnClickOutside from "react-cool-onclickoutside";
 import { useRecoilValue } from "recoil";
 import * as arrowState from "../../state/arrows";
 import * as cardState from "../../state/cards";
-import { Tooltip } from "../general/tooltip";
+import { ArrowMenu } from "../arrow-menu/arrow-menu";
 import { ArrowSvg, LineOrientation } from "../react-simple-arrows";
 
 interface Props {
@@ -29,6 +29,7 @@ const arrowBottom = ({ y, height, x, width }) => ({
 
 export const Arrow = React.memo(({ id }: Props) => {
   const arrow = useRecoilValue(arrowState.arrow(id));
+  const { color } = useRecoilValue(arrowState.arrowColorTheme(id));
 
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
@@ -42,21 +43,15 @@ export const Arrow = React.memo(({ id }: Props) => {
   const endCard = useRecoilValue(cardState.cardDimensions(arrow.end.cardId));
 
   return (
-    <span
-      className="relative"
-      ref={arrowRef}
-      onClick={() => {
-        // setTooltipVisible(true);
-      }}
+    <ArrowSvg
+      handleLineClick={() => setTooltipVisible((visible) => !visible)}
+      start={arrowRight(startCard)}
+      end={arrowLeft(endCard)}
+      orientation={LineOrientation.HORIZONTAL}
+      strokeWidth={arrow.strokeWidth.toString()}
+      color={color}
     >
-      <Tooltip visible={tooltipVisible}>Hi</Tooltip>
-      <ArrowSvg
-        start={arrowRight(startCard)}
-        end={arrowLeft(endCard)}
-        orientation={LineOrientation.HORIZONTAL}
-        strokeWidth="3"
-        color="green"
-      />
-    </span>
+      {tooltipVisible && <ArrowMenu id={id} />}
+    </ArrowSvg>
   );
 });

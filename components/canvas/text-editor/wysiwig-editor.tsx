@@ -12,7 +12,7 @@ import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
-import { TooltipMenu } from "../card-menu/tooltip-menu";
+import { CardMenu } from "../card-menu/card-menu";
 
 export const articlePadding = 12;
 
@@ -130,7 +130,7 @@ export const Editor = ({ id, showToolbar }) => {
 
   return (
     <>
-      {showToolbar && <TooltipMenu id={id} />}
+      {showToolbar && <CardMenu id={id} />}
       <EditableArticle
         onFocus={() => setCardEditorFocus(true)}
         onBlur={() => setCardEditorFocus(false)}

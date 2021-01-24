@@ -1,4 +1,5 @@
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
+import { colorThemes, ThemeMapOption } from "../canvas/arrow-menu/color-picker";
 
 export type ArrowPoint =
   | "topLeft"
@@ -19,6 +20,7 @@ export interface Arrow {
   end: { cardId: string; point: ArrowPoint };
   theme: string;
   content: string;
+  strokeWidth: number;
 }
 
 export const initialArrowValues = atom<Record<string, Arrow>>({
@@ -39,7 +41,7 @@ export const arrow = atomFamily<Arrow, string>({
     key: "CANVAS/arrow-settings-default",
     get: (arrowId) => ({ get }) => {
       const arrows = get(initialArrowValues);
-      const { id, theme, content, start, end } = arrows[arrowId];
+      const { id, theme, content, start, end, strokeWidth } = arrows[arrowId];
 
       return {
         id,
@@ -47,6 +49,7 @@ export const arrow = atomFamily<Arrow, string>({
         content,
         start,
         end,
+        strokeWidth,
       };
     },
   }),
@@ -75,9 +78,9 @@ export const editableArrowId = selector<string | null>({
   },
 });
 
-// export const arrowColorTheme = selectorFamily<ThemeMapOption, string>({
-//   key: "CANVAS/arrow-color-theme",
-//   get: (id) => ({ get }) => {
-//     return colorThemes[get(arrowSettings(id)).theme];
-//   },
-// });
+export const arrowColorTheme = selectorFamily<ThemeMapOption, string>({
+  key: "CANVAS/arrow-color-theme",
+  get: (id) => ({ get }) => {
+    return colorThemes[get(arrow(id)).theme];
+  },
+});
