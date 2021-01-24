@@ -17,6 +17,10 @@ body {
   background: rgba(37, 99, 235, 1) !important;
 }
 
+.moveable-control-box {
+  z-index: 3002 !important;
+}
+
 .hide-border {
   display: none !important;
 }

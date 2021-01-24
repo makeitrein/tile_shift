@@ -1,6 +1,18 @@
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
 
-export type ArrowPoint = "w" | "e" | "s" | "n";
+export type ArrowPoint =
+  | "topLeft"
+  | "top"
+  | "topRight"
+  | "leftTop"
+  | "left"
+  | "leftBottom"
+  | "rightTop"
+  | "right"
+  | "rightBottom"
+  | "bottomLeft"
+  | "bottom"
+  | "bottomRight";
 export interface Arrow {
   id: string;
   start: { cardId: string; point: ArrowPoint };

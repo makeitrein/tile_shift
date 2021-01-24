@@ -66,10 +66,10 @@ export const Card = React.memo(({ id }: Props) => {
       )}
       {isEditable && (
         <>
-          <ConnectButton id={id} direction="w" />
-          <ConnectButton id={id} direction="n" />
-          <ConnectButton id={id} direction="e" />
-          <ConnectButton id={id} direction="s" />
+          <ConnectButton id={id} direction="top" />
+          <ConnectButton id={id} direction="right" />
+          <ConnectButton id={id} direction="left" />
+          <ConnectButton id={id} direction="bottom" />
         </>
       )}
     </CardWrapper>

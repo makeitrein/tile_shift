@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import useOnClickOutside from "react-cool-onclickoutside";
-import { ArrowSvg, LineOrientation } from "react-simple-arrows";
 import { useRecoilValue } from "recoil";
 import * as arrowState from "../../state/arrows";
 import * as cardState from "../../state/cards";
 import { Tooltip } from "../general/tooltip";
+import { ArrowSvg, LineOrientation } from "../react-simple-arrows";
 
 interface Props {
   id: string;
@@ -46,8 +46,7 @@ export const Arrow = React.memo(({ id }: Props) => {
       className="relative"
       ref={arrowRef}
       onClick={() => {
-        alert("hi");
-        setTooltipVisible(true);
+        // setTooltipVisible(true);
       }}
     >
       <Tooltip visible={tooltipVisible}>Hi</Tooltip>
