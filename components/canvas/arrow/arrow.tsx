@@ -39,7 +39,7 @@ export const Arrow = React.memo(({ id }: Props) => {
 
   return (
     <ArrowSvg
-      toggleMenu={() => setMenuVisible((visible) => !visible)}
+      setMenuVisible={setMenuVisible}
       start={arrowRight(startCard)}
       end={arrowLeft(endCard)}
       orientation={LineOrientation.HORIZONTAL}

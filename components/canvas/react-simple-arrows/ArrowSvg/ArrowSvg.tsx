@@ -15,7 +15,7 @@ export const ArrowSvg = ({
   curviness = 0.6,
   color = "black",
   strokeWidth = "1",
-  toggleMenu,
+  setMenuVisible,
   children,
 }: {
   start: Position;
@@ -24,7 +24,7 @@ export const ArrowSvg = ({
   curviness?: number;
   color?: string;
   strokeWidth?: string;
-  toggleMenu: () => void;
+  setMenuVisible: (visible: boolean) => void;
   children: React.ReactNode;
 }) => {
   const headId = uuidv4();
@@ -61,7 +61,7 @@ export const ArrowSvg = ({
   };
 
   const arrowRef = useOnClickOutside(() => {
-    toggleMenu();
+    setMenuVisible(false);
   });
 
   // return arrow positioned absolutely at the viewport w/ arrows positioned internally
@@ -90,7 +90,7 @@ export const ArrowSvg = ({
         {/* Provide a background path with bigger click radius that is transparent but clickable */}
         <path
           style={{ cursor: "pointer" }}
-          onClick={toggleMenu}
+          onClick={() => setMenuVisible(true)}
           d={calculateAestheticLinePath({
             start: innerStart,
             end: innerEnd,
@@ -104,7 +104,7 @@ export const ArrowSvg = ({
         {/* Visible path goodness */}
         <path
           style={{ cursor: "pointer" }}
-          onClick={toggleMenu}
+          onClick={() => setMenuVisible(true)}
           d={calculateAestheticLinePath({
             start: innerStart,
             end: innerEnd,
