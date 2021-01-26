@@ -11,6 +11,7 @@ export interface CardDimensions {
 export interface CardSettings {
   theme: string;
   isDragging: boolean;
+  tags: string[];
   isWysiwygEditorFocused: boolean;
   normalScroll: boolean;
 }
@@ -61,6 +62,7 @@ export const cardSettings = atomFamily<CardSettings, string>({
 
       return {
         theme: card.theme,
+        tags: [],
         isDragging: false,
         isWysiwygEditorFocused: false,
         normalScroll: false,

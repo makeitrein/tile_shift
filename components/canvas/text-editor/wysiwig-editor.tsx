@@ -136,7 +136,6 @@ export const Editor = ({ id, showToolbar }) => {
     <>
       {showToolbar && <CardMenu id={id} />}
       <EditableArticle
-        className="group-hover:bg-gray-200 transition"
         onFocus={() => setCardEditorFocus(true)}
         onBlur={() => setCardEditorFocus(false)}
         style={{ pointerEvents: !showToolbar && "none" }}
