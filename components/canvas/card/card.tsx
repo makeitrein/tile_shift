@@ -4,7 +4,14 @@ import React, { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
-import { Tag, TagPicker } from "../card-menu/tag-picker";
+import {
+  CancelIcon,
+  CheckIcon,
+  QuestionIcon,
+  Tag,
+  TagPicker,
+} from "../card-menu/tag-picker";
+import { DiscussionDrawer } from "../drawer/discussion-drawer";
 import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { ConnectButton } from "./connect-button";
 
@@ -102,29 +109,43 @@ export const Card = React.memo(({ id }: Props) => {
           <ConnectButton id={id} direction="bottom" />
         </>
       )}
-      <span className="absolute bottom-2 z-0 inline-flex shadow-sm rounded-md">
-        <button
-          type="button"
-          className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-        >
-          <svg
-            className="-ml-1 mr-2 h-5 w-5 text-gray-400"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-          </svg>
-          Bookmark
-        </button>
-        <button
-          type="button"
-          className="-ml-px relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-        >
-          12k
-        </button>
-      </span>
+
+      <div className="flex text-gray-400 absolute bottom-2 left-2 right-2 justify-evenly">
+        <span className="flex items-center">
+          <CheckIcon />
+          <span>4</span>
+        </span>
+        |
+        <span className="flex items-center">
+          <QuestionIcon />
+          <span>1</span>
+        </span>
+        |
+        <span className="flex items-center">
+          <CancelIcon />
+          <span>1</span>
+        </span>
+        |
+        <DiscussionDrawer>
+          <span className="flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+              />
+            </svg>
+            <span>1</span>
+          </span>
+        </DiscussionDrawer>
+      </div>
     </CardWrapper>
   );
 });

@@ -60,6 +60,7 @@ body {
   outline: none;
 }
 
-.ant-popover {
+.ant-popover,
+.ant-drawer {
   z-index: 4000 !important;
 }
