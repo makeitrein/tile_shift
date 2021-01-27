@@ -56,7 +56,9 @@ export const EditableArticle = styled.article`
 
   s {
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 600;
   }
 
   code {

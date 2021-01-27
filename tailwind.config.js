@@ -1,4 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
 
 module.exports = {
   purge: ["./pages/**/*.js", "./components/**/*.js"],
@@ -7,6 +8,12 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        "light-blue": colors.lightBlue,
+        teal: colors.teal,
+        cyan: colors.cyan,
+        rose: colors.rose,
       },
       zIndex: {
         overlay: 3001,
