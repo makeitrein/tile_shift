@@ -14,6 +14,11 @@ module.exports = {
         teal: colors.teal,
         cyan: colors.cyan,
         rose: colors.rose,
+        amber: colors.amber,
+        lime: colors.lime,
+        emerald: colors.emerald,
+        fuchsia: colors.fuchsia,
+        orange: colors.orange,
       },
       zIndex: {
         overlay: 3001,

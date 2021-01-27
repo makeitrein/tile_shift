@@ -25,6 +25,7 @@
     "emoji-mart": "^3.0.0",
     "emoji-mart-lite": "^0.6.1",
     "framer-motion": "^3.2.0",
+    "heroicons-react": "^1.3.0",
     "html-react-parser": "^1.2.1",
     "memoize-one": "^5.1.1",
     "moveable-helper": "^0.4.0",
