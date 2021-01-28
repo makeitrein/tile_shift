@@ -11,34 +11,13 @@ export const MiniMap = ({ panzoom, canvas }) => {
   if (!panzoom) return null;
 
   const mapDimensions = {
-    width: canvas.clientWidth / 100,
-    height: canvas.clientHeight / 100,
+    width: canvas.clientWidth / 50,
+    height: canvas.clientHeight / 50,
   };
 
   const { x, y } = panzoom.getPan();
 
   const scale = panzoom.getScale();
-
-  console.log("Current x is " + x);
-
-  console.log(scale);
-
-  // scale is 0.1
-  console.log(
-    "Works for fully zoomed out",
-    (window.innerWidth * 9) / scale / 2
-  );
-
-  // scale is 1
-  console.log(
-    "Works for fully zoomed in ",
-    (window.innerWidth * 9) / scale / 1
-  );
-
-  // scale is .4
-  console.log("Works for middle zoomed in ", (window.innerWidth * 9) / scale);
-
-  console.log("scale", scale);
 
   const totalCanvasPixelSize = 10000;
 
@@ -64,20 +43,10 @@ export const MiniMap = ({ panzoom, canvas }) => {
 
   return (
     <div>
-      <p className="fixed left-0 top-0">
-        Window InnerWidth {window.innerHeight}
-        <p>Scale {scale}</p>
-        <p>Top {top}</p>
-        <p>Left {left}</p>
-        <p>x {x}</p>
-        <p>y {y}</p>
-      </p>
-
       <div
         style={mapDimensions}
         className="fixed top-5 rounded-md right-5 bg-opacity-40	bg-gray-500 border-gray-300 border overflow-hidden"
       >
-        <div className="bg-blue-500 absolute" style={viewportDimensions}></div>
         {cardIds.map((id) => (
           <MiniMapItem key={id} id={id} />
         ))}
@@ -114,8 +83,8 @@ const MiniMapItem = ({ id }: Props) => {
   const colorTheme = useRecoilValue(cardState.cardColorTheme(id));
 
   const transformStyle = {
-    transform: `translate(${cardDimensions.x / 105}px, ${
-      cardDimensions.y / 105
+    transform: `translate(${cardDimensions.x / 50}px, ${
+      cardDimensions.y / 50
     }px)`,
   };
   const isEditable = editableCardId === id;
@@ -125,8 +94,8 @@ const MiniMapItem = ({ id }: Props) => {
       id={id}
       isDragging={cardSettings.isDragging}
       style={{
-        width: cardDimensions.width / 20,
-        height: cardDimensions.height / 20,
+        width: cardDimensions.width / 50,
+        height: cardDimensions.height / 50,
         ...colorTheme,
         ...transformStyle,
       }}
