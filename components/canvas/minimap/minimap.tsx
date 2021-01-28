@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
@@ -19,21 +19,6 @@ export const MiniMap = React.memo(({ panzoom, canvas }) => {
   useEffect(
     function hackStateUpdate() {
       setInterval(() => setHack((hack) => !hack), 100);
-    },
-    [panzoom]
-  );
-
-  const zoomToCard = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      if (!panzoom) return;
-      const scale = panzoom.getScale();
-      const x =
-        (-(e.clientX - e.currentTarget.offsetLeft) * minimapSizeDivider) /
-        scale;
-      const y =
-        (-(e.clientY - e.currentTarget.offsetTop) * minimapSizeDivider) / scale;
-
-      panzoom.pan(x, y, { force: true });
     },
     [panzoom]
   );
@@ -94,6 +79,25 @@ export const MiniMap = React.memo(({ panzoom, canvas }) => {
   const left =
     (trueX - trueMinX) / (trueMaxX - trueMinX + window.innerWidth / scale);
 
+  const zoomToCard = (e: React.MouseEvent<HTMLElement>) => {
+    if (!panzoom) return;
+    const scale = panzoom.getScale();
+    const xPercent =
+      (e.clientX - e.currentTarget.offsetLeft) / e.currentTarget.clientWidth;
+    const yPercent =
+      (e.clientY - e.currentTarget.offsetTop) / e.currentTarget.clientHeight;
+
+    const xDiff = trueMaxX - trueMinX;
+    const yDiff = trueMaxY - trueMinY;
+
+    const x = xDiff * xPercent + trueMinX;
+    const y = yDiff * yPercent + trueMinY;
+
+    console.log(xPercent, yPercent, xDiff, yDiff, x, y);
+
+    panzoom.pan(-x, -y, { force: true });
+  };
+
   const viewportDimensions = {
     top: top * 100 + "%",
     left: left * 100 + "%",
@@ -103,6 +107,7 @@ export const MiniMap = React.memo(({ panzoom, canvas }) => {
 
   return (
     <div
+      onClick={zoomToCard}
       ref={minimapRef}
       style={mapDimensions}
       id="minimap"
