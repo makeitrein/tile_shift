@@ -37,6 +37,9 @@ interface Props {
   id: string;
 }
 
+export const cardTitleElementId = (id: string) => id + "title";
+export const cardDescriptionElementId = (id: string) => id + "description";
+
 export const Card = React.memo(({ id }: Props) => {
   const ref = useRef();
   const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
@@ -99,7 +102,7 @@ export const Card = React.memo(({ id }: Props) => {
           <ConnectButton id={id} direction="bottom" />
         </>
       )}
-      <div id={id + "editor"} />
+
       {!isEditable && (
         <EditableArticle>{parse(cardContent.content || "")}</EditableArticle>
       )}

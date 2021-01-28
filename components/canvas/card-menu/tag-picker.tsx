@@ -18,6 +18,7 @@ import {
   PuzzleOutline,
   QuestionMarkCircleOutline,
   StopOutline,
+  TagOutline,
   ViewGridOutline,
 } from "heroicons-react";
 import { useRecoilState } from "recoil";
@@ -109,7 +110,14 @@ export const TagPicker = ({ id }) => {
 
 export const Tag = ({ name }) => {
   const tag = allTags.find((tag) => tag.name === name);
-  if (!tag) return null;
+  if (!tag)
+    return (
+      <span
+        className={`inline-flex items-center px-2.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800`}
+      >
+        <TagOutline width={16} /> <span className="pl-1">Uncategorized</span>
+      </span>
+    );
 
   const { icon: Icon, color } = tag;
 

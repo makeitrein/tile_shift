@@ -67,8 +67,39 @@ export const CardMenu = ({ id }) => {
             }}
             className="flex absolute justify-center "
           >
+            <TooltipMenuItem rounded="l-md" ref={tagPickerTooltipRef}>
+              <Tooltip visible={tagPickerVisible}>
+                <TagPicker id={id} />
+              </Tooltip>
+              <span
+                onClick={() => setTagPickerVisible((visible) => !visible)}
+                className="absolute inset-0 z-50"
+              ></span>
+              <svg
+                className="w-4 h-4"
+                viewBox="64 64 896 896"
+                focusable="false"
+                data-icon="tags"
+                width="1em"
+                height="1em"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M483.2 790.3L861.4 412c1.7-1.7 2.5-4 2.3-6.3l-25.5-301.4c-.7-7.8-6.8-13.9-14.6-14.6L522.2 64.3c-2.3-.2-4.7.6-6.3 2.3L137.7 444.8a8.03 8.03 0 000 11.3l334.2 334.2c3.1 3.2 8.2 3.2 11.3 0zm62.6-651.7l224.6 19 19 224.6L477.5 694 233.9 450.5l311.9-311.9zm60.16 186.23a48 48 0 1067.88-67.89 48 48 0 10-67.88 67.89zM889.7 539.8l-39.6-39.5a8.03 8.03 0 00-11.3 0l-362 361.3-237.6-237a8.03 8.03 0 00-11.3 0l-39.6 39.5a8.03 8.03 0 000 11.3l243.2 242.8 39.6 39.5c3.1 3.1 8.2 3.1 11.3 0l407.3-406.6c3.1-3.1 3.1-8.2 0-11.3z"></path>
+              </svg>
+            </TooltipMenuItem>
+            <TooltipMenuItem ref={colorPickerTooltipRef}>
+              <Tooltip visible={colorPickerVisible}>
+                <ColorPicker id={id} />
+              </Tooltip>
+              <span
+                className="absolute inset-0 z-50"
+                onClick={() => setColorPickerVisible((visible) => !visible)}
+              ></span>
+              <ColorBlock id={id} />
+            </TooltipMenuItem>
+
             <TooltipMenuItem
-              rounded="l-md"
               onClick={() => commands.toggleBold()}
               active={active.bold()}
             >
@@ -99,6 +130,7 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
+              className="pr-5"
               onClick={() => commands.toggleUnderline()}
               active={active.underline()}
             >
@@ -114,6 +146,7 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
+              className="pl-5"
               onClick={() => commands.toggleCode()}
               active={active.code()}
             >
@@ -129,7 +162,6 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
-              className="pr-5"
               onClick={() => commands.toggleStrike()}
               active={active.strike()}
             >
@@ -144,29 +176,8 @@ export const CardMenu = ({ id }) => {
                 <path d="M920 416H616c-4.4 0-8 3.6-8 8v112c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-56h60v320h-46c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h164c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8h-46V480h60v56c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V424c0-4.4-3.6-8-8-8zM656 296V168c0-4.4-3.6-8-8-8H104c-4.4 0-8 3.6-8 8v128c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-64h168v560h-92c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h264c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8h-92V232h168v64c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8z"></path>
               </svg>
             </TooltipMenuItem>
-            {/* <TooltipMenuItem
-              onClick={() => commands.toggleBulletList()}
-              active={active.bulletList()}
-            >
-              <div className="w-4 h-4"></div>
-            </TooltipMenuItem> */}
-            {/* <TooltipMenuItem
-              onClick={() => commands.toggleStrike()}
-              active={active.strike()}
-            >
-              <svg
-                className="w-4 h-4"
-                viewBox="64 64 896 896"
-                focusable="false"
-                data-icon="strikethrough"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M952 474H569.9c-10-2-20.5-4-31.6-6-15.9-2.9-22.2-4.1-30.8-5.8-51.3-10-82.2-20-106.8-34.2-35.1-20.5-52.2-48.3-52.2-85.1 0-37 15.2-67.7 44-89 28.4-21 68.8-32.1 116.8-32.1 54.8 0 97.1 14.4 125.8 42.8 14.6 14.4 25.3 32.1 31.8 52.6 1.3 4.1 2.8 10 4.3 17.8.9 4.8 5.2 8.2 9.9 8.2h72.8c5.6 0 10.1-4.6 10.1-10.1v-1c-.7-6.8-1.3-12.1-2-16-7.3-43.5-28-81.7-59.7-110.3-44.4-40.5-109.7-61.8-188.7-61.8-72.3 0-137.4 18.1-183.3 50.9-25.6 18.4-45.4 41.2-58.6 67.7-13.5 27.1-20.3 58.4-20.3 92.9 0 29.5 5.7 54.5 17.3 76.5 8.3 15.7 19.6 29.5 34.1 42H72c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h433.2c2.1.4 3.9.8 5.9 1.2 30.9 6.2 49.5 10.4 66.6 15.2 23 6.5 40.6 13.3 55.2 21.5 35.8 20.2 53.3 49.2 53.3 89 0 35.3-15.5 66.8-43.6 88.8-30.5 23.9-75.6 36.4-130.5 36.4-43.7 0-80.7-8.5-110.2-25-29.1-16.3-49.1-39.8-59.7-69.5-.8-2.2-1.7-5.2-2.7-9-1.2-4.4-5.3-7.5-9.7-7.5h-79.7c-5.6 0-10.1 4.6-10.1 10.1v1c.2 2.3.4 4.2.6 5.7 6.5 48.8 30.3 88.8 70.7 118.8 47.1 34.8 113.4 53.2 191.8 53.2 84.2 0 154.8-19.8 204.2-57.3 25-18.9 44.2-42.2 57.1-69 13-27.1 19.7-57.9 19.7-91.5 0-31.8-5.8-58.4-17.8-81.4-5.8-11.2-13.1-21.5-21.8-30.8H952c4.4 0 8-3.6 8-8v-60a8 8 0 00-8-7.9z"></path>
-              </svg>
-            </TooltipMenuItem> */}
+
             <TooltipMenuItem
-              className="pl-5"
               onClick={() => commands.toggleOrderedList()}
               active={active.orderedList()}
             >
@@ -196,37 +207,7 @@ export const CardMenu = ({ id }) => {
                 <path d="M912 192H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM104 228a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0z"></path>
               </svg>
             </TooltipMenuItem>
-            <TooltipMenuItem ref={colorPickerTooltipRef}>
-              <Tooltip visible={colorPickerVisible}>
-                <ColorPicker id={id} />
-              </Tooltip>
-              <span
-                className="absolute inset-0 z-50"
-                onClick={() => setColorPickerVisible((visible) => !visible)}
-              ></span>
-              <ColorBlock id={id} />
-            </TooltipMenuItem>
-            <TooltipMenuItem ref={tagPickerTooltipRef}>
-              <Tooltip visible={tagPickerVisible}>
-                <TagPicker id={id} />
-              </Tooltip>
-              <span
-                onClick={() => setTagPickerVisible((visible) => !visible)}
-                className="absolute inset-0 z-50"
-              ></span>
-              <svg
-                className="w-4 h-4"
-                viewBox="64 64 896 896"
-                focusable="false"
-                data-icon="tags"
-                width="1em"
-                height="1em"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M483.2 790.3L861.4 412c1.7-1.7 2.5-4 2.3-6.3l-25.5-301.4c-.7-7.8-6.8-13.9-14.6-14.6L522.2 64.3c-2.3-.2-4.7.6-6.3 2.3L137.7 444.8a8.03 8.03 0 000 11.3l334.2 334.2c3.1 3.2 8.2 3.2 11.3 0zm62.6-651.7l224.6 19 19 224.6L477.5 694 233.9 450.5l311.9-311.9zm60.16 186.23a48 48 0 1067.88-67.89 48 48 0 10-67.88 67.89zM889.7 539.8l-39.6-39.5a8.03 8.03 0 00-11.3 0l-362 361.3-237.6-237a8.03 8.03 0 00-11.3 0l-39.6 39.5a8.03 8.03 0 000 11.3l243.2 242.8 39.6 39.5c3.1 3.1 8.2 3.1 11.3 0l407.3-406.6c3.1-3.1 3.1-8.2 0-11.3z"></path>
-              </svg>
-            </TooltipMenuItem>
+
             <TooltipMenuItem
               rounded="r-md"
               onClick={() => toggleAltToolbar()}

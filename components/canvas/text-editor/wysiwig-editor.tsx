@@ -10,6 +10,7 @@ import { CorePreset } from "remirror/preset/core";
 import { ListPreset } from "remirror/preset/list";
 import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
+import "remirror/styles/all.css";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
 import { CardMenu } from "../card-menu/card-menu";
@@ -113,6 +114,7 @@ export const EditorManager = ({ id, showToolbar }) => {
       key={id}
       manager={manager}
       value={value}
+      placeholder="Prose goes here..."
       onChange={({ state }) => {
         setValue(state);
         setCard((card) => ({
