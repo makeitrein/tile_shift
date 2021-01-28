@@ -1,5 +1,6 @@
-import Panzoom from "@panzoom/panzoom";
 import { useEffect } from "react";
+import { totalCanvasPixelSize } from "./board";
+import Panzoom from "./panzoom/panzoom";
 
 export const usePanzoomEffects = ({
   panzoom,
@@ -9,21 +10,37 @@ export const usePanzoomEffects = ({
   range,
 }) => {
   useEffect(() => {
-    panzoom = panzoomRef.current = Panzoom(canvasEditorRef.current, {
-      disablePan: disablePan,
-      canvas: true,
-      contain: "outside",
-      maxScale: 1,
-      minScale: 0.1,
-      handleStartEvent: (event) => {
-        if (
-          !disablePan &&
-          Array.from(event.target.classList).includes("canvas-card")
-        ) {
-          throw "disable panning hack";
-        }
-      },
-    });
+    // works for 1
+    // const maxX = totalCanvasPixelSize - window.innerWidth * 1.5;
+    // const maxY = totalCanvasPixelSize - window.innerHeight * 1.5;
+    // const centerX = -maxX / 2;
+    // const centerY = -maxY / 2;
+
+    const maxX = totalCanvasPixelSize - window.innerWidth * 1.5;
+    const maxY = totalCanvasPixelSize - window.innerHeight * 1.5;
+    const centerX = -maxX / 2;
+    const centerY = -maxY / 2;
+
+    window.panzoom = panzoom = panzoomRef.current = Panzoom(
+      canvasEditorRef.current,
+      {
+        disablePan: disablePan,
+        canvas: true,
+        contain: "outside",
+        maxScale: 1,
+        minScale: 0.1,
+        handleStartEvent: (event) => {
+          if (
+            !disablePan &&
+            Array.from(event.target.classList).includes("canvas-card")
+          ) {
+            throw "disable panning hack";
+          }
+        },
+      }
+    );
+
+    panzoom.pan(centerX, centerY, { force: true });
 
     window.addEventListener(
       "mousewheel",

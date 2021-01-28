@@ -55,8 +55,6 @@ export const Card = React.memo(({ id }: Props) => {
   const isSelected = selectedCardIds.includes(id);
   const isEditable = editableCardId === id;
 
-  console.log(cardDimensions, cardSettings);
-
   const innerCard = cardSettings?.tags?.length ? (
     <>
       {/* <TagIcon /> */}

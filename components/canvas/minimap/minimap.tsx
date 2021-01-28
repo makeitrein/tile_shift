@@ -1,25 +1,87 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
+import { totalCanvasPixelSize } from "../board/board";
 
-export const MiniMap = ({ panzoom, canvas }) => {
+const minimapSizeDivider = 60;
+export const minimapId = "minimap";
+
+export const MiniMap = React.memo(({ panzoom, canvas }) => {
   const cardIds = useRecoilValue(cardState.cardIds);
   // const arrows = useRecoilValue(arrowState.arrows);
   const editableCardId = useRecoilValue(cardState.editableCardId);
 
+  const minimapRef = useRef(null);
+
+  const [, setHack] = React.useState(false);
+
+  useEffect(
+    function hackStateUpdate() {
+      setInterval(() => setHack((hack) => !hack), 100);
+    },
+    [panzoom]
+  );
+
+  const zoomToCard = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      if (!panzoom) return;
+      const scale = panzoom.getScale();
+      const x =
+        (-(e.clientX - e.currentTarget.offsetLeft) * minimapSizeDivider) /
+        scale;
+      const y =
+        (-(e.clientY - e.currentTarget.offsetTop) * minimapSizeDivider) / scale;
+
+      panzoom.pan(x, y, { force: true });
+    },
+    [panzoom]
+  );
+
+  // useEffect(() => {
+  //   if (!minimapRef.current) return;
+
+  //   new Gesto(minimapRef.current, {
+  //     container: minimapRef.current,
+  //     pinchOutside: false,
+  //   }).on("drag", (e) => {
+  //     console.log(e);
+  //     // console.log(e);
+  //     // console.log(e.clientX, e.clientY);
+  //     const x =
+  //       (e.clientX - e.inputEvent.target.offsetLeft) /
+  //       e.inputEvent.target.clientWidth;
+  //     const y =
+  //       (e.clientY - e.inputEvent.target.offsetTop) /
+  //       e.inputEvent.target.clientHeight;
+
+  //     console.log(x, y);
+
+  //     // panzoom.zoom();
+  //   });
+  // }, [minimapRef.current]);
+
   if (!panzoom) return null;
 
+  console.log(canvas.clientWidth);
+
   const mapDimensions = {
-    width: canvas.clientWidth / 50,
-    height: canvas.clientHeight / 50,
+    width: totalCanvasPixelSize / (minimapSizeDivider - 2),
+    height: totalCanvasPixelSize / (minimapSizeDivider - 2),
   };
 
-  const { x, y } = panzoom.getPan();
+  const { x, y, minX, maxX, minY, maxY } = panzoom.getPan();
+
+  const trueMinX = Math.abs(maxX);
+  const trueMaxX = Math.abs(minX);
+
+  const trueMinY = Math.abs(maxY);
+  const trueMaxY = Math.abs(minY);
+
+  const trueX = Math.abs(x);
+  const trueY = Math.abs(y);
 
   const scale = panzoom.getScale();
-
-  const totalCanvasPixelSize = 10000;
 
   const viewportWidth = window.innerWidth / scale / totalCanvasPixelSize;
   const viewportHeight = window.innerHeight / scale / totalCanvasPixelSize;
@@ -27,12 +89,10 @@ export const MiniMap = ({ panzoom, canvas }) => {
   const viewportWidthPercent = viewportWidth * 100;
   const viewportHeightPercent = viewportHeight * 100;
 
-  const newX = x + (totalCanvasPixelSize / scale - totalCanvasPixelSize) / 2;
-
-  const newY = y + (totalCanvasPixelSize / scale - totalCanvasPixelSize) / 2;
-
-  const top = -(newY / totalCanvasPixelSize) / scale;
-  const left = -(newX / totalCanvasPixelSize) / scale;
+  const top =
+    (trueY - trueMinY) / (trueMaxY - trueMinY + window.innerHeight / scale);
+  const left =
+    (trueX - trueMinX) / (trueMaxX - trueMinX + window.innerWidth / scale);
 
   const viewportDimensions = {
     top: top * 100 + "%",
@@ -42,60 +102,61 @@ export const MiniMap = ({ panzoom, canvas }) => {
   };
 
   return (
-    <div>
-      <div
-        style={mapDimensions}
-        className="fixed top-5 rounded-md right-5 bg-opacity-40	bg-gray-500 border-gray-300 border overflow-hidden"
-      >
-        {cardIds.map((id) => (
-          <MiniMapItem key={id} id={id} />
-        ))}
-      </div>
+    <div
+      ref={minimapRef}
+      style={mapDimensions}
+      id="minimap"
+      className="fixed top-1 bg-gray-500 z-force right-1 bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 border overflow-hidden"
+    >
+      <div style={viewportDimensions} className="absolute bg-blue-500" />
+      {cardIds.map((id) => (
+        <MiniMapItem panzoom={panzoom} key={id} id={id} />
+      ))}
     </div>
   );
-};
+});
 
 const MiniMapCard = styled.div`
   display: inline-block;
   position: absolute;
   border-radius: 5px;
   margin: 4px;
-  background: #fff;
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
   --color: #4af;
-  transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
+  transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color,
+    0.2s outline;
   z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
-  box-shadow: ${({ isDragging }) =>
-    isDragging &&
-    "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
+  outline: 1px solid ${({ isDragging }) => (isDragging ? "red" : "transparent")} !important;
 `;
 
 interface Props {
   id: string;
+  panzoom: any;
 }
 
-const MiniMapItem = ({ id }: Props) => {
+const MiniMapItem = ({ id, panzoom }: Props) => {
   const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
   const cardSettings = useRecoilValue(cardState.cardSettings(id));
   const editableCardId = useRecoilValue(cardState.editableCardId);
   const colorTheme = useRecoilValue(cardState.cardColorTheme(id));
 
   const transformStyle = {
-    transform: `translate(${cardDimensions.x / 50}px, ${
-      cardDimensions.y / 50
+    transform: `translate(${cardDimensions.x / minimapSizeDivider}px, ${
+      cardDimensions.y / minimapSizeDivider
     }px)`,
+    transformOrigin: "-100% -100%",
   };
-  const isEditable = editableCardId === id;
 
   return (
     <MiniMapCard
+      // onClick={() => zoomToCard({ x: cardDimensions.x, y: cardDimensions.y })}
       id={id}
       isDragging={cardSettings.isDragging}
       style={{
-        width: cardDimensions.width / 50,
-        height: cardDimensions.height / 50,
+        width: cardDimensions.width / minimapSizeDivider,
+        height: cardDimensions.height / minimapSizeDivider,
         ...colorTheme,
         ...transformStyle,
       }}

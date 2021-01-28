@@ -22,6 +22,8 @@ import { useDragResizeCard } from "./use-drag-resize-card";
 import { usePanzoomEffects } from "./use-panzoom-effects";
 import { useResizeCardEffect } from "./use-resize-card-effect";
 
+export const totalCanvasPixelSize = 10000;
+
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -29,8 +31,8 @@ const Wrapper = styled.div`
 `;
 
 const Canvas = styled.div`
-  width: 10000px;
-  height: 10000px;
+  width: ${totalCanvasPixelSize}px;
+  height: ${totalCanvasPixelSize}px;
 `;
 
 export const Board = () => {
@@ -73,7 +75,9 @@ export const Board = () => {
     (e) => {
       const moveable = moveableRef.current;
       const target = e.inputEvent.target;
+
       if (
+        target.id === "minimap" ||
         moveable.isMoveableElement(target) ||
         selectedCards.some((t) => t === target || t.contains(target))
       ) {
@@ -129,8 +133,6 @@ export const Board = () => {
   const onDragStart = useCallback((ev) => {
     const target = ev.target;
 
-    console.log(target);
-
     const { x, y } = getCardDimensions(target.id);
     setCardSettings(ev.target.id, { isDragging: true });
 
@@ -179,8 +181,8 @@ export const Board = () => {
         ? {
             left: boundPadding,
             top: boundPadding,
-            right: 10000 - boundPadding,
-            bottom: 10000 - boundPadding,
+            right: totalCanvasPixelSize - boundPadding,
+            bottom: totalCanvasPixelSize - boundPadding,
           }
         : {},
     [process.browser]
@@ -223,7 +225,7 @@ export const Board = () => {
       {disablePan && (
         <Selecto
           ref={selectoRef}
-          dragContainer={".wrapper"}
+          dragContainer={".canvas"}
           selectableTargets={[".canvas-card"]}
           hitRate={0}
           selectByClick={true}
@@ -272,7 +274,7 @@ export const Board = () => {
         <CardList />
         <ArrowList />
       </Canvas>
-      <MiniMap canvas={canvasEditorRef.current} panzoom={panzoom} />
+      <MiniMap canvas={canvasEditorRef.current} panzoom={panzoomRef.current} />
     </Wrapper>
   );
 };

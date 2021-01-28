@@ -31,9 +31,7 @@ export function ContentEditableEditor({ id }) {
     }));
   }, []);
 
-  const handleBlur = useRefCallback(() => {
-    console.log(card.content);
-  }, [card.content]);
+  const handleBlur = useRefCallback(() => {}, [card.content]);
 
   return (
     <ContentEditable
