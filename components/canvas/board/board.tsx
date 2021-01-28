@@ -4,6 +4,7 @@ import { useCallback, useMemo, useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import { useRecoilState, useRecoilValue } from "recoil";
+import "rmc-drawer/assets/index.css";
 import styled from "styled-components";
 import {
   useGetCardDimensions,
@@ -13,7 +14,7 @@ import {
 import * as cardState from "../../state/cards";
 import { ArrowList } from "../arrow/arrow-list";
 import { CardList } from "../card/card-list";
-import { MiniMap } from "../minimap/minimap";
+import { DiscussionDrawer } from "../drawer/discussion-drawer";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { useAddCardViaClick } from "./use-add-card-via-click";
 import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
@@ -28,6 +29,7 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgb(243, 240, 231);
+  overflow: hidden;
 `;
 
 const Canvas = styled.div`
@@ -40,6 +42,7 @@ export const Board = () => {
     cardState.selectedCardTargets
   );
   const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
+
   const [disablePan, setDisablePan] = React.useState(true);
   const [zoom, setZoom] = React.useState(1);
 
@@ -215,6 +218,7 @@ export const Board = () => {
       className="wrapper"
       onDoubleClick={addCardViaClick}
     >
+      <DiscussionDrawer />
       <ZoomControlToolbar
         disablePan={disablePan}
         toggleDisablePan={() => setDisablePan((pan) => !pan)}
@@ -274,7 +278,7 @@ export const Board = () => {
         <CardList />
         <ArrowList />
       </Canvas>
-      <MiniMap canvas={canvasEditorRef.current} panzoom={panzoomRef.current} />
+      {/* <MiniMap canvas={canvasEditorRef.current} panzoom={panzoomRef.current} /> */}
     </Wrapper>
   );
 };

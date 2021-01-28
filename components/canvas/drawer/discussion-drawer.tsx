@@ -1,30 +1,25 @@
-import { Drawer } from "antd";
-import React, { useState } from "react";
+import React from "react";
+import { useRecoilState } from "recoil";
+import * as uiState from "../../state/ui";
 import { Discussion } from "./discussion";
+import { Slideover } from "./slide-over";
 
-export const DiscussionDrawer: React.FC = ({ children }) => {
-  const [visible, setVisible] = useState(false);
-  const showDrawer = () => {
-    setVisible(true);
-  };
-  const onClose = () => {
-    setVisible(false);
-  };
+export const DiscussionDrawer: React.FC = () => {
+  const [discussionDrawer, setDiscussionDrawer] = useRecoilState(
+    uiState.discussionDrawer
+  );
+
+  const closeDrawer = () =>
+    setDiscussionDrawer((state) => ({ ...state, open: false }));
   return (
     <>
-      <span className="cursor-pointer" onClick={showDrawer}>
-        {children}
-      </span>
-      <Drawer
-        width={500}
-        title="Discussion"
-        placement="right"
-        closable={false}
-        onClose={onClose}
-        visible={visible}
+      <Slideover
+        closeDrawer={closeDrawer}
+        isOpen={discussionDrawer.open}
+        title="hi"
       >
         <Discussion />
-      </Drawer>
+      </Slideover>
     </>
   );
 };

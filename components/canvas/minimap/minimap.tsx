@@ -111,7 +111,7 @@ export const MiniMap = React.memo(({ panzoom, canvas }) => {
       ref={minimapRef}
       style={mapDimensions}
       id="minimap"
-      className="fixed top-4 right-4 bg-gray-500 rounded-md border-gray-400 border-4 z-force  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
+      className="fixed top-4 right-4 bg-gray-500 rounded-md border-gray-400 border-4 z-overlay  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
     >
       <div style={viewportDimensions} className="absolute bg-blue-400" />
       {cardIds.map((id) => (
