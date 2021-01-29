@@ -1,54 +1,21 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
+import * as uiState from "../../state/ui";
 import { totalCanvasPixelSize } from "../board/board";
 
 const minimapSizeDivider = 60;
 export const minimapId = "minimap";
 
-export const MiniMap = React.memo(({ panzoom, canvas }) => {
+export const MiniMap = React.memo(({ panzoom }) => {
   const cardIds = useRecoilValue(cardState.cardIds);
   // const arrows = useRecoilValue(arrowState.arrows);
-  const editableCardId = useRecoilValue(cardState.editableCardId);
+  const panZoomState = useRecoilValue(uiState.panZoomState);
 
   const minimapRef = useRef(null);
 
-  const [, setHack] = React.useState(false);
-
-  useEffect(
-    function hackStateUpdate() {
-      setInterval(() => setHack((hack) => !hack), 100);
-    },
-    [panzoom]
-  );
-
-  // useEffect(() => {
-  //   if (!minimapRef.current) return;
-
-  //   new Gesto(minimapRef.current, {
-  //     container: minimapRef.current,
-  //     pinchOutside: false,
-  //   }).on("drag", (e) => {
-  //     console.log(e);
-  //     // console.log(e);
-  //     // console.log(e.clientX, e.clientY);
-  //     const x =
-  //       (e.clientX - e.inputEvent.target.offsetLeft) /
-  //       e.inputEvent.target.clientWidth;
-  //     const y =
-  //       (e.clientY - e.inputEvent.target.offsetTop) /
-  //       e.inputEvent.target.clientHeight;
-
-  //     console.log(x, y);
-
-  //     // panzoom.zoom();
-  //   });
-  // }, [minimapRef.current]);
-
   if (!panzoom) return null;
-
-  console.log(canvas.clientWidth);
 
   const mapDimensions = {
     width: totalCanvasPixelSize / (minimapSizeDivider - 2),

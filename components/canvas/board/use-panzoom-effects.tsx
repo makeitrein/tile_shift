@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { panZoomState } from "../../state/ui";
 import { totalCanvasPixelSize } from "./board";
 import Panzoom from "./panzoom/panzoom";
 
@@ -9,6 +11,8 @@ export const usePanzoomEffects = ({
   disablePan,
   range,
 }) => {
+  const setPanZoomState = useSetRecoilState(panZoomState);
+
   useEffect(() => {
     // works for 1
     // const maxX = totalCanvasPixelSize - window.innerWidth * 1.5;
@@ -42,6 +46,10 @@ export const usePanzoomEffects = ({
 
     panzoom.pan(centerX, centerY, { force: true });
 
+    const { x, y } = panzoom.getPan();
+    const scale = panzoom.getScale();
+    setPanZoomState({ x, y, scale });
+
     window.addEventListener(
       "mousewheel",
       (e) => {
@@ -51,24 +59,24 @@ export const usePanzoomEffects = ({
 
         if (isPinchZoom) {
           panzoom.zoomWithWheel(e);
-          if (range.current) range.current.value = panzoom.getScale() + "";
         } else {
           const x = -e.deltaX;
           const y = -e.deltaY;
           panzoom.pan(x, y, { relative: true, force: true });
         }
+
+        // const { x, y } = panzoom.getPan();
+        // const scale = panzoom.getScale();
+        // setTimeout(() => setPanZoomState({ x, y, scale }), 100);
       },
       { passive: false }
     );
 
-    // canvasEditorRef.current.addEventListener("panzoomzoom", ({ detail }) => {
-    //   if (detail.scale < 0.5) {
-    //     setZoom(2);
-    //   } else if (detail.scale < 1) {
-    //     setZoom(1.5);
-    //   } else {
-    //     setZoom(1);
-    //   }
+    // canvasEditorRef.current.addEventListener("panzoomchange", ({ detail }) => {
+    //   const { x, y, scale } = detail;
+    //   console.log({ x, y, scale });
+
+    //   // setTimeout(() => setPanZoomState({ x, y, scale }), 100);
     // });
   }, []);
 

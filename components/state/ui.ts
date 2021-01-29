@@ -7,3 +7,12 @@ export const discussionDrawer = atom({
     cardId: null,
   },
 });
+
+export const panZoomState = atom({
+  key: "UI/pan",
+  default: {
+    x: 0,
+    y: 0,
+    scale: 1,
+  },
+});
