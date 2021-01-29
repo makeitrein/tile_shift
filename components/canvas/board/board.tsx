@@ -219,12 +219,6 @@ export const Board = () => {
       onDoubleClick={addCardViaClick}
     >
       <DiscussionDrawer />
-      <ZoomControlToolbar
-        disablePan={disablePan}
-        toggleDisablePan={() => setDisablePan((pan) => !pan)}
-        range={range}
-        panzoom={panzoom}
-      />
 
       {disablePan && (
         <Selecto
@@ -279,6 +273,12 @@ export const Board = () => {
         <ArrowList />
       </Canvas>
       <MiniMap panzoom={panzoomRef.current} />
+      <ZoomControlToolbar
+        disablePan={disablePan}
+        toggleDisablePan={() => setDisablePan((pan) => !pan)}
+        range={range}
+        panzoom={panzoom}
+      />
     </Wrapper>
   );
 };

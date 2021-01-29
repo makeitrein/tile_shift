@@ -1,5 +1,6 @@
 import {
   AcademicCapOutline,
+  ArchiveOutline,
   BanOutline,
   BeakerOutline,
   ChartSquareBarOutline,
@@ -75,6 +76,7 @@ const tagGroups = [
     tags: [
       { name: "Note", color: "gray", icon: PencilAltOutline },
       { name: "Miscellaneous", color: "gray", icon: ViewGridOutline },
+      { name: "Archive", color: "gray", icon: ArchiveOutline },
     ],
   },
 ];
@@ -91,7 +93,7 @@ export const TagPicker = ({ id }) => {
   };
 
   return (
-    <div className="p-3 w-44">
+    <div className="px-3 py-1.5 w-44">
       {tagGroups.map(({ name, tags }) => (
         <div className="py-1">
           <label className="text-xs mt-1 font-bold -ml-px pb-1.5 text-gray-700 block">
@@ -123,7 +125,7 @@ export const Tag = ({ name }) => {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 rounded-full text-xs transition font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
+      className={`inline-flex items-center px-2.5 rounded-full text-xs  font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
     >
       <Icon width={16} />
 

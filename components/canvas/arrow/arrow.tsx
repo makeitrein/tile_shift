@@ -9,19 +9,19 @@ interface Props {
   id: string;
 }
 
-const arrowLeft = ({ x, y, height }) => ({
+export const arrowLeft = ({ x, y, height }) => ({
   x: x,
   y: y + height / 2,
 });
 
-const arrowRight = ({ x, y, width, height }) => ({
+export const arrowRight = ({ x, y, width, height }) => ({
   x: x + width,
   y: y + height / 2,
 });
 
-const arrowTop = ({ y, x, width }) => ({ y: y, x: x + width / 2 });
+export const arrowTop = ({ y, x, width }) => ({ y: y, x: x + width / 2 });
 
-const arrowBottom = ({ y, height, x, width }) => ({
+export const arrowBottom = ({ y, height, x, width }) => ({
   y: y + height,
   x: x + width / 2,
 });

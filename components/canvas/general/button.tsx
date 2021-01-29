@@ -3,11 +3,7 @@ export const Button = ({ onClick, children, className, active }) => {
     <button
       type="button"
       onClick={onClick}
-      className={` relative inline-flex items-center px-4 py-2 border focus:z-10 focus:outline-none focus:ring-1  text-sm font-medium ${
-        !active
-          ? `border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500`
-          : `text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`
-      } ${className}`}
+      className={` border-gray-400 border-l-4 border-t-4 border-b-4 relative inline-flex items-center px-2 py-1  focus:z-10 focus:outline-none  text-sm font-medium border-gray-400 bg-gray-300 text-gray-700 hover:bg-gray-50 ${className}`}
     >
       {children}
     </button>

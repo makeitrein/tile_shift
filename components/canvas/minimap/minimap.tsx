@@ -1,9 +1,13 @@
 import React, { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import * as arrowState from "../../state/arrows";
 import * as cardState from "../../state/cards";
 import * as uiState from "../../state/ui";
+import { arrowLeft, arrowRight } from "../arrow/arrow";
 import { totalCanvasPixelSize } from "../board/board";
+import { LineOrientation } from "../react-simple-arrows";
+import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
 
 const minimapSizeDivider = 60;
 export const minimapId = "minimap";
@@ -14,6 +18,7 @@ export const MiniMap = React.memo(({ panzoom }) => {
   const panZoomState = useRecoilValue(uiState.panZoomState);
 
   const minimapRef = useRef(null);
+  const arrowIds = useRecoilValue(arrowState.arrowIds);
 
   if (!panzoom) return null;
 
@@ -76,24 +81,26 @@ export const MiniMap = React.memo(({ panzoom }) => {
     <div
       onClick={zoomToCard}
       ref={minimapRef}
-      style={mapDimensions}
+      style={{ borderBottomLeftRadius: "0.375rem", ...mapDimensions }}
       id="minimap"
-      className="fixed top-4 right-4 bg-gray-500 rounded-md border-gray-400 border-4 z-overlay  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
+      className="fixed top-4 right-4 bg-gray-500 rounded-r-md border-gray-400 border-4 z-overlay  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
     >
       <div style={viewportDimensions} className="absolute bg-blue-400" />
       {cardIds.map((id) => (
-        <MiniMapItem panzoom={panzoom} key={id} id={id} />
+        <MiniMapCard panzoom={panzoom} key={id} id={id} />
+      ))}
+      {arrowIds.map((id) => (
+        <MiniMapArrow id={id} />
       ))}
     </div>
   );
 });
 
-const MiniMapCard = styled.div`
+const CardWrapper = styled.div`
   display: inline-block;
   position: absolute;
   border-radius: 5px;
   margin: 4px;
-  border-width: 1px;
   border-style: solid;
   border-radius: 2px;
   --color: #4af;
@@ -105,13 +112,11 @@ const MiniMapCard = styled.div`
 
 interface Props {
   id: string;
-  panzoom: any;
 }
 
-const MiniMapItem = ({ id, panzoom }: Props) => {
+const MiniMapCard = ({ id }: Props) => {
   const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
   const cardSettings = useRecoilValue(cardState.cardSettings(id));
-  const editableCardId = useRecoilValue(cardState.editableCardId);
   const colorTheme = useRecoilValue(cardState.cardColorTheme(id));
 
   const transformStyle = {
@@ -122,7 +127,7 @@ const MiniMapItem = ({ id, panzoom }: Props) => {
   };
 
   return (
-    <MiniMapCard
+    <CardWrapper
       // onClick={() => zoomToCard({ x: cardDimensions.x, y: cardDimensions.y })}
       id={id}
       isDragging={cardSettings.isDragging}
@@ -132,6 +137,39 @@ const MiniMapItem = ({ id, panzoom }: Props) => {
         ...colorTheme,
         ...transformStyle,
       }}
-    ></MiniMapCard>
+    />
   );
 };
+
+export const MiniMapArrow = React.memo(({ id }: Props) => {
+  const arrow = useRecoilValue(arrowState.arrow(id));
+  const { color } = useRecoilValue(arrowState.arrowColorTheme(id));
+
+  const startCard = useRecoilValue(
+    cardState.cardDimensions(arrow.start.cardId)
+  );
+  const endCard = useRecoilValue(cardState.cardDimensions(arrow.end.cardId));
+
+  const minimapStart = {
+    x: startCard.x / (minimapSizeDivider - 3),
+    y: startCard.y / (minimapSizeDivider - 3),
+    width: startCard.width / minimapSizeDivider,
+    height: startCard.height / minimapSizeDivider,
+  };
+
+  const minimapEnd = {
+    x: endCard.x / (minimapSizeDivider - 3),
+    y: endCard.y / (minimapSizeDivider - 3),
+    width: endCard.width / minimapSizeDivider,
+    height: endCard.height / minimapSizeDivider,
+  };
+  return (
+    <BasicArrowSvg
+      start={arrowRight(minimapStart)}
+      end={arrowLeft(minimapEnd)}
+      orientation={LineOrientation.HORIZONTAL}
+      strokeWidth={"1"}
+      color={color}
+    />
+  );
+});

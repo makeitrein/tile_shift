@@ -1,7 +1,7 @@
 import { Classes, Popover2 } from "@blueprintjs/popover2";
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { LinkOutline } from "heroicons-react";
+import { LinkOutline, TagOutline } from "heroicons-react";
 import * as React from "react";
 import { useRef, useState } from "react";
 import useOnClickOutside from "react-cool-onclickoutside";
@@ -30,16 +30,12 @@ const variants = {
 export const CardMenu = ({ id }) => {
   const { commands, active } = useRemirror({ autoUpdate: true });
   const [altToolbar, setAltToolbar] = useState(false);
-  const [tagPickerVisible, setTagPickerVisible] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
   const tooltipRef = useRef(null);
 
   const [initialAnimation, setInitialAnimation] = useState(false);
-
-  const tagPickerTooltipRef = useOnClickOutside(() => {
-    setTagPickerVisible(false);
-  });
 
   const colorPickerTooltipRef = useOnClickOutside(() => {
     setColorPickerVisible(false);
@@ -53,7 +49,7 @@ export const CardMenu = ({ id }) => {
   return (
     <div
       ref={tooltipRef}
-      className="absolute top-0 w-full -mt-11	z-overlay left-0 cursor-pointer flex justify-center"
+      className={`absolute top-0 w-full -mt-11	z-overlay left-0 cursor-pointer flex justify-center`}
     >
       <AnimatePresence>
         {!altToolbar ? (
@@ -70,27 +66,19 @@ export const CardMenu = ({ id }) => {
             className="flex absolute justify-center "
           >
             <Popover2
+              onOpening={() => setPopoverOpen(true)}
+              onClosing={() => setPopoverOpen(false)}
               interactionKind="click"
               popoverClassName={Classes.POPOVER2_CONTENT}
               usePortal={false}
+              hasBackdrop={true}
               placement="left"
               className="z-force"
               fill={true}
               content={<TagPicker id={id} />}
               renderTarget={({ isOpen, ref, ...targetProps }) => (
                 <TooltipMenuItem ref={ref} {...targetProps} rounded="l-md">
-                  <svg
-                    className="w-4 h-4 mt-1.5 relative top-px"
-                    viewBox="64 64 896 896"
-                    focusable="false"
-                    data-icon="tags"
-                    width="1em"
-                    height="1em"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M483.2 790.3L861.4 412c1.7-1.7 2.5-4 2.3-6.3l-25.5-301.4c-.7-7.8-6.8-13.9-14.6-14.6L522.2 64.3c-2.3-.2-4.7.6-6.3 2.3L137.7 444.8a8.03 8.03 0 000 11.3l334.2 334.2c3.1 3.2 8.2 3.2 11.3 0zm62.6-651.7l224.6 19 19 224.6L477.5 694 233.9 450.5l311.9-311.9zm60.16 186.23a48 48 0 1067.88-67.89 48 48 0 10-67.88 67.89zM889.7 539.8l-39.6-39.5a8.03 8.03 0 00-11.3 0l-362 361.3-237.6-237a8.03 8.03 0 00-11.3 0l-39.6 39.5a8.03 8.03 0 000 11.3l243.2 242.8 39.6 39.5c3.1 3.1 8.2 3.1 11.3 0l407.3-406.6c3.1-3.1 3.1-8.2 0-11.3z"></path>
-                  </svg>
+                  <TagOutline className="w-4 h-4 mt-1.5 relative top-px" />
                 </TooltipMenuItem>
               )}
             />
