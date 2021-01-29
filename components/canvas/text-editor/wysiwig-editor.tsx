@@ -34,6 +34,10 @@ export const EditableArticle = styled.article`
     outline: none;
   }
 
+  a {
+    color: rgba(37, 99, 235);
+  }
+
   p {
     font-size: 1rem;
     min-height: 1.5rem;
@@ -89,7 +93,7 @@ const extensionTemplate = () => [
   new UnderlineExtension(),
   new ListPreset({}),
   new HeadingExtension({}),
-  new LinkExtension({}),
+  new LinkExtension({ extraAttributes: { target: "_blank" } }),
   new WysiwygPreset({}),
 ];
 

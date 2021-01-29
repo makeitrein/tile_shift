@@ -1,12 +1,12 @@
 import { Classes, Popover2 } from "@blueprintjs/popover2";
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { AnimatePresence, motion } from "framer-motion";
+import { LinkOutline } from "heroicons-react";
 import * as React from "react";
 import { useRef, useState } from "react";
 import useOnClickOutside from "react-cool-onclickoutside";
 import { useRemirror } from "remirror/react";
-import { Tooltip } from "../general/tooltip";
-import { ColorBlock, ColorPicker } from "./color-picker";
+import { LinkWysiwygCreator } from "./link-wysiwyg-creator";
 import { TagPicker } from "./tag-picker";
 import { TooltipMenuItem } from "./tooltip-menu-item";
 
@@ -80,7 +80,7 @@ export const CardMenu = ({ id }) => {
               renderTarget={({ isOpen, ref, ...targetProps }) => (
                 <TooltipMenuItem ref={ref} {...targetProps} rounded="l-md">
                   <svg
-                    className="w-4 h-4 mt-1.5"
+                    className="w-4 h-4 mt-1.5 relative top-px"
                     viewBox="64 64 896 896"
                     focusable="false"
                     data-icon="tags"
@@ -95,16 +95,20 @@ export const CardMenu = ({ id }) => {
               )}
             />
 
-            <TooltipMenuItem ref={colorPickerTooltipRef}>
-              <Tooltip visible={colorPickerVisible}>
-                <ColorPicker id={id} />
-              </Tooltip>
-              <span
-                className="absolute inset-0 z-50"
-                onClick={() => setColorPickerVisible((visible) => !visible)}
-              ></span>
-              <ColorBlock id={id} />
-            </TooltipMenuItem>
+            <Popover2
+              interactionKind="click"
+              popoverClassName={Classes.POPOVER2_CONTENT}
+              usePortal={false}
+              placement="top"
+              className="z-force"
+              fill={true}
+              content={<LinkWysiwygCreator />}
+              renderTarget={({ isOpen, ref, ...targetProps }) => (
+                <TooltipMenuItem ref={ref} {...targetProps}>
+                  <LinkOutline className="w-4 h-4 mt-1.5 relative top-px" />
+                </TooltipMenuItem>
+              )}
+            />
 
             <TooltipMenuItem
               onClick={() => commands.toggleBold()}
