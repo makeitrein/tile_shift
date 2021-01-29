@@ -114,7 +114,7 @@ export const EditorManager = ({ id, showToolbar }) => {
       key={id}
       manager={manager}
       value={value}
-      placeholder="Prose goes here..."
+      placeholder="What's on your mind?"
       onChange={({ state }) => {
         setValue(state);
         setCard((card) => ({

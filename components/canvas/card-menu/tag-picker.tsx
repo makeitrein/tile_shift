@@ -91,16 +91,16 @@ export const TagPicker = ({ id }) => {
   };
 
   return (
-    <div>
+    <div className="p-3 w-44">
       {tagGroups.map(({ name, tags }) => (
         <div className="py-1">
-          <label className="text-xs font-bold -ml-1 pb-1 text-gray-700 block">
+          <label className="text-xs mt-1 font-bold -ml-px pb-1.5 text-gray-700 block">
             {name}:
           </label>
           {tags.map(({ name }) => (
-            <span className="pr-1" onClick={() => handleTagClick(name)}>
+            <div className="pb-1" onClick={() => handleTagClick(name)}>
               <Tag name={name} />
-            </span>
+            </div>
           ))}
         </div>
       ))}
@@ -123,7 +123,7 @@ export const Tag = ({ name }) => {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 rounded-full text-xs font-medium bg-${color}-100 text-${color}-800`}
+      className={`inline-flex items-center px-2.5 rounded-full text-xs transition font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
     >
       <Icon width={16} />
 

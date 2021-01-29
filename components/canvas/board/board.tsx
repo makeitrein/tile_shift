@@ -4,7 +4,6 @@ import { useCallback, useMemo, useRef } from "react";
 import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import { useRecoilState, useRecoilValue } from "recoil";
-import "rmc-drawer/assets/index.css";
 import styled from "styled-components";
 import {
   useGetCardDimensions,

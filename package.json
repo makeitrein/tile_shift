@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@blueprintjs/popover2": "^0.1.2",
     "@editorjs/checklist": "^1.3.0",
     "@editorjs/editorjs": "^2.19.1",
     "@editorjs/paragraph": "^2.8.0",
