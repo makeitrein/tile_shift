@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { useDebouncedCallback } from "use-debounce";
 import * as arrowState from "../../state/arrows";
 import * as cardState from "../../state/cards";
-import * as uiState from "../../state/ui";
 import { arrowLeft, arrowRight } from "../arrow/arrow";
 import { totalCanvasPixelSize } from "../board/board";
 import { LineOrientation } from "../react-simple-arrows";
@@ -15,10 +15,26 @@ export const minimapId = "minimap";
 export const MiniMap = React.memo(({ panzoom }) => {
   const cardIds = useRecoilValue(cardState.cardIds);
   // const arrows = useRecoilValue(arrowState.arrows);
-  const panZoomState = useRecoilValue(uiState.panZoomState);
+
+  const [, rerender] = useState(false);
 
   const minimapRef = useRef(null);
   const arrowIds = useRecoilValue(arrowState.arrowIds);
+
+  const rerenderer = useDebouncedCallback(() => {
+    console.log("rerenderer");
+    rerender((val) => !val);
+  }, 100);
+
+  useEffect(() => {
+    window.addEventListener("mousewheel", rerenderer.callback, {
+      passive: false,
+    });
+
+    window.addEventListener("mousewheel", () => rerender((val) => !val), {
+      passive: false,
+    });
+  }, [rerenderer]);
 
   if (!panzoom) return null;
 

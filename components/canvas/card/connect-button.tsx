@@ -72,7 +72,7 @@ export const ConnectButton = React.memo(({ id, direction }: Props) => {
 
   const createAndConnectCard = () => {
     const newCardId = cardId();
-    createInitialCard(newCardDimensions, newCardId);
+    createInitialCard({ dimensions: newCardDimensions, id: newCardId });
     createInitialArrow({
       start: { cardId: id, point: direction },
       end: { cardId: newCardId, point: "left" },

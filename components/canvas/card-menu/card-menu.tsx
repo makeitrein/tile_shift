@@ -76,7 +76,6 @@ export const CardMenu = ({ id }) => {
               interactionKind="click"
               popoverClassName={Classes.POPOVER2_CONTENT}
               usePortal={false}
-              hasBackdrop={true}
               placement="left"
               className="z-force"
               fill={true}

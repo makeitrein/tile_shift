@@ -20,6 +20,7 @@ import {
   QuestionMarkCircleOutline,
   StopOutline,
   TagOutline,
+  UserOutline,
   ViewGridOutline,
 } from "heroicons-react";
 import { useRecoilState } from "recoil";
@@ -69,6 +70,14 @@ const tagGroups = [
       { name: "In-Review", color: "orange", icon: EyeOutline },
       { name: "Done", color: "green", icon: CheckCircleOutline },
       { name: "Blocked", color: "red", icon: StopOutline },
+    ],
+  },
+  {
+    name: "People",
+    tags: [
+      { name: "Owner", color: "light-blue", icon: UserOutline },
+      { name: "Collaborator", color: "indigo", icon: UserOutline },
+      { name: "Client", color: "indigo", icon: UserOutline },
     ],
   },
   {

@@ -54,14 +54,16 @@ export const usePanzoomEffects = ({
       "mousewheel",
       (e) => {
         const isPinchZoom = e.ctrlKey;
+        const x = -e.deltaX;
+        const y = -e.deltaY;
 
         e.preventDefault();
 
         if (isPinchZoom) {
+          // e.stopPropagation();
           panzoom.zoomWithWheel(e);
+          panzoom.pan(0, 0, { relative: true, force: true });
         } else {
-          const x = -e.deltaX;
-          const y = -e.deltaY;
           panzoom.pan(x, y, { relative: true, force: true });
         }
 

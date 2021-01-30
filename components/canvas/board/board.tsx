@@ -13,6 +13,7 @@ import {
 import * as cardState from "../../state/cards";
 import { ArrowList } from "../arrow/arrow-list";
 import { CardList } from "../card/card-list";
+import { Controls } from "../controls/controls";
 import { DiscussionDrawer } from "../drawer/discussion-drawer";
 import { MiniMap } from "../minimap/minimap";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
@@ -219,6 +220,8 @@ export const Board = () => {
       onDoubleClick={addCardViaClick}
     >
       <DiscussionDrawer />
+
+      <Controls />
 
       {disablePan && (
         <Selecto

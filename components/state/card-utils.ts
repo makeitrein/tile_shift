@@ -19,11 +19,24 @@ export const cardId = () => "new-card" + new Date().getTime();
 
 export const useCreateInitialCard = () =>
   useRecoilCallback(({ set }) => {
-    return (dimensions: Partial<CardDimensions>, id?: string) => {
+    return ({
+      dimensions,
+      content = "",
+      id,
+    }: {
+      dimensions?: Partial<CardDimensions>;
+      content?: string;
+      id?: string;
+    }) => {
       const newCardId = id || cardId();
       set(cardState.initialCardValues, (cards) => ({
         ...cards,
-        [newCardId]: { ...defaultCardValues, id: newCardId, ...dimensions },
+        [newCardId]: {
+          ...defaultCardValues,
+          content,
+          id: newCardId,
+          ...dimensions,
+        },
       }));
     };
   });

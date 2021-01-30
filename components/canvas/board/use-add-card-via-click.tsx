@@ -17,7 +17,7 @@ export const useAddCardViaClick = (canvasEditor) => {
         y: e.nativeEvent.offsetY - cardHeight / 2,
       };
 
-      createInitialCard(dimensions);
+      createInitialCard({ dimensions });
     },
     [canvasEditor]
   );
