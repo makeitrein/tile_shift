@@ -174,9 +174,11 @@ export const AvatarComments = () => {
 };
 
 export const Tags = ({ tags }) => {
+  const setTagPickerOpen = useSetRecoilState(uiState.tagPickerOpen);
+
   return (
     <div className="mt-2 ml-2">
-      <Tag name={tags[0]} />
+      <Tag onClick={() => setTagPickerOpen(true)} name={tags[0]} />
     </div>
   );
 };

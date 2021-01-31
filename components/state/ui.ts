@@ -16,3 +16,8 @@ export const panZoomState = atom({
     scale: 1,
   },
 });
+
+export const tagPickerOpen = atom({
+  key: "UI/tag-picker-open",
+  default: false,
+});

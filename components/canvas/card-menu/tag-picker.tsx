@@ -90,11 +90,11 @@ const allTags = tagGroups.map((group) => group.tags).flat();
 
 export const TagPicker = ({ id }) => {
   return (
-    <div className="px-3 py-1.5 w-44 ">
+    <div className="py-1.5 w-52 ">
       <VariableHeightPanelStack
         initialPanel={{
           component: TagPickerContents,
-          title: "Home",
+          title: "Category",
           props: { id },
         }}
       />
@@ -125,7 +125,7 @@ export const TagPickerContents = ({ id, openPanel }) => {
                 openPanel({
                   component: TagPickerContents, // <- class or stateless function type
                   props: { id }, // <- SettingsPanel props without IPanelProps
-                  title: "Settings", // <- appears in header and back button
+                  title: "Subcategory", // <- appears in header and back button
                 })
               }
             >
@@ -138,12 +138,13 @@ export const TagPickerContents = ({ id, openPanel }) => {
   );
 };
 
-export const Tag = ({ name }) => {
+export const Tag = ({ name, onClick }) => {
   const tag = allTags.find((tag) => tag.name === name);
   if (!tag)
     return (
       <span
-        className={`inline-flex items-center px-2.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800`}
+        onClick={onClick}
+        className={`inline-flex cursor-pointer items-center px-2.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800`}
       >
         <TagOutline width={16} /> <span className="pl-1">Uncategorized</span>
       </span>
@@ -153,7 +154,8 @@ export const Tag = ({ name }) => {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 rounded-full text-xs  font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
+      onClick={onClick}
+      className={`inline-flex  cursor-pointer items-center px-2.5 rounded-full text-xs  font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
     >
       <Icon width={16} />
 

@@ -10,7 +10,9 @@ import {
 import * as React from "react";
 import { useRef, useState } from "react";
 import useOnClickOutside from "react-cool-onclickoutside";
+import { useRecoilState } from "recoil";
 import { useRemirror } from "remirror/react";
+import { tagPickerOpen } from "../../state/ui";
 import { LinkWysiwygCreator } from "./link-wysiwyg-creator";
 import { TagPicker } from "./tag-picker";
 import { TooltipMenuItem } from "./tooltip-menu-item";
@@ -35,7 +37,7 @@ const variants = {
 export const CardMenu = ({ id }) => {
   const { commands, active } = useRemirror({ autoUpdate: true });
   const [altToolbar, setAltToolbar] = useState(false);
-  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useRecoilState(tagPickerOpen);
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
   const tooltipRef = useRef(null);
@@ -71,8 +73,8 @@ export const CardMenu = ({ id }) => {
             className="flex absolute justify-center "
           >
             <Popover2
-              onOpening={() => setPopoverOpen(true)}
-              onClosing={() => setPopoverOpen(false)}
+              isOpen={popoverOpen}
+              onInteraction={(state) => setPopoverOpen(state)}
               interactionKind="click"
               popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
               usePortal={false}
