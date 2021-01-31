@@ -7,6 +7,10 @@ const PanelStackWrapper = styled.div`
     // position: relative;
   }
 
+  .bp3-panel-stack-header {
+    display: none;
+  }
+
   .bp3-panel-stack {
     // position: inherit;
   }

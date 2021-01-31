@@ -8,7 +8,7 @@ import {
   TrashOutline,
 } from "heroicons-react";
 import * as React from "react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useOnClickOutside from "react-cool-onclickoutside";
 import { useRecoilState } from "recoil";
 import { useRemirror } from "remirror/react";
@@ -52,6 +52,10 @@ export const CardMenu = ({ id }) => {
     setInitialAnimation(true);
     setAltToolbar((active) => !active);
   };
+
+  useEffect(() => {
+    return () => setPopoverOpen(false);
+  }, []);
 
   return (
     <div

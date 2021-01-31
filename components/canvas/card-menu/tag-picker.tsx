@@ -4,9 +4,12 @@ import {
   BanOutline,
   BeakerOutline,
   ChartSquareBarOutline,
+  CheckCircleOutline,
+  ChevronDoubleRightOutline,
   ClipboardListOutline,
   CubeTransparent,
   ExclamationOutline,
+  EyeOutline,
   FingerPrintOutline,
   FireOutline,
   FlagOutline,
@@ -17,7 +20,6 @@ import {
   QuestionMarkCircleOutline,
   StopOutline,
   TagOutline,
-  UserOutline,
   ViewGridOutline,
 } from "heroicons-react";
 import React from "react";
@@ -52,7 +54,7 @@ const tagGroups = [
       { name: "Goal", color: "indigo", icon: FlagOutline },
       { name: "Requirement", color: "amber", icon: ClipboardListOutline },
       {
-        name: "Out-of-Scope",
+        name: "Out of Scope",
         color: "orange",
         icon: BanOutline,
       },
@@ -65,17 +67,13 @@ const tagGroups = [
     tags: [
       { name: "Project", color: "light-blue", icon: CubeTransparent },
       { name: "Todo", color: "indigo", icon: InboxInOutline },
-      { name: "Blocker", color: "red", icon: StopOutline },
+      { name: "In Progress", color: "amber", icon: ChevronDoubleRightOutline },
+      { name: "For Review", color: "orange", icon: EyeOutline },
+      { name: "Done", color: "green", icon: CheckCircleOutline },
+      { name: "Blocked", color: "red", icon: StopOutline },
     ],
   },
-  {
-    name: "People",
-    tags: [
-      { name: "Owner", color: "light-blue", icon: UserOutline },
-      { name: "Collaborator", color: "indigo", icon: UserOutline },
-      { name: "Client", color: "indigo", icon: UserOutline },
-    ],
-  },
+
   {
     name: "General",
     tags: [
@@ -86,15 +84,67 @@ const tagGroups = [
   },
 ];
 
+const subcategoryGroups = [
+  {
+    name: "Status",
+    tags: [
+      { name: "Backlog", color: "light-blue", icon: AcademicCapOutline },
+
+      { name: "Todo", color: "light-blue", icon: AcademicCapOutline },
+      { name: "In-Progress", color: "light-blue", icon: AcademicCapOutline },
+      {
+        name: "Done",
+        color: "indigo",
+        icon: BeakerOutline,
+      },
+      {
+        name: "Blocked",
+        color: "indigo",
+        icon: BeakerOutline,
+      },
+      { name: "Awaiting Review", color: "amber", icon: PuzzleOutline },
+    ],
+  },
+  {
+    name: "Priority",
+    tags: [
+      { name: "P1", color: "light-blue", icon: AcademicCapOutline },
+      { name: "P2", color: "light-blue", icon: AcademicCapOutline },
+      { name: "P3", color: "light-blue", icon: AcademicCapOutline },
+      { name: "P4", color: "light-blue", icon: AcademicCapOutline },
+    ],
+  },
+  {
+    name: "Deadlines",
+    tags: [
+      { name: "Feedback", color: "light-blue", icon: AcademicCapOutline },
+      { name: "P2", color: "light-blue", icon: AcademicCapOutline },
+      { name: "P3", color: "light-blue", icon: AcademicCapOutline },
+      { name: "P4", color: "light-blue", icon: AcademicCapOutline },
+    ],
+  },
+  {
+    name: "Teams",
+    tags: [
+      { name: "Software", color: "light-blue", icon: AcademicCapOutline },
+      { name: "Design", color: "light-blue", icon: AcademicCapOutline },
+      { name: "Marketing", color: "light-blue", icon: AcademicCapOutline },
+      { name: "HR", color: "light-blue", icon: AcademicCapOutline },
+      { name: "Finance", color: "light-blue", icon: AcademicCapOutline },
+      { name: "Executives", color: "light-blue", icon: AcademicCapOutline },
+    ],
+  },
+];
+
 const allTags = tagGroups.map((group) => group.tags).flat();
+const allSubcategories = subcategoryGroups.map((group) => group.tags).flat();
 
 export const TagPicker = ({ id }) => {
   return (
-    <div className="py-1.5 w-52 ">
+    <div className="pb-1.5 w-44 ">
       <VariableHeightPanelStack
         initialPanel={{
           component: TagPickerContents,
-          title: "Category",
           props: { id },
         }}
       />
@@ -112,34 +162,59 @@ export const TagPickerContents = ({ id, openPanel }) => {
   };
 
   return (
-    <>
+    <div>
       {tagGroups.map(({ name, tags }) => (
-        <div className="py-1">
+        <div className="pb-1">
           <label className="text-xs mt-1 font-bold -ml-px pb-1.5 text-gray-700 block">
             {name}:
           </label>
           {tags.map(({ name }) => (
-            <div
-              className="pb-1"
-              onClick={() =>
-                openPanel({
-                  component: TagPickerContents, // <- class or stateless function type
-                  props: { id }, // <- SettingsPanel props without IPanelProps
-                  title: "Subcategory", // <- appears in header and back button
-                })
-              }
-            >
+            <div className="pb-1" onClick={() => handleTagClick(name)}>
               <Tag name={name} />
             </div>
           ))}
         </div>
       ))}
-    </>
+      {/*
+      <Button
+        rightIcon="arrow-right"
+        intent="primary"
+        text="Custom Tags"
+        className="mt-4"
+        onClick={() =>
+          openPanel({
+            component: SubcategoryPicker, // <- class or stateless function type
+            props: { id }, // <- SettingsPanel props without IPanelProps
+            title: "Subcategory", // <- appears in header and back button
+          })
+        }
+      /> */}
+    </div>
   );
 };
 
-export const Tag = ({ name, onClick }) => {
-  const tag = allTags.find((tag) => tag.name === name);
+export const SubcategoryPicker = ({ id, openPanel }) => {
+  const [cardSettings, setCardSettings] = useRecoilState(
+    cardState.cardSettings(id)
+  );
+
+  const handleTagClick = (clickedTag: string) => {
+    setCardSettings((card) => ({ ...card, tags: [clickedTag] }));
+  };
+
+  return <>Create Custom Tag</>;
+};
+
+export const Tag = ({
+  name,
+  onClick,
+}: {
+  name: string;
+  onClick?: () => void;
+}) => {
+  const tag = [...allTags, ...allSubcategories].find(
+    (tag) => tag.name === name
+  );
   if (!tag)
     return (
       <span
