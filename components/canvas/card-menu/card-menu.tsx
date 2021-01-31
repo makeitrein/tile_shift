@@ -74,12 +74,16 @@ export const CardMenu = ({ id }) => {
               onOpening={() => setPopoverOpen(true)}
               onClosing={() => setPopoverOpen(false)}
               interactionKind="click"
-              popoverClassName={Classes.POPOVER2_CONTENT}
+              popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
               usePortal={false}
               placement="left"
               className="z-force"
               fill={true}
-              content={<TagPicker id={id} />}
+              content={
+                <div>
+                  <TagPicker id={id} />
+                </div>
+              }
               renderTarget={({ isOpen, ref, ...targetProps }) => (
                 <TooltipMenuItem ref={ref} {...targetProps} rounded="l-md">
                   <TagOutline className="w-4 h-4 mt-1.5 relative top-px" />

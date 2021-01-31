@@ -4,12 +4,9 @@ import {
   BanOutline,
   BeakerOutline,
   ChartSquareBarOutline,
-  CheckCircleOutline,
-  ChevronDoubleRightOutline,
   ClipboardListOutline,
   CubeTransparent,
   ExclamationOutline,
-  EyeOutline,
   FingerPrintOutline,
   FireOutline,
   FlagOutline,
@@ -23,7 +20,9 @@ import {
   UserOutline,
   ViewGridOutline,
 } from "heroicons-react";
+import React from "react";
 import { useRecoilState } from "recoil";
+import { VariableHeightPanelStack } from "../../general/panel-stack";
 import * as cardState from "../../state/cards";
 
 const tagGroups = [
@@ -66,10 +65,7 @@ const tagGroups = [
     tags: [
       { name: "Project", color: "light-blue", icon: CubeTransparent },
       { name: "Todo", color: "indigo", icon: InboxInOutline },
-      { name: "Doing", color: "amber", icon: ChevronDoubleRightOutline },
-      { name: "In-Review", color: "orange", icon: EyeOutline },
-      { name: "Done", color: "green", icon: CheckCircleOutline },
-      { name: "Blocked", color: "red", icon: StopOutline },
+      { name: "Blocker", color: "red", icon: StopOutline },
     ],
   },
   {
@@ -93,6 +89,20 @@ const tagGroups = [
 const allTags = tagGroups.map((group) => group.tags).flat();
 
 export const TagPicker = ({ id }) => {
+  return (
+    <div className="px-3 py-1.5 w-44 ">
+      <VariableHeightPanelStack
+        initialPanel={{
+          component: TagPickerContents,
+          title: "Home",
+          props: { id },
+        }}
+      />
+    </div>
+  );
+};
+
+export const TagPickerContents = ({ id, openPanel }) => {
   const [cardSettings, setCardSettings] = useRecoilState(
     cardState.cardSettings(id)
   );
@@ -102,20 +112,29 @@ export const TagPicker = ({ id }) => {
   };
 
   return (
-    <div className="px-3 py-1.5 w-44">
+    <>
       {tagGroups.map(({ name, tags }) => (
         <div className="py-1">
           <label className="text-xs mt-1 font-bold -ml-px pb-1.5 text-gray-700 block">
             {name}:
           </label>
           {tags.map(({ name }) => (
-            <div className="pb-1" onClick={() => handleTagClick(name)}>
+            <div
+              className="pb-1"
+              onClick={() =>
+                openPanel({
+                  component: TagPickerContents, // <- class or stateless function type
+                  props: { id }, // <- SettingsPanel props without IPanelProps
+                  title: "Settings", // <- appears in header and back button
+                })
+              }
+            >
               <Tag name={name} />
             </div>
           ))}
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
