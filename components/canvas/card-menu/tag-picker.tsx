@@ -24,7 +24,6 @@ import {
 } from "heroicons-react";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { VariableHeightPanelStack } from "../../general/panel-stack";
 import * as cardState from "../../state/cards";
 
 const tagGroups = [
@@ -142,12 +141,7 @@ const allSubcategories = subcategoryGroups.map((group) => group.tags).flat();
 export const TagPicker = ({ id }) => {
   return (
     <div className="pb-1.5 w-44 ">
-      <VariableHeightPanelStack
-        initialPanel={{
-          component: TagPickerContents,
-          props: { id },
-        }}
-      />
+      <TagPickerContents id={id} />
     </div>
   );
 };
