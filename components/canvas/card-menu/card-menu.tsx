@@ -92,7 +92,12 @@ export const CardMenu = ({ id }) => {
                 </div>
               }
               renderTarget={({ isOpen, ref, ...targetProps }) => (
-                <TooltipMenuItem ref={ref} {...targetProps} rounded="l-md">
+                <TooltipMenuItem
+                  label="Select category"
+                  ref={ref}
+                  {...targetProps}
+                  rounded="l-md"
+                >
                   <TagOutline className="w-4 h-4 mt-1.5 relative top-px" />
                 </TooltipMenuItem>
               )}
@@ -107,13 +112,14 @@ export const CardMenu = ({ id }) => {
               fill={true}
               content={<LinkWysiwygCreator />}
               renderTarget={({ isOpen, ref, ...targetProps }) => (
-                <TooltipMenuItem ref={ref} {...targetProps}>
+                <TooltipMenuItem label="Add link" ref={ref} {...targetProps}>
                   <LinkOutline className="w-4 h-4 mt-1.5 relative top-px" />
                 </TooltipMenuItem>
               )}
             />
 
             <TooltipMenuItem
+              label="Bold text"
               onClick={() => commands.toggleBold()}
               active={active.bold()}
             >
@@ -129,6 +135,7 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
+              label="Italic text"
               onClick={() => commands.toggleItalic()}
               active={active.italic()}
             >
@@ -144,6 +151,7 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
+              label="Add image"
               className="pr-5"
               onClick={() => commands.toggleUnderline()}
               active={active.underline()}
@@ -151,6 +159,7 @@ export const CardMenu = ({ id }) => {
               <PhotographOutline className="w-4 h-4" />
             </TooltipMenuItem>
             <TooltipMenuItem
+              label="Highlight text"
               className="pl-5"
               onClick={() => commands.toggleCode()}
               active={active.code()}
@@ -167,6 +176,7 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
+              label="Header text"
               onClick={() => commands.toggleStrike()}
               active={active.strike()}
             >
@@ -183,6 +193,7 @@ export const CardMenu = ({ id }) => {
             </TooltipMenuItem>
 
             <TooltipMenuItem
+              label="Ordered list"
               onClick={() => commands.toggleOrderedList()}
               active={active.orderedList()}
             >
@@ -198,6 +209,7 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
+              label="Unordered list"
               onClick={() => commands.toggleBulletList()}
               active={active.bulletList()}
             >
@@ -214,6 +226,7 @@ export const CardMenu = ({ id }) => {
             </TooltipMenuItem>
 
             <TooltipMenuItem
+              label="View more"
               rounded="r-md"
               onClick={() => toggleAltToolbar()}
               active={active.strike()}
@@ -247,7 +260,11 @@ export const CardMenu = ({ id }) => {
             }}
             className="flex absolute justify-center "
           >
-            <TooltipMenuItem rounded="l-md" onClick={() => toggleAltToolbar()}>
+            <TooltipMenuItem
+              label="Go back"
+              rounded="l-md"
+              onClick={() => toggleAltToolbar()}
+            >
               <svg
                 className="w-4 h-4"
                 xmlns="http://www.w3.org/2000/svg"
@@ -264,6 +281,7 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
+              label="Lock tile"
               className="pr-5"
               onClick={() => commands.toggleUnderline()}
             >
@@ -283,12 +301,14 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
+              label="Delete tile"
               className="pl-5"
               onClick={() => commands.toggleUnderline()}
             >
               <TrashOutline className="w-4 h-4" />
             </TooltipMenuItem>
             <TooltipMenuItem
+              label="Tile information"
               rounded="r-md"
               onClick={() => commands.toggleBold()}
             >
