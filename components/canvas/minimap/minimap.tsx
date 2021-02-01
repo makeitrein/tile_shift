@@ -1,23 +1,16 @@
 import { throttle } from "lodash";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 import * as arrowState from "../../state/arrows";
-import * as cardState from "../../state/cards";
-import { arrowLeft, arrowRight } from "../arrow/arrow";
 import { totalCanvasPixelSize } from "../board/board";
-import { LineOrientation } from "../react-simple-arrows";
-import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
 import { MiniMapArrows } from "./minimap-arrows";
+import { MiniMapCards } from "./minimap-cards";
 
 export const minimapId = "minimap";
 
 export const minimapSizeDivider = 60;
 
 export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
-  const cardIds = useRecoilValue(cardState.cardIds);
-  // const arrows = useRecoilValue(arrowState.arrows);
-
   const [, triggerRerender] = useState(false);
 
   const minimapRef = useRef(null);
@@ -78,8 +71,6 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
     const x = xDiff * xPercent + trueMinX;
     const y = yDiff * yPercent + trueMinY;
 
-    console.log(xPercent, yPercent, xDiff, yDiff, x, y);
-
     panzoom.pan(-x, -y, { force: true });
   };
 
@@ -99,88 +90,8 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
       className="fixed top-4 right-4 bg-gray-500 rounded-r-md border-gray-400 border-2 z-overlay  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
     >
       <div style={viewportDimensions} className="absolute bg-blue-400" />
-      {cardIds.map((id) => (
-        <MiniMapCard panzoom={panzoom} key={id} id={id} />
-      ))}
+      <MiniMapCards />
       <MiniMapArrows />
     </div>
-  );
-});
-
-const CardWrapper = styled.div`
-  display: inline-block;
-  position: absolute;
-  border-radius: 5px;
-  margin: 4px;
-  border-style: solid;
-  border-radius: 2px;
-  --color: #4af;
-  transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color,
-    0.2s outline;
-  z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
-  outline: 1px solid ${({ isDragging }) => (isDragging ? "red" : "transparent")} !important;
-`;
-
-interface Props {
-  id: string;
-}
-
-const MiniMapCard = ({ id }: Props) => {
-  const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
-  const cardSettings = useRecoilValue(cardState.cardSettings(id));
-  const colorTheme = useRecoilValue(cardState.cardColorTheme(id));
-
-  const transformStyle = {
-    transform: `translate(${cardDimensions.x / minimapSizeDivider}px, ${
-      cardDimensions.y / minimapSizeDivider
-    }px)`,
-    transformOrigin: "-100% -100%",
-  };
-
-  return (
-    <CardWrapper
-      // onClick={() => zoomToCard({ x: cardDimensions.x, y: cardDimensions.y })}
-      id={id}
-      isDragging={cardSettings.isDragging}
-      style={{
-        width: cardDimensions.width / minimapSizeDivider,
-        height: cardDimensions.height / minimapSizeDivider,
-        ...colorTheme,
-        ...transformStyle,
-      }}
-    />
-  );
-};
-
-export const MiniMapArrow = React.memo(({ id }: Props) => {
-  const arrow = useRecoilValue(arrowState.arrow(id));
-  const { color } = useRecoilValue(arrowState.arrowColorTheme(id));
-
-  const startCard = useRecoilValue(
-    cardState.cardDimensions(arrow.start.cardId)
-  );
-  const endCard = useRecoilValue(cardState.cardDimensions(arrow.end.cardId));
-
-  const minimapStart = {
-    x: startCard.x / (minimapSizeDivider - 3),
-    y: startCard.y / (minimapSizeDivider - 3),
-    width: startCard.width / minimapSizeDivider,
-    height: startCard.height / minimapSizeDivider,
-  };
-
-  const minimapEnd = {
-    x: endCard.x / (minimapSizeDivider - 3),
-    y: endCard.y / (minimapSizeDivider - 3),
-    width: endCard.width / minimapSizeDivider,
-    height: endCard.height / minimapSizeDivider,
-  };
-  return (
-    <BasicArrowSvg
-      start={arrowRight(minimapStart)}
-      end={arrowLeft(minimapEnd)}
-      orientation={LineOrientation.HORIZONTAL}
-      strokeWidth={"1"}
-      color={color}
-    />
   );
 });
