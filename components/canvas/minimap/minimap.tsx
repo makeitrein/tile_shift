@@ -23,7 +23,6 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
 
   useEffect(() => {
     canvasRef?.current.addEventListener("panzoomchange", () => {
-      console.log("hiya");
       rerenderMinimapThrottled();
     });
   }, [canvasRef]);
@@ -36,6 +35,8 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
   };
 
   const { x, y, minX, maxX, minY, maxY, scale } = panzoom.getPan();
+
+  console.log({ x, y, minX, maxX, minY, maxY, scale });
 
   const trueMinX = -maxX;
   const trueMaxX = -minX;
@@ -59,7 +60,6 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
 
   const zoomToCard = (e: React.MouseEvent<HTMLElement>) => {
     if (!panzoom) return;
-    const scale = panzoom.getScale();
     const xPercent =
       (e.clientX - e.currentTarget.offsetLeft) / e.currentTarget.clientWidth;
     const yPercent =
@@ -87,7 +87,7 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
       ref={minimapRef}
       style={{ borderBottomLeftRadius: "0.375rem", ...mapDimensions }}
       id="minimap"
-      className="fixed top-4  cursor-pointer right-4 bg-gray-500 rounded-r-md border-gray-400 border-2 z-overlay  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
+      className="panzoom-exclude fixed top-4 cursor-pointer right-4 bg-gray-500 rounded-r-md border-gray-400 border-2 z-overlay  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
     >
       <div style={viewportDimensions} className="absolute bg-blue-400" />
       <MiniMapCards />

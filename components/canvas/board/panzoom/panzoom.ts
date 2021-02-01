@@ -308,10 +308,10 @@ function Panzoom(
 
     x = result.x;
     y = result.y;
-    minX = result.minX;
-    minY = result.minY;
-    maxX = result.maxX;
-    maxY = result.maxY;
+    minX = result.minX || minX;
+    minY = result.minY || minY;
+    maxX = result.maxX || maxX;
+    maxY = result.maxY || maxY;
 
     return setTransformWithEvent("panzoompan", opts, originalEvent);
   }

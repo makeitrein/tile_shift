@@ -31,6 +31,8 @@ export const usePanzoomEffects = ({
       contain: "outside",
       maxScale: 1.5,
       minScale: 0.1,
+      startX: centerX,
+      startY: centerY,
       handleStartEvent: (event) => {
         if (
           !disablePan &&
@@ -41,11 +43,11 @@ export const usePanzoomEffects = ({
       },
     });
 
-    panzoom.pan(centerX, centerY, { force: true });
+    // panzoom.pan(centerX, centerY, { force: true });
 
-    const { x, y } = panzoom.getPan();
-    const scale = panzoom.getScale();
-    setPanZoomState({ x, y, scale });
+    // const { x, y } = panzoom.getPan();
+    // const scale = panzoom.getScale();
+    // setPanZoomState({ x, y, scale });
 
     window.addEventListener(
       "mousewheel",
