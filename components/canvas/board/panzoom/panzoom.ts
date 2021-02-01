@@ -206,6 +206,7 @@ function Panzoom(
   ) {
     const opts = { ...options, ...panOptions };
     const result = { x, y, opts };
+
     if (
       !opts.force &&
       (opts.disablePan || (opts.panOnlyWhenZoomed && scale === opts.startScale))
@@ -276,11 +277,14 @@ function Panzoom(
       const maxY = (diffVertical - dims.parent.padding.top) / toScale;
 
       result.y = Math.max(Math.min(result.y, maxY), minY);
+      console.log(minX, maxX, minY, maxY);
       result.minX = minX;
       result.maxX = maxX;
 
       result.minY = minY;
       result.maxY = maxY;
+
+      console.trace();
     }
 
     return result;
@@ -343,7 +347,12 @@ function Panzoom(
     });
     x = panResult.x;
     y = panResult.y;
+    minX = panResult.minX;
+    minY = panResult.minY;
+    maxX = panResult.maxX;
+    maxY = panResult.maxY;
     scale = toScale;
+
     return setTransformWithEvent("panzoomzoom", opts, originalEvent);
   }
 
@@ -564,7 +573,7 @@ function Panzoom(
     bind,
     destroy,
     eventNames,
-    getPan: () => ({ x, y, minX, minY, maxX, maxY }),
+    getPan: () => ({ x, y, minX, minY, maxX, maxY, scale }),
     getScale: () => scale,
     getOptions: () => shallowClone(options),
     pan,

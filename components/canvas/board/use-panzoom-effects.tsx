@@ -62,7 +62,6 @@ export const usePanzoomEffects = ({
         if (isPinchZoom) {
           // e.stopPropagation();
           panzoom.zoomWithWheel(e);
-          panzoom.pan(0, 0, { relative: true, force: true });
         } else {
           panzoom.pan(x, y, { relative: true, force: true });
         }

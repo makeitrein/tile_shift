@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import { throttle } from "lodash";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { useDebouncedCallback } from "use-debounce";
@@ -8,7 +9,6 @@ import { arrowLeft, arrowRight } from "../arrow/arrow";
 import { totalCanvasPixelSize } from "../board/board";
 import { LineOrientation } from "../react-simple-arrows";
 import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
-
 const minimapSizeDivider = 60;
 export const minimapId = "minimap";
 
@@ -36,6 +36,8 @@ export const MiniMap = React.memo(({ panzoom }) => {
     });
   }, [rerenderer]);
 
+  const consoleTable = useCallback((args) => console.table(args), []);
+
   if (!panzoom) return null;
 
   const mapDimensions = {
@@ -43,18 +45,20 @@ export const MiniMap = React.memo(({ panzoom }) => {
     height: totalCanvasPixelSize / (minimapSizeDivider - 2),
   };
 
-  const { x, y, minX, maxX, minY, maxY } = panzoom.getPan();
+  const consoleTableThrottled = throttle(consoleTable, 100);
 
-  const trueMinX = Math.abs(maxX);
-  const trueMaxX = Math.abs(minX);
+  const { x, y, minX, maxX, minY, maxY, scale } = panzoom.getPan();
 
-  const trueMinY = Math.abs(maxY);
-  const trueMaxY = Math.abs(minY);
+  consoleTableThrottled({ x, y, minX, maxX, minY, maxY, scale });
 
-  const trueX = Math.abs(x);
-  const trueY = Math.abs(y);
+  const trueMinX = -maxX;
+  const trueMaxX = -minX;
 
-  const scale = panzoom.getScale();
+  const trueMinY = -maxY;
+  const trueMaxY = -minY;
+
+  const trueX = -x;
+  const trueY = -y;
 
   const viewportWidth = window.innerWidth / scale / totalCanvasPixelSize;
   const viewportHeight = window.innerHeight / scale / totalCanvasPixelSize;
