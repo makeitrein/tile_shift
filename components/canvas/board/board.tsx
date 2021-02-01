@@ -50,7 +50,7 @@ export const Board = () => {
   const moveableRef = React.useRef(null);
   const wrapperRef = React.useRef(null);
   const selectoRef = React.useRef(null);
-  const canvasEditorRef = React.useRef<HTMLDivElement>(null);
+  const canvasRef = React.useRef<HTMLDivElement>(null);
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
@@ -63,7 +63,7 @@ export const Board = () => {
   usePanzoomEffects({
     panzoom,
     panzoomRef,
-    canvasEditorRef,
+    canvasRef,
     disablePan,
     range,
   });
@@ -73,7 +73,7 @@ export const Board = () => {
   const getCardDimensions = useGetCardDimensions();
 
   const dragResizeCard = useDragResizeCard();
-  const addCardViaClick = useAddCardViaClick(canvasEditorRef.current);
+  const addCardViaClick = useAddCardViaClick(canvasRef.current);
 
   const selectoOnDragStart = useCallback(
     (e) => {
@@ -238,7 +238,7 @@ export const Board = () => {
           onSelectEnd={selectoOnSelectEnd}
         />
       )}
-      <Canvas ref={canvasEditorRef} className="canvas">
+      <Canvas ref={canvasRef} className="canvas">
         <Moveable
           ref={moveableRef}
           bounds={bounds}
@@ -275,7 +275,7 @@ export const Board = () => {
         <CardList />
         <ArrowList />
       </Canvas>
-      <MiniMap panzoom={panzoomRef.current} />
+      <MiniMap panzoom={panzoomRef.current} canvasRef={canvasRef} />
       <ZoomControlToolbar
         disablePan={disablePan}
         toggleDisablePan={() => setDisablePan((pan) => !pan)}

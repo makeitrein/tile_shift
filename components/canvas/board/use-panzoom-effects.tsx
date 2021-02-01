@@ -7,7 +7,7 @@ import Panzoom from "./panzoom/panzoom";
 export const usePanzoomEffects = ({
   panzoom,
   panzoomRef,
-  canvasEditorRef,
+  canvasRef,
   disablePan,
   range,
 }) => {
@@ -25,24 +25,21 @@ export const usePanzoomEffects = ({
     const centerX = -maxX / 2;
     const centerY = -maxY / 2;
 
-    window.panzoom = panzoom = panzoomRef.current = Panzoom(
-      canvasEditorRef.current,
-      {
-        disablePan: disablePan,
-        canvas: true,
-        contain: "outside",
-        maxScale: 1.5,
-        minScale: 0.1,
-        handleStartEvent: (event) => {
-          if (
-            !disablePan &&
-            Array.from(event.target.classList).includes("canvas-card")
-          ) {
-            throw "disable panning hack";
-          }
-        },
-      }
-    );
+    window.panzoom = panzoom = panzoomRef.current = Panzoom(canvasRef.current, {
+      disablePan: disablePan,
+      canvas: true,
+      contain: "outside",
+      maxScale: 1.5,
+      minScale: 0.1,
+      handleStartEvent: (event) => {
+        if (
+          !disablePan &&
+          Array.from(event.target.classList).includes("canvas-card")
+        ) {
+          throw "disable panning hack";
+        }
+      },
+    });
 
     panzoom.pan(centerX, centerY, { force: true });
 
@@ -73,7 +70,7 @@ export const usePanzoomEffects = ({
       { passive: false }
     );
 
-    // canvasEditorRef.current.addEventListener("panzoomchange", ({ detail }) => {
+    // canvasRef.current.addEventListener("panzoomchange", ({ detail }) => {
     //   const { x, y, scale } = detail;
     //   console.log({ x, y, scale });
 

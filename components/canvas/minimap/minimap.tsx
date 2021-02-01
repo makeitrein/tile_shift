@@ -2,41 +2,38 @@ import { throttle } from "lodash";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { useDebouncedCallback } from "use-debounce";
 import * as arrowState from "../../state/arrows";
 import * as cardState from "../../state/cards";
 import { arrowLeft, arrowRight } from "../arrow/arrow";
 import { totalCanvasPixelSize } from "../board/board";
 import { LineOrientation } from "../react-simple-arrows";
 import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
-const minimapSizeDivider = 60;
+import { MiniMapArrows } from "./minimap-arrows";
+
 export const minimapId = "minimap";
 
-export const MiniMap = React.memo(({ panzoom }) => {
+export const minimapSizeDivider = 60;
+
+export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
   const cardIds = useRecoilValue(cardState.cardIds);
   // const arrows = useRecoilValue(arrowState.arrows);
 
-  const [, rerender] = useState(false);
+  const [, triggerRerender] = useState(false);
 
   const minimapRef = useRef(null);
   const arrowIds = useRecoilValue(arrowState.arrowIds);
 
-  const rerenderer = useDebouncedCallback(() => {
-    console.log("rerenderer");
-    rerender((val) => !val);
-  }, 100);
+  const rerenderMinimapThrottled = useCallback(
+    throttle(() => triggerRerender((val) => !val), 25),
+    []
+  );
 
   useEffect(() => {
-    window.addEventListener("mousewheel", rerenderer.callback, {
-      passive: false,
+    canvasRef?.current.addEventListener("panzoomchange", () => {
+      console.log("hiya");
+      rerenderMinimapThrottled();
     });
-
-    window.addEventListener("mousewheel", () => rerender((val) => !val), {
-      passive: false,
-    });
-  }, [rerenderer]);
-
-  const consoleTable = useCallback((args) => console.table(args), []);
+  }, [canvasRef]);
 
   if (!panzoom) return null;
 
@@ -45,11 +42,7 @@ export const MiniMap = React.memo(({ panzoom }) => {
     height: totalCanvasPixelSize / (minimapSizeDivider - 2),
   };
 
-  const consoleTableThrottled = throttle(consoleTable, 100);
-
   const { x, y, minX, maxX, minY, maxY, scale } = panzoom.getPan();
-
-  consoleTableThrottled({ x, y, minX, maxX, minY, maxY, scale });
 
   const trueMinX = -maxX;
   const trueMaxX = -minX;
@@ -109,9 +102,7 @@ export const MiniMap = React.memo(({ panzoom }) => {
       {cardIds.map((id) => (
         <MiniMapCard panzoom={panzoom} key={id} id={id} />
       ))}
-      {arrowIds.map((id) => (
-        <MiniMapArrow id={id} />
-      ))}
+      <MiniMapArrows />
     </div>
   );
 });

@@ -277,14 +277,11 @@ function Panzoom(
       const maxY = (diffVertical - dims.parent.padding.top) / toScale;
 
       result.y = Math.max(Math.min(result.y, maxY), minY);
-      console.log(minX, maxX, minY, maxY);
       result.minX = minX;
       result.maxX = maxX;
 
       result.minY = minY;
       result.maxY = maxY;
-
-      console.trace();
     }
 
     return result;
