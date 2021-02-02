@@ -15,7 +15,8 @@ export const ArrowSvg = ({
   curviness = 0.6,
   color = "black",
   strokeWidth = "1",
-  setMenuVisible,
+  selectArrow,
+  selected,
   children,
 }: {
   start: Position;
@@ -24,7 +25,8 @@ export const ArrowSvg = ({
   curviness?: number;
   color?: string;
   strokeWidth?: string;
-  setMenuVisible: (visible: boolean) => void;
+  selectArrow: (visible: boolean) => void;
+  selected: boolean;
   children: React.ReactNode;
 }) => {
   const headId = uuidv4();
@@ -61,8 +63,10 @@ export const ArrowSvg = ({
   };
 
   const arrowRef = useOnClickOutside(() => {
-    setMenuVisible(false);
+    selectArrow(false);
   });
+
+  const arrowColor = selected ? "rgba(59, 130, 246)" : color;
 
   // return arrow positioned absolutely at the viewport w/ arrows positioned internally
   return (
@@ -84,13 +88,13 @@ export const ArrowSvg = ({
             length={ARROW_LENGTH}
             width={ARROW_WIDTH}
             id={headId}
-            color={color}
+            color={arrowColor}
           />
         </defs>
         {/* Provide a background path with bigger click radius that is transparent but clickable */}
         <path
           style={{ cursor: "pointer" }}
-          onClick={() => setMenuVisible(true)}
+          onClick={() => selectArrow(true)}
           d={calculateAestheticLinePath({
             start: innerStart,
             end: innerEnd,
@@ -98,13 +102,13 @@ export const ArrowSvg = ({
             curviness,
           })}
           fill="none"
-          stroke={"none"}
-          strokeWidth={10}
+          stroke="transparent"
+          strokeWidth={90}
         />
         {/* Visible path goodness */}
         <path
-          style={{ cursor: "pointer" }}
-          onClick={() => setMenuVisible(true)}
+          style={{ cursor: "pointer", transition: ".2s stroke" }}
+          onClick={() => selectArrow(true)}
           d={calculateAestheticLinePath({
             start: innerStart,
             end: innerEnd,
@@ -112,8 +116,8 @@ export const ArrowSvg = ({
             curviness,
           })}
           fill="none"
-          stroke={color}
-          strokeDasharray={5}
+          stroke={arrowColor}
+          strokeDasharray={selected ? 5 : 0}
           strokeWidth={strokeWidth}
           markerEnd={`url(#${headId})`}
         />

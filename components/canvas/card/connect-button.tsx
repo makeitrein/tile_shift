@@ -43,14 +43,17 @@ const directionDimensionMap: Record<
   (params: any) => { x: number; y: number }
 > = {
   left: ({ x, y, height }) => ({
-    x: x - 200,
+    x: x - cardWidth - 100,
     y: y + height / 2 - cardHeight / 2,
   }),
   right: ({ x, y, width, height }) => ({
     x: x + width + 100,
     y: y + height / 2 - cardHeight / 2,
   }),
-  top: ({ y, x, width }) => ({ y: y - 140, x: x + width / 2 - cardWidth / 2 }),
+  top: ({ y, x, width }) => ({
+    y: y - cardHeight - 100,
+    x: x + width / 2 - cardWidth / 2,
+  }),
   bottom: ({ y, height, x, width }) => ({
     y: y + height + 70,
     x: x + width / 2 - cardWidth / 2,
@@ -95,7 +98,7 @@ export const ConnectButton = React.memo(({ id, direction }: Props) => {
       type="button"
       className={`${
         isCoveringToolbar ? "z-force" : "z-overlay"
-      } absolute inline-flex items-center p-1  rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none ring-offset-color-amber-100 ring-2 ring-offset-2 ring-blue-500 ring-opacity-0  hover:ring-opacity-100  transition`}
+      } absolute inline-flex items-center p-1  rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none transition`}
       style={positionStyle[direction]}
     >
       <svg

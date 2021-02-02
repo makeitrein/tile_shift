@@ -43,24 +43,26 @@ export const Arrow = React.memo(({ id }: Props) => {
   const arrow = useRecoilValue(arrowState.arrow(id));
   const { color } = useRecoilValue(arrowState.arrowColorTheme(id));
 
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [selected, selectArrow] = useState(false);
 
   const startCard = useRecoilValue(
     cardState.cardDimensions(arrow.start.cardId)
   );
   const endCard = useRecoilValue(cardState.cardDimensions(arrow.end.cardId));
 
+  console.log(arrow, startCard, endCard);
   return (
     <ArrowSvg
-      setMenuVisible={setMenuVisible}
+      selectArrow={selectArrow}
+      selected={selected}
       start={directionDimensionMap[arrow.start.point](startCard)}
       end={directionDimensionMap[arrow.end.point](endCard)}
       orientation={orientations[arrow.end.point]}
-      strokeWidth={arrow.strokeWidth.toString()}
+      strokeWidth={"3"}
       color={"rgba(55, 65, 81)"}
       curviness={0.3}
     >
-      {/* {menuVisible && <ArrowMenu id={id} />} */}
+      {/* {selected && <ArrowMenu id={id} />} */}
     </ArrowSvg>
   );
 });
