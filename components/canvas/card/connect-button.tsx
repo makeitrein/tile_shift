@@ -57,6 +57,13 @@ const directionDimensionMap: Record<
   }),
 };
 
+export const oppositePointMap: Record<ArrowPoint, ArrowPoint> = {
+  right: "left",
+  top: "bottom",
+  bottom: "top",
+  left: "right",
+};
+
 interface Props {
   id: string;
   direction: ArrowPoint;
@@ -75,7 +82,7 @@ export const ConnectButton = React.memo(({ id, direction }: Props) => {
     createInitialCard({ dimensions: newCardDimensions, id: newCardId });
     createInitialArrow({
       start: { cardId: id, point: direction },
-      end: { cardId: newCardId, point: "left" },
+      end: { cardId: newCardId, point: oppositePointMap[direction] },
     });
   };
 

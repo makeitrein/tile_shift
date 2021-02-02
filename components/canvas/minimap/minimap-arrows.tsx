@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import * as arrowState from "../../state/arrows";
 import * as cardState from "../../state/cards";
-import { arrowLeft, arrowRight } from "../arrow/arrow";
+import { directionDimensionMap } from "../arrow/arrow";
 import { LineOrientation } from "../react-simple-arrows";
 import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
 import { minimapSizeDivider } from "./minimap";
@@ -33,25 +33,32 @@ export const MiniMapArrow = React.memo(({ id }: Props) => {
   );
   const endCard = useRecoilValue(cardState.cardDimensions(arrow.end.cardId));
 
-  const minimapStart = {
-    x: startCard.x / (minimapSizeDivider - 3),
-    y: startCard.y / (minimapSizeDivider - 3),
-    width: startCard.width / minimapSizeDivider,
-    height: startCard.height / minimapSizeDivider,
-  };
-
-  const minimapEnd = {
-    x: endCard.x / (minimapSizeDivider - 3),
-    y: endCard.y / (minimapSizeDivider - 3),
-    width: endCard.width / minimapSizeDivider,
-    height: endCard.height / minimapSizeDivider,
-  };
+  const resizeDimensions = ({
+    x,
+    y,
+    width,
+    height,
+    ...rest
+  }: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }) => ({
+    ...rest,
+    x: x / (minimapSizeDivider - 3),
+    y: y / (minimapSizeDivider - 3),
+    width: width / minimapSizeDivider,
+    height: height / minimapSizeDivider,
+  });
   return (
     <BasicArrowSvg
-      start={arrowRight(minimapStart)}
-      end={arrowLeft(minimapEnd)}
+      start={resizeDimensions(
+        directionDimensionMap[arrow.start.point](startCard)
+      )}
+      end={resizeDimensions(directionDimensionMap[arrow.end.point](endCard))}
       orientation={LineOrientation.HORIZONTAL}
-      strokeWidth={"1"}
+      strokeWidth={1}
       color={color}
     />
   );

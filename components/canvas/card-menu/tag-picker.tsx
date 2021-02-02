@@ -8,7 +8,6 @@ import {
   ChartSquareBarOutline,
   ClipboardListOutline,
   ClockOutline,
-  ExclamationCircleOutline,
   ExclamationOutline,
   FingerPrintOutline,
   FireOutline,
@@ -23,7 +22,7 @@ import {
   ViewGridOutline,
 } from "heroicons-react";
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import * as cardState from "../../state/cards";
 
 const tagGroups = [
@@ -68,7 +67,7 @@ const tagGroups = [
       { name: "If...", color: "indigo", icon: AdjustmentsOutline },
       { name: "Then...", color: "amber", icon: ArrowCircleRightOutline },
       { name: "Because...", color: "orange", icon: VariableOutline },
-      { name: "Therefore...", color: "green", icon: ExclamationCircleOutline },
+      { name: "Therefore...", color: "green", icon: ClipboardListOutline },
       { name: "Unless...", color: "red", icon: ShieldExclamationOutline },
     ],
   },
@@ -138,25 +137,16 @@ const subcategoryGroups = [
 const allTags = tagGroups.map((group) => group.tags).flat();
 const allSubcategories = subcategoryGroups.map((group) => group.tags).flat();
 
-export const TagPicker = ({ id }) => {
-  return (
-    <div className="pb-1.5 w-44 ">
-      <TagPickerContents id={id} />
-    </div>
-  );
-};
-
-export const TagPickerContents = ({ id, openPanel }) => {
-  const [cardSettings, setCardSettings] = useRecoilState(
-    cardState.cardSettings(id)
-  );
+export const TagPicker = ({ id, closePanel }) => {
+  const setCardSettings = useSetRecoilState(cardState.cardSettings(id));
 
   const handleTagClick = (clickedTag: string) => {
     setCardSettings((card) => ({ ...card, tags: [clickedTag] }));
+    closePanel();
   };
 
   return (
-    <div>
+    <div className="pb-1.5 w-44 ">
       {tagGroups.map(({ name, tags }) => (
         <div className="pb-1">
           <label className="text-xs mt-1 font-bold -ml-px pb-1.5 text-gray-700 block">
@@ -169,20 +159,6 @@ export const TagPickerContents = ({ id, openPanel }) => {
           ))}
         </div>
       ))}
-      {/*
-      <Button
-        rightIcon="arrow-right"
-        intent="primary"
-        text="Custom Tags"
-        className="mt-4"
-        onClick={() =>
-          openPanel({
-            component: SubcategoryPicker, // <- class or stateless function type
-            props: { id }, // <- SettingsPanel props without IPanelProps
-            title: "Subcategory", // <- appears in header and back button
-          })
-        }
-      /> */}
     </div>
   );
 };

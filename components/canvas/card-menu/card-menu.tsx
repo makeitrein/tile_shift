@@ -87,7 +87,7 @@ export const CardMenu = ({ id }) => {
               fill={true}
               content={
                 <div>
-                  <TagPicker id={id} />
+                  <TagPicker closePanel={() => setPopoverOpen(false)} id={id} />
                 </div>
               }
               renderTarget={({ isOpen, ref, ...targetProps }) => (
@@ -155,7 +155,7 @@ export const CardMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
-              label="Add image"
+              label="Image upload"
               className="pr-5"
               onClick={() => commands.toggleUnderline()}
               active={active.underline()}

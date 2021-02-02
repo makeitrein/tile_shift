@@ -28,6 +28,7 @@ export const TooltipMenuItem = React.forwardRef<HTMLDivElement, Props>(
     return (
       <Tooltip2
         popoverClassName="z-force"
+        hoverOpenDelay={300}
         disabled={popoverIsOpen}
         placement="top"
         interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}

@@ -9,22 +9,24 @@ interface Props {
   id: string;
 }
 
-export const arrowLeft = ({ x, y, height }) => ({
-  x: x,
-  y: y + height / 2,
-});
-
-export const arrowRight = ({ x, y, width, height }) => ({
-  x: x + width,
-  y: y + height / 2,
-});
-
-export const arrowTop = ({ y, x, width }) => ({ y: y, x: x + width / 2 });
-
-export const arrowBottom = ({ y, height, x, width }) => ({
-  y: y + height,
-  x: x + width / 2,
-});
+export const directionDimensionMap: Record<
+  arrowState.ArrowPoint,
+  (params: any) => { x: number; y: number }
+> = {
+  right: ({ x, y, width, height }) => ({
+    x: x + width,
+    y: y + height / 2,
+  }),
+  left: ({ x, y, height }) => ({
+    x: x,
+    y: y + height / 2,
+  }),
+  top: ({ y, x, width }) => ({ y: y, x: x + width / 2 }),
+  bottom: ({ y, height, x, width }) => ({
+    y: y + height,
+    x: x + width / 2,
+  }),
+};
 
 export const Arrow = React.memo(({ id }: Props) => {
   const arrow = useRecoilValue(arrowState.arrow(id));
@@ -40,8 +42,8 @@ export const Arrow = React.memo(({ id }: Props) => {
   return (
     <ArrowSvg
       setMenuVisible={setMenuVisible}
-      start={arrowRight(startCard)}
-      end={arrowLeft(endCard)}
+      start={directionDimensionMap[arrow.start.point](startCard)}
+      end={directionDimensionMap[arrow.end.point](endCard)}
       orientation={LineOrientation.HORIZONTAL}
       strokeWidth={arrow.strokeWidth.toString()}
       color={color}
