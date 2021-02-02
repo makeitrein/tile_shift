@@ -9,7 +9,7 @@ export const ArrowList = React.memo(() => {
   return (
     <>
       {arrowIds.map((id) => (
-        <Arrow id={id} />
+        <Arrow key={id} id={id} />
       ))}
     </>
   );

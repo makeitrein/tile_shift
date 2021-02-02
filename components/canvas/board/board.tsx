@@ -241,7 +241,8 @@ export const Board = () => {
       <Canvas ref={canvasRef} className="canvas">
         <Moveable
           ref={moveableRef}
-          bounds={bounds}
+          // bounds={bounds}
+          rootContainer={document.body}
           draggable={true}
           target={selectedCards}
           elementGuidelines={elementGuidelines}

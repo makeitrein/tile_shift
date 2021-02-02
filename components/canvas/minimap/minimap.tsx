@@ -36,8 +36,6 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
 
   const { x, y, minX, maxX, minY, maxY, scale } = panzoom.getPan();
 
-  console.log({ x, y, minX, maxX, minY, maxY, scale });
-
   const trueMinX = -maxX;
   const trueMaxX = -minX;
 

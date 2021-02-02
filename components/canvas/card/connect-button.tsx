@@ -16,12 +16,12 @@ const positionStyle: Record<
     bottom?: string;
   }
 > = {
-  right: {
+  left: {
     left: "-34px",
     top: "50%",
     transform: "translateY(-50%)",
   },
-  left: {
+  right: {
     right: "-34px",
     top: "50%",
     transform: "translateY(-50%)",
@@ -42,11 +42,11 @@ const directionDimensionMap: Record<
   ArrowPoint,
   (params: any) => { x: number; y: number }
 > = {
-  right: ({ x, y, height }) => ({
+  left: ({ x, y, height }) => ({
     x: x - 200,
     y: y + height / 2 - cardHeight / 2,
   }),
-  left: ({ x, y, width, height }) => ({
+  right: ({ x, y, width, height }) => ({
     x: x + width + 100,
     y: y + height / 2 - cardHeight / 2,
   }),
@@ -80,6 +80,7 @@ export const ConnectButton = React.memo(({ id, direction }: Props) => {
   const createAndConnectCard = () => {
     const newCardId = cardId();
     createInitialCard({ dimensions: newCardDimensions, id: newCardId });
+    console.log(direction, oppositePointMap[direction]);
     createInitialArrow({
       start: { cardId: id, point: direction },
       end: { cardId: newCardId, point: oppositePointMap[direction] },

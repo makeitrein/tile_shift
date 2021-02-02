@@ -14,7 +14,7 @@ export const MiniMapArrows = React.memo(() => {
   return (
     <>
       {arrowIds.map((id) => (
-        <MiniMapArrow id={id} />
+        <MiniMapArrow key={id} id={id} />
       ))}
     </>
   );
