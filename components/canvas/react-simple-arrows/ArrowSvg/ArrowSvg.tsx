@@ -98,8 +98,8 @@ export const ArrowSvg = ({
             curviness,
           })}
           fill="none"
-          stroke={"transparent"}
-          strokeWidth={50}
+          stroke={"none"}
+          strokeWidth={10}
         />
         {/* Visible path goodness */}
         <path
@@ -113,6 +113,7 @@ export const ArrowSvg = ({
           })}
           fill="none"
           stroke={color}
+          strokeDasharray={5}
           strokeWidth={strokeWidth}
           markerEnd={`url(#${headId})`}
         />

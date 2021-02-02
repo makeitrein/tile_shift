@@ -1,4 +1,9 @@
 /* @import "~antd/dist/antd.css"; */
+
+body {
+  overscroll-behavior-x: none;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,12 +14,8 @@
   overflow: hidden;
 } */
 
-body {
-  overscroll-behavior-x: none;
-}
-
 .moveable-control {
-  background: rgba(37, 99, 235, 1) !important;
+  background: rgba(59, 130, 246) !important;
 }
 
 .moveable-control-box {

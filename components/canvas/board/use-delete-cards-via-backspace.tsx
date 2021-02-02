@@ -1,24 +1,23 @@
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetCardSettings } from "../../state/card-utils";
 import * as cardState from "../../state/cards";
-import { Card, CardIds, selectedCardTargets } from "../../state/cards";
+import { CardIds, selectedCardTargets } from "../../state/cards";
 
 export const useDeleteCardsViaBackspace = () => {
   const setCards = useSetRecoilState(CardIds);
   const setSelectedCards = useSetRecoilState(selectedCardTargets);
   const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
   const editableCardSettings = useRecoilValue(cardState.editableCardSettings);
-
-  const filterSelectedCards = (cards: Card[]) =>
-    cards.filter((card) => !selectedCardIds.includes(card.id));
+  const setCardSettings = useSetCardSettings();
 
   useHotkeys(
-    "backspace",
+    "ctrl+backspace,command+backspace",
     () => {
-      if (!editableCardSettings?.isWysiwygEditorFocused) {
-        setCards(filterSelectedCards);
-        setSelectedCards([]);
-      }
+      selectedCardIds.forEach((cardId) =>
+        setCardSettings(cardId, { deleted: true })
+      );
+      setSelectedCards([]);
     },
     [selectedCardIds, editableCardSettings]
   );

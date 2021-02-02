@@ -6,7 +6,7 @@ import { EditorManager } from "../text-editor/wysiwig-editor";
 import { Card } from "./card";
 
 export const CardList = React.memo(() => {
-  const cardIds = useRecoilValue(cardState.cardIds);
+  const cardIds = useRecoilValue(cardState.undeletedCardIds);
   // const arrows = useRecoilValue(arrowState.arrows);
   const editableCardId = useRecoilValue(cardState.editableCardId);
 

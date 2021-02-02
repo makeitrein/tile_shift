@@ -14,6 +14,7 @@ export interface CardSettings {
   tags: string[];
   isWysiwygEditorFocused: boolean;
   normalScroll: boolean;
+  deleted: boolean;
 }
 
 export interface CardContent {
@@ -31,6 +32,13 @@ export const cardIds = selector<string[]>({
   key: "CANVAS/cards-ids",
   get: ({ get }) => {
     return Object.keys(get(initialCardValues));
+  },
+});
+
+export const undeletedCardIds = selector<string[]>({
+  key: "CANVAS/undeleted-cards-ids",
+  get: ({ get }) => {
+    return get(cardIds).filter((id) => !get(cardSettings(id)).deleted);
   },
 });
 
