@@ -82,7 +82,6 @@ export const CardMenu = ({ id }) => {
               onInteraction={(state) => setPopoverOpen(state)}
               interactionKind="click"
               popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
-              usePortal={false}
               placement="left"
               className="z-force"
               fill={true}
@@ -93,7 +92,8 @@ export const CardMenu = ({ id }) => {
               }
               renderTarget={({ isOpen, ref, ...targetProps }) => (
                 <TooltipMenuItem
-                  label="Select category"
+                  popoverIsOpen={isOpen}
+                  label="Categories"
                   ref={ref}
                   {...targetProps}
                   rounded="l-md"
@@ -106,13 +106,17 @@ export const CardMenu = ({ id }) => {
             <Popover2
               interactionKind="click"
               popoverClassName={Classes.POPOVER2_CONTENT}
-              usePortal={false}
               placement="top"
               className="z-force"
               fill={true}
               content={<LinkWysiwygCreator />}
               renderTarget={({ isOpen, ref, ...targetProps }) => (
-                <TooltipMenuItem label="Add link" ref={ref} {...targetProps}>
+                <TooltipMenuItem
+                  popoverIsOpen={isOpen}
+                  label="Link"
+                  ref={ref}
+                  {...targetProps}
+                >
                   <LinkOutline className="w-4 h-4 mt-1.5 relative top-px" />
                 </TooltipMenuItem>
               )}

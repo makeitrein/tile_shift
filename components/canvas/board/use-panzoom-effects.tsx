@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import { panZoomState } from "../../state/ui";
+import { tagPickerOpen } from "../../state/ui";
 import { totalCanvasPixelSize } from "./board";
 import Panzoom from "./panzoom/panzoom";
 
@@ -11,21 +11,15 @@ export const usePanzoomEffects = ({
   disablePan,
   range,
 }) => {
-  const setPanZoomState = useSetRecoilState(panZoomState);
+  const setTagPickerOpen = useSetRecoilState(tagPickerOpen);
 
   useEffect(() => {
-    // works for 1
-    // const maxX = totalCanvasPixelSize - window.innerWidth * 1.5;
-    // const maxY = totalCanvasPixelSize - window.innerHeight * 1.5;
-    // const centerX = -maxX / 2;
-    // const centerY = -maxY / 2;
-
     const maxX = totalCanvasPixelSize - window.innerWidth * 1.5;
     const maxY = totalCanvasPixelSize - window.innerHeight * 1.5;
     const centerX = -maxX / 2;
     const centerY = -maxY / 2;
 
-    window.panzoom = panzoom = panzoomRef.current = Panzoom(canvasRef.current, {
+    panzoom = panzoomRef.current = Panzoom(canvasRef.current, {
       disablePan: disablePan,
       canvas: true,
       contain: "outside",
@@ -43,11 +37,7 @@ export const usePanzoomEffects = ({
       },
     });
 
-    // panzoom.pan(centerX, centerY, { force: true });
-
-    // const { x, y } = panzoom.getPan();
-    // const scale = panzoom.getScale();
-    // setPanZoomState({ x, y, scale });
+    panzoom.pan(centerX, centerY, { force: true });
 
     window.addEventListener(
       "mousewheel",
@@ -72,12 +62,9 @@ export const usePanzoomEffects = ({
       { passive: false }
     );
 
-    // canvasRef.current.addEventListener("panzoomchange", ({ detail }) => {
-    //   const { x, y, scale } = detail;
-    //   console.log({ x, y, scale });
-
-    //   // setTimeout(() => setPanZoomState({ x, y, scale }), 100);
-    // });
+    canvasRef.current.addEventListener("panzoomchange", () => {
+      setTagPickerOpen(false);
+    });
   }, []);
 
   useEffect(() => {

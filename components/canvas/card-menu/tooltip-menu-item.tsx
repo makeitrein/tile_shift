@@ -1,3 +1,4 @@
+import { PopoverInteractionKind } from "@blueprintjs/core";
 import { Tooltip2 } from "@blueprintjs/popover2";
 import React from "react";
 
@@ -8,13 +9,28 @@ interface Props {
   className?: string;
   rounded?: string;
   label: string;
+  popoverIsOpen?: boolean;
 }
 
 export const TooltipMenuItem = React.forwardRef<HTMLDivElement, Props>(
-  ({ onClick, active, children, className, rounded = "", label }, ref) => {
+  (
+    {
+      onClick,
+      active,
+      children,
+      className,
+      rounded = "",
+      label,
+      popoverIsOpen,
+    },
+    ref
+  ) => {
     return (
       <Tooltip2
+        popoverClassName="z-force"
+        disabled={popoverIsOpen}
         placement="top"
+        interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
         content={<small className="text-sm whitespace-nowrap">{label}</small>}
       >
         <div
