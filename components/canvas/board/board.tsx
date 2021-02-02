@@ -29,7 +29,6 @@ export const totalCanvasPixelSize = 10000;
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  background: rgb(243, 240, 231);
   overflow: hidden;
 `;
 
@@ -216,7 +215,7 @@ export const Board = () => {
   return (
     <Wrapper
       ref={wrapperRef}
-      className="wrapper"
+      className="wrapper bg-tan"
       onDoubleClick={addCardViaClick}
     >
       <DiscussionDrawer />

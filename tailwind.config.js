@@ -10,6 +10,7 @@ module.exports = {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },
       colors: {
+        tan: "rgb(243, 240, 231)",
         "light-blue": colors.lightBlue,
         teal: colors.teal,
         cyan: colors.cyan,
@@ -23,6 +24,9 @@ module.exports = {
       zIndex: {
         overlay: 3001,
         force: 4000,
+      },
+      borderWidth: {
+        3: "3px",
       },
     },
   },

@@ -1,5 +1,6 @@
+import { EditableText } from "@blueprintjs/core";
 import React, { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import * as arrowState from "../../state/arrows";
 import * as cardState from "../../state/cards";
 import { ArrowSvg, LineOrientation } from "../react-simple-arrows";
@@ -40,8 +41,7 @@ export const orientations = {
 };
 
 export const Arrow = React.memo(({ id }: Props) => {
-  const arrow = useRecoilValue(arrowState.arrow(id));
-  const { color } = useRecoilValue(arrowState.arrowColorTheme(id));
+  const [arrow, setArrow] = useRecoilState(arrowState.arrow(id));
 
   const [selected, selectArrow] = useState(false);
 
@@ -50,7 +50,6 @@ export const Arrow = React.memo(({ id }: Props) => {
   );
   const endCard = useRecoilValue(cardState.cardDimensions(arrow.end.cardId));
 
-  console.log(arrow, startCard, endCard);
   return (
     <ArrowSvg
       selectArrow={selectArrow}
@@ -62,7 +61,27 @@ export const Arrow = React.memo(({ id }: Props) => {
       color={"rgba(55, 65, 81)"}
       curviness={0.3}
     >
-      {/* {selected && <ArrowMenu id={id} />} */}
+      {(selected || arrow.content) && (
+        <div className="absolute inset-2/4  w-32 ">
+          <div
+            className={`${
+              selected
+                ? "bg-blue-100 border-blue-500"
+                : "bg-tan border-gray-800 "
+            } p-1.5 absolute -mt-4 -left-1/2 rounded-md border-3`}
+          >
+            <EditableText
+              multiline={false}
+              placeholder="Custom label..."
+              confirmOnEnterKey={true}
+              value={arrow.content}
+              onChange={(content) =>
+                setArrow((arrow) => ({ ...arrow, content }))
+              }
+            />
+          </div>
+        </div>
+      )}
     </ArrowSvg>
   );
 });

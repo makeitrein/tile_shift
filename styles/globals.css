@@ -31,6 +31,20 @@ body {
   border: 2px solid #eee;
 }
 
+.bp3-editable-text::before {
+  border: 0 !important;
+  background: none !important;
+  outline: none !important;
+  /* box-shadow: none !important; */
+}
+
+.bp3-editable-text-input {
+  border: 0 !important;
+  background: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* .selecto-area {
   width: 100vw;
   height: 100vh;
