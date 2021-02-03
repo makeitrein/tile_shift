@@ -12,8 +12,8 @@ import {
 } from "../../state/card-utils";
 import * as cardState from "../../state/cards";
 import { ArrowList } from "../arrow/arrow-list";
+import { BoardControls } from "../board-controls/board-controls";
 import { CardList } from "../card/card-list";
-import { Controls } from "../controls/controls";
 import { DiscussionDrawer } from "../drawer/discussion-drawer";
 import { MiniMap } from "../minimap/minimap";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
@@ -220,7 +220,7 @@ export const Board = () => {
     >
       <DiscussionDrawer />
 
-      <Controls panzoom={panzoomRef.current} />
+      <BoardControls panzoom={panzoomRef.current} />
 
       {disablePan && (
         <Selecto
