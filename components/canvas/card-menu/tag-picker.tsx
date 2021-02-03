@@ -5,21 +5,25 @@ import {
   ArrowCircleRightOutline,
   BanOutline,
   BeakerOutline,
+  CalculatorOutline,
   ChartSquareBarOutline,
   ClipboardListOutline,
   ClockOutline,
+  CollectionOutline,
   ExclamationOutline,
+  ExternalLinkOutline,
   FingerPrintOutline,
   FireOutline,
   FlagOutline,
   PencilAltOutline,
+  PhotographOutline,
   PuzzleOutline,
   QuestionMarkCircleOutline,
   ShieldExclamationOutline,
   SpeakerphoneOutline,
+  SunOutline,
   TagOutline,
   VariableOutline,
-  ViewGridOutline,
 } from "heroicons-react";
 import React from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -50,14 +54,14 @@ const tagGroups = [
         icon: SpeakerphoneOutline,
       },
       { name: "Goal", color: "indigo", icon: FlagOutline },
-      { name: "Requirement", color: "amber", icon: ClipboardListOutline },
+      { name: "Requirement", color: "amber", icon: CollectionOutline },
       {
-        name: "Out of Scope",
+        name: "Risk",
         color: "orange",
         icon: BanOutline,
       },
-      { name: "Success Metric", color: "green", icon: ChartSquareBarOutline },
-      { name: "Risk", color: "red", icon: FireOutline },
+      { name: "Solution", color: "green", icon: ChartSquareBarOutline },
+      { name: "Problem", color: "red", icon: FireOutline },
     ],
   },
   {
@@ -67,7 +71,7 @@ const tagGroups = [
       { name: "If...", color: "indigo", icon: AdjustmentsOutline },
       { name: "Then...", color: "amber", icon: ArrowCircleRightOutline },
       { name: "Because...", color: "orange", icon: VariableOutline },
-      { name: "Therefore...", color: "green", icon: ClipboardListOutline },
+      { name: "Therefore...", color: "green", icon: SunOutline },
       { name: "Unless...", color: "red", icon: ShieldExclamationOutline },
     ],
   },
@@ -76,7 +80,10 @@ const tagGroups = [
     name: "General",
     tags: [
       { name: "Note", color: "gray", icon: PencilAltOutline },
-      { name: "Todo", color: "gray", icon: ViewGridOutline },
+      { name: "Data", color: "gray", icon: CalculatorOutline },
+      { name: "Photo", color: "gray", icon: PhotographOutline },
+      { name: "Resource", color: "gray", icon: ExternalLinkOutline },
+      { name: "Todo", color: "gray", icon: ClipboardListOutline },
       { name: "Archive", color: "gray", icon: ArchiveOutline },
     ],
   },
@@ -146,10 +153,10 @@ export const TagPicker = ({ id, closePanel }) => {
   };
 
   return (
-    <div className="pb-1.5 w-44 ">
+    <div className="pb-1.5  grid grid-cols-2 grid-">
       {tagGroups.map(({ name, tags }) => (
-        <div className="pb-1">
-          <label className="text-xs mt-1 font-bold -ml-px pb-1.5 text-gray-700 block">
+        <div className="pb-1 px-2">
+          <label className="text-xs mt-2 font-bold -ml-px pb-1.5 text-gray-700 block">
             {name}:
           </label>
           {tags.map(({ name }) => (
