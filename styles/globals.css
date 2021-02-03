@@ -84,3 +84,7 @@ body {
 .bp3-menu-item {
   align-items: center !important;
 }
+
+.bp3-submenu.bp3-popover > .bp3-popover-content {
+  top: 4px !important;
+}

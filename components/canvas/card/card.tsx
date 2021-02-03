@@ -1,5 +1,4 @@
 import { Tooltip2 } from "@blueprintjs/popover2";
-import { Badge } from "antd";
 import parse from "html-react-parser";
 import React, { useRef } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";

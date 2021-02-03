@@ -25,6 +25,7 @@ const CardWrapper = styled.div`
   --color: #4af;
   transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color,
     0.2s outline;
+  background: white;
   z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
   outline: 1px solid ${({ isDragging }) => (isDragging ? "red" : "transparent")} !important;
 `;
@@ -36,7 +37,6 @@ interface Props {
 const MiniMapCard = ({ id }: Props) => {
   const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
   const cardSettings = useRecoilValue(cardState.cardSettings(id));
-  const colorTheme = useRecoilValue(cardState.cardColorTheme(id));
 
   const transformStyle = {
     transform: `translate(${cardDimensions.x / minimapSizeDivider}px, ${
@@ -47,13 +47,11 @@ const MiniMapCard = ({ id }: Props) => {
 
   return (
     <CardWrapper
-      // onClick={() => zoomToCard({ x: cardDimensions.x, y: cardDimensions.y })}
       id={id}
       isDragging={cardSettings.isDragging}
       style={{
         width: cardDimensions.width / minimapSizeDivider,
         height: cardDimensions.height / minimapSizeDivider,
-        ...colorTheme,
         ...transformStyle,
       }}
     />

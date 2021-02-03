@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { Omnibar } from "@blueprintjs/select";
-import { HandOutline, SearchOutline } from "heroicons-react";
+import { ChatAlt2Outline, HandOutline, SearchOutline } from "heroicons-react";
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import * as cardState from "../../state/cards";
@@ -50,8 +50,7 @@ export const Controls = React.memo(({ panzoom }) => {
     if (!modifiers.matchesPredicate) {
       return null;
     }
-    const text = `${card.content}`;
-    const label = htmlToText(card.content || "");
+    const label = htmlToText(card.content) || <i>No content</i>;
     return (
       <MenuItem
         active={modifiers.active}
@@ -61,7 +60,15 @@ export const Controls = React.memo(({ panzoom }) => {
             <Tag name={card.tags[0]} />
           </div>
         }
-        text={highlightText(label, query)}
+        text={
+          <div>
+            <div className="truncate">{highlightText(label, query)}</div>
+            <div className="flex text-xs text-gray-400">
+              Updated 30 minutes ago | 33{" "}
+              <ChatAlt2Outline className="mx-1" size={16} />
+            </div>
+          </div>
+        }
         key={card.id}
         onClick={handleClick}
       />
