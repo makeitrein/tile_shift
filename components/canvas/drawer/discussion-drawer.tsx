@@ -5,7 +5,7 @@ import { Discussion } from "./discussion";
 import { SelectCardDiscussion } from "./select-card-discussion";
 import { Slideover } from "./slide-over";
 
-export const DiscussionDrawer: React.FC = () => {
+export const DiscussionDrawer = ({ panzoom }) => {
   const [discussionDrawer, setDiscussionDrawer] = useRecoilState(
     uiState.discussionDrawer
   );
@@ -17,7 +17,7 @@ export const DiscussionDrawer: React.FC = () => {
       <Slideover
         closeDrawer={closeDrawer}
         isOpen={discussionDrawer.open}
-        title={<SelectCardDiscussion />}
+        title={<SelectCardDiscussion panzoom={panzoom} />}
       >
         <Discussion />
       </Slideover>

@@ -33,6 +33,11 @@ export const discussionTileId = atom<null | string>({
   default: null,
 });
 
+export const searchedForTile = atom<null | string>({
+  key: "CANVAS/searched-for-tile",
+  default: null,
+});
+
 export const cardIds = selector<string[]>({
   key: "CANVAS/cards-ids",
   get: ({ get }) => {

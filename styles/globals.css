@@ -92,3 +92,18 @@ body {
 .bp3-portal {
   z-index: 4001 !important;
 }
+
+@keyframes pulse {
+  0%,
+  100% {
+    background: white;
+  }
+  50% {
+    background: rgba(59, 130, 246, 1);
+  }
+}
+
+.animate-searched {
+  animation: pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1);
+  animation-iteration-count: 1;
+}

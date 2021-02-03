@@ -45,7 +45,7 @@ export function VariableHeightPanelStack({ initialPanel }) {
         className="h-full"
         initialPanel={initialPanel}
         onOpen={calcualteHeight}
-        onClose={calcualteHeight}
+        closeSearch={calcualteHeight}
       />
     </PanelStackWrapper>
   );

@@ -25,7 +25,7 @@ export const BoardControls = React.memo(({ panzoom }) => {
 
       <OmnibarSearch
         panzoom={panzoom}
-        onClose={() => setSearchOpen(false)}
+        closeSearch={() => setSearchOpen(false)}
         isOpen={searchOpen}
       />
     </div>

@@ -2,7 +2,7 @@ import { Button, Menu, MenuItem } from "@blueprintjs/core";
 import { Omnibar } from "@blueprintjs/select";
 import { ChatAlt2Outline, ClockOutline } from "heroicons-react";
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import * as cardState from "../../state/cards";
 import { Tag } from "../card-menu/tag-picker";
 const { htmlToText } = require("html-to-text");
@@ -85,7 +85,11 @@ export const itemRenderer = (card, { handleClick, modifiers, query }) => {
       text={
         <div>
           <div className="truncate">{highlightText(label, query)}</div>
-          <div className="flex text-xs text-gray-400">
+          <div
+            className={`flex text-xs ${
+              modifiers.active ? "text-white" : "text-gray-400"
+            }`}
+          >
             <ClockOutline className="mr-1" size={16} /> 30 minutes ago | 33{" "}
             <ChatAlt2Outline className="mx-1" size={16} />
           </div>
@@ -136,22 +140,27 @@ export const noResults = <Menu.Item disabled={true} text="No results" />;
 
 interface Props {
   isOpen: boolean;
-  onClose: () => void;
+  closeSearch: () => void;
   panzoom: any;
 }
 
 export const OmnibarSearch = React.memo(
-  ({ isOpen, onClose, panzoom }: Props) => {
+  ({ isOpen, closeSearch, panzoom }: Props) => {
     const allCardData = useRecoilValue(cardState.allCardData);
+    const setSearchedForTile = useSetRecoilState(cardState.searchedForTile);
 
     return (
       <Omnibar
         query=""
         isOpen={isOpen}
         items={allCardData}
-        onClose={onClose}
+        onClose={closeSearch}
         itemListRenderer={itemListRenderer}
-        onItemSelect={panZoomToCard(panzoom)}
+        onItemSelect={(card) => {
+          setSearchedForTile(card.id);
+          panZoomToCard(panzoom)(card);
+          closeSearch();
+        }}
         itemRenderer={itemRenderer}
         itemListPredicate={itemListPredicate}
         noResults={noResults}

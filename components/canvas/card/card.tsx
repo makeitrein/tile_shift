@@ -5,7 +5,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import * as cardState from "../../state/cards";
 import * as uiState from "../../state/ui";
-import { Tag, TagPicker } from "../card-menu/tag-picker";
+import { Tag } from "../card-menu/tag-picker";
 import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { ConnectButton } from "./connect-button";
 
@@ -21,9 +21,6 @@ const CardWrapper = styled.div`
   width: ${cardWidth}px;
   height: ${cardHeight}px;
   margin: 4px;
-  background: #fff;
-  border-width: 1px;
-  border-style: solid;
   border-radius: 0.5rem;
   --color: #4af;
   transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
@@ -47,33 +44,14 @@ export const Card = React.memo(({ id }: Props) => {
   const editableCardId = useRecoilValue(cardState.editableCardId);
   const cardContent = useRecoilValue(cardState.cardContent(id));
   const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
-  const colorTheme = useRecoilValue(cardState.cardColorTheme(id));
+  const searchedForTile = useRecoilValue(cardState.searchedForTile);
 
   const transformStyle = {
     transform: `translate(${cardDimensions.x}px, ${cardDimensions.y}px)`,
   };
   const isSelected = selectedCardIds.includes(id);
   const isEditable = editableCardId === id;
-
-  const innerCard = cardSettings?.tags?.length ? (
-    <>
-      <div id={id + "editor"} />
-      {!isEditable && (
-        <EditableArticle>{parse(cardContent.content || "")}</EditableArticle>
-      )}
-      {isEditable && (
-        <>
-          <ConnectButton id={id} direction="top" />
-          <ConnectButton id={id} direction="right" />
-          <ConnectButton id={id} direction="left" />
-          <ConnectButton id={id} direction="bottom" />
-        </>
-      )}
-      {/* <Avatars /> */}
-    </>
-  ) : (
-    <TagPicker id={id} />
-  );
+  const isSearchedFor = searchedForTile === id;
 
   return (
     <CardWrapper
@@ -81,11 +59,12 @@ export const Card = React.memo(({ id }: Props) => {
       id={id}
       isDragging={cardSettings.isDragging}
       isSelected={isSelected}
-      className="canvas-card group p-2"
+      className={`canvas-card group p-2 bg-white ${
+        isSearchedFor && "animate-searched "
+      }`}
       style={{
         width: cardDimensions.width,
         height: cardDimensions.height,
-        ...colorTheme,
         ...transformStyle,
       }}
     >

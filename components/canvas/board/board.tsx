@@ -22,6 +22,7 @@ import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
 import { useDeleteTextEffect } from "./use-deselect-text-effect";
 import { useDragResizeCard } from "./use-drag-resize-card";
 import { usePanzoomEffects } from "./use-panzoom-effects";
+import { useResetSearchedForTile } from "./use-reset-searched-for";
 import { useResizeCardEffect } from "./use-resize-card-effect";
 
 export const totalCanvasPixelSize = 10000;
@@ -56,6 +57,7 @@ export const Board = () => {
   useDeleteCardsViaBackspace();
   useResizeCardEffect(moveableRef.current);
   useDeleteTextEffect(selectedCardIds);
+  useResetSearchedForTile();
 
   let panzoom = panzoomRef.current;
 
@@ -218,7 +220,7 @@ export const Board = () => {
       className="wrapper bg-tan"
       onDoubleClick={addCardViaClick}
     >
-      <DiscussionDrawer />
+      <DiscussionDrawer panzoom={panzoomRef.current} />
 
       <BoardControls panzoom={panzoomRef.current} />
 
