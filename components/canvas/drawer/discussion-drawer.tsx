@@ -2,6 +2,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import * as uiState from "../../state/ui";
 import { Discussion } from "./discussion";
+import { SelectCardDiscussion } from "./select-card-discussion";
 import { Slideover } from "./slide-over";
 
 export const DiscussionDrawer: React.FC = () => {
@@ -16,7 +17,7 @@ export const DiscussionDrawer: React.FC = () => {
       <Slideover
         closeDrawer={closeDrawer}
         isOpen={discussionDrawer.open}
-        title="hi"
+        title={<SelectCardDiscussion />}
       >
         <Discussion />
       </Slideover>

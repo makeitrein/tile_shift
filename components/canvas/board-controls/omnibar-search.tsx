@@ -1,4 +1,4 @@
-import { Menu, MenuItem } from "@blueprintjs/core";
+import { Button, Menu, MenuItem } from "@blueprintjs/core";
 import { Omnibar } from "@blueprintjs/select";
 import { ChatAlt2Outline, ClockOutline } from "heroicons-react";
 import React from "react";
@@ -41,6 +41,32 @@ export function highlightText(text: string, query: string) {
   }
   return tokens;
 }
+
+export const selectedItem = (card) => {
+  if (!card) {
+    return (
+      <Button
+        className="w-96"
+        alignText="left"
+        large={true}
+        rightIcon="double-caret-vertical"
+        text={"Select Tile"}
+      />
+    );
+  }
+
+  const label = htmlToText(card.content) || <i>No content</i>;
+  return (
+    <Button
+      className="w-96"
+      alignText="left"
+      large={true}
+      rightIcon="double-caret-vertical"
+      text={<div className="truncate w-80">{label}</div>}
+      key={card.id}
+    />
+  );
+};
 
 export const itemRenderer = (card, { handleClick, modifiers, query }) => {
   if (!modifiers.matchesPredicate) {

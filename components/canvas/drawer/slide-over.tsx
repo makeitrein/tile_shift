@@ -1,5 +1,13 @@
 import { Transition } from "@headlessui/react";
+import styled from "styled-components";
 
+const Header = styled.div`
+  // > span,
+  // > span > span {
+  //   display: block;
+  //   width: 100%;
+  // }
+`;
 export const Slideover = ({
   isOpen,
   closeDrawer,
@@ -26,14 +34,14 @@ export const Slideover = ({
           <form className="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
             <div className="flex-1">
               <div className="px-4 py-6 bg-gray-50 sm:px-6">
-                <div className="flex items-start justify-between space-x-3">
-                  <div className="space-y-1">
-                    <h2
+                <div className="flex items-start justify-between w-full space-x-3">
+                  <div className="w-full space-y-1">
+                    <Header
                       id="slide-over-heading"
-                      className="text-lg font-medium text-gray-900"
+                      className="text-lg w-full font-medium text-gray-900"
                     >
                       {title}
-                    </h2>
+                    </Header>
                     <p className="text-sm text-gray-500">{description}</p>
                   </div>
                   <div className="h-7 flex items-center">

@@ -28,6 +28,11 @@ export const initialCardValues = atom<Record<string, Card>>({
   default: {},
 });
 
+export const discussionTileId = atom<null | string>({
+  key: "CANVAS/discussion-tile-id",
+  default: null,
+});
+
 export const cardIds = selector<string[]>({
   key: "CANVAS/cards-ids",
   get: ({ get }) => {

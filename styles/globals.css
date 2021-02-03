@@ -88,3 +88,7 @@ body {
 .bp3-submenu.bp3-popover > .bp3-popover-content {
   top: 4px !important;
 }
+
+.bp3-portal {
+  z-index: 4001 !important;
+}
