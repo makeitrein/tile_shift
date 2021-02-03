@@ -77,11 +77,15 @@ export const Controls = React.memo(({ panzoom }) => {
   };
 
   const zoomToCard = (card) => {
-    panzoom.pan(
-      -card.x + window.innerWidth / 2 - card.width / 2,
-      -card.y + window.innerHeight / 2 - card.height / 2,
-      { force: true }
-    );
+    console.log(card);
+    panzoom.zoom(1);
+    setTimeout(() => {
+      panzoom.pan(
+        -card.x + window.innerWidth / 2 - card.width / 2,
+        -card.y + window.innerHeight / 2 - card.height / 2,
+        { force: true }
+      );
+    });
   };
 
   return (
