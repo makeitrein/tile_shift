@@ -62,17 +62,17 @@ export const Arrow = React.memo(({ id }: Props) => {
       curviness={0.3}
     >
       {(selected || arrow.content) && (
-        <div className="absolute inset-2/4  w-32 ">
+        <div className="absolute inset-2/4  w-32">
           <div
             className={`${
               selected
                 ? "bg-blue-100 border-blue-500"
                 : "bg-tan border-gray-800 "
-            } p-1.5 absolute -mt-4 -left-1/2 rounded-md border-3`}
+            } p-1 absolute -mt-4 -left-1/2 rounded-md border-3 pointer-events-auto`}
           >
             <EditableText
               multiline={false}
-              placeholder="Custom label..."
+              placeholder="Type..."
               confirmOnEnterKey={true}
               value={arrow.content}
               onChange={(content) =>

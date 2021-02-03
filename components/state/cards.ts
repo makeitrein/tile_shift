@@ -42,6 +42,18 @@ export const undeletedCardIds = selector<string[]>({
   },
 });
 
+export const allCardData = selector<Card[]>({
+  key: "CANVAS/all-card-content-ids",
+  get: ({ get }) => {
+    return get(cardIds).map((id) => ({
+      id: id,
+      ...get(cardContent(id)),
+      ...get(cardSettings(id)),
+      ...get(cardDimensions(id)),
+    }));
+  },
+});
+
 export const cardDimensions = atomFamily<CardDimensions, string>({
   key: "CANVAS/card-dimensions",
   default: selectorFamily({

@@ -220,7 +220,7 @@ export const Board = () => {
     >
       <DiscussionDrawer />
 
-      <Controls />
+      <Controls panzoom={panzoomRef.current} />
 
       {disablePan && (
         <Selecto

@@ -78,6 +78,7 @@ export const ArrowSvg = ({
         position: "absolute",
         top: paddedCoordinates.y,
         left: paddedCoordinates.x,
+        pointerEvents: "none",
       }}
     >
       {children}
@@ -93,7 +94,7 @@ export const ArrowSvg = ({
         </defs>
         {/* Provide a background path with bigger click radius that is transparent but clickable */}
         <path
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", pointerEvents: "all" }}
           onClick={() => selectArrow(true)}
           d={calculateAestheticLinePath({
             start: innerStart,

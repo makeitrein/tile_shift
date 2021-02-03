@@ -1,8 +1,10 @@
 import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/select/lib/css/blueprint-select.css";
 import Head from "next/head";
 import React from "react";
 import { RecoilRoot } from "recoil";
 import { Board } from "../components/canvas/board/board";
+
 export default function Home() {
   // if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
   //   // eslint-disable-next-line @typescript-eslint/no-var-requires
