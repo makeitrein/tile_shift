@@ -48,7 +48,6 @@ export const selectedItem = (card) => {
       <Button
         className="w-96"
         alignText="left"
-        large={true}
         rightIcon="double-caret-vertical"
         text={"Select Tile"}
       />
@@ -60,7 +59,6 @@ export const selectedItem = (card) => {
     <Button
       className="w-96"
       alignText="left"
-      large={true}
       rightIcon="double-caret-vertical"
       text={<div className="truncate w-80">{label}</div>}
       key={card.id}
