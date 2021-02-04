@@ -8,9 +8,6 @@ import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { Tag } from "../tile-menu/tag-picker";
 import { ConnectButton } from "./connect-button";
 
-// export const tileWidth = 140;
-// export const tileHeight = 76;
-
 export const tileWidth = 350;
 export const tileHeight = 190;
 
@@ -85,7 +82,7 @@ export const Tile = React.memo(({ id }: Props) => {
   );
 });
 
-export const AvatarComments = () => {
+export const AvatarComments = React.memo(() => {
   const setDiscussionDrawer = useSetRecoilState(uiState.discussionDrawer);
 
   return (
@@ -138,9 +135,9 @@ export const AvatarComments = () => {
       </>
     </div>
   );
-};
+});
 
-export const Tags = ({ tags }) => {
+export const Tags = React.memo(({ tags }) => {
   const setTagPickerOpen = useSetRecoilState(uiState.tagPickerOpen);
 
   return (
@@ -148,80 +145,4 @@ export const Tags = ({ tags }) => {
       <Tag onClick={() => setTagPickerOpen(true)} name={tags[0]} />
     </div>
   );
-};
-
-export const TagIcon = () => {
-  return (
-    <div className="absolute top-2 left-2">
-      <span className="rounded-md inline-flex p-2 bg-blue-50 text-blue-700 ring-4 ring-white">
-        <svg
-          className="h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      </span>
-    </div>
-  );
-};
-
-export const CommentBadge = () => {
-  return (
-    <div className="absolute bottom-2 left-2">
-      <Badge count={5}>
-        <span className="rounded-lg inline-flex p-3 bg-gray-50 text-gray-700 ring-4 ring-white">
-          <svg
-            className="h-6 w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-            />
-          </svg>
-        </span>
-      </Badge>
-    </div>
-  );
-};
-
-export const Avatars = () => {
-  return (
-    <div className="flex -space-x-1 overflow-hidden absolute top-2 right-2">
-      <img
-        className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-        src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-        alt=""
-      />
-      <img
-        className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-        src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-        alt=""
-      />
-      <img
-        className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-        src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80"
-        alt=""
-      />
-      <img
-        className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-        alt=""
-      />
-    </div>
-  );
-};
+});

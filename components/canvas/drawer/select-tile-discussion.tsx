@@ -1,6 +1,7 @@
 import { Select } from "@blueprintjs/select";
 import React from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useGetTileDimensions } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
 import {
   itemListPredicate,
@@ -10,23 +11,27 @@ import {
   selectedItem,
 } from "../board-controls/omnibar-search";
 
+const TileSelect = Select.ofType<tileState.TileSearchResults>();
+
 export const SelectTileDiscussion = ({ panzoom }) => {
-  const allTileData = useRecoilValue(tileState.allTileData);
+  const tileSearchResults = useRecoilValue(tileState.tileSearchResults);
   const [discussionTileId, setDiscussionTileId] = useRecoilState(
     tileState.discussionTileId
   );
   const setSearchedForTile = useSetRecoilState(tileState.searchedForTile);
+  const getTileDimensions = useGetTileDimensions();
 
-  const findDiscussedTile = (id) => allTileData.find((tile) => tile.id === id);
+  const findDiscussedTile = (id) =>
+    tileSearchResults.find((tile) => tile.id === id);
 
   return (
-    <Select
-      items={allTileData}
+    <TileSelect
+      items={tileSearchResults}
       onItemSelect={({ id }) => {
         setDiscussionTileId(id);
         setSearchedForTile(id);
-        const selectedTile = findDiscussedTile(id);
-        panZoomToTile(panzoom)(selectedTile);
+        const dimensions = getTileDimensions(id);
+        panZoomToTile(panzoom, dimensions);
       }}
       itemRenderer={itemRenderer}
       noResults={noResults}
@@ -34,6 +39,6 @@ export const SelectTileDiscussion = ({ panzoom }) => {
       popoverProps={{ popoverClassName: "w-96" }}
     >
       {selectedItem(findDiscussedTile(discussionTileId))}
-    </Select>
+    </TileSelect>
   );
 };

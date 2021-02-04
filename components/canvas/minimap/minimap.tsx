@@ -1,7 +1,5 @@
 import { throttle } from "lodash";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
-import * as arrowState from "../../state/arrows";
 import { totalCanvasPixelSize } from "../board/board";
 import { MiniMapArrows } from "./minimap-arrows";
 import { MiniMapTiles } from "./minimap-tiles";
@@ -14,10 +12,9 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
   const [, triggerRerender] = useState(false);
 
   const minimapRef = useRef(null);
-  const arrowIds = useRecoilValue(arrowState.arrowIds);
 
   const rerenderMinimapThrottled = useCallback(
-    throttle(() => triggerRerender((val) => !val), 25),
+    throttle(() => triggerRerender((val) => !val), 50),
     []
   );
 

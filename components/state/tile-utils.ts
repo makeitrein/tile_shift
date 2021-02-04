@@ -63,7 +63,7 @@ export const useSetTileSettings = () =>
 
 export const useGetTileDimensions = () =>
   useRecoilCallback(({ snapshot }) => (id: string) => {
-    return snapshot.getLoadable(tileState.tileDimensions(id)).contents;
+    return snapshot.getLoadable(tileState.tileDimensions(id)).getValue();
   });
 
 export const syncStorageEffect = () => ({ setSelf, trigger }) => {

@@ -9,7 +9,6 @@ export interface TileDimensions {
   height: number;
 }
 export interface TileSettings {
-  theme: string;
   isDragging: boolean;
   tags: string[];
   isWysiwygEditorFocused: boolean;
@@ -17,11 +16,16 @@ export interface TileSettings {
   deleted: boolean;
 }
 
+export interface Id {
+  id: string;
+}
 export interface TileContent {
   content: string;
 }
 
-export type Tile = { id: string } & TileDimensions & TileSettings & TileContent;
+export type Tile = Id & TileDimensions & TileSettings & TileContent;
+
+export type TileSearchResults = TileContent & TileSettings & Id;
 
 export const initialTileValues = atom<Record<string, Tile>>({
   key: "CANVAS/initial-tiles-query",
@@ -52,14 +56,13 @@ export const undeletedTileIds = selector<string[]>({
   },
 });
 
-export const allTileData = selector<Tile[]>({
+export const tileSearchResults = selector<TileSearchResults[]>({
   key: "CANVAS/all-tile-content-ids",
   get: ({ get }) => {
     return get(tileIds).map((id) => ({
       id: id,
       ...get(tileContent(id)),
       ...get(tileSettings(id)),
-      ...get(tileDimensions(id)),
     }));
   },
 });
@@ -91,11 +94,11 @@ export const tileSettings = atomFamily<TileSettings, string>({
       const tile = tiles[id];
 
       return {
-        theme: tile.theme,
         tags: [],
         isDragging: false,
         isWysiwygEditorFocused: false,
         normalScroll: false,
+        deleted: false,
       };
     },
   }),

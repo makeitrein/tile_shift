@@ -3,7 +3,9 @@ import { Omnibar } from "@blueprintjs/select";
 import { ChatAlt2Outline, ClockOutline } from "heroicons-react";
 import React from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useGetTileDimensions } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
+import { TileSearchResults } from "../../state/tiles";
 import { Tag } from "../tile-menu/tag-picker";
 const { htmlToText } = require("html-to-text");
 
@@ -99,12 +101,15 @@ export const itemRenderer = (tile, { handleClick, modifiers, query }) => {
   );
 };
 
-export const panZoomToTile = (panzoom) => (tile) => {
+export const panZoomToTile = (
+  panzoom,
+  { x, y, width }: tileState.TileDimensions
+) => {
   panzoom.zoom(1);
   setTimeout(() => {
     panzoom.pan(
-      -tile.x + window.innerWidth / 2 - tile.width / 2,
-      -tile.y + window.innerHeight / 2,
+      -x + window.innerWidth / 2 - width / 2,
+      -y + window.innerHeight / 2,
       { force: true }
     );
   });
@@ -142,21 +147,24 @@ interface Props {
   panzoom: any;
 }
 
+const TileOmnibar = Omnibar.ofType<TileSearchResults>();
+
 export const OmnibarSearch = React.memo(
   ({ isOpen, closeSearch, panzoom }: Props) => {
-    const allTileData = useRecoilValue(tileState.allTileData);
+    const tileSearchResults = useRecoilValue(tileState.tileSearchResults);
     const setSearchedForTile = useSetRecoilState(tileState.searchedForTile);
+    const getTileDimensions = useGetTileDimensions();
 
     return (
-      <Omnibar
-        query=""
+      <TileOmnibar
         isOpen={isOpen}
-        items={allTileData}
+        items={tileSearchResults}
         onClose={closeSearch}
         itemListRenderer={itemListRenderer}
-        onItemSelect={(tile) => {
-          setSearchedForTile(tile.id);
-          panZoomToTile(panzoom)(tile);
+        onItemSelect={({ id }) => {
+          setSearchedForTile(id);
+          const dimensions = getTileDimensions(id);
+          panZoomToTile(panzoom, dimensions);
           closeSearch();
         }}
         itemRenderer={itemRenderer}
