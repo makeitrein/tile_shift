@@ -59,13 +59,11 @@ export const Discussion = () => (
           <div className="min-w-0 flex-1">
             <form action="#">
               <div>
-                <label for="comment" className="sr-only">
-                  About
-                </label>
+                <label className="sr-only">About</label>
                 <textarea
                   id="comment"
                   name="comment"
-                  rows="3"
+                  rows={3}
                   className="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
                   placeholder="Message"
                 ></textarea>

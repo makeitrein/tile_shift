@@ -7,12 +7,13 @@ export const defaultTileValues: Tile = {
   id: "",
   x: 0,
   y: 0,
-  theme: "white",
   width: tileWidth,
   height: tileHeight,
   content: "",
   isDragging: false,
   isWysiwygEditorFocused: false,
+  tags: [],
+  deleted: false,
 };
 
 export const tileId = () => "new-tile" + new Date().getTime();

@@ -7,7 +7,7 @@ export const useResetSearchedForTile = () => {
     tileState.searchedForTile
   );
 
-  const timeoutRef = useRef();
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     if (searchedForTile) {

@@ -26,14 +26,14 @@ const TileWrapper = styled.div`
     "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
 `;
 
-interface Props {
+interface TileProps {
   id: string;
 }
 
 export const tileTitleElementId = (id: string) => id + "title";
 export const tileDescriptionElementId = (id: string) => id + "description";
 
-export const Tile = React.memo(({ id }: Props) => {
+export const Tile = React.memo(({ id }: TileProps) => {
   const ref = useRef();
   const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
   const tileSettings = useRecoilValue(tileState.tileSettings(id));
@@ -137,7 +137,10 @@ export const AvatarComments = React.memo(() => {
   );
 });
 
-export const Tags = React.memo(({ tags }) => {
+interface Props {
+  tags: string[];
+}
+export const Tags = React.memo(({ tags }: Props) => {
   const setTagPickerOpen = useSetRecoilState(uiState.tagPickerOpen);
 
   return (

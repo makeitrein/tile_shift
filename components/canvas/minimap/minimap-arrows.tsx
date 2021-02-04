@@ -33,24 +33,12 @@ export const MiniMapArrow = React.memo(({ id }: Props) => {
   );
   const endTile = useRecoilValue(tileState.tileDimensions(arrow.end.tileId));
 
-  const resizeDimensions = ({
-    x,
-    y,
-    width,
-    height,
-    ...rest
-  }: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  }) => ({
+  const resizeDimensions = ({ x, y, ...rest }: { x: number; y: number }) => ({
     ...rest,
     x: x / (minimapSizeDivider - 3),
     y: y / (minimapSizeDivider - 3),
-    width: width / minimapSizeDivider,
-    height: height / minimapSizeDivider,
   });
+
   return (
     <BasicArrowSvg
       start={resizeDimensions(
@@ -58,7 +46,7 @@ export const MiniMapArrow = React.memo(({ id }: Props) => {
       )}
       end={resizeDimensions(directionDimensionMap[arrow.end.point](endTile))}
       orientation={LineOrientation.HORIZONTAL}
-      strokeWidth={1}
+      strokeWidth={"1"}
       color={color}
     />
   );

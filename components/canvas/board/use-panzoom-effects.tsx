@@ -41,7 +41,7 @@ export const usePanzoomEffects = ({
 
     window.addEventListener(
       "mousewheel",
-      (e) => {
+      (e: WheelEvent) => {
         const isPinchZoom = e.ctrlKey;
         const x = -e.deltaX;
         const y = -e.deltaY;

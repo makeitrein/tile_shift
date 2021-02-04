@@ -8,13 +8,7 @@ const Header = styled.div`
   //   width: 100%;
   // }
 `;
-export const Slideover = ({
-  isOpen,
-  closeDrawer,
-  title,
-  description,
-  children,
-}) => {
+export const Slideover = ({ isOpen, closeDrawer, title, children }) => {
   return (
     <>
       {/* <div className="fixed inset-0 overflow-hidden"> */}
@@ -42,7 +36,7 @@ export const Slideover = ({
                     >
                       {title}
                     </Header>
-                    <p className="text-sm text-gray-500">{description}</p>
+                    <p className="text-sm text-gray-500">Description Here</p>
                   </div>
                   <div className="h-7 flex items-center">
                     <span

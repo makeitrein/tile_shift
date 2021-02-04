@@ -12,7 +12,7 @@ interface Props {
 const arrowWidth = 4;
 
 export const directionDimensionMap: Record<
-  arrowState.ArrowPoint,
+  string,
   (params: any) => { x: number; y: number }
 > = {
   right: ({ x, y, width, height }) => ({

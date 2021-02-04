@@ -1,7 +1,7 @@
 import { throttle } from "lodash";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { totalCanvasPixelSize } from "../board/board";
-import { PanzoomObject } from "../board/panzoom/panzoom";
+import { PanzoomObject } from "../board/panzoom/types";
 import { MiniMapArrows } from "./minimap-arrows";
 import { MiniMapTiles } from "./minimap-tiles";
 

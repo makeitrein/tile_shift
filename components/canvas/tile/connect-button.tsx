@@ -7,7 +7,7 @@ import * as tileState from "../../state/tiles";
 import { tileHeight, tileWidth } from "./tile";
 
 const positionStyle: Record<
-  ArrowPoint,
+  string,
   {
     left?: string;
     top?: string;
@@ -39,7 +39,7 @@ const positionStyle: Record<
 };
 
 const directionDimensionMap: Record<
-  ArrowPoint,
+  string,
   (params: any) => { x: number; y: number }
 > = {
   left: ({ x, y, height }) => ({
@@ -60,7 +60,7 @@ const directionDimensionMap: Record<
   }),
 };
 
-export const oppositePointMap: Record<ArrowPoint, ArrowPoint> = {
+export const oppositePointMap: Record<string, ArrowPoint> = {
   right: "left",
   top: "bottom",
   bottom: "top",

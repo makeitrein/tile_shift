@@ -205,7 +205,7 @@ function Panzoom(
     panOptions?: PanOptions
   ) {
     const opts = { ...options, ...panOptions };
-    const result = { x, y, opts };
+    const result = { x, y, opts, minX, maxX, minY, maxY };
 
     if (
       !opts.force &&
@@ -587,5 +587,4 @@ function Panzoom(
 
 Panzoom.defaultOptions = defaultOptions;
 
-export { PanzoomObject, PanzoomOptions };
 export default Panzoom;

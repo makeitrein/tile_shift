@@ -1,5 +1,4 @@
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
-import { colorThemes, ThemeMapOption } from "../canvas/tile-menu/color-picker";
 import { localStorageEffect } from "./effects";
 
 export interface TileDimensions {
@@ -12,7 +11,6 @@ export interface TileSettings {
   isDragging: boolean;
   tags: string[];
   isWysiwygEditorFocused: boolean;
-  normalScroll: boolean;
   deleted: boolean;
 }
 
@@ -97,7 +95,6 @@ export const tileSettings = atomFamily<TileSettings, string>({
         tags: [],
         isDragging: false,
         isWysiwygEditorFocused: false,
-        normalScroll: false,
         deleted: false,
       };
     },
@@ -179,12 +176,5 @@ export const editableTileContent = selector<TileContent | null>({
   get: ({ get }) => {
     const id = get(editableTileId);
     return id ? get(tileContent(id)) : null;
-  },
-});
-
-export const tileColorTheme = selectorFamily<ThemeMapOption, string>({
-  key: "CANVAS/tile-color-theme",
-  get: (id) => ({ get }) => {
-    return colorThemes[get(tileSettings(id)).theme];
   },
 });
