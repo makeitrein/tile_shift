@@ -80,7 +80,7 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
   const height = (mapSize * viewportHeightPercent) / 100;
 
   const translateX = (left * xDiff) / minimapSizeDivider + width / 2;
-  const translateY = (top * yDiff) / minimapSizeDivider + height;
+  const translateY = (top * yDiff) / minimapSizeDivider + height / 2;
 
   const viewportDimensions = {
     transition: ".1s transform",
