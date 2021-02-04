@@ -20,7 +20,7 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
   const minimapRef = useRef(null);
 
   const rerenderMinimapThrottled = useCallback(
-    throttle(() => triggerRerender((val) => !val), 25),
+    throttle(() => triggerRerender((val) => !val), 200),
     []
   );
 
@@ -83,6 +83,7 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
   const translateY = (top * yDiff) / minimapSizeDivider + height;
 
   const viewportDimensions = {
+    transition: ".1s transform",
     transform: `translate(${translateX}px,${translateY}px)`,
     width: width + "px",
     height: height + "px",

@@ -13,7 +13,6 @@ import * as tileState from "../../state/tiles";
 import { ArrowList } from "../arrow/arrow-list";
 import { BoardControls } from "../board-controls/board-controls";
 import { DiscussionDrawer } from "../drawer/discussion-drawer";
-import { MiniMap } from "../minimap/minimap";
 import { TileList } from "../tile/tile-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { PanzoomObject } from "./panzoom/types";
