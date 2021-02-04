@@ -23,74 +23,9 @@ body {
   z-index: 3002 !important;
 }
 
-.hide-border {
-  display: none !important;
-}
-
-.elements {
-  border: 2px solid #eee;
-}
-
-.bp3-editable-text::before {
-  border: 0 !important;
-  background: none !important;
-  outline: none !important;
-  /* box-shadow: none !important; */
-}
-
-.bp3-editable-text-input {
-  border: 0 !important;
-  background: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* .selecto-area {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-} */
-
-#selecto1 .cube {
-  transition: all ease 0.2s;
-}
-
-.moveable #selecto1 .cube {
-  transition: none;
-}
-
 .selecto-area .selected {
   color: #fff;
   background: var(--color);
-}
-
-.empty.elements {
-  border: none;
-}
-
-.emoji-mart-emoji {
-  cursor: pointer;
-}
-
-.emoji-mart-emoji:focus {
-  outline: none;
-}
-
-.ant-popover,
-.ant-drawer {
-  z-index: 4000 !important;
-}
-
-.bp3-menu-item {
-  align-items: center !important;
-}
-
-.bp3-submenu.bp3-popover > .bp3-popover-content {
-  top: 4px !important;
-}
-
-.bp3-portal {
-  z-index: 4001 !important;
 }
 
 @keyframes pulse {
@@ -107,3 +42,32 @@ body {
   animation: pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1);
   animation-iteration-count: 1;
 }
+
+/* Blueprint overrides */
+
+.bp3-editable-text::before {
+  border: 0 !important;
+  background: none !important;
+  outline: none !important;
+}
+
+.bp3-editable-text-input {
+  border: 0 !important;
+  background: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.bp3-menu-item {
+  align-items: center !important;
+}
+
+.bp3-submenu.bp3-popover > .bp3-popover-content {
+  top: 4px !important;
+}
+
+.bp3-portal {
+  z-index: 4001 !important;
+}
+
+/* End Blueprint overrides */
