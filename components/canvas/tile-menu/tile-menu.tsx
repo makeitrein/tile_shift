@@ -35,7 +35,7 @@ const variants = {
   },
 };
 
-export const CardMenu = ({ id }) => {
+export const TileMenu = ({ id }) => {
   const { commands, active } = useRemirror({ autoUpdate: true });
   const [altToolbar, setAltToolbar] = useState(false);
   const [popoverOpen, setPopoverOpen] = useRecoilState(tagPickerOpen);

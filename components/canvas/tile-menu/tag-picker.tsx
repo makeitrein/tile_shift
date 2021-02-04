@@ -27,7 +27,7 @@ import {
 } from "heroicons-react";
 import React from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 
 const tagGroups = [
   {
@@ -145,10 +145,10 @@ const allTags = tagGroups.map((group) => group.tags).flat();
 const allSubcategories = subcategoryGroups.map((group) => group.tags).flat();
 
 export const TagPicker = ({ id, closePanel }) => {
-  const setCardSettings = useSetRecoilState(cardState.cardSettings(id));
+  const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
 
   const handleTagClick = (clickedTag: string) => {
-    setCardSettings((card) => ({ ...card, tags: [clickedTag] }));
+    setTileSettings((tile) => ({ ...tile, tags: [clickedTag] }));
     closePanel();
   };
 
@@ -171,12 +171,12 @@ export const TagPicker = ({ id, closePanel }) => {
 };
 
 export const SubcategoryPicker = ({ id, openPanel }) => {
-  const [cardSettings, setCardSettings] = useRecoilState(
-    cardState.cardSettings(id)
+  const [tileSettings, setTileSettings] = useRecoilState(
+    tileState.tileSettings(id)
   );
 
   const handleTagClick = (clickedTag: string) => {
-    setCardSettings((card) => ({ ...card, tags: [clickedTag] }));
+    setTileSettings((tile) => ({ ...tile, tags: [clickedTag] }));
   };
 
   return <>Create Custom Tag</>;

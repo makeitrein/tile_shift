@@ -12,8 +12,8 @@ import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import "remirror/styles/all.css";
 import styled from "styled-components";
-import * as cardState from "../../state/cards";
-import { CardMenu } from "../card-menu/card-menu";
+import * as tileState from "../../state/tiles";
+import { TileMenu } from "../tile-menu/tile-menu";
 
 export const articlePadding = 12;
 
@@ -98,16 +98,16 @@ const extensionTemplate = () => [
 ];
 
 export const EditorManager = ({ id, showToolbar }) => {
-  const [card, setCard] = useRecoilState(cardState.cardContent(id));
+  const [tile, setTile] = useRecoilState(tileState.tileContent(id));
   const manager = useManager(extensionTemplate);
-  const editableCardId = useRecoilValue(cardState.editableCardId);
-  const cardSettings = useRecoilValue(cardState.cardSettings(id));
+  const editableTileId = useRecoilValue(tileState.editableTileId);
+  const tileSettings = useRecoilValue(tileState.tileSettings(id));
 
-  const isEditable = editableCardId === id && !cardSettings.isDragging;
+  const isEditable = editableTileId === id && !tileSettings.isDragging;
 
   const [value, setValue] = useState(
     manager.createState({
-      content: card.content || "",
+      content: tile.content || "",
       stringHandler: fromHtml,
     })
   );
@@ -121,8 +121,8 @@ export const EditorManager = ({ id, showToolbar }) => {
       placeholder="What's on your mind?"
       onChange={({ state }) => {
         setValue(state);
-        setCard((card) => ({
-          ...card,
+        setTile((tile) => ({
+          ...tile,
           content: toHtml({ node: state.doc, schema: state.schema }),
         }));
       }}
@@ -134,18 +134,18 @@ export const EditorManager = ({ id, showToolbar }) => {
 
 export const Editor = ({ id, showToolbar }) => {
   const { getRootProps } = useRemirror();
-  const setCardSettings = useSetRecoilState(cardState.cardSettings(id));
+  const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
 
-  const setCardEditorFocus = (isWysiwygEditorFocused: boolean) => {
-    setCardSettings((settings) => ({ ...settings, isWysiwygEditorFocused }));
+  const setTileEditorFocus = (isWysiwygEditorFocused: boolean) => {
+    setTileSettings((settings) => ({ ...settings, isWysiwygEditorFocused }));
   };
 
   return (
     <>
-      {showToolbar && <CardMenu id={id} />}
+      {showToolbar && <TileMenu id={id} />}
       <EditableArticle
-        onFocus={() => setCardEditorFocus(true)}
-        onBlur={() => setCardEditorFocus(false)}
+        onFocus={() => setTileEditorFocus(true)}
+        onBlur={() => setTileEditorFocus(false)}
         style={{ pointerEvents: !showToolbar && "none" }}
         {...getRootProps()}
       />

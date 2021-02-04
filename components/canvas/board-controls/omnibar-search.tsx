@@ -3,8 +3,8 @@ import { Omnibar } from "@blueprintjs/select";
 import { ChatAlt2Outline, ClockOutline } from "heroicons-react";
 import React from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import * as cardState from "../../state/cards";
-import { Tag } from "../card-menu/tag-picker";
+import * as tileState from "../../state/tiles";
+import { Tag } from "../tile-menu/tag-picker";
 const { htmlToText } = require("html-to-text");
 
 export function escapeRegExpChars(text: string) {
@@ -42,8 +42,8 @@ export function highlightText(text: string, query: string) {
   return tokens;
 }
 
-export const selectedItem = (card) => {
-  if (!card) {
+export const selectedItem = (tile) => {
+  if (!tile) {
     return (
       <Button
         className="w-96"
@@ -54,30 +54,30 @@ export const selectedItem = (card) => {
     );
   }
 
-  const label = htmlToText(card.content) || <i>No content</i>;
+  const label = htmlToText(tile.content) || <i>No content</i>;
   return (
     <Button
       className="w-96"
       alignText="left"
       rightIcon="double-caret-vertical"
       text={<div className="truncate w-80">{label}</div>}
-      key={card.id}
+      key={tile.id}
     />
   );
 };
 
-export const itemRenderer = (card, { handleClick, modifiers, query }) => {
+export const itemRenderer = (tile, { handleClick, modifiers, query }) => {
   if (!modifiers.matchesPredicate) {
     return null;
   }
-  const label = htmlToText(card.content) || <i>No content</i>;
+  const label = htmlToText(tile.content) || <i>No content</i>;
   return (
     <MenuItem
       active={modifiers.active}
       disabled={modifiers.disabled}
       labelElement={
         <div className="flex">
-          <Tag name={card.tags[0]} />
+          <Tag name={tile.tags[0]} />
         </div>
       }
       text={
@@ -93,26 +93,26 @@ export const itemRenderer = (card, { handleClick, modifiers, query }) => {
           </div>
         </div>
       }
-      key={card.id}
+      key={tile.id}
       onClick={handleClick}
     />
   );
 };
 
-export const panZoomToCard = (panzoom) => (card) => {
+export const panZoomToTile = (panzoom) => (tile) => {
   panzoom.zoom(1);
   setTimeout(() => {
     panzoom.pan(
-      -card.x + window.innerWidth / 2 - card.width / 2,
-      -card.y + window.innerHeight / 2,
+      -tile.x + window.innerWidth / 2 - tile.width / 2,
+      -tile.y + window.innerHeight / 2,
       { force: true }
     );
   });
 };
 
-export const filterCard = (query) => (card) => {
-  const normalizedTitle = card.content.toLowerCase();
-  const normalizedTag = (card.tags[0] || "").toLowerCase();
+export const filterTile = (query) => (tile) => {
+  const normalizedTitle = tile.content.toLowerCase();
+  const normalizedTag = (tile.tags[0] || "").toLowerCase();
   const normalizedQuery = query.toLowerCase();
 
   return `${normalizedTag} ${normalizedTitle}`.indexOf(normalizedQuery) >= 0;
@@ -126,13 +126,13 @@ export const itemListRenderer = ({
 }) => {
   return (
     <Menu ulRef={itemsParentRef}>
-      {items.filter(filterCard(query)).map(renderItem)}
+      {items.filter(filterTile(query)).map(renderItem)}
     </Menu>
   );
 };
 
-export const itemListPredicate = (query, cards) =>
-  cards.filter(filterCard(query));
+export const itemListPredicate = (query, tiles) =>
+  tiles.filter(filterTile(query));
 
 export const noResults = <Menu.Item disabled={true} text="No results" />;
 
@@ -144,19 +144,19 @@ interface Props {
 
 export const OmnibarSearch = React.memo(
   ({ isOpen, closeSearch, panzoom }: Props) => {
-    const allCardData = useRecoilValue(cardState.allCardData);
-    const setSearchedForTile = useSetRecoilState(cardState.searchedForTile);
+    const allTileData = useRecoilValue(tileState.allTileData);
+    const setSearchedForTile = useSetRecoilState(tileState.searchedForTile);
 
     return (
       <Omnibar
         query=""
         isOpen={isOpen}
-        items={allCardData}
+        items={allTileData}
         onClose={closeSearch}
         itemListRenderer={itemListRenderer}
-        onItemSelect={(card) => {
-          setSearchedForTile(card.id);
-          panZoomToCard(panzoom)(card);
+        onItemSelect={(tile) => {
+          setSearchedForTile(tile.id);
+          panZoomToTile(panzoom)(tile);
           closeSearch();
         }}
         itemRenderer={itemRenderer}

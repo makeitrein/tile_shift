@@ -6,24 +6,24 @@ import Selecto from "react-selecto";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
-  useGetCardDimensions,
-  useSetCardDimensions,
-  useSetCardSettings,
-} from "../../state/card-utils";
-import * as cardState from "../../state/cards";
+  useGetTileDimensions,
+  useSetTileDimensions,
+  useSetTileSettings,
+} from "../../state/tile-utils";
+import * as tileState from "../../state/tiles";
 import { ArrowList } from "../arrow/arrow-list";
 import { BoardControls } from "../board-controls/board-controls";
-import { CardList } from "../card/card-list";
 import { DiscussionDrawer } from "../drawer/discussion-drawer";
 import { MiniMap } from "../minimap/minimap";
+import { TileList } from "../tile/tile-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
-import { useAddCardViaClick } from "./use-add-card-via-click";
-import { useDeleteCardsViaBackspace } from "./use-delete-cards-via-backspace";
+import { useAddTileViaClick } from "./use-add-tile-via-click";
+import { useDeleteTilesViaBackspace } from "./use-delete-tiles-via-backspace";
 import { useDeleteTextEffect } from "./use-deselect-text-effect";
-import { useDragResizeCard } from "./use-drag-resize-card";
+import { useDragResizeTile } from "./use-drag-resize-tile";
 import { usePanzoomEffects } from "./use-panzoom-effects";
 import { useResetSearchedForTile } from "./use-reset-searched-for";
-import { useResizeCardEffect } from "./use-resize-card-effect";
+import { useResizeTileEffect } from "./use-resize-tile-effect";
 
 export const totalCanvasPixelSize = 10000;
 
@@ -39,10 +39,10 @@ const Canvas = styled.div`
 `;
 
 export const Board = () => {
-  const [selectedCards, setSelectedCards] = useRecoilState(
-    cardState.selectedCardTargets
+  const [selectedTiles, setSelectedTiles] = useRecoilState(
+    tileState.selectedTileTargets
   );
-  const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
+  const selectedTileIds = useRecoilValue(tileState.selectedTileIds);
 
   const [disablePan, setDisablePan] = React.useState(true);
   const [zoom, setZoom] = React.useState(1);
@@ -54,9 +54,9 @@ export const Board = () => {
   const panzoomRef = useRef<PanzoomObject>(null);
   const range = useRef<HTMLInputElement>(null);
 
-  useDeleteCardsViaBackspace();
-  useResizeCardEffect(moveableRef.current);
-  useDeleteTextEffect(selectedCardIds);
+  useDeleteTilesViaBackspace();
+  useResizeTileEffect(moveableRef.current);
+  useDeleteTextEffect(selectedTileIds);
   useResetSearchedForTile();
 
   let panzoom = panzoomRef.current;
@@ -69,12 +69,12 @@ export const Board = () => {
     range,
   });
 
-  const setCardDimensions = useSetCardDimensions();
-  const setCardSettings = useSetCardSettings();
-  const getCardDimensions = useGetCardDimensions();
+  const setTileDimensions = useSetTileDimensions();
+  const setTileSettings = useSetTileSettings();
+  const getTileDimensions = useGetTileDimensions();
 
-  const dragResizeCard = useDragResizeCard();
-  const addCardViaClick = useAddCardViaClick(canvasRef.current);
+  const dragResizeTile = useDragResizeTile();
+  const addTileViaClick = useAddTileViaClick(canvasRef.current);
 
   const selectoOnDragStart = useCallback(
     (e) => {
@@ -84,16 +84,16 @@ export const Board = () => {
       if (
         target.id === "minimap" ||
         moveable.isMoveableElement(target) ||
-        selectedCards.some((t) => t === target || t.contains(target))
+        selectedTiles.some((t) => t === target || t.contains(target))
       ) {
         e.stop();
       }
     },
-    [selectedCards, moveableRef]
+    [selectedTiles, moveableRef]
   );
 
   const selectoOnSelect = useCallback((e) => {
-    setSelectedCards(e.selected);
+    setSelectedTiles(e.selected);
   }, []);
 
   const selectoOnSelectEnd = useCallback(
@@ -112,19 +112,19 @@ export const Board = () => {
 
   const onResizeStart = useCallback(({ target, setOrigin, dragStart }) => {
     setOrigin(["%", "%"]);
-    const { x, y } = getCardDimensions(target.id);
+    const { x, y } = getTileDimensions(target.id);
     dragStart && dragStart.set([x, y]);
   }, []);
 
   const onResizeGroupStart = useCallback(({ events, setMin }) => {
     events.forEach((ev) => {
-      const { x, y } = getCardDimensions(ev.target.id);
+      const { x, y } = getTileDimensions(ev.target.id);
       ev.dragStart && ev.dragStart.set([x, y]);
     });
   }, []);
 
   const onResizeGroup = useCallback(
-    ({ events }) => events.forEach(dragResizeCard),
+    ({ events }) => events.forEach(dragResizeTile),
     []
   );
 
@@ -138,8 +138,8 @@ export const Board = () => {
   const onDragStart = useCallback((ev) => {
     const target = ev.target;
 
-    const { x, y } = getCardDimensions(target.id);
-    setCardSettings(ev.target.id, { isDragging: true });
+    const { x, y } = getTileDimensions(target.id);
+    setTileSettings(ev.target.id, { isDragging: true });
 
     ev.set([x, y]);
   }, []);
@@ -150,19 +150,19 @@ export const Board = () => {
     const x = e.beforeTranslate[0];
     const y = e.beforeTranslate[1];
 
-    setCardDimensions(e.target.id, { x, y });
+    setTileDimensions(e.target.id, { x, y });
     target.style.transform = `translate(${x}px, ${y}px)`;
   }, []);
 
   const onDragEnd = useCallback((e) => {
-    setCardSettings(e.target.id, { isDragging: false });
+    setTileSettings(e.target.id, { isDragging: false });
   }, []);
 
   const onDragGroupStart = useCallback((e) => {
     e.events.forEach((ev) => {
       const target = ev.target;
 
-      const { x, y } = getCardDimensions(target.id);
+      const { x, y } = getTileDimensions(target.id);
       ev.set([x, y]);
     });
   }, []);
@@ -174,7 +174,7 @@ export const Board = () => {
       const x = ev.beforeTranslate[0];
       const y = ev.beforeTranslate[1];
 
-      setCardDimensions(target.id, { x, y });
+      setTileDimensions(target.id, { x, y });
       target.style.transform = `translate(${x}px, ${y}px)`;
     });
   }, []);
@@ -201,11 +201,11 @@ export const Board = () => {
   const elementGuidelines = useMemo(
     () =>
       process.browser
-        ? Array.from(document.querySelectorAll(".canvas-card")).filter(
-            (el) => !selectedCardIds.includes(el.id)
+        ? Array.from(document.querySelectorAll(".canvas-tile")).filter(
+            (el) => !selectedTileIds.includes(el.id)
           )
         : [],
-    [process.browser, selectedCardIds]
+    [process.browser, selectedTileIds]
   );
 
   React.useEffect(() => {
@@ -218,7 +218,7 @@ export const Board = () => {
     <Wrapper
       ref={wrapperRef}
       className="wrapper bg-tan"
-      onDoubleClick={addCardViaClick}
+      onDoubleClick={addTileViaClick}
     >
       <DiscussionDrawer panzoom={panzoomRef.current} />
 
@@ -228,7 +228,7 @@ export const Board = () => {
         <Selecto
           ref={selectoRef}
           dragContainer={".canvas"}
-          selectableTargets={[".canvas-card"]}
+          selectableTargets={[".canvas-tile"]}
           hitRate={0}
           selectByClick={true}
           selectFromInside={false}
@@ -245,7 +245,7 @@ export const Board = () => {
           // bounds={bounds}
           rootContainer={document.body}
           draggable={true}
-          target={selectedCards}
+          target={selectedTiles}
           elementGuidelines={elementGuidelines}
           snappable={true}
           snapGap={true}
@@ -263,7 +263,7 @@ export const Board = () => {
           origin={false}
           padding={moveablePadding}
           onResizeStart={onResizeStart}
-          onResize={dragResizeCard}
+          onResize={dragResizeTile}
           onResizeGroupStart={onResizeGroupStart}
           onResizeGroup={onResizeGroup}
           onClickGroup={onClickGroup}
@@ -274,7 +274,7 @@ export const Board = () => {
           onDragGroup={onDragGroup}
         />
 
-        <CardList />
+        <TileList />
         <ArrowList />
       </Canvas>
       <MiniMap panzoom={panzoomRef.current} canvasRef={canvasRef} />

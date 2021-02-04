@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 
 export const useResetSearchedForTile = () => {
   const [searchedForTile, setSearchedForTile] = useRecoilState(
-    cardState.searchedForTile
+    tileState.searchedForTile
   );
 
   const timeoutRef = useRef();

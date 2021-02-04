@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { useSetCardDimensions } from "../../state/card-utils";
+import { useSetTileDimensions } from "../../state/tile-utils";
 
-export const useDragResizeCard = () => {
-  const updateCard = useSetCardDimensions();
+export const useDragResizeTile = () => {
+  const updateTile = useSetTileDimensions();
 
   return useCallback((ev) => {
     const target = ev.target as HTMLDivElement;
@@ -14,7 +14,7 @@ export const useDragResizeCard = () => {
     const newWidth = Math.max(minWidth, ev.width);
     const newHeight = Math.max(minHeight, ev.height);
 
-    updateCard(target.id, { width: newWidth, height: newHeight });
+    updateTile(target.id, { width: newWidth, height: newHeight });
 
     target.style.width = `${newWidth}px`;
     target.style.height = `${newHeight}px`;

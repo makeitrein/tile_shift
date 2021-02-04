@@ -30,7 +30,7 @@ export const usePanzoomEffects = ({
       handleStartEvent: (event) => {
         if (
           !disablePan &&
-          Array.from(event.target.classList).includes("canvas-card")
+          Array.from(event.target.classList).includes("canvas-tile")
         ) {
           throw "disable panning hack";
         }

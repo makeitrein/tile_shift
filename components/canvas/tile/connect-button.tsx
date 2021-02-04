@@ -2,9 +2,9 @@ import * as React from "react";
 import { useRecoilValue } from "recoil";
 import { useCreateInitialArrow } from "../../state/arrow-utils";
 import { ArrowPoint } from "../../state/arrows";
-import { cardId, useCreateInitialCard } from "../../state/card-utils";
-import * as cardState from "../../state/cards";
-import { cardHeight, cardWidth } from "./card";
+import { tileId, useCreateInitialTile } from "../../state/tile-utils";
+import * as tileState from "../../state/tiles";
+import { tileHeight, tileWidth } from "./tile";
 
 const positionStyle: Record<
   ArrowPoint,
@@ -43,20 +43,20 @@ const directionDimensionMap: Record<
   (params: any) => { x: number; y: number }
 > = {
   left: ({ x, y, height }) => ({
-    x: x - cardWidth - 100,
-    y: y + height / 2 - cardHeight / 2,
+    x: x - tileWidth - 100,
+    y: y + height / 2 - tileHeight / 2,
   }),
   right: ({ x, y, width, height }) => ({
     x: x + width + 100,
-    y: y + height / 2 - cardHeight / 2,
+    y: y + height / 2 - tileHeight / 2,
   }),
   top: ({ y, x, width }) => ({
-    y: y - cardHeight - 100,
-    x: x + width / 2 - cardWidth / 2,
+    y: y - tileHeight - 100,
+    x: x + width / 2 - tileWidth / 2,
   }),
   bottom: ({ y, height, x, width }) => ({
     y: y + height + 70,
-    x: x + width / 2 - cardWidth / 2,
+    x: x + width / 2 - tileWidth / 2,
   }),
 };
 
@@ -73,20 +73,20 @@ interface Props {
 }
 
 export const ConnectButton = React.memo(({ id, direction }: Props) => {
-  const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
+  const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
 
-  const newCardDimensions = directionDimensionMap[direction](cardDimensions);
+  const newTileDimensions = directionDimensionMap[direction](tileDimensions);
 
-  const createInitialCard = useCreateInitialCard();
+  const createInitialTile = useCreateInitialTile();
   const createInitialArrow = useCreateInitialArrow();
 
-  const createAndConnectCard = () => {
-    const newCardId = cardId();
-    createInitialCard({ dimensions: newCardDimensions, id: newCardId });
+  const createAndConnectTile = () => {
+    const newTileId = tileId();
+    createInitialTile({ dimensions: newTileDimensions, id: newTileId });
     console.log(direction, oppositePointMap[direction]);
     createInitialArrow({
-      start: { cardId: id, point: direction },
-      end: { cardId: newCardId, point: oppositePointMap[direction] },
+      start: { tileId: id, point: direction },
+      end: { tileId: newTileId, point: oppositePointMap[direction] },
     });
   };
 
@@ -94,7 +94,7 @@ export const ConnectButton = React.memo(({ id, direction }: Props) => {
 
   return (
     <button
-      onClick={createAndConnectCard}
+      onClick={createAndConnectTile}
       type="button"
       className={`${
         isCoveringToolbar ? "z-force" : "z-overlay"

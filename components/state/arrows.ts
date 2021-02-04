@@ -16,8 +16,8 @@ export type ArrowPoint =
   | "bottomRight";
 export interface Arrow {
   id: string;
-  start: { cardId: string; point: ArrowPoint };
-  end: { cardId: string; point: ArrowPoint };
+  start: { tileId: string; point: ArrowPoint };
+  end: { tileId: string; point: ArrowPoint };
   theme: string;
   content: string;
   strokeWidth: number;

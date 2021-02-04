@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import * as arrowState from "../../state/arrows";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 import { directionDimensionMap } from "../arrow/arrow";
 import { LineOrientation } from "../react-simple-arrows";
 import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
@@ -28,10 +28,10 @@ export const MiniMapArrow = React.memo(({ id }: Props) => {
   const arrow = useRecoilValue(arrowState.arrow(id));
   const { color } = useRecoilValue(arrowState.arrowColorTheme(id));
 
-  const startCard = useRecoilValue(
-    cardState.cardDimensions(arrow.start.cardId)
+  const startTile = useRecoilValue(
+    tileState.tileDimensions(arrow.start.tileId)
   );
-  const endCard = useRecoilValue(cardState.cardDimensions(arrow.end.cardId));
+  const endTile = useRecoilValue(tileState.tileDimensions(arrow.end.tileId));
 
   const resizeDimensions = ({
     x,
@@ -54,9 +54,9 @@ export const MiniMapArrow = React.memo(({ id }: Props) => {
   return (
     <BasicArrowSvg
       start={resizeDimensions(
-        directionDimensionMap[arrow.start.point](startCard)
+        directionDimensionMap[arrow.start.point](startTile)
       )}
-      end={resizeDimensions(directionDimensionMap[arrow.end.point](endCard))}
+      end={resizeDimensions(directionDimensionMap[arrow.end.point](endTile))}
       orientation={LineOrientation.HORIZONTAL}
       strokeWidth={1}
       color={color}

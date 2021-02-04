@@ -1,7 +1,7 @@
 import React from "react";
 import ContentEditable from "react-contenteditable";
 import { useRecoilState } from "recoil";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 
 const useRefCallback = <T extends any[]>(
   value: ((...args: T) => void) | undefined,
@@ -21,22 +21,22 @@ const useRefCallback = <T extends any[]>(
 };
 
 export function ContentEditableEditor({ id }) {
-  const [card, setCard] = useRecoilState(cardState.cardContent(id));
+  const [tile, setTile] = useRecoilState(tileState.tileContent(id));
 
   const handleChange = useRefCallback((evt) => {
     const content = evt.target.value;
-    setCard((card) => ({
-      ...card,
+    setTile((tile) => ({
+      ...tile,
       content,
     }));
   }, []);
 
-  const handleBlur = useRefCallback(() => {}, [card.content]);
+  const handleBlur = useRefCallback(() => {}, [tile.content]);
 
   return (
     <ContentEditable
       tagName="article"
-      html={card.content}
+      html={tile.content}
       onBlur={handleBlur}
       onChange={handleChange}
     />

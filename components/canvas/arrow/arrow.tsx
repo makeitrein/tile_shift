@@ -2,7 +2,7 @@ import { EditableText } from "@blueprintjs/core";
 import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as arrowState from "../../state/arrows";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 import { ArrowSvg, LineOrientation } from "../react-simple-arrows";
 
 interface Props {
@@ -45,17 +45,17 @@ export const Arrow = React.memo(({ id }: Props) => {
 
   const [selected, selectArrow] = useState(false);
 
-  const startCard = useRecoilValue(
-    cardState.cardDimensions(arrow.start.cardId)
+  const startTile = useRecoilValue(
+    tileState.tileDimensions(arrow.start.tileId)
   );
-  const endCard = useRecoilValue(cardState.cardDimensions(arrow.end.cardId));
+  const endTile = useRecoilValue(tileState.tileDimensions(arrow.end.tileId));
 
   return (
     <ArrowSvg
       selectArrow={selectArrow}
       selected={selected}
-      start={directionDimensionMap[arrow.start.point](startCard)}
-      end={directionDimensionMap[arrow.end.point](endCard)}
+      start={directionDimensionMap[arrow.start.point](startTile)}
+      end={directionDimensionMap[arrow.end.point](endTile)}
       orientation={orientations[arrow.end.point]}
       strokeWidth={"3"}
       color={"rgba(55, 65, 81)"}

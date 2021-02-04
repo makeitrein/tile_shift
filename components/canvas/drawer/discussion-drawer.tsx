@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import * as uiState from "../../state/ui";
 import { Discussion } from "./discussion";
-import { SelectCardDiscussion } from "./select-card-discussion";
+import { SelectTileDiscussion } from "./select-tile-discussion";
 import { Slideover } from "./slide-over";
 
 export const DiscussionDrawer = ({ panzoom }) => {
@@ -17,7 +17,7 @@ export const DiscussionDrawer = ({ panzoom }) => {
       <Slideover
         closeDrawer={closeDrawer}
         isOpen={discussionDrawer.open}
-        title={<SelectCardDiscussion panzoom={panzoom} />}
+        title={<SelectTileDiscussion panzoom={panzoom} />}
       >
         <Discussion />
       </Slideover>

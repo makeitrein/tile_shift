@@ -1,5 +1,5 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 
 export type ThemeMapOption = {
   color: string;
@@ -150,7 +150,7 @@ export const colorThemes: ThemeMap = {
 };
 
 export const ColorPicker = ({ id }) => {
-  const setCardSettings = useSetRecoilState(cardState.cardSettings(id));
+  const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
 
   return (
     <div
@@ -161,7 +161,7 @@ export const ColorPicker = ({ id }) => {
         <>
           <span
             onClick={() =>
-              setCardSettings((settings) => ({ ...settings, theme }))
+              setTileSettings((settings) => ({ ...settings, theme }))
             }
             className={`w-8 h-8 mb-1 px-1 border cursor-pointer border-solid transform transition-transform hover:scale-110`}
             style={{
@@ -178,7 +178,7 @@ export const ColorPicker = ({ id }) => {
 };
 
 export const ColorBlock = ({ id }) => {
-  const style = useRecoilValue(cardState.cardColorTheme(id));
+  const style = useRecoilValue(tileState.tileColorTheme(id));
 
   return (
     <div className="w-4 ">

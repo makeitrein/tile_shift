@@ -2,23 +2,23 @@ import parse from "html-react-parser";
 import React, { useRef } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 import * as uiState from "../../state/ui";
-import { Tag } from "../card-menu/tag-picker";
 import { EditableArticle } from "../text-editor/wysiwig-editor";
+import { Tag } from "../tile-menu/tag-picker";
 import { ConnectButton } from "./connect-button";
 
-// export const cardWidth = 140;
-// export const cardHeight = 76;
+// export const tileWidth = 140;
+// export const tileHeight = 76;
 
-export const cardWidth = 350;
-export const cardHeight = 190;
+export const tileWidth = 350;
+export const tileHeight = 190;
 
-const CardWrapper = styled.div`
+const TileWrapper = styled.div`
   display: inline-block;
   position: absolute;
-  width: ${cardWidth}px;
-  height: ${cardHeight}px;
+  width: ${tileWidth}px;
+  height: ${tileHeight}px;
   margin: 4px;
   border-radius: 0.5rem;
   --color: #4af;
@@ -33,41 +33,41 @@ interface Props {
   id: string;
 }
 
-export const cardTitleElementId = (id: string) => id + "title";
-export const cardDescriptionElementId = (id: string) => id + "description";
+export const tileTitleElementId = (id: string) => id + "title";
+export const tileDescriptionElementId = (id: string) => id + "description";
 
-export const Card = React.memo(({ id }: Props) => {
+export const Tile = React.memo(({ id }: Props) => {
   const ref = useRef();
-  const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
-  const cardSettings = useRecoilValue(cardState.cardSettings(id));
-  const editableCardId = useRecoilValue(cardState.editableCardId);
-  const cardContent = useRecoilValue(cardState.cardContent(id));
-  const selectedCardIds = useRecoilValue(cardState.selectedCardIds);
-  const searchedForTile = useRecoilValue(cardState.searchedForTile);
+  const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
+  const tileSettings = useRecoilValue(tileState.tileSettings(id));
+  const editableTileId = useRecoilValue(tileState.editableTileId);
+  const tileContent = useRecoilValue(tileState.tileContent(id));
+  const selectedTileIds = useRecoilValue(tileState.selectedTileIds);
+  const searchedForTile = useRecoilValue(tileState.searchedForTile);
 
   const transformStyle = {
-    transform: `translate(${cardDimensions.x}px, ${cardDimensions.y}px)`,
+    transform: `translate(${tileDimensions.x}px, ${tileDimensions.y}px)`,
   };
-  const isSelected = selectedCardIds.includes(id);
-  const isEditable = editableCardId === id;
+  const isSelected = selectedTileIds.includes(id);
+  const isEditable = editableTileId === id;
   const isSearchedFor = searchedForTile === id;
 
   return (
-    <CardWrapper
+    <TileWrapper
       ref={ref}
       id={id}
-      isDragging={cardSettings.isDragging}
+      isDragging={tileSettings.isDragging}
       isSelected={isSelected}
-      className={`canvas-card group p-2 bg-white ${
+      className={`canvas-tile group p-2 bg-white ${
         isSearchedFor && "animate-searched "
       }`}
       style={{
-        width: cardDimensions.width,
-        height: cardDimensions.height,
+        width: tileDimensions.width,
+        height: tileDimensions.height,
         ...transformStyle,
       }}
     >
-      <Tags tags={cardSettings.tags} />
+      <Tags tags={tileSettings.tags} />
       <AvatarComments />
       {isEditable && (
         <>
@@ -79,9 +79,9 @@ export const Card = React.memo(({ id }: Props) => {
       )}
 
       {!isEditable && (
-        <EditableArticle>{parse(cardContent.content || "")}</EditableArticle>
+        <EditableArticle>{parse(tileContent.content || "")}</EditableArticle>
       )}
-    </CardWrapper>
+    </TileWrapper>
   );
 });
 

@@ -1,32 +1,32 @@
 import { Select } from "@blueprintjs/select";
 import React from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 import {
   itemListPredicate,
   itemRenderer,
   noResults,
-  panZoomToCard,
+  panZoomToTile,
   selectedItem,
 } from "../board-controls/omnibar-search";
 
-export const SelectCardDiscussion = ({ panzoom }) => {
-  const allCardData = useRecoilValue(cardState.allCardData);
+export const SelectTileDiscussion = ({ panzoom }) => {
+  const allTileData = useRecoilValue(tileState.allTileData);
   const [discussionTileId, setDiscussionTileId] = useRecoilState(
-    cardState.discussionTileId
+    tileState.discussionTileId
   );
-  const setSearchedForTile = useSetRecoilState(cardState.searchedForTile);
+  const setSearchedForTile = useSetRecoilState(tileState.searchedForTile);
 
-  const findDiscussedTile = (id) => allCardData.find((card) => card.id === id);
+  const findDiscussedTile = (id) => allTileData.find((tile) => tile.id === id);
 
   return (
     <Select
-      items={allCardData}
+      items={allTileData}
       onItemSelect={({ id }) => {
         setDiscussionTileId(id);
         setSearchedForTile(id);
         const selectedTile = findDiscussedTile(id);
-        panZoomToCard(panzoom)(selectedTile);
+        panZoomToTile(panzoom)(selectedTile);
       }}
       itemRenderer={itemRenderer}
       noResults={noResults}

@@ -3,20 +3,20 @@ import { useEffect, useState } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { useCreateInitialCard } from "../../state/card-utils";
+import { useCreateInitialTile } from "../../state/tile-utils";
 import { totalCanvasPixelSize } from "../board/board";
 
 export const RecordSpeech = () => {
   const [message, setMessage] = useState("");
 
-  const createInitialCard = useCreateInitialCard();
+  const createInitialTile = useCreateInitialTile();
 
   const commands = [
     {
-      command: "Create Card",
+      command: "Create Tile",
       callback: (command, spokenPhrase, similarityRatio) => {
-        createInitialCard({
-          content: message.replace("create card", ""),
+        createInitialTile({
+          content: message.replace("create tile", ""),
           dimensions: {
             x: totalCanvasPixelSize / 2 - window.innerWidth / 2,
             y: totalCanvasPixelSize / 2 - window.innerHeight / 2,
@@ -99,7 +99,7 @@ export const RecordSpeech = () => {
         </span>
       )}
       <p>
-        {transcript ? transcript.replace("create card", "") : <i>Waiting...</i>}
+        {transcript ? transcript.replace("create tile", "") : <i>Waiting...</i>}
       </p>
       {/* <p>{message}</p> */}
     </div>

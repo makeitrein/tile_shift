@@ -1,21 +1,21 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import * as cardState from "../../state/cards";
+import * as tileState from "../../state/tiles";
 import { minimapSizeDivider } from "./minimap";
 
-export const MiniMapCards = React.memo(() => {
-  const cardIds = useRecoilValue(cardState.cardIds);
+export const MiniMapTiles = React.memo(() => {
+  const tileIds = useRecoilValue(tileState.tileIds);
   return (
     <>
-      {cardIds.map((id) => (
-        <MiniMapCard key={id} id={id} />
+      {tileIds.map((id) => (
+        <MiniMapTile key={id} id={id} />
       ))}
     </>
   );
 });
 
-const CardWrapper = styled.div`
+const TileWrapper = styled.div`
   display: inline-block;
   position: absolute;
   border-radius: 5px;
@@ -34,24 +34,24 @@ interface Props {
   id: string;
 }
 
-const MiniMapCard = ({ id }: Props) => {
-  const cardDimensions = useRecoilValue(cardState.cardDimensions(id));
-  const cardSettings = useRecoilValue(cardState.cardSettings(id));
+const MiniMapTile = ({ id }: Props) => {
+  const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
+  const tileSettings = useRecoilValue(tileState.tileSettings(id));
 
   const transformStyle = {
-    transform: `translate(${cardDimensions.x / minimapSizeDivider}px, ${
-      cardDimensions.y / minimapSizeDivider
+    transform: `translate(${tileDimensions.x / minimapSizeDivider}px, ${
+      tileDimensions.y / minimapSizeDivider
     }px)`,
     transformOrigin: "-100% -100%",
   };
 
   return (
-    <CardWrapper
+    <TileWrapper
       id={id}
-      isDragging={cardSettings.isDragging}
+      isDragging={tileSettings.isDragging}
       style={{
-        width: cardDimensions.width / minimapSizeDivider,
-        height: cardDimensions.height / minimapSizeDivider,
+        width: tileDimensions.width / minimapSizeDivider,
+        height: tileDimensions.height / minimapSizeDivider,
         ...transformStyle,
       }}
     />

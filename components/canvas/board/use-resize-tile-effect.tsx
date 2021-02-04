@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { articlePadding } from "../text-editor/wysiwig-editor";
 
-export const useResizeCardEffect = (moveable) => {
+export const useResizeTileEffect = (moveable) => {
   useEffect(() => {
     window.addEventListener("keyup", (e) => {
       if (!moveable) return;

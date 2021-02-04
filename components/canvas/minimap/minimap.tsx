@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import * as arrowState from "../../state/arrows";
 import { totalCanvasPixelSize } from "../board/board";
 import { MiniMapArrows } from "./minimap-arrows";
-import { MiniMapCards } from "./minimap-cards";
+import { MiniMapTiles } from "./minimap-tiles";
 
 export const minimapId = "minimap";
 
@@ -56,7 +56,7 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
   const left =
     (trueX - trueMinX) / (trueMaxX - trueMinX + window.innerWidth / scale);
 
-  const zoomToCard = (e: React.MouseEvent<HTMLElement>) => {
+  const zoomToTile = (e: React.MouseEvent<HTMLElement>) => {
     if (!panzoom) return;
     const xPercent =
       (e.clientX - e.currentTarget.offsetLeft) / e.currentTarget.clientWidth;
@@ -81,14 +81,14 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
 
   return (
     <div
-      onClick={zoomToCard}
+      onClick={zoomToTile}
       ref={minimapRef}
       style={{ borderBottomLeftRadius: "0.375rem", ...mapDimensions }}
       id="minimap"
       className="panzoom-exclude fixed top-4 cursor-pointer right-4 bg-gray-500 rounded-r-md border-gray-400 border-2 z-overlay  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
     >
       <div style={viewportDimensions} className="absolute bg-blue-400" />
-      <MiniMapCards />
+      <MiniMapTiles />
       <MiniMapArrows />
     </div>
   );

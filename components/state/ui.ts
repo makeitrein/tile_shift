@@ -4,7 +4,7 @@ export const discussionDrawer = atom({
   key: "UI/sidebar",
   default: {
     open: false,
-    cardId: null,
+    tileId: null,
   },
 });
 
