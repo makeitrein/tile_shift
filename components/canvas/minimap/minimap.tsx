@@ -20,7 +20,7 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
   const minimapRef = useRef(null);
 
   const rerenderMinimapThrottled = useCallback(
-    throttle(() => triggerRerender((val) => !val), 200),
+    throttle(() => triggerRerender((val) => !val), 25),
     []
   );
 

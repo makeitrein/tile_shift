@@ -26,14 +26,14 @@ import {
   VariableOutline,
 } from "heroicons-react";
 import React from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import * as tileState from "../../state/tiles";
 
 const tagGroups = [
   {
     name: "Ideation",
     tags: [
-      { name: "Thesis", color: "light-blue", icon: AcademicCapOutline },
+      { name: "Thesis", color: "bg-light-blue-200", icon: AcademicCapOutline },
       {
         name: "Hypothesis",
         color: "indigo",
@@ -89,60 +89,7 @@ const tagGroups = [
   },
 ];
 
-const subcategoryGroups = [
-  {
-    name: "Status",
-    tags: [
-      { name: "Backlog", color: "light-blue", icon: AcademicCapOutline },
-
-      { name: "Todo", color: "light-blue", icon: AcademicCapOutline },
-      { name: "In-Progress", color: "light-blue", icon: AcademicCapOutline },
-      {
-        name: "Done",
-        color: "indigo",
-        icon: BeakerOutline,
-      },
-      {
-        name: "Blocked",
-        color: "indigo",
-        icon: BeakerOutline,
-      },
-      { name: "Awaiting Review", color: "amber", icon: PuzzleOutline },
-    ],
-  },
-  {
-    name: "Priority",
-    tags: [
-      { name: "P1", color: "light-blue", icon: AcademicCapOutline },
-      { name: "P2", color: "light-blue", icon: AcademicCapOutline },
-      { name: "P3", color: "light-blue", icon: AcademicCapOutline },
-      { name: "P4", color: "light-blue", icon: AcademicCapOutline },
-    ],
-  },
-  {
-    name: "Deadlines",
-    tags: [
-      { name: "Feedback", color: "light-blue", icon: AcademicCapOutline },
-      { name: "P2", color: "light-blue", icon: AcademicCapOutline },
-      { name: "P3", color: "light-blue", icon: AcademicCapOutline },
-      { name: "P4", color: "light-blue", icon: AcademicCapOutline },
-    ],
-  },
-  {
-    name: "Teams",
-    tags: [
-      { name: "Software", color: "light-blue", icon: AcademicCapOutline },
-      { name: "Design", color: "light-blue", icon: AcademicCapOutline },
-      { name: "Marketing", color: "light-blue", icon: AcademicCapOutline },
-      { name: "HR", color: "light-blue", icon: AcademicCapOutline },
-      { name: "Finance", color: "light-blue", icon: AcademicCapOutline },
-      { name: "Executives", color: "light-blue", icon: AcademicCapOutline },
-    ],
-  },
-];
-
 const allTags = tagGroups.map((group) => group.tags).flat();
-const allSubcategories = subcategoryGroups.map((group) => group.tags).flat();
 
 export const TagPicker = ({ id, closePanel }) => {
   const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
@@ -170,18 +117,6 @@ export const TagPicker = ({ id, closePanel }) => {
   );
 };
 
-export const SubcategoryPicker = ({ id, openPanel }) => {
-  const [tileSettings, setTileSettings] = useRecoilState(
-    tileState.tileSettings(id)
-  );
-
-  const handleTagClick = (clickedTag: string) => {
-    setTileSettings((tile) => ({ ...tile, tags: [clickedTag] }));
-  };
-
-  return <>Create Custom Tag</>;
-};
-
 export const Tag = ({
   name,
   onClick,
@@ -189,9 +124,7 @@ export const Tag = ({
   name: string;
   onClick?: () => void;
 }) => {
-  const tag = [...allTags, ...allSubcategories].find(
-    (tag) => tag.name === name
-  );
+  const tag = [...allTags].find((tag) => tag.name === name);
   if (!tag)
     return (
       <span
@@ -204,10 +137,22 @@ export const Tag = ({
 
   const { icon: Icon, color } = tag;
 
+  /*
+    purge css colors
+    hover:bg-light-blue-200 hover:text-light-blue-900 bg-light-blue-100 text-light-blue-800
+    hover:bg-indigo-200 hover:text-indigo-900 bg-indigo-100 text-indigo-800
+    hover:bg-amber-200 hover:text-amber-900 bg-amber-100 text-amber-800
+    hover:bg-orange-200 hover:text-orange-900 bg-orange-100 text-orange-800
+    hover:bg-green-200 hover:text-green-900 bg-green-100 text-green-800
+    hover:bg-red-200 hover:text-red-900 bg-red-100 text-red-800
+    hover:bg-gray-200 hover:text-gray-900 bg-gray-100 text-gray-800
+
+  */
+
   return (
     <span
       onClick={onClick}
-      className={`inline-flex  cursor-pointer items-center px-2.5 rounded-full text-xs  font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
+      className={`inline-flex  cursor-pointer items-center px-2.5 rounded-full text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
     >
       <Icon width={16} />
 
