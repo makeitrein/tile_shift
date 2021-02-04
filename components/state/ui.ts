@@ -21,3 +21,8 @@ export const tagPickerOpen = atom({
   key: "UI/tag-picker-open",
   default: false,
 });
+
+export const hoveringOverScrollable = atom({
+  key: "UI/hover-over-scrollable",
+  default: false,
+});

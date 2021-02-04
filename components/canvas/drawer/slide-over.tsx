@@ -1,5 +1,8 @@
 import { Transition } from "@headlessui/react";
+import { useCallback } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { hoveringOverScrollable } from "../../state/ui";
 import { DiscussionForm } from "./discussion";
 
 const Header = styled.div`
@@ -10,6 +13,11 @@ const Header = styled.div`
   // }
 `;
 export const Slideover = ({ isOpen, closeDrawer, title, children }) => {
+  const setHoveringOverScrollable = useSetRecoilState(hoveringOverScrollable);
+  const setIsHovering = useCallback(
+    (hovering) => setHoveringOverScrollable(hovering),
+    []
+  );
   return (
     <>
       {/* <div className="fixed inset-0 overflow-hidden"> */}
@@ -25,7 +33,11 @@ export const Slideover = ({ isOpen, closeDrawer, title, children }) => {
         className="fixed z-force inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16 overflow-hidden"
         aria-labelledby="slide-over-heading"
       >
-        <div className="w-screen max-w-lg overflow-hidden">
+        <div
+          className="w-screen max-w-lg overflow-hidden"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
           <form className="h-full flex flex-col bg-white shadow-xl ">
             <div className="px-4 py-6 bg-gray-50 sm:px-6">
               <div className="flex items-start justify-between w-full space-x-3">

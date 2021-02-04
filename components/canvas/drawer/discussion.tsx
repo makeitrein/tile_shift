@@ -129,7 +129,7 @@ const ApprovalButton = () => {
   return (
     <span
       onClick={() => setApprove(true)}
-      className={`inline-flex ml-2 cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
+      className={`inline-flex cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
     >
       <ThumbUpOutline width={16} />
 

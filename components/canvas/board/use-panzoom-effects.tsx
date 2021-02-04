@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import * as uiState from "../../state/ui";
 import { tagPickerOpen } from "../../state/ui";
 import { totalCanvasPixelSize } from "./board";
 import Panzoom from "./panzoom/panzoom";
@@ -12,6 +13,7 @@ export const usePanzoomEffects = ({
   range,
 }) => {
   const setTagPickerOpen = useSetRecoilState(tagPickerOpen);
+  const hoveringOverScrollable = useRecoilValue(uiState.hoveringOverScrollable);
 
   useEffect(() => {
     const maxX = totalCanvasPixelSize - window.innerWidth * 1.5;
@@ -42,13 +44,15 @@ export const usePanzoomEffects = ({
     canvasRef.current.addEventListener(
       "mousewheel",
       (e: WheelEvent) => {
+        if (hoveringOverScrollable) {
+          return;
+        }
+
         const isPinchZoom = e.ctrlKey;
         const x = -e.deltaX;
         const y = -e.deltaY;
 
-        console.log(e.target);
-
-        // e.preventDefault();
+        e.preventDefault();
 
         if (isPinchZoom) {
           // e.stopPropagation();
