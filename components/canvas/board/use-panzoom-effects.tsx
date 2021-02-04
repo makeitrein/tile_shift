@@ -39,14 +39,16 @@ export const usePanzoomEffects = ({
 
     panzoom.pan(centerX, centerY, { force: true });
 
-    window.addEventListener(
+    canvasRef.current.addEventListener(
       "mousewheel",
       (e: WheelEvent) => {
         const isPinchZoom = e.ctrlKey;
         const x = -e.deltaX;
         const y = -e.deltaY;
 
-        e.preventDefault();
+        console.log(e.target);
+
+        // e.preventDefault();
 
         if (isPinchZoom) {
           // e.stopPropagation();

@@ -215,74 +215,76 @@ export const Board = () => {
   if (!process.browser) return null;
 
   return (
-    <Wrapper
-      ref={wrapperRef}
-      className="wrapper bg-tan"
-      onDoubleClick={addTileViaClick}
-    >
+    <>
       <DiscussionDrawer panzoom={panzoomRef.current} />
 
-      <BoardControls
-        disablePan={disablePan}
-        toggleDisablePan={toggleDisablePan}
-        panzoom={panzoomRef.current}
-      />
-
-      {disablePan && (
-        <Selecto
-          ref={selectoRef}
-          dragContainer={".canvas"}
-          selectableTargets={[".canvas-tile"]}
-          hitRate={0}
-          selectByClick={true}
-          selectFromInside={false}
-          toggleContinueSelect={["shift"]}
-          ratio={0}
-          onDragStart={selectoOnDragStart}
-          onSelect={selectoOnSelect}
-          onSelectEnd={selectoOnSelectEnd}
-        />
-      )}
-      <Canvas ref={canvasRef} className="canvas">
-        <Moveable
-          ref={moveableRef}
-          // bounds={bounds}
-          rootContainer={document.body}
-          draggable={true}
-          target={selectedTiles}
-          elementGuidelines={elementGuidelines}
-          snappable={true}
-          snapGap={true}
-          snapThreshold={2}
-          isDisplaySnapDigit={true}
-          checkInput={true}
-          snapElement={true}
-          snapVertical={true}
-          snapHorizontal={true}
-          snapCenter={false}
-          snapDigit={0}
-          resizable={true}
-          throttleDrag={0}
-          zoom={1}
-          origin={false}
-          padding={moveablePadding}
-          onResizeStart={onResizeStart}
-          onResize={dragResizeTile}
-          onResizeGroupStart={onResizeGroupStart}
-          onResizeGroup={onResizeGroup}
-          onClickGroup={onClickGroup}
-          onDragStart={onDragStart}
-          onDrag={onDrag}
-          onDragEnd={onDragEnd}
-          onDragGroupStart={onDragGroupStart}
-          onDragGroup={onDragGroup}
+      <Wrapper
+        ref={wrapperRef}
+        className="wrapper bg-tan"
+        onDoubleClick={addTileViaClick}
+      >
+        <BoardControls
+          disablePan={disablePan}
+          toggleDisablePan={toggleDisablePan}
+          panzoom={panzoomRef.current}
         />
 
-        <TileList />
-        <ArrowList />
-      </Canvas>
-      <MiniMap panzoom={panzoomRef.current} canvas={canvasRef.current} />
-      <ZoomControlToolbar panzoom={panzoom} />
-    </Wrapper>
+        {disablePan && (
+          <Selecto
+            ref={selectoRef}
+            dragContainer={".canvas"}
+            selectableTargets={[".canvas-tile"]}
+            hitRate={0}
+            selectByClick={true}
+            selectFromInside={false}
+            toggleContinueSelect={["shift"]}
+            ratio={0}
+            onDragStart={selectoOnDragStart}
+            onSelect={selectoOnSelect}
+            onSelectEnd={selectoOnSelectEnd}
+          />
+        )}
+        <Canvas ref={canvasRef} className="canvas">
+          <Moveable
+            ref={moveableRef}
+            // bounds={bounds}
+            rootContainer={document.body}
+            draggable={true}
+            target={selectedTiles}
+            elementGuidelines={elementGuidelines}
+            snappable={true}
+            snapGap={true}
+            snapThreshold={2}
+            isDisplaySnapDigit={true}
+            checkInput={true}
+            snapElement={true}
+            snapVertical={true}
+            snapHorizontal={true}
+            snapCenter={false}
+            snapDigit={0}
+            resizable={true}
+            throttleDrag={0}
+            zoom={1}
+            origin={false}
+            padding={moveablePadding}
+            onResizeStart={onResizeStart}
+            onResize={dragResizeTile}
+            onResizeGroupStart={onResizeGroupStart}
+            onResizeGroup={onResizeGroup}
+            onClickGroup={onClickGroup}
+            onDragStart={onDragStart}
+            onDrag={onDrag}
+            onDragEnd={onDragEnd}
+            onDragGroupStart={onDragGroupStart}
+            onDragGroup={onDragGroup}
+          />
+
+          <TileList />
+          <ArrowList />
+        </Canvas>
+        <MiniMap panzoom={panzoomRef.current} canvas={canvasRef.current} />
+        <ZoomControlToolbar panzoom={panzoom} />
+      </Wrapper>
+    </>
   );
 };
