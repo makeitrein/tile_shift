@@ -1,4 +1,10 @@
-import React from "react";
+import {
+  PaperAirplaneOutline,
+  QuestionMarkCircleOutline,
+  ThumbDownOutline,
+  ThumbUpOutline,
+} from "heroicons-react";
+import React, { useState } from "react";
 
 export const DiscussionItem = () => (
   <li className="group">
@@ -80,13 +86,6 @@ export const DiscussionForm = React.memo(() => {
   return (
     <div className="bg-gray-50 px-4 py-6 sm:px-6">
       <div className="flex space-x-3">
-        <div className="flex-shrink-0">
-          <img
-            className="h-10 w-10 rounded-full"
-            src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80"
-            alt=""
-          />
-        </div>
         <div className="min-w-0 flex-1">
           <form action="#">
             <div>
@@ -100,30 +99,19 @@ export const DiscussionForm = React.memo(() => {
               ></textarea>
             </div>
             <div className="mt-3 flex items-center justify-between">
-              <a
-                href="#"
-                className="group inline-flex items-start text-sm space-x-2 text-gray-500 hover:text-gray-900"
-              >
-                <svg
-                  className="flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <span>Some HTML is okay.</span>
-              </a>
+              <span>
+                <ApprovalButton />
+                <QuestionButton />
+                <DenyButton />
+              </span>
               <button
                 type="submit"
-                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className={`inline-flex ml-2 py-1.5 cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-blue-200 hover:text-blue-900 bg-blue-100 text-blue-800 border-blue-800  `}
               >
-                Comment
+                <PaperAirplaneOutline
+                  size={16}
+                  className="transform rotate-90"
+                />
               </button>
             </div>
           </form>
@@ -132,3 +120,54 @@ export const DiscussionForm = React.memo(() => {
     </div>
   );
 });
+
+const ApprovalButton = () => {
+  const [approve, setApprove] = useState(false);
+
+  const activeColor = "green";
+  const color = approve ? "green" : "gray";
+  return (
+    <span
+      onClick={() => setApprove(true)}
+      className={`inline-flex ml-2 cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
+    >
+      <ThumbUpOutline width={16} />
+
+      <span className="pl-1">Agree</span>
+    </span>
+  );
+};
+
+const QuestionButton = () => {
+  const [approve, setApprove] = useState(false);
+
+  const activeColor = "orange";
+  const color = approve ? activeColor : "gray";
+  return (
+    <span
+      onClick={() => setApprove(true)}
+      className={`inline-flex ml-2 cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
+    >
+      <QuestionMarkCircleOutline width={16} />
+
+      <span className="pl-1">Question</span>
+    </span>
+  );
+};
+
+const DenyButton = () => {
+  const [approve, setApprove] = useState(false);
+
+  const activeColor = "red";
+  const color = approve ? "red" : "gray";
+  return (
+    <span
+      onClick={() => setApprove(true)}
+      className={`inline-flex ml-2 cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
+    >
+      <ThumbDownOutline width={16} />
+
+      <span className="pl-1">Disagree</span>
+    </span>
+  );
+};
