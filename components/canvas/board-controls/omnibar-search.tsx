@@ -68,7 +68,10 @@ export const selectedItem = (tile) => {
   );
 };
 
-export const itemRenderer = (tile, { handleClick, modifiers, query }) => {
+export const itemRenderer = (
+  tile: TileSearchResults,
+  { handleClick, modifiers, query }
+) => {
   if (!modifiers.matchesPredicate) {
     return null;
   }
@@ -82,6 +85,8 @@ export const itemRenderer = (tile, { handleClick, modifiers, query }) => {
           <Tag name={tile.tags[0]} />
         </div>
       }
+      key={tile.id + label}
+      /* ^^ Todo: figure out why this errors if we remove label */
       text={
         <div>
           <div className="truncate">{highlightText(label, query)}</div>
@@ -95,7 +100,6 @@ export const itemRenderer = (tile, { handleClick, modifiers, query }) => {
           </div>
         </div>
       }
-      key={tile.id}
       onClick={handleClick}
     />
   );

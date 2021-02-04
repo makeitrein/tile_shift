@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useCallback } from "react";
+import { PanzoomObject } from "./board/panzoom/types";
 import { Button } from "./general/button";
 
-export const ZoomControlToolbar = React.memo(({ panzoom }) => {
+interface Props {
+  panzoom: PanzoomObject;
+}
+
+export const ZoomControlToolbar = React.memo(({ panzoom }: Props) => {
+  const zoom = useCallback(
+    (scale: number) => {
+      panzoom.zoomToPoint(panzoom.getScale() + scale, {
+        clientX: window.innerWidth / 2,
+        clientY: window.innerHeight / 2,
+      });
+    },
+    [panzoom]
+  );
+
   return (
     <div className="fixed top-4 right-44 pr-3 z-overlay">
-      <Button
-        className="rounded-tl-md"
-        onClick={() => {
-          panzoom.zoomToPoint(panzoom.getScale() + 0.1, {
-            clientX: window.innerWidth / 2,
-            clientY: window.innerHeight / 2,
-          });
-        }}
-      >
+      <Button className="rounded-tl-md" onClick={() => zoom(0.1)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -30,15 +37,7 @@ export const ZoomControlToolbar = React.memo(({ panzoom }) => {
       </Button>
       <br />
 
-      <Button
-        className="rounded-bl-md -mt-1"
-        onClick={() => {
-          panzoom.zoomToPoint(panzoom.getScale() - 0.1, {
-            clientX: window.innerWidth / 2,
-            clientY: window.innerHeight / 2,
-          });
-        }}
-      >
+      <Button className="rounded-bl-md -mt-1" onClick={() => zoom(-0.1)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

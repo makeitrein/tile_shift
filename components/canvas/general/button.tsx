@@ -1,4 +1,12 @@
-export const Button = ({ onClick, children, className, active }) => {
+import React from "react";
+
+interface Props {
+  onClick: () => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const Button = React.memo(({ onClick, children, className }: Props) => {
   return (
     <button
       type="button"
@@ -8,12 +16,12 @@ export const Button = ({ onClick, children, className, active }) => {
       {children}
     </button>
   );
-};
+});
 
-export const ButtonGroup = ({ children }) => {
+export const ButtonGroup = React.memo(({ children }) => {
   return (
     <span className="relative z-0 inline-flex shadow-sm rounded-md">
       {children}
     </span>
   );
-};
+});

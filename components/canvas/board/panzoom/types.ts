@@ -1,24 +1,24 @@
-import { setTransform } from './css'
+import { setTransform } from "./css";
 
 export type PanzoomEvent =
-  | 'panzoomstart'
-  | 'panzoomchange'
-  | 'panzoompan'
-  | 'panzoomzoom'
-  | 'panzoomreset'
-  | 'panzoomend'
+  | "panzoomstart"
+  | "panzoomchange"
+  | "panzoompan"
+  | "panzoomzoom"
+  | "panzoomreset"
+  | "panzoomend";
 
 export interface PanzoomEventDetail {
-  x: number
-  y: number
-  scale: number
-  isSVG: boolean
-  originalEvent: PointerEvent | TouchEvent | MouseEvent
+  x: number;
+  y: number;
+  scale: number;
+  isSVG: boolean;
+  originalEvent: PointerEvent | TouchEvent | MouseEvent;
 }
 
 interface MiscOptions {
   /** Whether to animate transitions */
-  animate?: boolean
+  animate?: boolean;
   /**
    * This option treats the Panzoom element's parent
    * as a canvas. Effectively, Panzoom binds the
@@ -29,25 +29,25 @@ interface MiscOptions {
    * **Note**: setting this option to `true` also changes
    * where the `cursor` style is applied (i.e. the parent).
    */
-  canvas?: boolean
+  canvas?: boolean;
   /** Duration of the transition (ms) */
-  duration?: number
+  duration?: number;
   /** CSS Easing used for transitions */
-  easing?: string
+  easing?: string;
   /**
    * Add elements to this array that should be excluded
    * from Panzoom handling.
    * Ancestors of event targets are also checked.
    * e.g. links and buttons that should not propagate the click event.
    */
-  exclude?: Element[]
+  exclude?: Element[];
   /**
    * Add this class to any element within the Panzoom element
    * that you want to exclude from Panzoom handling. That
    * element's children will also be excluded.
    * e.g. links and buttons that should not propagate the click event.
    */
-  excludeClass?: string
+  excludeClass?: string;
   /**
    * `force` should be used sparingly to temporarily
    * override and ignore options such as disablePan,
@@ -63,7 +63,7 @@ interface MiscOptions {
    * panzoom.zoom(1, { force: true })
    * ```
    */
-  force?: boolean
+  force?: boolean;
   /**
    * On the first pointer event, when panning starts,
    * the default Panzoom behavior is to call
@@ -88,11 +88,11 @@ interface MiscOptions {
    * })
    * ```
    */
-  handleStartEvent?: (event: Event) => void
+  handleStartEvent?: (event: Event) => void;
   /**
    * Skip binding the default Panzoom event listeners
    */
-  noBind?: boolean
+  noBind?: boolean;
   /**
    * **Change this at your own risk.**
    * The `transform-origin` is the origin from which transforms are applied.
@@ -106,9 +106,9 @@ interface MiscOptions {
    *
    * And again, changing this for SVG in IE doesn't work at all.
    */
-  origin?: string
+  origin?: string;
   /** The overflow CSS value for the parent. Defaults to 'hidden' */
-  overflow?: string
+  overflow?: string;
   /**
    * Override the transform setter.
    * This is exposed mostly so the user could
@@ -126,15 +126,15 @@ interface MiscOptions {
    * })
    * ```
    */
-  setTransform?: typeof setTransform
+  setTransform?: typeof setTransform;
   /** Silence all events */
-  silent?: boolean
+  silent?: boolean;
   /** X Value used to set the beginning transform */
-  startX?: number
+  startX?: number;
   /** Y Value used to set the beginning transform */
-  startY?: number
+  startY?: number;
   /** Scale used to set the beginning transform */
-  startScale?: number
+  startScale?: number;
   /**
    * This value is used to set touch-action on both the
    * Panzoom element and its parent.
@@ -144,9 +144,9 @@ interface MiscOptions {
    * on mobile, but note that both scrolling and panning
    * cannot work at the same time.
    */
-  touchAction?: string
+  touchAction?: string;
   /** Pass through any options like data */
-  [key: string]: any
+  [key: string]: any;
 }
 
 interface PanSpecificOptions {
@@ -163,52 +163,52 @@ interface PanSpecificOptions {
    *
    * **Note**: the containment pan adjustment is not affected by the `disablePan` option.
    */
-  contain?: 'inside' | 'outside'
+  contain?: "inside" | "outside";
   /** The cursor style to set on the panzoom element */
-  cursor?: string
+  cursor?: string;
   /**
    * Disable panning functionality.
    * Note: disablePan does not affect focal point zooming or the contain option.
    *   The element will still pan accordingly.
    */
-  disablePan?: boolean
+  disablePan?: boolean;
   /** Pan only on the Y axis */
-  disableXAxis?: boolean
+  disableXAxis?: boolean;
   /** Pan only on the X axis */
-  disableYAxis?: boolean
+  disableYAxis?: boolean;
   /** When passing x and y values to .pan(), treat the values as relative to their current values */
-  relative?: boolean
+  relative?: boolean;
   /** Disable panning while the scale is equal to the starting value */
-  panOnlyWhenZoomed?: boolean
+  panOnlyWhenZoomed?: boolean;
 }
 
 interface ZoomSpecificOptions {
   /** Disable zooming functionality */
-  disableZoom?: boolean
+  disableZoom?: boolean;
   /**
    * Zoom to the given point on the panzoom element.
    * This point is expected to be relative to
    * the panzoom element's dimensions and is unrelated
    * to the parent dimensions.
    */
-  focal?: { x: number; y: number }
+  focal?: { x: number; y: number };
   /** The minimum scale when zooming */
-  minScale?: number
+  minScale?: number;
   /** The maximum scale when zooming */
-  maxScale?: number
+  maxScale?: number;
   /** The step affects zoom calculation when zooming with a mouse wheel, when pinch zooming, or when using zoomIn/zoomOut */
-  step?: number
+  step?: number;
 }
 
-export type PanOptions = MiscOptions & PanSpecificOptions
-export type ZoomOptions = MiscOptions & ZoomSpecificOptions
-export type PanzoomOptions = PanOptions & ZoomOptions & MiscOptions
+export type PanOptions = MiscOptions & PanSpecificOptions;
+export type ZoomOptions = MiscOptions & ZoomSpecificOptions;
+export type PanzoomOptions = PanOptions & ZoomOptions & MiscOptions;
 
 export interface CurrentValues {
-  x: number
-  y: number
-  scale: number
-  isSVG?: boolean
+  x: number;
+  y: number;
+  scale: number;
+  isSVG?: boolean;
 }
 
 export interface PanzoomObject {
@@ -218,21 +218,29 @@ export interface PanzoomObject {
    * It gets called by default when creating a new Panzoom object,
    * but can be skipped with the `noBind` option.
    */
-  bind: () => void
+  bind: () => void;
   /** Remove all event listeners bound to the the Panzoom element */
-  destroy: () => void
+  destroy: () => void;
   /**
    * This object exposes the event names used by Panzoom,
    * depending on the current browser's support for
    * Pointer or Touch events.
    */
-  eventNames: { down: string; move: string; up: string }
+  eventNames: { down: string; move: string; up: string };
   /** Get the current x/y translation */
-  getPan: () => { x: number; y: number }
+  getPan: () => {
+    x: number;
+    y: number;
+    minX: number;
+    maxX: number;
+    minY: number;
+    maxY: number;
+    scale: number;
+  };
   /** Get the current scale */
-  getScale: () => number
+  getScale: () => number;
   /** Returns a _copy_ of the current options object */
-  getOptions: () => PanzoomOptions
+  getOptions: () => PanzoomOptions;
   /**
    * Pan the Panzoom element to the given x and y coordinates
    *
@@ -243,7 +251,11 @@ export interface PanzoomObject {
    * panzoom.pan(10, 10, { relative: true })
    * ```
    */
-  pan: (x: number | string, y: number | string, panOptions?: PanOptions) => CurrentValues
+  pan: (
+    x: number | string,
+    y: number | string,
+    panOptions?: PanOptions
+  ) => CurrentValues;
   /**
    * Reset the pan and zoom to startX, startY, and startScale.
    * Animates by default, ignoring the global option.
@@ -256,11 +268,11 @@ export interface PanzoomObject {
    * panzoom.reset({ animate: false })
    * ```
    */
-  reset: (resetOptions?: PanzoomOptions) => CurrentValues
+  reset: (resetOptions?: PanzoomOptions) => CurrentValues;
   /** Change options for the Panzoom instance */
-  setOptions: (options?: PanzoomOptions) => void
+  setOptions: (options?: PanzoomOptions) => void;
   /** A convenience method for setting prefixed styles on the Panzoom element */
-  setStyle: (name: string, value: string) => void
+  setStyle: (name: string, value: string) => void;
   /**
    * Zoom the Panzoom element to the given scale
    *
@@ -269,7 +281,7 @@ export interface PanzoomObject {
    * panzoom.zoom(2.2, { animate: true })
    * ```
    */
-  zoom: (scale: number, zoomOptions?: ZoomOptions) => CurrentValues
+  zoom: (scale: number, zoomOptions?: ZoomOptions) => CurrentValues;
   /**
    * Zoom in using the predetermined increment set in options.
    * Animates by default, ignoring the global option.
@@ -280,7 +292,7 @@ export interface PanzoomObject {
    * panzoom.zoomIn({ animate: false })
    * ```
    */
-  zoomIn: (zoomOptions?: ZoomOptions) => CurrentValues
+  zoomIn: (zoomOptions?: ZoomOptions) => CurrentValues;
   /**
    * Zoom out using the predetermined increment set in options.
    * Animates by default, ignoring the global option.
@@ -291,7 +303,7 @@ export interface PanzoomObject {
    * panzoom.zoomOut({ animate: false })
    * ```
    */
-  zoomOut: (zoomOptions?: ZoomOptions) => CurrentValues
+  zoomOut: (zoomOptions?: ZoomOptions) => CurrentValues;
   /**
    * Zoom the Panzoom element to a focal point using
    * the given pointer/touch/mouse event or constructed point.
@@ -306,7 +318,7 @@ export interface PanzoomObject {
     scale: number,
     point: { clientX: number; clientY: number },
     zoomOptions?: ZoomOptions
-  ) => CurrentValues
+  ) => CurrentValues;
   /**
    * Zoom the Panzoom element to a focal point using the given WheelEvent
    *
@@ -331,5 +343,8 @@ export interface PanzoomObject {
    * })
    * ```
    */
-  zoomWithWheel: (event: WheelEvent, zoomOptions?: ZoomOptions) => CurrentValues
+  zoomWithWheel: (
+    event: WheelEvent,
+    zoomOptions?: ZoomOptions
+  ) => CurrentValues;
 }

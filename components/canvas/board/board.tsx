@@ -1,4 +1,3 @@
-import { PanzoomObject } from "@panzoom/panzoom";
 import * as React from "react";
 import { useCallback, useMemo, useRef } from "react";
 import Moveable from "react-moveable";
@@ -17,6 +16,7 @@ import { DiscussionDrawer } from "../drawer/discussion-drawer";
 import { MiniMap } from "../minimap/minimap";
 import { TileList } from "../tile/tile-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
+import { PanzoomObject } from "./panzoom/types";
 import { useAddTileViaClick } from "./use-add-tile-via-click";
 import { useDeleteTilesViaBackspace } from "./use-delete-tiles-via-backspace";
 import { useDeleteTextEffect } from "./use-deselect-text-effect";
@@ -75,6 +75,10 @@ export const Board = () => {
 
   const dragResizeTile = useDragResizeTile();
   const addTileViaClick = useAddTileViaClick(canvasRef.current);
+
+  const toggleDisablePan = useCallback(() => setDisablePan((pan) => !pan), [
+    setDisablePan,
+  ]);
 
   const selectoOnDragStart = useCallback(
     (e) => {
@@ -208,10 +212,6 @@ export const Board = () => {
     [process.browser, selectedTileIds]
   );
 
-  React.useEffect(() => {
-    setInterval(() => setZoom((zoom) => zoom + 1), 100);
-  }, []);
-
   if (!process.browser) return null;
 
   return (
@@ -222,7 +222,11 @@ export const Board = () => {
     >
       <DiscussionDrawer panzoom={panzoomRef.current} />
 
-      <BoardControls panzoom={panzoomRef.current} />
+      <BoardControls
+        disablePan={disablePan}
+        toggleDisablePan={toggleDisablePan}
+        panzoom={panzoomRef.current}
+      />
 
       {disablePan && (
         <Selecto
@@ -277,13 +281,8 @@ export const Board = () => {
         <TileList />
         <ArrowList />
       </Canvas>
-      <MiniMap panzoom={panzoomRef.current} canvasRef={canvasRef} />
-      <ZoomControlToolbar
-        disablePan={disablePan}
-        toggleDisablePan={() => setDisablePan((pan) => !pan)}
-        range={range}
-        panzoom={panzoom}
-      />
+      <MiniMap panzoom={panzoomRef.current} canvas={canvasRef.current} />
+      <ZoomControlToolbar panzoom={panzoom} />
     </Wrapper>
   );
 };
