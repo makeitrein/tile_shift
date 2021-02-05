@@ -24,6 +24,7 @@ import { useDragResizeTile } from "./use-drag-resize-tile";
 import { usePanzoomEffects } from "./use-panzoom-effects";
 import { useResetSearchedForTile } from "./use-reset-searched-for";
 import { useResizeTileEffect } from "./use-resize-tile-effect";
+import { useShareMousePosition } from "./use-share-mouse-position";
 
 export const totalCanvasPixelSize = 10000;
 
@@ -58,6 +59,7 @@ export const Board = () => {
   useResizeTileEffect(moveableRef.current);
   useDeleteTextEffect(selectedTileIds);
   useResetSearchedForTile();
+  useShareMousePosition(canvasRef);
 
   let panzoom = panzoomRef.current;
 

@@ -18,3 +18,8 @@ export const hoveringOverScrollable = atom({
   key: "UI/hover-over-scrollable",
   default: false,
 });
+
+export const mousePosition = atom({
+  key: "UI/mouse-position",
+  default: {},
+});
