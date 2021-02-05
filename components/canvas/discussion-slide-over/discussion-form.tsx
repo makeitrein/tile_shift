@@ -51,6 +51,7 @@ interface ConsensusButtonShellProps {
   icon: React.ReactNode;
   activeColor: string;
   color: string;
+  count: number;
 }
 
 export const ConsensusButtonShell = ({
@@ -59,15 +60,22 @@ export const ConsensusButtonShell = ({
   icon,
   activeColor,
   color,
+  count,
 }: ConsensusButtonShellProps) => {
   return (
     <span
       onClick={onClick}
-      className={`inline-flex cursor-pointer items-center px-2.5 mr-2 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
+      className={`inline-flex cursor-pointer items-center px-2.5 mr-2 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800`}
     >
       {icon}
 
       <span className="pl-1">{text}</span>
+
+      <span
+        className={`ml-2 inline-block px-1.5 py-.5 bg-${color}-200 text-${color}-800 rounded-full `}
+      >
+        {count}
+      </span>
     </span>
   );
 };
