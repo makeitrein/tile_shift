@@ -11,24 +11,28 @@ import {
   selectedItem,
 } from "../board-controls/omnibar-search";
 
-const TileSelect = Select.ofType<tileState.TileSearchResults>();
+const TileSelect = Select.ofType<tileState.TileSearchResult>();
 
-export const SelectTileDiscussion = ({ panzoom }) => {
+export const SelectDiscussion = ({ panzoom }) => {
   const tileSearchResults = useRecoilValue(tileState.tileSearchResults);
-  const [discussionTileId, setDiscussionTileId] = useRecoilState(
-    tileState.discussionTileId
+  const [{ tileId }, setDiscussionDrawer] = useRecoilState(
+    tileState.discussionDrawer
   );
   const setSearchedForTile = useSetRecoilState(tileState.searchedForTile);
   const getTileDimensions = useGetTileDimensions();
 
-  const findDiscussedTile = (id) =>
+  const openTileDiscussion = React.useCallback((tileId) => {
+    setDiscussionDrawer((state) => ({ ...state, open: true, tileId }));
+  }, []);
+
+  const findDiscussedTile = (id: string) =>
     tileSearchResults.find((tile) => tile.id === id);
 
   return (
     <TileSelect
       items={tileSearchResults}
       onItemSelect={({ id }) => {
-        setDiscussionTileId(id);
+        openTileDiscussion(id);
         setSearchedForTile(id);
         const dimensions = getTileDimensions(id);
         panZoomToTile(panzoom, dimensions);
@@ -38,7 +42,7 @@ export const SelectTileDiscussion = ({ panzoom }) => {
       itemListPredicate={itemListPredicate}
       popoverProps={{ popoverClassName: "w-96" }}
     >
-      {selectedItem(findDiscussedTile(discussionTileId))}
+      {selectedItem(findDiscussedTile(tileId))}
     </TileSelect>
   );
 };

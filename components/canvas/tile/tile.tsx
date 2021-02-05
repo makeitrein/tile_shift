@@ -65,7 +65,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
       }}
     >
       <Tags tags={tileSettings.tags} />
-      <AvatarComments />
+      <AvatarComments id={id} />
       {isEditable && (
         <>
           <ConnectButton id={id} direction="top" />
@@ -82,12 +82,20 @@ export const Tile = React.memo(({ id }: TileProps) => {
   );
 });
 
-export const AvatarComments = React.memo(() => {
-  const setDiscussionDrawer = useSetRecoilState(uiState.discussionDrawer);
+interface AvatarCommentsProps {
+  id: string;
+}
+
+export const AvatarComments = React.memo(({ id }: AvatarCommentsProps) => {
+  const setDiscussionDrawer = useSetRecoilState(tileState.discussionDrawer);
+
+  const openTileDiscussion = React.useCallback(() => {
+    setDiscussionDrawer((state) => ({ ...state, open: true, tileId: id }));
+  }, [id]);
 
   return (
     <div
-      onClick={() => setDiscussionDrawer((state) => ({ ...state, open: true }))}
+      onClick={openTileDiscussion}
       className="cursor-pointer flex text-gray-400 absolute top-3 right-3 justify-evenly z-50"
     >
       <>

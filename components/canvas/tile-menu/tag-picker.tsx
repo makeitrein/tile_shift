@@ -33,7 +33,7 @@ const tagGroups = [
   {
     name: "Ideation",
     tags: [
-      { name: "Thesis", color: "bg-light-blue-200", icon: AcademicCapOutline },
+      { name: "Thesis", color: "light-blue", icon: AcademicCapOutline },
       {
         name: "Hypothesis",
         color: "indigo",

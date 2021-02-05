@@ -14,6 +14,7 @@ export const defaultTileValues: Tile = {
   isWysiwygEditorFocused: false,
   tags: [],
   deleted: false,
+  createdAt: new Date(),
 };
 
 export const tileId = () => "new-tile" + new Date().getTime();
@@ -30,6 +31,7 @@ export const useCreateInitialTile = () =>
       id?: string;
     }) => {
       const newTileId = id || tileId();
+      const createdAt = new Date(0);
       set(tileState.initialTileValues, (tiles) => ({
         ...tiles,
         [newTileId]: {
@@ -37,6 +39,7 @@ export const useCreateInitialTile = () =>
           content,
           id: newTileId,
           ...dimensions,
+          createdAt,
         },
       }));
     };

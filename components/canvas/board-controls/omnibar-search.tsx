@@ -5,7 +5,7 @@ import React from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useGetTileDimensions } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
-import { TileSearchResults } from "../../state/tiles";
+import { TileSearchResult } from "../../state/tiles";
 import { Tag } from "../tile-menu/tag-picker";
 const { htmlToText } = require("html-to-text");
 
@@ -69,7 +69,7 @@ export const selectedItem = (tile) => {
 };
 
 export const itemRenderer = (
-  tile: TileSearchResults,
+  tile: TileSearchResult,
   { handleClick, modifiers, query }
 ) => {
   if (!modifiers.matchesPredicate) {
@@ -151,7 +151,7 @@ interface Props {
   panzoom: any;
 }
 
-const TileOmnibar = Omnibar.ofType<TileSearchResults>();
+const TileOmnibar = Omnibar.ofType<TileSearchResult>();
 
 export const OmnibarSearch = React.memo(
   ({ isOpen, closeSearch, panzoom }: Props) => {

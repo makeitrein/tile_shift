@@ -1,18 +1,22 @@
 import { Transition } from "@headlessui/react";
 import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
 import { hoveringOverScrollable } from "../../state/ui";
-import { DiscussionForm } from "./discussion";
 
-const Header = styled.div`
-  // > span,
-  // > span > span {
-  //   display: block;
-  //   width: 100%;
-  // }
-`;
-export const Slideover = ({ isOpen, closeDrawer, title, children }) => {
+interface Props {
+  isOpen: boolean;
+  closeDrawer: () => void;
+  title: React.ReactNode;
+  body: React.ReactNode;
+  footer: React.ReactNode;
+}
+export const Slideover = ({
+  isOpen,
+  closeDrawer,
+  title,
+  body,
+  footer,
+}: Props) => {
   const setHoveringOverScrollable = useSetRecoilState(hoveringOverScrollable);
   const setIsHovering = useCallback(
     (hovering) => setHoveringOverScrollable(hovering),
@@ -42,12 +46,12 @@ export const Slideover = ({ isOpen, closeDrawer, title, children }) => {
             <div className="px-4 py-6 bg-gray-50 sm:px-6">
               <div className="flex items-start justify-between w-full space-x-3">
                 <div className="w-full space-y-1">
-                  <Header
+                  <h2
                     id="slide-over-heading"
                     className="text-lg w-full font-medium text-gray-900"
                   >
                     {title}
-                  </Header>
+                  </h2>
                   <p className="text-sm text-gray-500">Description Here</p>
                 </div>
                 <div className="h-7 flex items-center">
@@ -76,14 +80,12 @@ export const Slideover = ({ isOpen, closeDrawer, title, children }) => {
               </div>
             </div>
             <div className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-gray-200 relative overflow-hidden pl-6 flex-1">
-              {children}
+              {body}
             </div>
-            <DiscussionForm />
+            {footer}
           </form>
         </div>
       </Transition>
-      {/* </div> */}
-      {/* </div> */}
     </>
   );
 };

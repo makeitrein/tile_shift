@@ -12,6 +12,7 @@ export interface TileSettings {
   tags: string[];
   isWysiwygEditorFocused: boolean;
   deleted: boolean;
+  createdAt: Date;
 }
 
 export interface Id {
@@ -23,16 +24,36 @@ export interface TileContent {
 
 export type Tile = Id & TileDimensions & TileSettings & TileContent;
 
-export type TileSearchResults = TileContent & TileSettings & Id;
+export type TileSearchResult = TileContent & TileSettings & Id;
 
 export const initialTileValues = atom<Record<string, Tile>>({
   key: "CANVAS/initial-tiles-query",
   default: {},
 });
 
-export const discussionTileId = atom<null | string>({
-  key: "CANVAS/discussion-tile-id",
-  default: null,
+export const discussionDrawer = atom({
+  key: "CANVAS/discussion-drawer",
+  default: {
+    open: false,
+    tileId: null,
+  },
+});
+
+export const discussionDrawerTile = selector<TileSearchResult | null>({
+  key: "CANVAS/all-tile-content-ids",
+  get: ({ get }) => {
+    const { tileId } = get(discussionDrawer);
+
+    if (!tileId) {
+      return null;
+    }
+
+    return {
+      id: tileId,
+      ...get(tileContent(tileId)),
+      ...get(tileSettings(tileId)),
+    };
+  },
 });
 
 export const searchedForTile = atom<null | string>({
@@ -54,7 +75,7 @@ export const undeletedTileIds = selector<string[]>({
   },
 });
 
-export const tileSearchResults = selector<TileSearchResults[]>({
+export const tileSearchResults = selector<TileSearchResult[]>({
   key: "CANVAS/all-tile-content-ids",
   get: ({ get }) => {
     return get(tileIds).map((id) => ({
@@ -89,14 +110,15 @@ export const tileSettings = atomFamily<TileSettings, string>({
     key: "CANVAS/tile-settings-default",
     get: (id) => ({ get }) => {
       const tiles = get(initialTileValues);
-      const tile = tiles[id];
+      const {
+        tags,
+        isDragging,
+        isWysiwygEditorFocused,
+        deleted,
+        createdAt,
+      } = tiles[id];
 
-      return {
-        tags: [],
-        isDragging: false,
-        isWysiwygEditorFocused: false,
-        deleted: false,
-      };
+      return { tags, isDragging, isWysiwygEditorFocused, deleted, createdAt };
     },
   }),
 });
