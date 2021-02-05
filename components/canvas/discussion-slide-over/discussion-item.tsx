@@ -1,6 +1,6 @@
 import React from "react";
 
-export const DiscussionItem = () => (
+export const DiscussionItem = React.memo(() => (
   <li className="group">
     <div className="flex space-x-3">
       <div className="flex-shrink-0 relative">
@@ -36,4 +36,4 @@ export const DiscussionItem = () => (
       </div>
     </div>
   </li>
-);
+));

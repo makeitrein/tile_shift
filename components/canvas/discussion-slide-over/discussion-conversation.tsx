@@ -1,7 +1,7 @@
 import React from "react";
 import { DiscussionItem } from "./discussion-item";
 
-export const DiscussionConversation = () => (
+export const DiscussionConversation = React.memo(() => (
   <section
     className="overflow-y-auto h-full pr-6"
     aria-labelledby="notes-title"
@@ -37,4 +37,4 @@ export const DiscussionConversation = () => (
       </div>
     </div>
   </section>
-);
+));

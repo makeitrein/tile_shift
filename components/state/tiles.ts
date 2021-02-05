@@ -40,7 +40,7 @@ export const discussionDrawer = atom({
 });
 
 export const discussionDrawerTile = selector<TileSearchResult | null>({
-  key: "CANVAS/all-tile-content-ids",
+  key: "CANVAS/discussion-drawer-tile",
   get: ({ get }) => {
     const { tileId } = get(discussionDrawer);
 

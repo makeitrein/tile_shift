@@ -1,48 +1,48 @@
-import { Select } from "@blueprintjs/select";
-import React from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { useGetTileDimensions } from "../../state/tile-utils";
-import * as tileState from "../../state/tiles";
 import {
-  itemListPredicate,
-  itemRenderer,
-  noResults,
-  panZoomToTile,
-  selectedItem,
-} from "../board-controls/omnibar-search";
+  QuestionMarkCircleOutline,
+  ThumbDownOutline,
+  ThumbUpOutline,
+} from "heroicons-react";
+import { DateTime } from "luxon";
+import React from "react";
+import { useRecoilValue } from "recoil";
+import * as tileState from "../../state/tiles";
+import { ConsensusButtonShell } from "./discussion-form";
 
-const TileSelect = Select.ofType<tileState.TileSearchResult>();
+export const DiscussionSummary = React.memo(() => {
+  const discussionDrawerTile = useRecoilValue(tileState.discussionDrawerTile);
 
-export const SelectDiscussion = ({ panzoom }) => {
-  const tileSearchResults = useRecoilValue(tileState.tileSearchResults);
-  const [{ tileId }, setDiscussionDrawer] = useRecoilState(
-    tileState.discussionDrawer
-  );
-  const setSearchedForTile = useSetRecoilState(tileState.searchedForTile);
-  const getTileDimensions = useGetTileDimensions();
-
-  const openTileDiscussion = React.useCallback((tileId) => {
-    setDiscussionDrawer((state) => ({ ...state, open: true, tileId }));
-  }, []);
-
-  const findDiscussedTile = (id: string) =>
-    tileSearchResults.find((tile) => tile.id === id);
+  console.log(discussionDrawerTile.createdAt);
 
   return (
-    <TileSelect
-      items={tileSearchResults}
-      onItemSelect={({ id }) => {
-        openTileDiscussion(id);
-        setSearchedForTile(id);
-        const dimensions = getTileDimensions(id);
-        panZoomToTile(panzoom, dimensions);
-      }}
-      itemRenderer={itemRenderer}
-      noResults={noResults}
-      itemListPredicate={itemListPredicate}
-      popoverProps={{ popoverClassName: "w-96" }}
-    >
-      {selectedItem(findDiscussedTile(tileId))}
-    </TileSelect>
+    <div className="flex items-center justify-between">
+      <span>
+        <ConsensusButtonShell
+          color={"green"}
+          activeColor={"green"}
+          icon={<ThumbUpOutline width={16} />}
+          text="10"
+        />
+
+        <ConsensusButtonShell
+          color={"orange"}
+          activeColor={"orange"}
+          icon={<QuestionMarkCircleOutline width={16} />}
+          text="5"
+        />
+
+        <ConsensusButtonShell
+          color={"red"}
+          activeColor={"red"}
+          icon={<ThumbDownOutline width={16} />}
+          text="3"
+        />
+      </span>
+      <span className="pr-2">
+        {DateTime.fromISO(discussionDrawerTile.createdAt).toLocaleString(
+          DateTime.DATETIME_MED
+        )}
+      </span>
+    </div>
   );
-};
+});

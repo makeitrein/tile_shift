@@ -26,7 +26,7 @@ export const DiscussionForm = React.memo(() => {
               <span>
                 <ApprovalButton />
                 <QuestionButton />
-                <DenyButton />
+                <DisagreeButton />
               </span>
               <button
                 type="submit"
@@ -45,53 +45,77 @@ export const DiscussionForm = React.memo(() => {
   );
 });
 
-const ApprovalButton = () => {
+interface ConsensusButtonShellProps {
+  onClick?: () => void;
+  text: string;
+  icon: React.ReactNode;
+  activeColor: string;
+  color: string;
+}
+
+export const ConsensusButtonShell = ({
+  onClick,
+  text,
+  icon,
+  activeColor,
+  color,
+}: ConsensusButtonShellProps) => {
+  return (
+    <span
+      onClick={onClick}
+      className={`inline-flex cursor-pointer items-center px-2.5 mr-2 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
+    >
+      {icon}
+
+      <span className="pl-1">{text}</span>
+    </span>
+  );
+};
+
+export const ApprovalButton = () => {
   const [approve, setApprove] = useState(false);
 
   const activeColor = "green";
   const color = approve ? "green" : "gray";
   return (
-    <span
+    <ConsensusButtonShell
       onClick={() => setApprove(true)}
-      className={`inline-flex cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
-    >
-      <ThumbUpOutline width={16} />
-
-      <span className="pl-1">Agree</span>
-    </span>
+      color={color}
+      activeColor={activeColor}
+      icon={<ThumbUpOutline width={16} />}
+      text="Agree"
+    />
   );
 };
 
-const QuestionButton = () => {
+export const QuestionButton = () => {
   const [approve, setApprove] = useState(false);
 
   const activeColor = "orange";
   const color = approve ? activeColor : "gray";
   return (
-    <span
+    <ConsensusButtonShell
       onClick={() => setApprove(true)}
-      className={`inline-flex ml-2 cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
-    >
-      <QuestionMarkCircleOutline width={16} />
-
-      <span className="pl-1">Question</span>
-    </span>
+      color={color}
+      activeColor={activeColor}
+      icon={<QuestionMarkCircleOutline width={16} />}
+      text="Question"
+    />
   );
 };
 
-const DenyButton = () => {
+export const DisagreeButton = () => {
   const [approve, setApprove] = useState(false);
 
   const activeColor = "red";
   const color = approve ? "red" : "gray";
   return (
-    <span
+    <ConsensusButtonShell
       onClick={() => setApprove(true)}
-      className={`inline-flex ml-2 cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800  `}
-    >
-      <ThumbDownOutline width={16} />
-
-      <span className="pl-1">Disagree</span>
-    </span>
+      color={color}
+      activeColor={activeColor}
+      icon={<ThumbDownOutline width={16} />}
+      text="Disagree"
+    />
   );
 };

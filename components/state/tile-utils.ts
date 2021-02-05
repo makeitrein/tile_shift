@@ -1,7 +1,10 @@
+import { DateTime } from "luxon";
 import { useRecoilCallback } from "recoil";
 import { tileHeight, tileWidth } from "../canvas/tile/tile";
 import * as tileState from "./tiles";
 import { Tile, TileDimensions } from "./tiles";
+
+export const getISODateTime = () => DateTime.local().toString();
 
 export const defaultTileValues: Tile = {
   id: "",
@@ -14,7 +17,7 @@ export const defaultTileValues: Tile = {
   isWysiwygEditorFocused: false,
   tags: [],
   deleted: false,
-  createdAt: new Date(),
+  createdAt: getISODateTime(),
 };
 
 export const tileId = () => "new-tile" + new Date().getTime();
@@ -31,7 +34,6 @@ export const useCreateInitialTile = () =>
       id?: string;
     }) => {
       const newTileId = id || tileId();
-      const createdAt = new Date(0);
       set(tileState.initialTileValues, (tiles) => ({
         ...tiles,
         [newTileId]: {
@@ -39,7 +41,7 @@ export const useCreateInitialTile = () =>
           content,
           id: newTileId,
           ...dimensions,
-          createdAt,
+          createdAt: getISODateTime(),
         },
       }));
     };

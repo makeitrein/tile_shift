@@ -10,23 +10,27 @@ import {
   panZoomToTile,
   selectedItem,
 } from "../board-controls/omnibar-search";
+import { PanzoomObject } from "../board/panzoom/types";
 
 const TileSelect = Select.ofType<tileState.TileSearchResult>();
 
-export const SelectDiscussion = ({ panzoom }) => {
+interface Props {
+  panzoom: PanzoomObject;
+}
+
+export const SelectDiscussion = React.memo(({ panzoom }: Props) => {
   const tileSearchResults = useRecoilValue(tileState.tileSearchResults);
   const [{ tileId }, setDiscussionDrawer] = useRecoilState(
     tileState.discussionDrawer
   );
+  const discussionDrawerTile = useRecoilValue(tileState.discussionDrawerTile);
+
   const setSearchedForTile = useSetRecoilState(tileState.searchedForTile);
   const getTileDimensions = useGetTileDimensions();
 
   const openTileDiscussion = React.useCallback((tileId) => {
     setDiscussionDrawer((state) => ({ ...state, open: true, tileId }));
   }, []);
-
-  const findDiscussedTile = (id: string) =>
-    tileSearchResults.find((tile) => tile.id === id);
 
   return (
     <TileSelect
@@ -42,7 +46,7 @@ export const SelectDiscussion = ({ panzoom }) => {
       itemListPredicate={itemListPredicate}
       popoverProps={{ popoverClassName: "w-96" }}
     >
-      {selectedItem(findDiscussedTile(tileId))}
+      {selectedItem(discussionDrawerTile)}
     </TileSelect>
   );
-};
+});
