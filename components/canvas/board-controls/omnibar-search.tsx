@@ -62,7 +62,12 @@ export const selectedItem = (tile) => {
       className="w-96"
       alignText="left"
       rightIcon="double-caret-vertical"
-      text={<div className="truncate w-80">{label}</div>}
+      text={
+        <div className="flex items-center justify-between">
+          <span className="truncate w-52">{label}</span>
+          <Tag name={tile.tags[0]} />
+        </div>
+      }
       key={tile.id}
     />
   );
@@ -89,7 +94,7 @@ export const itemRenderer = (
       /* ^^ Todo: figure out why this errors if we remove label */
       text={
         <div>
-          <div className="truncate">{highlightText(label, query)}</div>
+          <div className="truncate pr-2">{highlightText(label, query)}</div>
           <div
             className={`flex text-xs ${
               modifiers.active ? "text-white" : "text-gray-400"

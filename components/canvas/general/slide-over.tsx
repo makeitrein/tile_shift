@@ -30,7 +30,7 @@ export const Slideover = React.memo(
           leave="transform transition ease-in-out duration-500 sm:duration-700"
           leaveFrom="translate-x-0"
           leaveTo="translate-x-full"
-          className="fixed z-force inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16 overflow-hidden"
+          className="fixed z-force inset-y-0 right-0 max-w-full flex  overflow-hidden"
           aria-labelledby="slide-over-heading"
         >
           <div

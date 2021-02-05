@@ -8,7 +8,7 @@ export const DiscussionConversation = React.memo(() => (
   >
     <div className=" sm:rounded-lg sm:overflow-hidden">
       <div className="divide-y divide-gray-200">
-        <div className="py-6 mt-4">
+        <div className="py-6">
           <ul className="space-y-4">
             <DiscussionItem />
             <DiscussionItem />

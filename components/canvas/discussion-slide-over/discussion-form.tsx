@@ -1,3 +1,4 @@
+import { TextArea } from "@blueprintjs/core";
 import {
   PaperAirplaneOutline,
   QuestionMarkCircleOutline,
@@ -12,25 +13,16 @@ export const DiscussionForm = React.memo(() => {
       <div className="flex space-x-3">
         <div className="min-w-0 flex-1">
           <form action="#">
-            <div>
-              <label className="sr-only">About</label>
-              <textarea
-                id="comment"
-                name="comment"
-                rows={3}
-                className="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
-                placeholder="Message"
-              ></textarea>
-            </div>
-            <div className="mt-3 flex items-center justify-between">
-              <span>
-                <ApprovalButton />
-                <QuestionButton />
-                <DisagreeButton />
-              </span>
+            <div className="flex items-center">
+              <TextArea
+                placeholder="Talk about this tile..."
+                growVertically={true}
+                fill={true}
+                rows={2}
+              />
               <button
                 type="submit"
-                className={`inline-flex ml-2 py-1.5 cursor-pointer items-center px-2.5 rounded-full text-xs border font-medium hover:bg-blue-200 hover:text-blue-900 bg-blue-100 text-blue-800 border-blue-800  `}
+                className={`inline-flex ml-2 py-1.5 cursor-pointer items-center px-2.5 rounded-md h-full text-xs border font-medium hover:bg-blue-100 hover:text-blue-600 hover:border-blue-500 bg-gray-100 text-gray-500 border-gray-500  transition-all`}
               >
                 <PaperAirplaneOutline
                   size={16}
@@ -51,7 +43,6 @@ interface ConsensusButtonShellProps {
   icon: React.ReactNode;
   activeColor: string;
   color: string;
-  count: number;
 }
 
 export const ConsensusButtonShell = ({
@@ -60,22 +51,15 @@ export const ConsensusButtonShell = ({
   icon,
   activeColor,
   color,
-  count,
 }: ConsensusButtonShellProps) => {
   return (
     <span
       onClick={onClick}
-      className={`inline-flex cursor-pointer items-center px-2.5 mr-2 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-900 bg-${color}-100 text-${activeColor}-800 border-${activeColor}-800`}
+      className={`inline-flex cursor-pointer items-center px-2.5 mr-2 rounded-full text-xs border font-medium hover:bg-${activeColor}-200 hover:text-${activeColor}-800 bg-${color}-100 text-${activeColor}-700 border-${activeColor}-400  `}
     >
       {icon}
 
       <span className="pl-1">{text}</span>
-
-      <span
-        className={`ml-2 inline-block px-1.5 py-.5 bg-${color}-200 text-${color}-800 rounded-full `}
-      >
-        {count}
-      </span>
     </span>
   );
 };
