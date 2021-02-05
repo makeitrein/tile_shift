@@ -23,13 +23,15 @@ export const DiscussionDrawer = React.memo(({ panzoom }: Props) => {
   );
 
   return (
-    <Slideover
-      closeDrawer={closeDrawer}
-      isOpen={discussionDrawer.open}
-      title={<SelectDiscussion panzoom={panzoom} />}
-      body={<DiscussionConversation />}
-      footer={<DiscussionForm />}
-      description={<DiscussionSummary />}
-    />
+    <>
+      <Slideover
+        closeDrawer={closeDrawer}
+        isOpen={discussionDrawer.open}
+        title={<SelectDiscussion panzoom={panzoom} />}
+        body={<DiscussionConversation />}
+        footer={<DiscussionForm />}
+        description={<DiscussionSummary />}
+      />
+    </>
   );
 });

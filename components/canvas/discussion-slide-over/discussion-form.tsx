@@ -1,4 +1,3 @@
-import { TextArea } from "@blueprintjs/core";
 import {
   PaperAirplaneOutline,
   QuestionMarkCircleOutline,
@@ -14,12 +13,13 @@ export const DiscussionForm = React.memo(() => {
         <div className="min-w-0 flex-1">
           <form action="#">
             <div className="flex items-center">
-              <TextArea
-                placeholder="Talk about this tile..."
-                growVertically={true}
-                fill={true}
-                rows={2}
-              />
+              <textarea
+                id="comment"
+                name="comment"
+                rows={3}
+                className="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                placeholder="Agree, disagree, or have questions?"
+              ></textarea>
               <button
                 type="submit"
                 className={`inline-flex ml-2 py-1.5 cursor-pointer items-center px-2.5 rounded-md h-full text-xs border font-medium hover:bg-blue-100 hover:text-blue-600 hover:border-blue-500 bg-gray-100 text-gray-500 border-gray-500  transition-all`}
