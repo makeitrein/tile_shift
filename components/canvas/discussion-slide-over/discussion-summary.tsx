@@ -1,4 +1,5 @@
 import {
+  ChatAlt2Outline,
   ClockOutline,
   QuestionMarkCircleOutline,
   ThumbDownOutline,
@@ -16,7 +17,7 @@ export const DiscussionSummary = React.memo(() => {
   console.log(discussionDrawerTile.createdAt);
 
   return (
-    <div className="flex items-center justify-between mt-3 -mb-3 z-50 w-96 ">
+    <div className="flex items-center justify-between mt-3 -mb-3 z-50 w-96 text-xs ">
       <span className="">
         <ConsensusButtonShell
           color={"green"}
@@ -39,7 +40,6 @@ export const DiscussionSummary = React.memo(() => {
           text="3"
         />
       </span>
-
       {/* <span className="-mr-2">
         <ConsensusButtonShell
           color={"gray"}
@@ -50,12 +50,13 @@ export const DiscussionSummary = React.memo(() => {
           )}
         />
       </span> */}
-
       <span className="flex items-center -mt-1">
         <ClockOutline size={16} className="mr-1" />
         {DateTime.fromISO(discussionDrawerTile.createdAt).toLocaleString(
           DateTime.DATETIME_MED
-        )}
+        )}{" "}
+        &middot;
+        <ChatAlt2Outline className="mx-1" size={16} /> 33
       </span>
     </div>
   );

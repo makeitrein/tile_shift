@@ -1,6 +1,7 @@
 import { Button, Menu, MenuItem } from "@blueprintjs/core";
 import { Omnibar } from "@blueprintjs/select";
 import { ChatAlt2Outline, ClockOutline } from "heroicons-react";
+import { DateTime } from "luxon";
 import React from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useGetTileDimensions } from "../../state/tile-utils";
@@ -100,8 +101,12 @@ export const itemRenderer = (
               modifiers.active ? "text-white" : "text-gray-400"
             }`}
           >
-            <ClockOutline className="mr-1" size={16} /> 30 minutes ago | 33{" "}
-            <ChatAlt2Outline className="mx-1" size={16} />
+            <ClockOutline size={16} className="mr-1" />
+            {DateTime.fromISO(tile.createdAt).toLocaleString(
+              DateTime.DATETIME_MED
+            )}{" "}
+            &middot;
+            <ChatAlt2Outline className="mx-1" size={16} /> 33
           </div>
         </div>
       }
