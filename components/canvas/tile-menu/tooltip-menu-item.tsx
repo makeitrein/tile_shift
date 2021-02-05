@@ -8,7 +8,7 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   rounded?: string;
-  label: string;
+  label?: string;
   popoverIsOpen?: boolean;
 }
 
@@ -28,8 +28,8 @@ export const TooltipMenuItem = React.forwardRef<HTMLDivElement, Props>(
     return (
       <Tooltip2
         popoverClassName="z-force"
-        hoverOpenDelay={300}
-        disabled={popoverIsOpen}
+        hoverOpenDelay={500}
+        disabled={popoverIsOpen || !label}
         placement="top"
         interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
         content={<small className="text-sm whitespace-nowrap">{label}</small>}

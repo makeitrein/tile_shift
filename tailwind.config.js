@@ -9,6 +9,11 @@ module.exports = {
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },
+
+      cursor: {
+        grab: "grab",
+        grabbing: "grabbing",
+      },
       colors: {
         tan: "rgb(243, 240, 231)",
         "light-blue": colors.lightBlue,

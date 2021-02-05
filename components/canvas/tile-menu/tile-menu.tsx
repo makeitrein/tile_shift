@@ -81,7 +81,7 @@ export const TileMenu = ({ id }) => {
               isOpen={popoverOpen}
               onInteraction={(state) => setPopoverOpen(state)}
               interactionKind="click"
-              popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
+              popoverClassName={Classes.POPOVER2_CONTENT}
               placement="left"
               className="z-force"
               fill={true}
@@ -230,7 +230,6 @@ export const TileMenu = ({ id }) => {
             </TooltipMenuItem>
 
             <TooltipMenuItem
-              label="View more"
               rounded="r-md"
               onClick={() => toggleAltToolbar()}
               active={active.strike()}
@@ -264,11 +263,7 @@ export const TileMenu = ({ id }) => {
             }}
             className="flex absolute justify-center "
           >
-            <TooltipMenuItem
-              label="Go back"
-              rounded="l-md"
-              onClick={() => toggleAltToolbar()}
-            >
+            <TooltipMenuItem rounded="l-md" onClick={() => toggleAltToolbar()}>
               <svg
                 className="w-4 h-4"
                 xmlns="http://www.w3.org/2000/svg"

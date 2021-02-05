@@ -6,23 +6,30 @@ import {
   BanOutline,
   BeakerOutline,
   CalculatorOutline,
+  ChartPieOutline,
   ChartSquareBarOutline,
   ClipboardListOutline,
   ClockOutline,
   CollectionOutline,
+  CursorClickOutline,
   ExclamationOutline,
   ExternalLinkOutline,
   FingerPrintOutline,
   FireOutline,
   FlagOutline,
+  FolderAddOutline,
+  FolderRemoveOutline,
   PencilAltOutline,
   PhotographOutline,
+  PlusOutline,
   PuzzleOutline,
   QuestionMarkCircleOutline,
+  ScaleOutline,
   ShieldExclamationOutline,
   SpeakerphoneOutline,
   SunOutline,
   TagOutline,
+  UserGroupOutline,
   VariableOutline,
 } from "heroicons-react";
 import React from "react";
@@ -77,6 +84,18 @@ const tagGroups = [
   },
 
   {
+    name: "Decision Making",
+    tags: [
+      { name: "Decision", color: "light-blue", icon: UserGroupOutline },
+      { name: "Choice", color: "indigo", icon: CursorClickOutline },
+      { name: "Analysis", color: "amber", icon: ChartPieOutline },
+      { name: "Tradeoff", color: "orange", icon: ScaleOutline },
+      { name: "Pro", color: "green", icon: FolderAddOutline },
+      { name: "Con", color: "red", icon: FolderRemoveOutline },
+    ],
+  },
+
+  {
     name: "General",
     tags: [
       { name: "Note", color: "gray", icon: PencilAltOutline },
@@ -86,6 +105,11 @@ const tagGroups = [
       { name: "Todo", color: "gray", icon: ClipboardListOutline },
       { name: "Archive", color: "gray", icon: ArchiveOutline },
     ],
+  },
+
+  {
+    name: "Custom Tags",
+    tags: [{ name: "Add Tag", color: "gray", icon: PlusOutline }],
   },
 ];
 
@@ -100,7 +124,7 @@ export const TagPicker = ({ id, closePanel }) => {
   };
 
   return (
-    <div className="pb-1.5  grid grid-cols-2 grid-">
+    <div className="py-4 px-6 grid grid-cols-3">
       {tagGroups.map(({ name, tags }) => (
         <div className="pb-1 px-2">
           <label className="text-xs mt-2 font-bold -ml-px pb-1.5 text-gray-700 block">

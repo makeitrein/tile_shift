@@ -55,9 +55,9 @@ export const Tile = React.memo(({ id }: TileProps) => {
       id={id}
       isDragging={tileSettings.isDragging}
       isSelected={isSelected}
-      className={`canvas-tile group p-2 bg-white ${
-        isSearchedFor && "animate-searched "
-      }`}
+      className={`canvas-tile group p-2 bg-white
+      ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
+      ${isSearchedFor && "animate-searched"}`}
       style={{
         width: tileDimensions.width,
         height: tileDimensions.height,
