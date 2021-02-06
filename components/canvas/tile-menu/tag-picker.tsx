@@ -100,6 +100,17 @@ const tagGroups = [
   },
 
   {
+    name: "Questions",
+    tags: [
+      { name: "Why?", color: "light-blue", icon: ClockOutline },
+      { name: "Where?", color: "indigo", icon: ClockOutline },
+      { name: "Who?", color: "amber", icon: ClockOutline },
+      { name: "When?", color: "orange", icon: ClockOutline },
+      { name: "How?", color: "green", icon: ClockOutline },
+    ],
+  },
+
+  {
     name: "Time",
     tags: [
       { name: "Deadline", color: "light-blue", icon: ClockOutline },
