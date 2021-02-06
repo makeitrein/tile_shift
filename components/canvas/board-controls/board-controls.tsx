@@ -1,4 +1,4 @@
-import { HandOutline, SearchOutline } from "heroicons-react";
+import { HandOutline, SearchOutline, TemplateOutline } from "heroicons-react";
 import React, { useState } from "react";
 import { PanzoomObject } from "../board/panzoom/types";
 import { OmnibarSearch } from "./omnibar-search";
@@ -24,6 +24,14 @@ export const BoardControls = React.memo(
           className={`relative inline-flex items-center px-3 py-2 rounded-t-md border border-${primaryColor}-300 bg-${bgColor} text-sm font-medium text-${primaryColor}-600 hover:bg-${bgColor}-300 focus:z-10 focus:outline-none`}
         >
           <HandOutline />
+        </button>
+
+        <button
+          onClick={toggleDisablePan}
+          type="button"
+          className={`relative inline-flex items-center px-3 py-2 -mt-px border border-${primaryColor}-300 bg-${bgColor} text-sm font-medium text-${primaryColor}-600 hover:bg-${bgColor}-300 focus:z-10 focus:outline-none`}
+        >
+          <TemplateOutline />
         </button>
 
         <button
