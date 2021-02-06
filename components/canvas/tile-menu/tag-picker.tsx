@@ -50,6 +50,7 @@ const tagGroups = [
       { name: "Question", color: "orange", icon: QuestionMarkCircleOutline },
       { name: "Evidence", color: "green", icon: FingerPrintOutline },
       { name: "Counterpoint", color: "red", icon: ExclamationOutline },
+      { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },
   {
@@ -69,6 +70,7 @@ const tagGroups = [
       },
       { name: "Solution", color: "green", icon: ChartSquareBarOutline },
       { name: "Problem", color: "red", icon: FireOutline },
+      { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },
   {
@@ -80,6 +82,7 @@ const tagGroups = [
       { name: "Because...", color: "orange", icon: VariableOutline },
       { name: "Therefore...", color: "green", icon: SunOutline },
       { name: "Unless...", color: "red", icon: ShieldExclamationOutline },
+      { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },
 
@@ -92,6 +95,20 @@ const tagGroups = [
       { name: "Tradeoff", color: "orange", icon: ScaleOutline },
       { name: "Pro", color: "green", icon: FolderAddOutline },
       { name: "Con", color: "red", icon: FolderRemoveOutline },
+      { name: "Add Tag", color: "gray", icon: PlusOutline },
+    ],
+  },
+
+  {
+    name: "Time",
+    tags: [
+      { name: "Deadline", color: "light-blue", icon: ClockOutline },
+      { name: "Availability", color: "indigo", icon: ClockOutline },
+      { name: "Estimate", color: "amber", icon: ClockOutline },
+      { name: "Daily Checkin", color: "orange", icon: ClockOutline },
+      { name: "Weekly Recap", color: "green", icon: ClockOutline },
+      { name: "Overdue", color: "red", icon: ClockOutline },
+      { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },
 
@@ -104,11 +121,17 @@ const tagGroups = [
       { name: "Resource", color: "gray", icon: ExternalLinkOutline },
       { name: "Todo", color: "gray", icon: ClipboardListOutline },
       { name: "Archive", color: "gray", icon: ArchiveOutline },
+      { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },
 
   {
-    name: "Custom Tags",
+    name: "People",
+    tags: [{ name: "Add Tag", color: "gray", icon: PlusOutline }],
+  },
+
+  {
+    name: "Teams",
     tags: [{ name: "Add Tag", color: "gray", icon: PlusOutline }],
   },
 ];
@@ -124,7 +147,7 @@ export const TagPicker = ({ id, closePanel }) => {
   };
 
   return (
-    <div className="py-4 px-6 grid grid-cols-3">
+    <div className="py-4 px-6 grid grid-cols-4">
       {tagGroups.map(({ name, tags }) => (
         <div className="pb-1 px-2">
           <label className="text-xs mt-2 font-bold -ml-px pb-1.5 text-gray-700 block">

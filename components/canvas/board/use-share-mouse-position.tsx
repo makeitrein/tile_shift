@@ -15,8 +15,6 @@ export const useShareMousePosition = (canvasRef) => {
 
         const x = e.offsetX;
         const y = e.offsetY;
-
-        console.log(x, y);
       },
       { passive: false }
     );
