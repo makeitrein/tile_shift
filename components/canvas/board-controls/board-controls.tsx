@@ -30,10 +30,9 @@ export const BoardControls = React.memo(
 
         <Popover2
           interactionKind="click"
-          popoverClassName={Classes.POPOVER2_CONTENT_SIZING}
+          popoverClassName={Classes.POPOVER2_CONTENT}
           placement="left"
           className="z-force"
-          usePortal={false}
           fill={true}
           content={<TemplateLibrary />}
           renderTarget={({ isOpen, ref, ...targetProps }) => (

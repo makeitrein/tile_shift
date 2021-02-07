@@ -81,7 +81,7 @@ export const TileMenu = ({ id }) => {
               isOpen={popoverOpen}
               onInteraction={(state) => setPopoverOpen(state)}
               interactionKind="click"
-              popoverClassName={POPOVER2_CONTENT}
+              popoverClassName={Classes.POPOVER2_CONTENT}
               placement="left"
               className="z-force"
               fill={true}
