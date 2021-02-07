@@ -13,14 +13,24 @@ export interface Coordinates {
 export interface CoordinatesPerId {
   [index: string]: Coordinates;
 }
-export const getCoordinatesFromDiv = ({ div }: { div: HTMLDivElement }) => {
+export const getCoordinatesFromDiv = ({
+  div,
+  parent,
+}: {
+  div: HTMLDivElement;
+  parent: HTMLDivElement | null;
+}) => {
   const box = div.getBoundingClientRect();
+  const parentBox = parent.getBoundingClientRect();
+
   const coordinates = {
-    top: box.top + window.scrollY,
-    bottom: box.bottom + window.scrollY,
-    left: box.left + window.scrollX,
-    right: box.right + window.scrollX,
+    top: box.top - parentBox.top,
+    bottom: box.top - parentBox.bottom,
+    left: box.bottom - parentBox.left,
+    right: box.right - parentBox.right,
   };
+
+  console.log(coordinates);
   return coordinates;
 };
 export const useCoordinatesPerId = () => {
@@ -29,13 +39,18 @@ export const useCoordinatesPerId = () => {
   const setCoordinatesOfDivForId = ({
     id,
     div,
+    parent,
   }: {
     id: string;
     div: HTMLDivElement | null;
+    parent: HTMLDivElement | null;
   }) => {
-    if (!div) return; // do nothing if div not defined
+    if (!div || !parent) return; // do nothing if div not defined
+
+    console.log(div, parent, "fuck");
+
     const priorCoordinates = coordinates[id];
-    const currentCoordinates = getCoordinatesFromDiv({ div });
+    const currentCoordinates = getCoordinatesFromDiv({ div, parent });
     if (
       JSON.stringify(priorCoordinates) !== JSON.stringify(currentCoordinates)
     ) {

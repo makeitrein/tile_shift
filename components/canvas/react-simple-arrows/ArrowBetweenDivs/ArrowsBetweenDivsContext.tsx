@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
-import { CoordinatesPerId, useCoordinatesPerId } from './useCoordinatesPerId';
+import React, { ReactElement } from "react";
+import { CoordinatesPerId, useCoordinatesPerId } from "./useCoordinatesPerId";
 
 // define the context data store
 interface ArrowsBetweenDivContextData {
@@ -7,13 +7,15 @@ interface ArrowsBetweenDivContextData {
   setCoordinatesOfDivForId: (args: { id: string; div: HTMLDivElement }) => void;
   debug: boolean;
 }
-export const ArrowsBetweenDivsContext = React.createContext<ArrowsBetweenDivContextData>({
-  coordinatesPerId: {},
-  debug: false,
-  setCoordinatesOfDivForId: () => {
-    throw new Error('ArrowsBetweenDivsContextProvider not found'); // throw error by default
-  },
-});
+export const ArrowsBetweenDivsContext = React.createContext<ArrowsBetweenDivContextData>(
+  {
+    coordinatesPerId: {},
+    debug: false,
+    setCoordinatesOfDivForId: () => {
+      throw new Error("ArrowsBetweenDivsContextProvider not found"); // throw error by default
+    },
+  }
+);
 
 /**
  * registering divs into the ArrowsBetweenDivsContext, so that they can be found by id in the ArrowBetweenDivs component
@@ -23,24 +25,40 @@ export const ArrowsBetweenDivsContext = React.createContext<ArrowsBetweenDivCont
  * <div ref={(div) => registerDivToArrowsContext({ id: '__SOME_ID__', div })} />
  * ```
  * */
-type RegisterDivForArrowsContext = (args: { id: string; div: HTMLDivElement | null }) => void;
+type RegisterDivForArrowsContext = (args: {
+  id: string;
+  div: HTMLDivElement | null;
+  parent: HTMLDivElement | null;
+}) => void;
 
 export const ArrowsBetweenDivsContextProvider = ({
   children,
   debug = false,
 }: {
-  children: (args: { registerDivToArrowsContext: RegisterDivForArrowsContext }) => ReactElement;
+  children: (args: {
+    registerDivToArrowsContext: RegisterDivForArrowsContext;
+  }) => ReactElement;
   debug?: boolean;
 }) => {
   // track state of coordinates in context
   const { coordinates, setCoordinatesOfDivForId } = useCoordinatesPerId();
 
   // rename the method to make more sense to consumers
-  const registerDivToArrowsContext = ({ id, div }: { id: string; div: HTMLDivElement | null }) => setCoordinatesOfDivForId({ id, div });
+  const registerDivToArrowsContext = ({
+    id,
+    div,
+    parent,
+  }: {
+    id: string;
+    div: HTMLDivElement | null;
+    parent: HTMLDivElement | null;
+  }) => setCoordinatesOfDivForId({ id, div, parent });
 
   // render the children wrapped in context
   return (
-    <ArrowsBetweenDivsContext.Provider value={{ debug, coordinatesPerId: coordinates, setCoordinatesOfDivForId }}>
+    <ArrowsBetweenDivsContext.Provider
+      value={{ debug, coordinatesPerId: coordinates, setCoordinatesOfDivForId }}
+    >
       {children({ registerDivToArrowsContext })}
     </ArrowsBetweenDivsContext.Provider>
   );
