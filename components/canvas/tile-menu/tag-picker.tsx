@@ -33,7 +33,7 @@ import {
   UsersOutline,
   VariableOutline,
 } from "heroicons-react";
-import React from "react";
+import React, { CSSProperties } from "react";
 import { useSetRecoilState } from "recoil";
 import * as tileState from "../../state/tiles";
 
@@ -183,9 +183,13 @@ export const TagPicker = ({ id, closePanel }) => {
 export const Tag = ({
   name,
   onClick,
+  style,
+  className,
 }: {
   name: string;
   onClick?: () => void;
+  style?: CSSProperties;
+  className?: string;
 }) => {
   const tag = [...allTags].find((tag) => tag.name === name);
   if (!tag)
@@ -214,8 +218,9 @@ export const Tag = ({
 
   return (
     <span
+      style={style}
       onClick={onClick}
-      className={`inline-flex  cursor-pointer items-center px-2.5 rounded-full text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
+      className={`${className} inline-flex  cursor-pointer items-center px-2.5 rounded-full text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
     >
       <Icon width={16} />
 

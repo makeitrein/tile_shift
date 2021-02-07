@@ -37,6 +37,17 @@ const Wrapper = styled.div`
 const Canvas = styled.div`
   width: ${totalCanvasPixelSize}px;
   height: ${totalCanvasPixelSize}px;
+  &:before {
+    content: " ";
+    background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cstyle%3E.st0%7Bfill:none;stroke:%23e7e8eB;stroke-miterlimit:10%7D%3C/style%3E%3Cpath class='st0' d='M9.5 20h21M20 30.5v-21'/%3E%3C/svg%3E");
+    background-size: 31px;
+    background-position: 100% 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 `;
 
 export const Board = () => {
