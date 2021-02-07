@@ -9,16 +9,10 @@ import {
   LightningBoltOutline,
   ScaleOutline,
   TemplateOutline,
-  TruckOutline,
 } from "heroicons-react";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import {
-  ArrowAnchorPlacement,
-  ArrowBetweenDivs,
-  ArrowsBetweenDivsContextProvider,
-} from "../../canvas/react-simple-arrows";
-import { LineOrientation } from "../react-simple-arrows";
+import { Tag } from "../tile-menu/tag-picker";
 
 const TileWrapper = styled.div`
   display: inline-block;
@@ -204,101 +198,13 @@ export const TemplateLibrary = React.memo(({}: Props) => {
           {template}
         </h3>
 
-        {/* {tags.map((tag) => {
+        {tags.map((tag) => {
           return (
             <div className="mt-4 ml-8">
               <Tag name={tag} />
             </div>
           );
-        })} */}
-
-        <ArrowsBetweenDivsContextProvider debug>
-          {({ registerDivToArrowsContext }) => (
-            <>
-              {/* the arrows can be placed anywhere, as they position themselves absolutely and will wait to display until coordinates are registered */}
-              <ArrowBetweenDivs
-                from={{ id: "sleep", placement: ArrowAnchorPlacement.TOP }}
-                to={{ id: "code", placement: ArrowAnchorPlacement.BOTTOM }}
-                orientation={LineOrientation.VERTICAL}
-              />
-              <ArrowBetweenDivs
-                from={{ id: "code", placement: ArrowAnchorPlacement.RIGHT }}
-                to={{ id: "shower", placement: ArrowAnchorPlacement.LEFT }}
-                orientation={LineOrientation.HORIZONTAL}
-              />
-
-              {/* define your content and register each one of the divs by "id" into the context by ref */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: 500,
-                  height: 300,
-                  flexDirection: "column",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                    flex: 1,
-                  }}
-                >
-                  <div>
-                    <div
-                      ref={(div) =>
-                        registerDivToArrowsContext({
-                          id: "code",
-                          div,
-                          parent: containerRef.current,
-                        })
-                      }
-                      style={{ padding: 15 }}
-                    >
-                      <TruckOutline />
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      ref={(div) =>
-                        registerDivToArrowsContext({
-                          id: "shower",
-                          div,
-                          parent: containerRef.current,
-                        })
-                      }
-                      style={{ padding: 15 }}
-                    >
-                      <TruckOutline />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                    flex: 1,
-                  }}
-                >
-                  <div>
-                    <div
-                      ref={(div) =>
-                        registerDivToArrowsContext({
-                          id: "sleep",
-                          div,
-                          parent: containerRef.current,
-                        })
-                      }
-                      style={{ padding: 15 }}
-                    >
-                      <TruckOutline />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </ArrowsBetweenDivsContextProvider>
+        })}
 
         <div className="p-5 bg-gray-50 sm:p-8 flex absolute items-center bottom-0 left-0 right-0">
           <div onClick={() => goBack()}>
