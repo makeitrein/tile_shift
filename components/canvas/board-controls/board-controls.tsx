@@ -40,7 +40,7 @@ export const BoardControls = React.memo(
               ref={ref}
               {...targetProps}
               type="button"
-              className={`relative inline-flex items-center px-3 py-2 -mt-px border border-${primaryColor}-300 bg-${bgColor} text-sm font-medium text-${primaryColor}-600 hover:bg-${bgColor}-300 focus:z-10 focus:outline-none`}
+              className="-mt-px relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
             >
               <TemplateOutline />
             </button>
