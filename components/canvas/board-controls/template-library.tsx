@@ -21,7 +21,7 @@ export const TemplateOption = ({
 }) => {
   return (
     <span
-      onClick={selectTemplate}
+      onClick={() => selectTemplate(title)}
       className="-m-3 p-3 flex items-start cursor-pointer rounded-lg hover:bg-gray-50 transition ease-in-out duration-150"
     >
       <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-blue-500 text-white sm:h-12 sm:w-12">
@@ -53,25 +53,21 @@ const variants = {
 };
 
 export const TemplateLibrary = React.memo(({}: Props) => {
-  const [altToolbar, setAltToolbar] = useState(null);
+  const [template, setTemplate] = useState(null);
 
   const [initialAnimation, setInitialAnimation] = useState(false);
 
   const selectTemplate = (template: string | null) => {
     setInitialAnimation(true);
-    setAltToolbar(template);
+    setTemplate(template);
   };
   return (
     <div
       className="relative overflow-hidden"
       style={{ width: "44rem", height: 596 }}
     >
-      <h3 className="text-sm px-5 pt-6 font-medium tracking-wide text-gray-500 uppercase">
-        TileShift Templates
-      </h3>
-
       <AnimatePresence>
-        {!altToolbar ? (
+        {!template ? (
           <motion.div
             key={"toolbar"}
             variants={variants}
@@ -84,39 +80,43 @@ export const TemplateLibrary = React.memo(({}: Props) => {
             }}
             className="relative z-1"
           >
+            <h3 className="text-sm px-5 pt-6 font-medium tracking-wide text-gray-500 uppercase">
+              TileShift Templates
+            </h3>
+
             <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 lg:grid-cols-2">
               <TemplateOption
-                selectTemplate={() => selectTemplate("scoping")}
+                selectTemplate={selectTemplate}
                 icon={<FlagOutline />}
                 title="Project Scoping"
                 description="Get consensus on your project goals, deliverables, tasks, costs and deadlines"
               />
               <TemplateOption
-                selectTemplate={() => selectTemplate("scoping")}
+                selectTemplate={selectTemplate}
                 icon={<CheckCircleOutline />}
                 title="Task Management"
                 description="Prioritize, track, and manage each of your project's tasks throught its lifecycle"
               />
               <TemplateOption
-                selectTemplate={() => selectTemplate("scoping")}
+                selectTemplate={selectTemplate}
                 icon={<ScaleOutline />}
                 title="Decision Evaluation"
-                description="Make fast, informed and de-risked decisions by examining choices and alternate resolutions."
+                description="Make fast, informed and de-risked decisions by examining your choices and alternate resolutions"
               />
               <TemplateOption
-                selectTemplate={() => selectTemplate("scoping")}
+                selectTemplate={selectTemplate}
                 icon={<LightBulbOutline />}
                 title="Idea Validation"
-                description="Explore your idea's hidden assumptions, evidence, and counterpoints"
+                description="Explore the hidden assumptions and supporting evidence behind your ideas"
               />
               <TemplateOption
-                selectTemplate={() => selectTemplate("scoping")}
+                selectTemplate={selectTemplate}
                 icon={<LightningBoltOutline />}
                 title="Brainstorming"
                 description="Generate ideas and unlock better answers by amassing potential solutions spontaneously"
               />
               <TemplateOption
-                selectTemplate={() => selectTemplate("scoping")}
+                selectTemplate={selectTemplate}
                 icon={<EyeOutline />}
                 title="Retrospective"
                 description="At the end of a project milestone, reflect and review what worked, what didn't, and why"
@@ -151,10 +151,11 @@ export const TemplateLibrary = React.memo(({}: Props) => {
             }}
             className="absolute inset-0"
           >
-            <div
-              style={{ height: 112 }}
-              className="p-5 bg-gray-50 sm:p-8 flex absolute items-center bottom-0 left-0 right-0"
-            >
+            <h3 className="text-sm px-5 pt-6 font-medium tracking-wide text-gray-500 uppercase">
+              {template}
+            </h3>
+
+            <div className="p-5 bg-gray-50 sm:p-8 flex absolute items-center bottom-0 left-0 right-0">
               <div onClick={() => selectTemplate(null)}>
                 <span className="-m-3 p-3 flex items-center cursor-pointer rounded-md text-base font-medium text-gray-900 hover:bg-gray-100 transition ease-in-out duration-150">
                   <ArrowLeftOutline />
@@ -163,7 +164,7 @@ export const TemplateLibrary = React.memo(({}: Props) => {
               </div>
 
               <div className="flow-root absolute left-1/2 -translate-x-2/4 transform">
-                <span className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-blue-800 hover:bg-blue-200 cursor-pointer bg-blue-100 transition ease-in-out duration-150">
+                <span className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-white hover:bg-blue-400 cursor-pointer bg-blue-500 transition ease-in-out duration-150">
                   <TemplateOutline />
                   <span className="ml-3">Use Template</span>
                 </span>
@@ -173,8 +174,6 @@ export const TemplateLibrary = React.memo(({}: Props) => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <div className="p-5 bg-gray-50 sm:p-8 z-1 flex fixed bottom-0 left-0 right-0"></div>
     </div>
   );
 });
