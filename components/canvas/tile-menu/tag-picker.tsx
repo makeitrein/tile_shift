@@ -19,6 +19,7 @@ import {
   FlagOutline,
   FolderAddOutline,
   FolderRemoveOutline,
+  InformationCircleOutline,
   PencilAltOutline,
   PhotographOutline,
   PlusOutline,
@@ -29,7 +30,7 @@ import {
   SpeakerphoneOutline,
   SunOutline,
   TagOutline,
-  UserGroupOutline,
+  UsersOutline,
   VariableOutline,
 } from "heroicons-react";
 import React from "react";
@@ -89,12 +90,16 @@ const tagGroups = [
   {
     name: "Decision Making",
     tags: [
-      { name: "Decision", color: "light-blue", icon: UserGroupOutline },
-      { name: "Choice", color: "indigo", icon: CursorClickOutline },
-      { name: "Analysis", color: "amber", icon: ChartPieOutline },
-      { name: "Tradeoff", color: "orange", icon: ScaleOutline },
+      { name: "Context", color: "light-blue", icon: InformationCircleOutline },
+      { name: "Decision", color: "light-blue", icon: ScaleOutline },
+      { name: "Option", color: "indigo", icon: CursorClickOutline },
+      { name: "Stakeholders", color: "light-blue", icon: UsersOutline },
+      { name: "Deadline", color: "light-blue", icon: UsersOutline },
+
+      { name: "Evidence", color: "orange", icon: ScaleOutline },
       { name: "Pro", color: "green", icon: FolderAddOutline },
       { name: "Con", color: "red", icon: FolderRemoveOutline },
+      { name: "Outcome", color: "amber", icon: ChartPieOutline },
       { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },

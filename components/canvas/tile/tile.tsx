@@ -11,7 +11,7 @@ import { ConnectButton } from "./connect-button";
 export const tileWidth = 350;
 export const tileHeight = 190;
 
-const TileWrapper = styled.div`
+export const TileWrapper = styled.div`
   display: inline-block;
   position: absolute;
   width: ${tileWidth}px;

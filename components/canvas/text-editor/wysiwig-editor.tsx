@@ -118,7 +118,7 @@ export const EditorManager = ({ id, showToolbar }) => {
       key={id}
       manager={manager}
       value={value}
-      placeholder="What's on your mind?"
+      placeholder="What's the context behind this decision? TODO: make tag specific"
       onChange={({ state }) => {
         setValue(state);
         setTile((tile) => ({

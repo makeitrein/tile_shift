@@ -71,3 +71,7 @@ body {
 }
 
 /* End Blueprint overrides */
+
+.will-transform {
+  will-change: transform;
+}
