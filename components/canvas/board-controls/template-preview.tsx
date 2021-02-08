@@ -2,7 +2,9 @@ import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { ArrowLeftOutline, TemplateOutline } from "heroicons-react";
 import React from "react";
 import { LineOrientation } from "react-simple-arrows";
+import { useCreateInitialArrow } from "../../state/arrow-utils";
 import { useCreateInitialTile } from "../../state/tile-utils";
+import { PanzoomObject } from "../board/panzoom/types";
 import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
 import { Tag } from "../tile-menu/tag-picker";
 import { Template, TemplateOption } from "./template-option";
@@ -10,20 +12,38 @@ import { Template, TemplateOption } from "./template-option";
 interface Props {
   selectedTemplate: Template;
   goBack: () => void;
+  panzoom: PanzoomObject;
 }
 
 export const TemplatePreview = React.memo(
-  ({ selectedTemplate, goBack }: Props) => {
+  ({ selectedTemplate, goBack, panzoom }: Props) => {
     if (!selectedTemplate) return null;
 
     const { title, tags, description, arrows, icon: Icon } = selectedTemplate;
-    const createIniitalTile = useCreateInitialTile();
+    const createInitialTile = useCreateInitialTile();
+    const createInitialArrow = useCreateInitialArrow();
 
     const addTemplate = () => {
+      const pan = panzoom.getPan();
+      const random = Math.random();
+
+      const randomizedTileId = (id: number) => "new-tile-" + id + random;
+
       tags.forEach((tag) =>
-        createIniitalTile({
-          dimensions: { x: tag.x, y: tag.y },
+        createInitialTile({
+          id: randomizedTileId(tag.id),
+          dimensions: { x: -pan.x + tag.x * 5, y: -pan.y + tag.y * 6 },
           tags: [tag.name],
+        })
+      );
+
+      arrows.forEach(([startId, endId]) =>
+        createInitialArrow({
+          start: {
+            tileId: randomizedTileId(startId),
+            point: "right",
+          },
+          end: { tileId: randomizedTileId(endId), point: "left" },
         })
       );
     };
@@ -45,9 +65,10 @@ export const TemplatePreview = React.memo(
         )}
 
         <div className="relative bg-white px-5">
-          {tags?.map(({ name, x, y }) => {
+          {tags?.map(({ id, name, x, y }) => {
             return (
               <Tag
+                key={id}
                 name={name}
                 className="absolute z-10"
                 style={{ top: y, left: x }}
@@ -64,6 +85,7 @@ export const TemplatePreview = React.memo(
             const yEndNudge = 10;
             return (
               <BasicArrowSvg
+                key={[startId, endId].toString()}
                 start={{
                   x: startTag.x + xStartNudge,
                   y: startTag.y + yStartNudge,

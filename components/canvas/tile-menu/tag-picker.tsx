@@ -99,7 +99,6 @@ const tagGroups = [
 
       { name: "Benefits", color: "orange", icon: ScaleOutline },
       { name: "Drawbacks", color: "orange", icon: ScaleOutline },
-      { name: "Evidence", color: "orange", icon: ScaleOutline },
       { name: "Pro", color: "green", icon: FolderAddOutline },
       { name: "Con", color: "red", icon: FolderRemoveOutline },
       { name: "Outcome", color: "amber", icon: ChartPieOutline },

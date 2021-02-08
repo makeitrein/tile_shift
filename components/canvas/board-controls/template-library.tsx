@@ -1,24 +1,13 @@
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { useAnimation } from "framer-motion";
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
+import { PanzoomObject } from "../board/panzoom/types";
 import { TemplateOption, templateOptions } from "./template-option";
 import { TemplatePreview } from "./template-preview";
 
-const TileWrapper = styled.div`
-  display: inline-block;
-  position: absolute;
-  width: 240px;
-  height: 140px;
-  margin: 20px;
-  border-radius: 0.5rem;
-  background: #eee;
-  --color: #4af;
-  transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
-`;
-
-interface Props {}
-
+interface Props {
+  panzoom: PanzoomObject;
+}
 const variantsTemplateLibrary = {
   enter: {
     zIndex: 1,
@@ -44,7 +33,7 @@ const variantsTemplatePreview = {
   },
 };
 
-export const TemplateLibrary = React.memo(({}: Props) => {
+export const TemplateLibrary = React.memo(({ panzoom }: Props) => {
   const containerRef = useRef();
   const [template, setTemplate] = useState(null);
   const [preview, setPreview] = useState(false);
@@ -129,7 +118,11 @@ export const TemplateLibrary = React.memo(({}: Props) => {
           !preview && "pointer-events-none"
         }`}
       >
-        <TemplatePreview selectedTemplate={selectedTemplate} goBack={goBack} />
+        <TemplatePreview
+          panzoom={panzoom}
+          selectedTemplate={selectedTemplate}
+          goBack={goBack}
+        />
       </div>
     </div>
   );

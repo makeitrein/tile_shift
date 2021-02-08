@@ -83,7 +83,6 @@ export const ConnectButton = React.memo(({ id, direction }: Props) => {
   const createAndConnectTile = () => {
     const newTileId = tileId();
     createInitialTile({ dimensions: newTileDimensions, id: newTileId });
-    console.log(direction, oppositePointMap[direction]);
     createInitialArrow({
       start: { tileId: id, point: direction },
       end: { tileId: newTileId, point: oppositePointMap[direction] },

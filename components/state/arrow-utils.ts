@@ -12,7 +12,7 @@ export const defaultArrowValues = {
 export const useCreateInitialArrow = () =>
   useRecoilCallback(({ set }) => {
     return (arrowData: Pick<Arrow, "start" | "end">) => {
-      const id = "new-arrow" + new Date().getTime();
+      const id = "new-arrow" + Math.random();
       set(arrowState.initialArrowValues, (arrow) => ({
         ...arrow,
         [id]: { ...defaultArrowValues, id, ...arrowData },

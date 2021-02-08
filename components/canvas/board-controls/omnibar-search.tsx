@@ -49,6 +49,7 @@ export const selectedItem = (tile) => {
   if (!tile) {
     return (
       <Button
+        key="No tile"
         className="w-96"
         alignText="left"
         rightIcon="double-caret-vertical"
@@ -81,7 +82,8 @@ export const itemRenderer = (
   if (!modifiers.matchesPredicate) {
     return null;
   }
-  const label = htmlToText(tile.content) || <i>No content</i>;
+
+  const label = htmlToText(tile.content) || <i key={tile.id}>No content</i>;
   return (
     <MenuItem
       active={modifiers.active}

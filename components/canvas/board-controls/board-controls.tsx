@@ -34,7 +34,7 @@ export const BoardControls = React.memo(
           placement="left"
           className="z-force"
           fill={true}
-          content={<TemplateLibrary />}
+          content={<TemplateLibrary panzoom={panzoom} />}
           renderTarget={({ isOpen, ref, ...targetProps }) => (
             <button
               ref={ref}

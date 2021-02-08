@@ -20,7 +20,7 @@ export const defaultTileValues: Tile = {
   createdAt: getISODateTime(),
 };
 
-export const tileId = () => "new-tile" + new Date().getTime();
+export const tileId = () => "new-tile" + Math.random();
 
 export const useCreateInitialTile = () =>
   useRecoilCallback(({ set }) => {
