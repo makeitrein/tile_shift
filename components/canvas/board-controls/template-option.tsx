@@ -37,7 +37,7 @@ export const TemplateOption = ({
 }) => {
   return (
     <span
-      onClick={() => selectTemplate(title)}
+      onClick={() => selectTemplate && selectTemplate(title)}
       className={`-m-3 p-3 flex items-start  rounded-lg ${
         selectTemplate && "hover:bg-gray-50 cursor-pointer"
       } transition ease-in-out duration-150`}
@@ -77,15 +77,15 @@ export const templateOptions = [
       { id: 2, name: "Stakeholders", x: 20, y: 200 },
       { id: 3, name: "Decision", x: 210, y: 100 },
       { id: 4, name: "Option", x: 400, y: 0 },
-      { id: 5, name: "Option", x: 400, y: 100 },
-      { id: 6, name: "Option", x: 400, y: 200 },
-      { id: 7, name: "Benefits", x: 580, y: -20 },
-      { id: 8, name: "Drawbacks", x: 580, y: 20 },
+      { id: 5, name: "Option", x: 400, y: 80 },
+      { id: 6, name: "Option", x: 400, y: 160 },
+      { id: 7, name: "Benefits", x: 580, y: 0 },
+      { id: 8, name: "Drawbacks", x: 580, y: 40 },
       { id: 9, name: "Benefits", x: 580, y: 80 },
       { id: 10, name: "Drawbacks", x: 580, y: 120 },
-      { id: 11, name: "Benefits", x: 580, y: 180 },
-      { id: 12, name: "Drawbacks", x: 580, y: 220 },
-      { id: 13, name: "Next Steps", x: 400, y: 290 },
+      { id: 11, name: "Benefits", x: 580, y: 160 },
+      { id: 12, name: "Drawbacks", x: 580, y: 200 },
+      { id: 13, name: "Next Steps", x: 400, y: 240 },
       { id: 14, name: "Question", x: 20, y: 100 },
       // { id: 13, name: "Decision", x: 580, y: 320 },
       // { id: 14, name: "Happy Path", x: 580, y: 320 },

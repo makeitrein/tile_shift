@@ -146,7 +146,7 @@ export const TemplateLibrary = React.memo(({}: Props) => {
           </div>
         )}
 
-        <div className="relative bg-white px-5 -mt-5">
+        <div className="relative bg-white px-5">
           {SelectedTemplate?.tags?.map(({ name, x, y }) => {
             return (
               <Tag

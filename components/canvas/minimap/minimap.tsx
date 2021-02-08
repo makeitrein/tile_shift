@@ -1,7 +1,6 @@
 import { throttle } from "lodash";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { totalCanvasPixelSize } from "../board/board";
-import { PanzoomObject } from "../board/panzoom/types";
 import { MiniMapArrows } from "./minimap-arrows";
 import { MiniMapTiles } from "./minimap-tiles";
 
@@ -9,33 +8,27 @@ export const minimapId = "minimap";
 
 export const minimapSizeDivider = 60;
 
-interface Props {
-  panzoom: PanzoomObject;
-  canvas: HTMLDivElement;
-}
-
-export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
+export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
   const [, triggerRerender] = useState(false);
 
   const minimapRef = useRef(null);
 
   const rerenderMinimapThrottled = useCallback(
-    throttle(() => triggerRerender((val) => !val), 25),
+    throttle(() => triggerRerender((val) => !val), 50),
     []
   );
 
   useEffect(() => {
-    canvas?.addEventListener("panzoomchange", () => {
+    canvasRef?.current.addEventListener("panzoomchange", () => {
       rerenderMinimapThrottled();
     });
-  }, [canvas]);
+  }, [canvasRef]);
 
   if (!panzoom) return null;
 
-  const mapSize = totalCanvasPixelSize / (minimapSizeDivider - 2);
   const mapDimensions = {
-    width: mapSize,
-    height: mapSize,
+    width: totalCanvasPixelSize / (minimapSizeDivider - 2),
+    height: totalCanvasPixelSize / (minimapSizeDivider - 2),
   };
 
   const { x, y, minX, maxX, minY, maxY, scale } = panzoom.getPan();
@@ -60,9 +53,6 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
   const left =
     (trueX - trueMinX) / (trueMaxX - trueMinX + window.innerWidth / scale);
 
-  const xDiff = trueMaxX - trueMinX;
-  const yDiff = trueMaxY - trueMinY;
-
   const zoomToTile = (e: React.MouseEvent<HTMLElement>) => {
     if (!panzoom) return;
     const xPercent =
@@ -70,23 +60,20 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
     const yPercent =
       (e.clientY - e.currentTarget.offsetTop) / e.currentTarget.clientHeight;
 
+    const xDiff = trueMaxX - trueMinX;
+    const yDiff = trueMaxY - trueMinY;
+
     const x = xDiff * xPercent + trueMinX;
     const y = yDiff * yPercent + trueMinY;
 
     panzoom.pan(-x, -y, { force: true });
   };
 
-  const width = (mapSize * viewportWidthPercent) / 100;
-  const height = (mapSize * viewportHeightPercent) / 100;
-
-  const translateX = (left * xDiff) / minimapSizeDivider + width / 2;
-  const translateY = (top * yDiff) / minimapSizeDivider + height / 2;
-
   const viewportDimensions = {
-    transition: ".1s transform",
-    transform: `translate(${translateX}px,${translateY}px)`,
-    width: width + "px",
-    height: height + "px",
+    top: top * 100 + "%",
+    left: left * 100 + "%",
+    width: viewportWidthPercent + "%",
+    height: viewportHeightPercent + "%",
   };
 
   return (
