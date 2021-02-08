@@ -2,6 +2,7 @@ import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { ArrowLeftOutline, TemplateOutline } from "heroicons-react";
 import React from "react";
 import { LineOrientation } from "react-simple-arrows";
+import { useCreateInitialTile } from "../../state/tile-utils";
 import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
 import { Tag } from "../tile-menu/tag-picker";
 import { Template, TemplateOption } from "./template-option";
@@ -16,6 +17,16 @@ export const TemplatePreview = React.memo(
     if (!selectedTemplate) return null;
 
     const { title, tags, description, arrows, icon: Icon } = selectedTemplate;
+    const createIniitalTile = useCreateInitialTile();
+
+    const addTemplate = () => {
+      tags.forEach((tag) =>
+        createIniitalTile({
+          dimensions: { x: tag.x, y: tag.y },
+          tags: [tag.name],
+        })
+      );
+    };
 
     return (
       <>
@@ -73,7 +84,10 @@ export const TemplatePreview = React.memo(
           </div>
 
           <div className="flow-root absolute left-1/2 -translate-x-2/4 transform">
-            <span className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-white hover:bg-blue-400 cursor-pointer bg-blue-500 transition ease-in-out duration-150">
+            <span
+              onClick={addTemplate}
+              className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-white hover:bg-blue-400 cursor-pointer bg-blue-500 transition ease-in-out duration-150"
+            >
               <TemplateOutline />
               <span className="ml-3">Use Template</span>
             </span>

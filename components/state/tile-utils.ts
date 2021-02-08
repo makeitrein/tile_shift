@@ -28,12 +28,12 @@ export const useCreateInitialTile = () =>
       dimensions,
       content = "",
       id,
-      tags,
+      tags = [],
     }: {
       dimensions?: Partial<TileDimensions>;
       content?: string;
       id?: string;
-      tags: string[];
+      tags?: string[];
     }) => {
       const newTileId = id || tileId();
       set(tileState.initialTileValues, (tiles) => ({

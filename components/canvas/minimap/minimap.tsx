@@ -1,6 +1,7 @@
 import { throttle } from "lodash";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { totalCanvasPixelSize } from "../board/board";
+import { PanzoomObject } from "../board/panzoom/types";
 import { MiniMapArrows } from "./minimap-arrows";
 import { MiniMapTiles } from "./minimap-tiles";
 
@@ -8,7 +9,12 @@ export const minimapId = "minimap";
 
 export const minimapSizeDivider = 60;
 
-export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
+interface Props {
+  panzoom: PanzoomObject;
+  canvas: HTMLDivElement;
+}
+
+export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
   const [, triggerRerender] = useState(false);
 
   const minimapRef = useRef(null);
@@ -19,10 +25,10 @@ export const MiniMap = React.memo(({ panzoom, canvasRef }) => {
   );
 
   useEffect(() => {
-    canvasRef?.current.addEventListener("panzoomchange", () => {
+    canvas?.addEventListener("panzoomchange", () => {
       rerenderMinimapThrottled();
     });
-  }, [canvasRef]);
+  }, [canvas]);
 
   if (!panzoom) return null;
 
