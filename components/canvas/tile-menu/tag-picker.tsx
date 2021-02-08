@@ -197,7 +197,7 @@ export const Tag = ({
     return (
       <span
         onClick={onClick}
-        className={`inline-flex cursor-pointer items-center px-2.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800`}
+        className={`not-selectable inline-flex cursor-pointer items-center px-2.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800`}
       >
         <TagOutline width={16} /> <span className="pl-1">Uncategorized</span>
       </span>
@@ -226,11 +226,11 @@ export const Tag = ({
     <span
       style={style}
       onClick={onClick}
-      className={`${className} inline-flex  cursor-pointer items-center px-2.5 rounded-full text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
+      className={`not-selectable ${className} inline-flex  cursor-pointer items-center px-2.5 rounded-full text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
     >
-      <Icon width={16} />
+      <Icon className="not-selectable" width={16} />
 
-      <span className="pl-1">{name}</span>
+      <span className="not-selectable pl-1">{name}</span>
     </span>
   );
 };

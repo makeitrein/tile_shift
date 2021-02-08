@@ -5,7 +5,7 @@ import {
   InformationCircleOutline,
   LinkOutline,
   PhotographOutline,
-  TagOutline,
+  TemplateOutline,
   TrashOutline,
 } from "heroicons-react";
 import * as React from "react";
@@ -14,8 +14,8 @@ import useOnClickOutside from "react-cool-onclickoutside";
 import { useRecoilState } from "recoil";
 import { useRemirror } from "remirror/react";
 import { tagPickerOpen } from "../../state/ui";
+import { TemplateLibrary } from "../board-controls/template-library";
 import { LinkWysiwygCreator } from "./link-wysiwyg-creator";
-import { TagPicker } from "./tag-picker";
 import { TooltipMenuItem } from "./tooltip-menu-item";
 
 const variants = {
@@ -87,7 +87,11 @@ export const TileMenu = ({ id }) => {
               fill={true}
               content={
                 <div>
-                  <TagPicker closePanel={() => setPopoverOpen(false)} id={id} />
+                  <TemplateLibrary
+                  // panzoom={panz}
+                  // closePanel={() => setPopoverOpen(false)}
+                  // id={id}
+                  />
                 </div>
               }
               renderTarget={({ isOpen, ref, ...targetProps }) => (
@@ -98,7 +102,7 @@ export const TileMenu = ({ id }) => {
                   {...targetProps}
                   rounded="l-md"
                 >
-                  <TagOutline className="w-4 h-4 mt-1.5 relative top-px" />
+                  <TemplateOutline className="w-4 h-4 mt-1.5 relative top-px" />
                 </TooltipMenuItem>
               )}
             />

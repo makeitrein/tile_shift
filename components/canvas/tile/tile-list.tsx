@@ -14,7 +14,7 @@ export const TileList = React.memo(() => {
 
   return (
     <>
-      <Portal key={editableTileId} id={editableTileId}>
+      <Portal key={editableTileId} id={`editor-${editableTileId}`}>
         <EditorManager id={editableTileId} showToolbar={true} />
       </Portal>
 

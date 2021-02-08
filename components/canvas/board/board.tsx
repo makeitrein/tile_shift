@@ -111,6 +111,9 @@ export const Board = () => {
   );
 
   const selectoOnSelect = useCallback((e) => {
+    if (e.inputEvent.target.classList.contains("not-selectable")) {
+      return;
+    }
     setSelectedTiles(e.selected);
   }, []);
 

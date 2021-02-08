@@ -6,6 +6,8 @@ export interface TileDimensions {
   y: number;
   width: number;
   height: number;
+  expandedWidth?: number;
+  expandedHeight?: number;
 }
 export interface TileSettings {
   isDragging: boolean;
@@ -13,6 +15,7 @@ export interface TileSettings {
   isWysiwygEditorFocused: boolean;
   deleted: boolean;
   createdAt: Date;
+  collapsed: boolean;
 }
 
 export interface Id {
@@ -116,9 +119,17 @@ export const tileSettings = atomFamily<TileSettings, string>({
         isWysiwygEditorFocused,
         deleted,
         createdAt,
+        collapsed,
       } = tiles[id];
 
-      return { tags, isDragging, isWysiwygEditorFocused, deleted, createdAt };
+      return {
+        tags,
+        isDragging,
+        isWysiwygEditorFocused,
+        deleted,
+        createdAt,
+        collapsed,
+      };
     },
   }),
 });

@@ -1,9 +1,7 @@
-import { Classes, Popover2 } from "@blueprintjs/popover2";
-import { HandOutline, SearchOutline, TemplateOutline } from "heroicons-react";
+import { HandOutline, SearchOutline } from "heroicons-react";
 import React, { useState } from "react";
 import { PanzoomObject } from "../board/panzoom/types";
 import { OmnibarSearch } from "./omnibar-search";
-import { TemplateLibrary } from "./template-library";
 
 interface Props {
   panzoom: PanzoomObject;
@@ -27,25 +25,6 @@ export const BoardControls = React.memo(
         >
           <HandOutline />
         </button>
-
-        <Popover2
-          interactionKind="click"
-          popoverClassName={Classes.POPOVER2_CONTENT}
-          placement="left"
-          className="z-force"
-          fill={true}
-          content={<TemplateLibrary panzoom={panzoom} />}
-          renderTarget={({ isOpen, ref, ...targetProps }) => (
-            <button
-              ref={ref}
-              {...targetProps}
-              type="button"
-              className="-mt-px relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
-            >
-              <TemplateOutline />
-            </button>
-          )}
-        />
 
         <button
           onClick={() => setSearchOpen(true)}

@@ -28,7 +28,7 @@ export const useCreateInitialTile = () =>
       dimensions,
       content = "",
       id,
-      tags = [],
+      tags = ["Note"],
     }: {
       dimensions?: Partial<TileDimensions>;
       content?: string;

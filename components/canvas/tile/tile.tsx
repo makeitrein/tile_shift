@@ -1,7 +1,8 @@
 import parse from "html-react-parser";
-import React, { useRef } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import React, { useCallback, useRef } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { useSetTileDimensions } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
 import * as uiState from "../../state/ui";
 import { EditableArticle } from "../text-editor/wysiwig-editor";
@@ -26,6 +27,21 @@ export const TileWrapper = styled.div`
     "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
 `;
 
+export const CollapsedTileWrapper = styled.div`
+  display: inline-block;
+  position: absolute;
+  width: auto;
+  margin: 4px;
+  border-radius: 0.5rem;
+  background: white;
+  --color: #4af;
+  transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
+  z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
+  box-shadow: ${({ isDragging }) =>
+    isDragging &&
+    "-1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);"};
+`;
+
 interface TileProps {
   id: string;
 }
@@ -34,13 +50,19 @@ export const tileTitleElementId = (id: string) => id + "title";
 export const tileDescriptionElementId = (id: string) => id + "description";
 
 export const Tile = React.memo(({ id }: TileProps) => {
-  const ref = useRef();
+  const ref = useRef(null);
   const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
-  const tileSettings = useRecoilValue(tileState.tileSettings(id));
+  const setSelectedTileTargets = useSetRecoilState(
+    tileState.selectedTileTargets
+  );
+  const [tileSettings, setTileSettings] = useRecoilState(
+    tileState.tileSettings(id)
+  );
   const editableTileId = useRecoilValue(tileState.editableTileId);
   const tileContent = useRecoilValue(tileState.tileContent(id));
   const selectedTileIds = useRecoilValue(tileState.selectedTileIds);
   const searchedForTile = useRecoilValue(tileState.searchedForTile);
+  const setTileDimensions = useSetTileDimensions();
 
   const transformStyle = {
     transform: `translate(${tileDimensions.x}px, ${tileDimensions.y}px)`,
@@ -49,7 +71,54 @@ export const Tile = React.memo(({ id }: TileProps) => {
   const isEditable = editableTileId === id;
   const isSearchedFor = searchedForTile === id;
 
-  return (
+  const { collapsed } = tileSettings;
+
+  const toggleCollapse = useCallback(
+    (e) => {
+      setSelectedTileTargets([]);
+
+      if (collapsed) {
+        setTileSettings((settings) => ({
+          ...settings,
+          collapsed: false,
+        }));
+
+        setTileDimensions(id, {
+          width: tileDimensions.expandedWidth,
+          height: tileDimensions.expandedHeight,
+        });
+      } else {
+        setTileSettings((settings) => ({
+          ...settings,
+          collapsed: true,
+        }));
+
+        setTileDimensions(id, {
+          expandedWidth: tileDimensions.width,
+          expandedHeight: tileDimensions.height,
+        });
+
+        setTimeout(() => {
+          const { width, height } = ref.current.getBoundingClientRect();
+          setTileDimensions(id, { width, height });
+        }, 10);
+      }
+    },
+    [collapsed, tileDimensions]
+  );
+
+  return collapsed ? (
+    <CollapsedTileWrapper
+      ref={ref}
+      id={id}
+      style={transformStyle}
+      className={`canvas-tile group p-4
+    ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
+    ${isSearchedFor && "animate-searched"}`}
+    >
+      <Tag onClick={toggleCollapse} name={tileSettings.tags[0]} />
+    </CollapsedTileWrapper>
+  ) : (
     <TileWrapper
       ref={ref}
       id={id}
@@ -64,8 +133,10 @@ export const Tile = React.memo(({ id }: TileProps) => {
         ...transformStyle,
       }}
     >
-      <Tags tags={tileSettings.tags} />
+      <Tags onClick={toggleCollapse} tags={tileSettings.tags} />
       <AvatarComments id={id} />
+      <div id={`editor-${id}`} />
+
       {isEditable && (
         <>
           <ConnectButton id={id} direction="top" />
@@ -147,13 +218,14 @@ export const AvatarComments = React.memo(({ id }: AvatarCommentsProps) => {
 
 interface Props {
   tags: string[];
+  onClick: () => void;
 }
-export const Tags = React.memo(({ tags }: Props) => {
+export const Tags = React.memo(({ tags, onClick }: Props) => {
   const setTagPickerOpen = useSetRecoilState(uiState.tagPickerOpen);
 
   return (
     <div className="mt-2 ml-2">
-      <Tag onClick={() => setTagPickerOpen(true)} name={tags[0]} />
+      <Tag onClick={onClick} name={tags[0]} />
     </div>
   );
 });
