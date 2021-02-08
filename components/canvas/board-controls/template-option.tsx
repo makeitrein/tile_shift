@@ -26,7 +26,7 @@ interface Props {
   icon: React.ReactNode;
   title: string;
   description: string;
-  selectTemplate: (title: string) => void;
+  selectTemplate?: (title: string) => void;
 }
 
 export const TemplateOption = ({
@@ -34,7 +34,7 @@ export const TemplateOption = ({
   title,
   description,
   selectTemplate,
-}) => {
+}: Props) => {
   return (
     <span
       onClick={() => selectTemplate && selectTemplate(title)}
@@ -53,7 +53,18 @@ export const TemplateOption = ({
   );
 };
 
-export const templateOptions = [
+type TemplateArrow = [number, number];
+type TemplateTag = { id: number; name: string; x: number; y: number };
+
+export interface Template {
+  icon: React.FC;
+  title: string;
+  description: string;
+  tags?: TemplateTag[];
+  arrows?: TemplateArrow[];
+}
+
+export const templateOptions: Template[] = [
   {
     icon: FlagOutline,
     title: "Project Scoping",
