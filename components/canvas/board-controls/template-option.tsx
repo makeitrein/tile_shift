@@ -22,7 +22,12 @@ const TileWrapper = styled.div`
   transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
 `;
 
-interface Props {}
+interface Props {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  selectTemplate: (title: string) => void;
+}
 
 export const TemplateOption = ({
   icon,
@@ -33,7 +38,9 @@ export const TemplateOption = ({
   return (
     <span
       onClick={() => selectTemplate(title)}
-      className="-m-3 p-3 flex items-start cursor-pointer rounded-lg hover:bg-gray-50 transition ease-in-out duration-150"
+      className={`-m-3 p-3 flex items-start  rounded-lg ${
+        selectTemplate && "hover:bg-gray-50 cursor-pointer"
+      } transition ease-in-out duration-150`}
     >
       <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-blue-500 text-white sm:h-12 sm:w-12">
         {icon}
@@ -62,26 +69,48 @@ export const templateOptions = [
   },
   {
     icon: ScaleOutline,
-    title: "Decision Evaluation",
+    title: "Decision Making",
     description:
       "Make fast, informed and de-risked decisions by examining your choices and alternate resolutions",
     tags: [
-      { id: 1, name: "Decision", x: 100, y: 100 },
-      { id: 2, name: "Option", x: 260, y: 160 },
-      { id: 3, name: "Option", x: 260, y: 200 },
-      { id: 4, name: "Option", x: 260, y: 240 },
+      { id: 1, name: "Context", x: 20, y: 0 },
+      { id: 2, name: "Stakeholders", x: 20, y: 200 },
+      { id: 3, name: "Decision", x: 210, y: 100 },
+      { id: 4, name: "Option", x: 400, y: 0 },
+      { id: 5, name: "Option", x: 400, y: 100 },
+      { id: 6, name: "Option", x: 400, y: 200 },
+      { id: 7, name: "Benefits", x: 580, y: -20 },
+      { id: 8, name: "Drawbacks", x: 580, y: 20 },
+      { id: 9, name: "Benefits", x: 580, y: 80 },
+      { id: 10, name: "Drawbacks", x: 580, y: 120 },
+      { id: 11, name: "Benefits", x: 580, y: 180 },
+      { id: 12, name: "Drawbacks", x: 580, y: 220 },
+      { id: 13, name: "Next Steps", x: 400, y: 290 },
+      { id: 14, name: "Question", x: 20, y: 100 },
+      // { id: 13, name: "Decision", x: 580, y: 320 },
+      // { id: 14, name: "Happy Path", x: 580, y: 320 },
     ],
     arrows: [
-      [1, 2],
       [1, 3],
-      [1, 4],
+      [2, 3],
+      [3, 4],
+      [3, 5],
+      [3, 6],
+      [4, 7],
+      [4, 8],
+      [5, 9],
+      [5, 10],
+      [6, 11],
+      [6, 12],
+      [3, 13],
+      [14, 3],
     ],
   },
   {
     icon: LightBulbOutline,
     title: "Idea Validation",
     description:
-      "Explore the hidden assumptions and supporting evidence behind your hypotheses",
+      "Explore the hidden assumptions and supporting Benefits behind your hypotheses",
   },
   {
     icon: LightningBoltOutline,

@@ -2,8 +2,9 @@ import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { useAnimation } from "framer-motion";
 import { ArrowLeftOutline, TemplateOutline } from "heroicons-react";
 import React, { useRef, useState } from "react";
-import { ArrowSvg, LineOrientation } from "react-simple-arrows";
+import { LineOrientation } from "react-simple-arrows";
 import styled from "styled-components";
+import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
 import { Tag } from "../tile-menu/tag-picker";
 import { TemplateOption, templateOptions } from "./template-option";
 
@@ -67,7 +68,7 @@ export const TemplateLibrary = React.memo(({}: Props) => {
     }
   };
 
-  const selectedTemplate = templateOptions.find(
+  const SelectedTemplate = templateOptions.find(
     (option) => option.title === template
   );
 
@@ -131,36 +132,54 @@ export const TemplateLibrary = React.memo(({}: Props) => {
           !preview && "pointer-events-none"
         }`}
       >
-        <h3 className="text-sm px-5 py-6 font-medium tracking-wide text-gray-500 uppercase">
-          {template}
+        <h3 className="text-sm px-5 pt-6 font-medium tracking-wide text-gray-500 uppercase">
+          Template Preview
         </h3>
 
-        {selectedTemplate?.tags?.map(({ name, x, y }) => {
-          return (
-            <Tag
-              name={name}
-              className="absolute z-10"
-              style={{ top: y, left: x }}
+        {SelectedTemplate && (
+          <div className="relative w-4/5 bg-white py-4 sm:gap-8 sm:p-8 lg:grid-cols-2">
+            <TemplateOption
+              icon={<SelectedTemplate.icon />}
+              title={SelectedTemplate.title}
+              description={SelectedTemplate.description}
             />
-          );
-        })}
+          </div>
+        )}
 
-        {selectedTemplate?.arrows.map(([startId, endId]) => {
-          const startTag = selectedTemplate.tags.find(
-            (tag) => tag.id === startId
-          );
-          const endTag = selectedTemplate.tags.find((tag) => tag.id === endId);
-          const xStartNudge = 30;
-          const yNudge = 10;
-          const xEndNudge = -5;
-          return (
-            <ArrowSvg
-              start={{ x: startTag.x + xStartNudge, y: startTag.y }}
-              end={{ x: endTag.x + xEndNudge, y: endTag.y + yNudge }}
-              orientation={LineOrientation.HORIZONTAL}
-            />
-          );
-        })}
+        <div className="relative bg-white px-5 -mt-5">
+          {SelectedTemplate?.tags?.map(({ name, x, y }) => {
+            return (
+              <Tag
+                name={name}
+                className="absolute z-10"
+                style={{ top: y, left: x }}
+              />
+            );
+          })}
+
+          {SelectedTemplate?.arrows.map(([startId, endId]) => {
+            const startTag = SelectedTemplate.tags.find(
+              (tag) => tag.id === startId
+            );
+            const endTag = SelectedTemplate.tags.find(
+              (tag) => tag.id === endId
+            );
+            const xStartNudge = 80;
+            const yStartNudge = 10;
+            const xEndNudge = -5;
+            const yEndNudge = 10;
+            return (
+              <BasicArrowSvg
+                start={{
+                  x: startTag.x + xStartNudge,
+                  y: startTag.y + yStartNudge,
+                }}
+                end={{ x: endTag.x + xEndNudge, y: endTag.y + yEndNudge }}
+                orientation={LineOrientation.HORIZONTAL}
+              />
+            );
+          })}
+        </div>
 
         <div className="p-5 bg-gray-50 sm:p-8 flex absolute items-center bottom-0 left-0 right-0">
           <div onClick={() => goBack()}>

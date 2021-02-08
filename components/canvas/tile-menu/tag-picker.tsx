@@ -5,6 +5,7 @@ import {
   ArrowCircleRightOutline,
   BanOutline,
   BeakerOutline,
+  BookOpenOutline,
   CalculatorOutline,
   ChartPieOutline,
   ChartSquareBarOutline,
@@ -96,6 +97,8 @@ const tagGroups = [
       { name: "Stakeholders", color: "light-blue", icon: UsersOutline },
       { name: "Deadline", color: "light-blue", icon: UsersOutline },
 
+      { name: "Benefits", color: "orange", icon: ScaleOutline },
+      { name: "Drawbacks", color: "orange", icon: ScaleOutline },
       { name: "Evidence", color: "orange", icon: ScaleOutline },
       { name: "Pro", color: "green", icon: FolderAddOutline },
       { name: "Con", color: "red", icon: FolderRemoveOutline },
@@ -191,8 +194,7 @@ export const Tag = ({
   style?: CSSProperties;
   className?: string;
 }) => {
-  const tag = [...allTags].find((tag) => tag.name === name);
-  if (!tag)
+  if (!name)
     return (
       <span
         onClick={onClick}
@@ -201,6 +203,11 @@ export const Tag = ({
         <TagOutline width={16} /> <span className="pl-1">Uncategorized</span>
       </span>
     );
+
+  const tag = [...allTags].find((tag) => tag.name === name) || {
+    icon: BookOpenOutline,
+    color: "blue",
+  };
 
   const { icon: Icon, color } = tag;
 
