@@ -50,7 +50,7 @@ export const templateOptions: TemplateOptions = {
     tags: [
       { id: 1, name: "Context", x: 40, y: 0 },
       { id: 2, name: "Stakeholders", x: 40, y: 200 },
-      { id: 14, name: "Question", x: 40, y: 100 },
+      { id: 3, name: "Uncertainties", x: 40, y: 100 },
       { id: selectedTileId, name: "Decision", x: 200, y: 100 },
       { id: 4, name: "Option", x: 360, y: 0 },
       { id: 5, name: "Option", x: 360, y: 80 },
@@ -61,11 +61,13 @@ export const templateOptions: TemplateOptions = {
       { id: 10, name: "Drawbacks", x: 520, y: 120 },
       { id: 11, name: "Benefits", x: 520, y: 160 },
       { id: 12, name: "Drawbacks", x: 520, y: 200 },
-      { id: 13, name: "Next Steps", x: 360, y: 240 },
+      { id: 13, name: "Resolution", x: 360, y: 240 },
+      { id: 14, name: "Next Steps", x: 520, y: 240 },
     ],
     arrows: [
       [1, selectedTileId],
       [2, selectedTileId],
+      [3, selectedTileId],
       [selectedTileId, 4],
       [selectedTileId, 5],
       [selectedTileId, 6],
@@ -76,7 +78,7 @@ export const templateOptions: TemplateOptions = {
       [6, 11],
       [6, 12],
       [selectedTileId, 13],
-      [14, selectedTileId],
+      [13, 14],
     ],
   }),
   idea: () => ({
