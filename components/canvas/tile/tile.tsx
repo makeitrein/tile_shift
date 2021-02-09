@@ -84,8 +84,8 @@ export const Tile = React.memo(({ id }: TileProps) => {
         }));
 
         setTileDimensions(id, {
-          width: tileDimensions.expandedWidth,
-          height: tileDimensions.expandedHeight,
+          width: tileDimensions.expandedWidth || tileWidth,
+          height: tileDimensions.expandedHeight || tileHeight,
         });
       } else {
         setTileSettings((settings) => ({

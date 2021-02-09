@@ -32,9 +32,15 @@ export const TemplatePreview = React.memo(({ goBack, id }: Props) => {
 
     const randomizedTileId = (id: number | string) => "new-tile-" + id + random;
 
+    const centralTag = tags.find((tag) => tag.id === id);
+
     tags.forEach((tag) => {
       if (tag.id !== id) {
-        const magicMultiplier = 6;
+        const magicMultiplier = 5;
+
+        const horizontalDiff = centralTag.x > tag.x ? -tag.x : tag.x;
+        const verticalDiff = centralTag.y > tag.y ? -tag.y : tag.y;
+
         const x = tileDimensions.x + tag.x * magicMultiplier;
         const y = tileDimensions.y + tag.y * magicMultiplier;
         createInitialTile({

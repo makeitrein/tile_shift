@@ -18,6 +18,7 @@ export const defaultTileValues: Tile = {
   tags: [],
   deleted: false,
   createdAt: getISODateTime(),
+  collapsed: false,
 };
 
 export const tileId = () => "new-tile" + Math.random();
