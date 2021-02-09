@@ -53,7 +53,7 @@ export const tileDescriptionElementId = (id: string) => id + "description";
 export const Tile = React.memo(({ id }: TileProps) => {
   const tileRef = useRef(null);
   const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
-  const setSelectedTileTargets = useSetRecoilState(
+  const [selectedTileTargets, setSelectedTileTargets] = useRecoilState(
     tileState.selectedTileTargets
   );
   const disablePan = useRecoilValue(uiState.disablePan);
@@ -79,6 +79,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
   const disablePanzoomPanningClass = "panzoom-exclude";
 
   const selectTile = useCallback(() => {
+    // || (disablePan && selectedTileTargets.length <= 1)
     if (!disablePan) {
       setSelectedTileTargets([tileRef.current]);
     }
