@@ -122,7 +122,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
 
   return collapsed ? (
     <CollapsedTileWrapper
-      onClick={selectTile}
+      onMouseOver={selectTile}
       ref={tileRef}
       id={id}
       style={transformStyle}
@@ -137,7 +137,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
     </CollapsedTileWrapper>
   ) : (
     <TileWrapper
-      onClick={selectTile}
+      onMouseOver={selectTile}
       ref={tileRef}
       id={id}
       isDragging={tileSettings.isDragging}
