@@ -8,24 +8,31 @@ import {
 } from "heroicons-react";
 import { atom, selector } from "recoil";
 
-type TemplateArrow = [number | string, number | string];
+type TagId = number;
+
+type TemplateArrow = [TagId, TagId];
 type TemplateTag = {
-  id: string | number;
   name: string;
   x: number;
   y: number;
-  selectedTile?: boolean;
 };
 
 export interface Template {
   icon: React.FC;
   title: string;
   description: string;
-  tags?: TemplateTag[];
+  focalTagId?: TagId;
+  tags?: Record<TagId, TemplateTag>;
   arrows?: TemplateArrow[];
 }
 
-export type TemplateMaker = (selectedTileId?: string | number) => Template;
+interface Coordinates {
+  x?: number;
+  y?: number;
+  multiplier?: number;
+}
+
+export type TemplateMaker = (coordinates?: Coordinates) => Template;
 
 type TemplateOptions = Record<string, TemplateMaker>;
 
@@ -42,42 +49,96 @@ export const templateOptions: TemplateOptions = {
     description:
       "Prioritize, track, and manage each of your project's tasks throught its lifecycle",
   }),
-  decision: (selectedTileId = 101010) => ({
+  decision: ({ x = 0, y = 0, multiplier = 1 } = {}) => ({
     icon: ScaleOutline,
     title: "Decision Making",
     description:
       "Make fast, informed and de-risked decisions by examining your choices and alternate resolutions",
-    tags: [
-      { id: 1, name: "Context", x: 40, y: 0 },
-      { id: 2, name: "Stakeholders", x: 40, y: 200 },
-      { id: 3, name: "Uncertainties", x: 40, y: 100 },
-      { id: selectedTileId, name: "Decision", x: 200, y: 100 },
-      { id: 4, name: "Option", x: 360, y: 0 },
-      { id: 5, name: "Option", x: 360, y: 80 },
-      { id: 6, name: "Option", x: 360, y: 160 },
-      { id: 7, name: "Benefits", x: 520, y: 0 },
-      { id: 8, name: "Drawbacks", x: 520, y: 40 },
-      { id: 9, name: "Benefits", x: 520, y: 80 },
-      { id: 10, name: "Drawbacks", x: 520, y: 120 },
-      { id: 11, name: "Benefits", x: 520, y: 160 },
-      { id: 12, name: "Drawbacks", x: 520, y: 200 },
-      { id: 13, name: "Resolution", x: 360, y: 240 },
-      { id: 14, name: "Next Steps", x: 520, y: 240 },
-    ],
+
+    focalTagId: 55,
+    tags: {
+      1: { name: "Context", x: x + 40 * multiplier, y: y + 0 * multiplier },
+      2: {
+        name: "Stakeholders",
+        x: x + 40 * multiplier,
+        y: y + 200 * multiplier,
+      },
+      3: {
+        name: "Uncertainties",
+        x: x + 40 * multiplier,
+        y: y + 100 * multiplier,
+      },
+      55: {
+        name: "Decision",
+        x: x + 200 * multiplier,
+        y: y + 100 * multiplier,
+      },
+      4: { name: "Option", x: x + 360 * multiplier, y: y + 0 * multiplier },
+      5: {
+        name: "Option",
+        x: x + 360 * multiplier,
+        y: y + 80 * multiplier,
+      },
+      6: {
+        name: "Option",
+        x: x + 360 * multiplier,
+        y: y + 160 * multiplier,
+      },
+      7: {
+        name: "Benefits",
+        x: x + 520 * multiplier,
+        y: y + 0 * multiplier,
+      },
+      8: {
+        name: "Drawbacks",
+        x: x + 520 * multiplier,
+        y: y + 40 * multiplier,
+      },
+      9: {
+        name: "Benefits",
+        x: x + 520 * multiplier,
+        y: y + 80 * multiplier,
+      },
+      10: {
+        name: "Drawbacks",
+        x: x + 520 * multiplier,
+        y: y + 120 * multiplier,
+      },
+      11: {
+        name: "Benefits",
+        x: x + 520 * multiplier,
+        y: y + 160 * multiplier,
+      },
+      12: {
+        name: "Drawbacks",
+        x: x + 520 * multiplier,
+        y: y + 200 * multiplier,
+      },
+      13: {
+        name: "Resolution",
+        x: x + 360 * multiplier,
+        y: y + 240 * multiplier,
+      },
+      14: {
+        name: "Next Steps",
+        x: x + 520 * multiplier,
+        y: y + 240 * multiplier,
+      },
+    },
     arrows: [
-      [1, selectedTileId],
-      [2, selectedTileId],
-      [3, selectedTileId],
-      [selectedTileId, 4],
-      [selectedTileId, 5],
-      [selectedTileId, 6],
+      [1, 55],
+      [2, 55],
+      [3, 55],
+      [55, 4],
+      [55, 5],
+      [55, 6],
       [4, 7],
       [4, 8],
       [5, 9],
       [5, 10],
       [6, 11],
       [6, 12],
-      [selectedTileId, 13],
+      [55, 13],
       [13, 14],
     ],
   }),

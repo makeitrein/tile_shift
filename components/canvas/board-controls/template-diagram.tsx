@@ -16,7 +16,7 @@ export const TemplateDiagram = React.memo(() => {
   return (
     <>
       <div className="relative bg-white px-5">
-        {tags.map(({ id, name, x, y }) => {
+        {Object.entries(tags).map(([id, { name, x, y }]) => {
           return (
             <Tag
               key={id}
@@ -28,8 +28,8 @@ export const TemplateDiagram = React.memo(() => {
         })}
 
         {arrows.map(([startId, endId]) => {
-          const startTag = tags.find((tag) => tag.id === startId);
-          const endTag = tags.find((tag) => tag.id === endId);
+          const startTag = tags[startId];
+          const endTag = tags[endId];
           const xStartNudge = 80;
           const yStartNudge = 10;
           const xEndNudge = -5;

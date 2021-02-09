@@ -75,3 +75,10 @@ body {
 .will-transform {
   will-change: transform;
 }
+
+.nw-resize {
+  cursor: nw-resize;
+}
+.se-resize {
+  cursor: se-resize;
+}

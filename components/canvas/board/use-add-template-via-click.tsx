@@ -30,24 +30,38 @@ export const useAddTemplateViaClick = (canvasEditor) => {
       const clickX = e.nativeEvent.offsetX;
       const clickY = e.nativeEvent.offsetY;
 
-      const { tags, arrows } = selectedTemplate();
+      const { tags, arrows, focalTagId } = selectedTemplate({
+        x: clickX,
+        y: clickY,
+        multiplier: 5,
+      });
+
+      const focalTag = tags[focalTagId];
+      const focalTagX = focalTag.x + clickX;
+      const focalTagY = focalTag.y + clickY;
+
+      console.log(focalTag);
 
       const random = Math.random();
 
       const randomizedTileId = (id: number | string) =>
         "new-tile-" + id + random;
 
-      tags.forEach((tag) => {
-        const magicMultiplier = 6;
-        const x = clickX + tag.x * magicMultiplier;
-        const y = clickY + tag.y * magicMultiplier;
-        createInitialTile({
-          id: randomizedTileId(tag.id),
-          dimensions: { x, y, width: 100, height: 50 },
-          tags: [tag.name],
-          collapsed: true,
+      {
+        Object.entries(tags).map(([id, { name, x, y }]) => {
+          createInitialTile({
+            id: randomizedTileId(id),
+            dimensions: {
+              x: x,
+              y: y,
+              width: 100,
+              height: 20,
+            },
+            tags: [name],
+            collapsed: true,
+          });
         });
-      });
+      }
 
       arrows.forEach(([startId, endId]) =>
         createInitialArrow({

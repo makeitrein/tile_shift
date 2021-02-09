@@ -14,17 +14,26 @@ export const InjectTemplateCursor = ({ canvasEditor }) => {
 };
 
 export const TempateCursor = ({ canvasEditor }) => {
+  const selectedTemplate = useRecoilValue(templateState.selectedTemplate);
   const cursorInnerRef = useRef(null);
   const [coords, setCoords] = useState({ x: null, y: null });
 
   let endX = useRef(0);
   let endY = useRef(0);
 
+  const { tags, focalTagId } = selectedTemplate();
+
+  const focalTag = tags[focalTagId];
+  const { x, y } = focalTag;
+
+  const nudgeY = -10;
+  const nudgeX = 4;
+
   // Primary Mouse Move event
   const onMouseMove = useCallback(({ clientX, clientY }) => {
     setCoords({ x: clientX, y: clientY });
-    cursorInnerRef.current.style.top = clientY - 90 + "px";
-    cursorInnerRef.current.style.left = clientX - 250 + "px";
+    cursorInnerRef.current.style.left = clientX + "px";
+    cursorInnerRef.current.style.top = clientY + "px";
     endX.current = clientX;
     endY.current = clientY;
   }, []);

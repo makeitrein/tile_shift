@@ -132,7 +132,11 @@ export const Tile = React.memo(({ id }: TileProps) => {
       }
     ${isSearchedFor && "animate-searched"}`}
     >
-      <Tag onClick={toggleCollapse} name={tileSettings.tags[0]}>
+      <Tag
+        className="se-resize"
+        onClick={toggleCollapse}
+        name={tileSettings.tags[0]}
+      >
         <ArrowsExpandOutline size={18} />
       </Tag>
     </CollapsedTileWrapper>
@@ -244,7 +248,7 @@ export const Tags = React.memo(({ tags, onClick }: Props) => {
 
   return (
     <div className="mt-2 ml-2">
-      <Tag onClick={onClick} name={tags[0]}></Tag>
+      <Tag className="nw-resize" onClick={onClick} name={tags[0]}></Tag>
     </div>
   );
 });

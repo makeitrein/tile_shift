@@ -10,7 +10,8 @@ import { TemplatePreview } from "./template-preview";
 interface Props {
   id: string;
 }
-const variantsTemplateLibrary = {
+
+export const animateLeft = {
   enter: {
     zIndex: 1,
     transform: "translateX(0px)",
@@ -23,7 +24,7 @@ const variantsTemplateLibrary = {
   },
 };
 
-const variantsTemplatePreview = {
+export const animateRight = {
   enter: {
     zIndex: 1,
     transform: "translateX(0px)",
@@ -47,7 +48,7 @@ export const TemplateLibrary = React.memo(({ id }: Props) => {
 
   const goBack = () => setPreview(false);
   const selectTemplate = (templateId: string) => {
-    setSelectedTemplateId({ templateId });
+    setSelectedTemplateId({ templateId, replaceCursor: false });
     setPreview(true);
     if (preview) {
       templateControls.start("exit");
@@ -69,11 +70,7 @@ export const TemplateLibrary = React.memo(({ id }: Props) => {
         className={`absolute will-transform z-1 transition duration-300	 ${
           preview && "pointer-events-none"
         }`}
-        style={
-          !preview
-            ? variantsTemplateLibrary.enter
-            : variantsTemplateLibrary.exit
-        }
+        style={!preview ? animateLeft.enter : animateLeft.exit}
       >
         <h3 className="text-sm px-5 pt-6 font-medium tracking-wide text-gray-500 uppercase">
           TileShift Templates
@@ -109,9 +106,7 @@ export const TemplateLibrary = React.memo(({ id }: Props) => {
 
       <div
         key="toolbar2"
-        style={
-          preview ? variantsTemplatePreview.enter : variantsTemplatePreview.exit
-        }
+        style={preview ? animateRight.enter : animateRight.exit}
         className={`absolute will-transform transition duration-300	 inset-0 ${
           !preview && "pointer-events-none"
         }`}
