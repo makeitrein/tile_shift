@@ -42,7 +42,7 @@ export const templateOptions: TemplateOptions = {
     description:
       "Prioritize, track, and manage each of your project's tasks throught its lifecycle",
   }),
-  decision: (selectedTileId = 3) => ({
+  decision: (selectedTileId = 3003) => ({
     icon: ScaleOutline,
     title: "Decision Making",
     description:
