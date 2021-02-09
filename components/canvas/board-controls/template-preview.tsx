@@ -33,26 +33,32 @@ export const TemplatePreview = React.memo(({ goBack, id }: Props) => {
     const randomizedTileId = (id: number | string) => "new-tile-" + id + random;
 
     tags.forEach((tag) => {
-      const magicMultiplier = 6;
-      const x = tileDimensions.x + tag.x * magicMultiplier;
-      const y = tileDimensions.y + tag.y * magicMultiplier;
-      createInitialTile({
-        id: randomizedTileId(tag.id),
-        dimensions: { x, y, width: 40, height: 50 },
-        tags: [tag.name],
-        collapsed: true,
-      });
+      if (tag.id !== id) {
+        const magicMultiplier = 6;
+        const x = tileDimensions.x + tag.x * magicMultiplier;
+        const y = tileDimensions.y + tag.y * magicMultiplier;
+        createInitialTile({
+          id: randomizedTileId(tag.id),
+          dimensions: { x, y, width: 40, height: 50 },
+          tags: [tag.name],
+          collapsed: true,
+        });
+      }
     });
 
-    arrows.forEach(([startId, endId]) =>
+    arrows.forEach(([startId, endId]) => {
+      const maybeRandomizedStartId =
+        startId === id ? id : randomizedTileId(startId);
+      const maybeRandomizedEndId = endId === id ? id : randomizedTileId(endId);
+
       createInitialArrow({
         start: {
-          tileId: randomizedTileId(startId),
+          tileId: maybeRandomizedStartId,
           point: "right",
         },
-        end: { tileId: randomizedTileId(endId), point: "left" },
-      })
-    );
+        end: { tileId: maybeRandomizedEndId, point: "left" },
+      });
+    });
 
     setSelectedTemplateId({ templateId: null });
   }, [selectedTemplateId, tileDimensions]);
