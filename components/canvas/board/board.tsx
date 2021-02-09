@@ -51,6 +51,8 @@ const Canvas = styled.div`
   }
 `;
 
+export const noSelectoClass = "no-selecto-class";
+
 export const Board = () => {
   const [selectedTiles, setSelectedTiles] = useRecoilState(
     tileState.selectedTileTargets
@@ -111,7 +113,7 @@ export const Board = () => {
   );
 
   const selectoOnSelect = useCallback((e) => {
-    if (e.inputEvent.target.classList.contains("not-selectable")) {
+    if (e.inputEvent.target.classList.contains(noSelectoClass)) {
       return;
     }
     setSelectedTiles(e.selected);
@@ -247,21 +249,19 @@ export const Board = () => {
           panzoom={panzoomRef.current}
         />
 
-        {disablePan && (
-          <Selecto
-            ref={selectoRef}
-            dragContainer={".canvas"}
-            selectableTargets={[".canvas-tile"]}
-            hitRate={0}
-            selectByClick={true}
-            selectFromInside={false}
-            toggleContinueSelect={["shift"]}
-            ratio={0}
-            onDragStart={selectoOnDragStart}
-            onSelect={selectoOnSelect}
-            onSelectEnd={selectoOnSelectEnd}
-          />
-        )}
+        <Selecto
+          ref={selectoRef}
+          dragContainer={".canvas"}
+          selectableTargets={[".canvas-tile"]}
+          hitRate={0}
+          selectByClick={true}
+          selectFromInside={false}
+          toggleContinueSelect={["shift"]}
+          ratio={0}
+          onDragStart={selectoOnDragStart}
+          onSelect={selectoOnSelect}
+          onSelectEnd={selectoOnSelectEnd}
+        />
         <Canvas ref={canvasRef} className="canvas">
           <Moveable
             ref={moveableRef}

@@ -22,6 +22,7 @@ import {
 import React, { CSSProperties } from "react";
 import { useSetRecoilState } from "recoil";
 import * as tileState from "../../state/tiles";
+import { noSelectoClass } from "../board/board";
 
 const tagGroups = [
   {
@@ -198,12 +199,11 @@ export const Tag = ({
     <span
       style={style}
       onClick={onClick}
-      className={`not-selectable ${className} inline-flex  cursor-pointer items-center py-1 px-2 rounded-md text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
+      className={`${noSelectoClass} ${className} inline-flex  cursor-pointer items-center py-1 px-2 rounded-md text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
     >
-      {/* <Icon className="not-selectable" width={16} /> */}
-      {children}
+      {/* <Icon className="no-selecto" width={16} /> */}
 
-      <span className="not-selectable pl-1">{name}</span>
+      <span className={noSelectoClass}>{name}</span>
     </span>
   );
 };
