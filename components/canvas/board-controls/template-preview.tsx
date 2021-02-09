@@ -2,9 +2,7 @@ import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { ArrowLeftOutline, TemplateOutline } from "heroicons-react";
 import React from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useCreateInitialArrow } from "../../state/arrow-utils";
 import * as templateState from "../../state/template";
-import { useCreateInitialTile } from "../../state/tile-utils";
 import { TemplateDiagram } from "./template-diagram";
 import { TemplateOption } from "./template-option";
 
@@ -20,9 +18,6 @@ export const TemplatePreview = React.memo(({ goBack, id }: Props) => {
   );
 
   const selectedTemplate = useRecoilValue(templateState.selectedTemplate);
-
-  const createInitialTile = useCreateInitialTile();
-  const createInitialArrow = useCreateInitialArrow();
 
   if (!setSelectedTemplateId) return null;
 
@@ -51,7 +46,15 @@ export const TemplatePreview = React.memo(({ goBack, id }: Props) => {
         </div>
 
         <div className="flow-root absolute left-1/2 -translate-x-2/4 transform">
-          <span className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-white hover:bg-blue-400 cursor-pointer bg-blue-500 transition ease-in-out duration-150">
+          <span
+            onClick={() =>
+              setSelectedTemplateId((template) => ({
+                ...template,
+                replaceCursor: true,
+              }))
+            }
+            className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-white hover:bg-blue-400 cursor-pointer bg-blue-500 transition ease-in-out duration-150"
+          >
             <TemplateOutline />
             <span className="ml-3">Use Template</span>
           </span>

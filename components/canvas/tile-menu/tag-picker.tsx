@@ -1,38 +1,23 @@
 import {
   AcademicCapOutline,
-  AdjustmentsOutline,
   ArchiveOutline,
-  ArrowCircleRightOutline,
   BanOutline,
   BeakerOutline,
   BookOpenOutline,
   CalculatorOutline,
-  ChartPieOutline,
   ChartSquareBarOutline,
   ClipboardListOutline,
-  ClockOutline,
   CollectionOutline,
-  CursorClickOutline,
   ExclamationOutline,
   ExternalLinkOutline,
   FingerPrintOutline,
   FireOutline,
   FlagOutline,
-  FolderAddOutline,
-  FolderRemoveOutline,
-  InformationCircleOutline,
   PencilAltOutline,
   PhotographOutline,
-  PlusOutline,
   PuzzleOutline,
   QuestionMarkCircleOutline,
-  ScaleOutline,
-  ShieldExclamationOutline,
   SpeakerphoneOutline,
-  SunOutline,
-  TagOutline,
-  UsersOutline,
-  VariableOutline,
 } from "heroicons-react";
 import React, { CSSProperties } from "react";
 import { useSetRecoilState } from "recoil";
@@ -40,7 +25,7 @@ import * as tileState from "../../state/tiles";
 
 const tagGroups = [
   {
-    name: "Ideation",
+    name: "Vision",
     tags: [
       { name: "Thesis", color: "light-blue", icon: AcademicCapOutline },
       {
@@ -52,11 +37,10 @@ const tagGroups = [
       { name: "Question", color: "orange", icon: QuestionMarkCircleOutline },
       { name: "Evidence", color: "green", icon: FingerPrintOutline },
       { name: "Counterpoint", color: "red", icon: ExclamationOutline },
-      { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },
   {
-    name: "Scoping",
+    name: "Blocker",
     tags: [
       {
         name: "Proposal",
@@ -72,63 +56,60 @@ const tagGroups = [
       },
       { name: "Solution", color: "green", icon: ChartSquareBarOutline },
       { name: "Problem", color: "red", icon: FireOutline },
-      { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },
-  {
-    name: "Causality",
-    tags: [
-      { name: "When...", color: "light-blue", icon: ClockOutline },
-      { name: "If...", color: "indigo", icon: AdjustmentsOutline },
-      { name: "Then...", color: "amber", icon: ArrowCircleRightOutline },
-      { name: "Because...", color: "orange", icon: VariableOutline },
-      { name: "Therefore...", color: "green", icon: SunOutline },
-      { name: "Unless...", color: "red", icon: ShieldExclamationOutline },
-      { name: "Add Tag", color: "gray", icon: PlusOutline },
-    ],
-  },
+  // },
+  // {
+  //   name: "Causality",
+  //   tags: [
+  //     { name: "When...", color: "light-blue", icon: ClockOutline },
+  //     { name: "If...", color: "indigo", icon: AdjustmentsOutline },
+  //     { name: "Then...", color: "amber", icon: ArrowCircleRightOutline },
+  //     { name: "Because...", color: "orange", icon: VariableOutline },
+  //     { name: "Therefore...", color: "green", icon: SunOutline },
+  //     { name: "Unless...", color: "red", icon: ShieldExclamationOutline },
+  //   ],
+  // },
 
-  {
-    name: "Decision Making",
-    tags: [
-      { name: "Context", color: "light-blue", icon: InformationCircleOutline },
-      { name: "Decision", color: "light-blue", icon: ScaleOutline },
-      { name: "Option", color: "indigo", icon: CursorClickOutline },
-      { name: "Stakeholders", color: "light-blue", icon: UsersOutline },
-      { name: "Deadline", color: "light-blue", icon: UsersOutline },
+  // {
+  //   name: "Decision Making",
+  //   tags: [
+  //     { name: "Context", color: "light-blue", icon: InformationCircleOutline },
+  //     { name: "Decision", color: "light-blue", icon: ScaleOutline },
+  //     { name: "Option", color: "indigo", icon: CursorClickOutline },
+  //     { name: "Stakeholders", color: "light-blue", icon: UsersOutline },
+  //     { name: "Deadline", color: "light-blue", icon: UsersOutline },
 
-      { name: "Benefits", color: "orange", icon: ScaleOutline },
-      { name: "Drawbacks", color: "orange", icon: ScaleOutline },
-      { name: "Pro", color: "green", icon: FolderAddOutline },
-      { name: "Con", color: "red", icon: FolderRemoveOutline },
-      { name: "Outcome", color: "amber", icon: ChartPieOutline },
-      { name: "Add Tag", color: "gray", icon: PlusOutline },
-    ],
-  },
+  //     { name: "Benefits", color: "orange", icon: ScaleOutline },
+  //     { name: "Drawbacks", color: "orange", icon: ScaleOutline },
+  //     { name: "Pro", color: "green", icon: FolderAddOutline },
+  //     { name: "Con", color: "red", icon: FolderRemoveOutline },
+  //     { name: "Outcome", color: "amber", icon: ChartPieOutline },
+  //   ],
+  // },
 
-  {
-    name: "Questions",
-    tags: [
-      { name: "Why?", color: "light-blue", icon: ClockOutline },
-      { name: "Where?", color: "indigo", icon: ClockOutline },
-      { name: "Who?", color: "amber", icon: ClockOutline },
-      { name: "When?", color: "orange", icon: ClockOutline },
-      { name: "How?", color: "green", icon: ClockOutline },
-    ],
-  },
+  // {
+  //   name: "Questions",
+  //   tags: [
+  //     { name: "Why?", color: "light-blue", icon: ClockOutline },
+  //     { name: "Where?", color: "indigo", icon: ClockOutline },
+  //     { name: "Who?", color: "amber", icon: ClockOutline },
+  //     { name: "When?", color: "orange", icon: ClockOutline },
+  //     { name: "How?", color: "green", icon: ClockOutline },
+  //   ],
+  // },
 
-  {
-    name: "Time",
-    tags: [
-      { name: "Deadline", color: "light-blue", icon: ClockOutline },
-      { name: "Availability", color: "indigo", icon: ClockOutline },
-      { name: "Estimate", color: "amber", icon: ClockOutline },
-      { name: "Daily Checkin", color: "orange", icon: ClockOutline },
-      { name: "Weekly Recap", color: "green", icon: ClockOutline },
-      { name: "Overdue", color: "red", icon: ClockOutline },
-      { name: "Add Tag", color: "gray", icon: PlusOutline },
-    ],
-  },
+  // {
+  //   name: "Time",
+  //   tags: [
+  //     { name: "Deadline", color: "light-blue", icon: ClockOutline },
+  //     { name: "Availability", color: "indigo", icon: ClockOutline },
+  //     { name: "Estimate", color: "amber", icon: ClockOutline },
+  //     { name: "Daily Checkin", color: "orange", icon: ClockOutline },
+  //     { name: "Weekly Recap", color: "green", icon: ClockOutline },
+  //     { name: "Overdue", color: "red", icon: ClockOutline },
+  //   ],
+  // },
 
   {
     name: "General",
@@ -139,19 +120,18 @@ const tagGroups = [
       { name: "Resource", color: "gray", icon: ExternalLinkOutline },
       { name: "Todo", color: "gray", icon: ClipboardListOutline },
       { name: "Archive", color: "gray", icon: ArchiveOutline },
-      { name: "Add Tag", color: "gray", icon: PlusOutline },
     ],
   },
 
-  {
-    name: "People",
-    tags: [{ name: "Add Tag", color: "gray", icon: PlusOutline }],
-  },
+  // {
+  //   name: "People",
+  //   tags: [{ name: "Add Tag", color: "gray", icon: PlusOutline }],
+  // },
 
-  {
-    name: "Teams",
-    tags: [{ name: "Add Tag", color: "gray", icon: PlusOutline }],
-  },
+  // {
+  //   name: "Teams",
+  //   tags: [{ name: "Add Tag", color: "gray", icon: PlusOutline }],
+  // },
 ];
 
 const allTags = tagGroups.map((group) => group.tags).flat();
@@ -187,22 +167,14 @@ export const Tag = ({
   onClick,
   style,
   className,
+  children,
 }: {
   name: string;
+  children?: React.ReactNode;
   onClick?: () => void;
   style?: CSSProperties;
   className?: string;
 }) => {
-  if (!name)
-    return (
-      <span
-        onClick={onClick}
-        className={`not-selectable inline-flex cursor-pointer items-center px-2.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800`}
-      >
-        <TagOutline width={16} /> <span className="pl-1">Uncategorized</span>
-      </span>
-    );
-
   const tag = [...allTags].find((tag) => tag.name === name) || {
     icon: BookOpenOutline,
     color: "blue",
@@ -226,9 +198,10 @@ export const Tag = ({
     <span
       style={style}
       onClick={onClick}
-      className={`not-selectable ${className} inline-flex  cursor-pointer items-center px-2.5 rounded-full text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
+      className={`not-selectable ${className} inline-flex  cursor-pointer items-center py-1 px-2 rounded-md text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
     >
-      <Icon className="not-selectable" width={16} />
+      {/* <Icon className="not-selectable" width={16} /> */}
+      {children}
 
       <span className="not-selectable pl-1">{name}</span>
     </span>

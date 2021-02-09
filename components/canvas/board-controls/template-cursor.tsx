@@ -49,8 +49,9 @@ export const TempateCursor = () => {
         const y = clickY - window.innerHeight + tag.y * magicMultiplier;
         createInitialTile({
           id: randomizedTileId(tag.id),
-          dimensions: { x, y },
+          dimensions: { x, y, width: 100, height: 50 },
           tags: [tag.name],
+          collapsed: true,
         });
       });
 
@@ -75,8 +76,8 @@ export const TempateCursor = () => {
   // Primary Mouse Move event
   const onMouseMove = useCallback(({ clientX, clientY }) => {
     setCoords({ x: clientX, y: clientY });
-    cursorInnerRef.current.style.top = clientY + "px";
-    cursorInnerRef.current.style.left = clientX + "px";
+    cursorInnerRef.current.style.top = clientY - 90 + "px";
+    cursorInnerRef.current.style.left = clientX - 250 + "px";
     endX.current = clientX;
     endY.current = clientY;
   }, []);

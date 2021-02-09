@@ -1,3 +1,4 @@
+import { ArrowsExpandOutline } from "heroicons-react";
 import parse from "html-react-parser";
 import React, { useCallback, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -73,6 +74,8 @@ export const Tile = React.memo(({ id }: TileProps) => {
 
   const { collapsed } = tileSettings;
 
+  const disablePanzoomPanningClass = "panzoom-exclude";
+
   const toggleCollapse = useCallback(
     (e) => {
       setSelectedTileTargets([]);
@@ -112,11 +115,14 @@ export const Tile = React.memo(({ id }: TileProps) => {
       ref={ref}
       id={id}
       style={transformStyle}
-      className={`canvas-tile group p-4
-    ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
+      className={`${disablePanzoomPanningClass} canvas-tile group p-4  ${
+        tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"
+      }
     ${isSearchedFor && "animate-searched"}`}
     >
-      <Tag onClick={toggleCollapse} name={tileSettings.tags[0]} />
+      <Tag onClick={toggleCollapse} name={tileSettings.tags[0]}>
+        <ArrowsExpandOutline size={18} />
+      </Tag>
     </CollapsedTileWrapper>
   ) : (
     <TileWrapper
@@ -124,7 +130,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
       id={id}
       isDragging={tileSettings.isDragging}
       isSelected={isSelected}
-      className={`canvas-tile group p-2 bg-white
+      className={`${disablePanzoomPanningClass} canvas-tile group p-2 bg-white
       ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
       ${isSearchedFor && "animate-searched"}`}
       style={{
@@ -225,7 +231,7 @@ export const Tags = React.memo(({ tags, onClick }: Props) => {
 
   return (
     <div className="mt-2 ml-2">
-      <Tag onClick={onClick} name={tags[0]} />
+      <Tag onClick={onClick} name={tags[0]}></Tag>
     </div>
   );
 });

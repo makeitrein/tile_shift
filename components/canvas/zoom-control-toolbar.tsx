@@ -6,19 +6,16 @@ interface Props {
   panzoom: PanzoomObject;
 }
 
-export const useZoom = (panzoom) =>
-  useCallback(
-    (scale: number, relative = true) => {
-      panzoom.zoomToPoint(relative ? panzoom.getScale() : 0 + scale, {
+export const ZoomControlToolbar = React.memo(({ panzoom }: Props) => {
+  const zoom = useCallback(
+    (scale: number) => {
+      panzoom.zoomToPoint(panzoom.getScale() + scale, {
         clientX: window.innerWidth / 2,
         clientY: window.innerHeight / 2,
       });
     },
     [panzoom]
   );
-
-export const ZoomControlToolbar = React.memo(({ panzoom }: Props) => {
-  const zoom = useZoom(panzoom);
 
   return (
     <div className="fixed top-4 right-44 pr-3 z-overlay">

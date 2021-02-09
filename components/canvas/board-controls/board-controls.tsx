@@ -23,7 +23,7 @@ export const BoardControls = React.memo(
         <button
           onClick={toggleDisablePan}
           type="button"
-          className={`relative inline-flex items-center px-3 py-2 rounded-t-md border border-${primaryColor}-300 bg-${bgColor} text-sm font-medium text-${primaryColor}-600 hover:bg-${bgColor}-300 focus:z-10 focus:outline-none`}
+          className={`relative inline-flex rounded-t-md items-center px-3 py-2 -mt-px  border border-${primaryColor}-300 bg-${bgColor} text-sm font-medium text-${primaryColor}-600 hover:bg-${bgColor}-300 focus:z-10 focus:outline-none`}
         >
           <HandOutline />
         </button>
