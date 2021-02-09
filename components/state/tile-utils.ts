@@ -29,11 +29,13 @@ export const useCreateInitialTile = () =>
       content = "",
       id,
       tags = ["Note"],
+      collapsed = false,
     }: {
       dimensions?: Partial<TileDimensions>;
       content?: string;
       id?: string;
       tags?: string[];
+      collapsed?: boolean;
     }) => {
       const newTileId = id || tileId();
       set(tileState.initialTileValues, (tiles) => ({
@@ -45,6 +47,7 @@ export const useCreateInitialTile = () =>
           ...dimensions,
           tags,
           createdAt: getISODateTime(),
+          collapsed,
         },
       }));
     };

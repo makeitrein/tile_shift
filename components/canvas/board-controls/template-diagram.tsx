@@ -9,9 +9,9 @@ import { Tag } from "../tile-menu/tag-picker";
 export const TemplateDiagram = React.memo(() => {
   const selectedTemplate = useRecoilValue(templateState.selectedTemplate);
 
-  if (!selectedTemplate.template) return null;
+  if (!selectedTemplate) return null;
 
-  const { tags, arrows } = selectedTemplate.template;
+  const { tags, arrows } = selectedTemplate();
 
   return (
     <>

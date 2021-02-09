@@ -6,10 +6,16 @@ import {
   LightningBoltOutline,
   ScaleOutline,
 } from "heroicons-react";
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
-type TemplateArrow = [number, number];
-type TemplateTag = { id: number; name: string; x: number; y: number };
+type TemplateArrow = [number | string, number | string];
+type TemplateTag = {
+  id: string | number;
+  name: string;
+  x: number;
+  y: number;
+  selectedTile?: boolean;
+};
 
 export interface Template {
   icon: React.FC;
@@ -19,20 +25,24 @@ export interface Template {
   arrows?: TemplateArrow[];
 }
 
-export const templateOptions: Template[] = [
-  {
+export type TemplateMaker = (selectedTileId?: string | number) => Template;
+
+type TemplateOptions = Record<string, TemplateMaker>;
+
+export const templateOptions: TemplateOptions = {
+  scoping: () => ({
     icon: FlagOutline,
     title: "Project Scoping",
     description:
       "Get consensus on your project goals, deliverables, tasks, costs and deadlines",
-  },
-  {
+  }),
+  task: () => ({
     icon: CheckCircleOutline,
     title: "Task Management",
     description:
       "Prioritize, track, and manage each of your project's tasks throught its lifecycle",
-  },
-  {
+  }),
+  decision: (selectedTileId = 3) => ({
     icon: ScaleOutline,
     title: "Decision Making",
     description:
@@ -41,7 +51,7 @@ export const templateOptions: Template[] = [
       { id: 1, name: "Context", x: 40, y: 0 },
       { id: 2, name: "Stakeholders", x: 40, y: 200 },
       { id: 14, name: "Question", x: 40, y: 100 },
-      { id: 3, name: "Decision", x: 200, y: 100 },
+      { id: selectedTileId, name: "Decision", x: 200, y: 100 },
       { id: 4, name: "Option", x: 360, y: 0 },
       { id: 5, name: "Option", x: 360, y: 80 },
       { id: 6, name: "Option", x: 360, y: 160 },
@@ -54,48 +64,54 @@ export const templateOptions: Template[] = [
       { id: 13, name: "Next Steps", x: 360, y: 240 },
     ],
     arrows: [
-      [1, 3],
-      [2, 3],
-      [3, 4],
-      [3, 5],
-      [3, 6],
+      [1, selectedTileId],
+      [2, selectedTileId],
+      [selectedTileId, 4],
+      [selectedTileId, 5],
+      [selectedTileId, 6],
       [4, 7],
       [4, 8],
       [5, 9],
       [5, 10],
       [6, 11],
       [6, 12],
-      [3, 13],
-      [14, 3],
+      [selectedTileId, 13],
+      [14, selectedTileId],
     ],
-  },
-  {
+  }),
+  idea: () => ({
     icon: LightBulbOutline,
     title: "Idea Validation",
     description:
       "Explore the hidden assumptions and supporting Benefits behind your hypotheses",
-  },
-  {
+  }),
+  brainstorm: () => ({
     icon: LightningBoltOutline,
     title: "Brainstorming",
     description:
       "Generate ideas and unlock better answers by amassing potential solutions spontaneously",
-  },
-  {
+  }),
+  retrospective: () => ({
     icon: EyeOutline,
     title: "Retrospective",
     description:
       "At the end of a project milestone, reflect and review what worked, what didn't, and why",
-  },
-];
+  }),
+};
 
-export const selectedTemplate = atom<{
-  template: Template;
-  replaceCursor: boolean;
+export const selectedTemplateId = atom<{
+  templateId: string;
 }>({
-  key: "TEMPLATE/selected-template",
+  key: "TEMPLATE/selected-template-id",
   default: {
-    template: null,
-    replaceCursor: false,
+    templateId: null,
+  },
+});
+
+export const selectedTemplate = selector<TemplateMaker>({
+  key: "TEMPLATE/selected-template",
+  get: ({ get }) => {
+    const { templateId } = get(selectedTemplateId);
+    return templateOptions[templateId];
   },
 });

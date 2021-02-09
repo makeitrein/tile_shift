@@ -87,11 +87,7 @@ export const TileMenu = ({ id }) => {
               fill={true}
               content={
                 <div>
-                  <TemplateLibrary
-                  // panzoom={panz}
-                  // closePanel={() => setPopoverOpen(false)}
-                  // id={id}
-                  />
+                  <TemplateLibrary id={id} />
                 </div>
               }
               renderTarget={({ isOpen, ref, ...targetProps }) => (

@@ -1,15 +1,14 @@
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { useAnimation } from "framer-motion";
 import React, { useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import * as templateState from "../../state/template";
 import { templateOptions } from "../../state/template";
-import { PanzoomObject } from "../board/panzoom/types";
 import { TemplateOption } from "./template-option";
 import { TemplatePreview } from "./template-preview";
 
 interface Props {
-  panzoom: PanzoomObject;
+  id: string;
 }
 const variantsTemplateLibrary = {
   enter: {
@@ -36,10 +35,10 @@ const variantsTemplatePreview = {
   },
 };
 
-export const TemplateLibrary = React.memo(({ panzoom }: Props) => {
+export const TemplateLibrary = React.memo(({ id }: Props) => {
   const containerRef = useRef();
-  const [selectedTemplate, setSelectedTemplate] = useRecoilState(
-    templateState.selectedTemplate
+  const setSelectedTemplateId = useSetRecoilState(
+    templateState.selectedTemplateId
   );
   const [preview, setPreview] = useState(false);
 
@@ -47,8 +46,8 @@ export const TemplateLibrary = React.memo(({ panzoom }: Props) => {
   const previewControls = useAnimation();
 
   const goBack = () => setPreview(false);
-  const selectTemplate = (template: templateState.Template) => {
-    setSelectedTemplate((data) => ({ ...data, template }));
+  const selectTemplate = (templateId: string) => {
+    setSelectedTemplateId({ templateId });
     setPreview(true);
     if (preview) {
       templateControls.start("exit");
@@ -81,12 +80,12 @@ export const TemplateLibrary = React.memo(({ panzoom }: Props) => {
         </h3>
 
         <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 lg:grid-cols-2">
-          {templateOptions.map((template) => {
+          {Object.entries(templateOptions).map(([templateId, template]) => {
             return (
               <TemplateOption
-                key={template.title}
-                template={template}
-                selectTemplate={selectTemplate}
+                key={template().title}
+                template={template()}
+                selectTemplate={() => selectTemplate(templateId)}
               />
             );
           })}
@@ -117,7 +116,7 @@ export const TemplateLibrary = React.memo(({ panzoom }: Props) => {
           !preview && "pointer-events-none"
         }`}
       >
-        <TemplatePreview panzoom={panzoom} goBack={goBack} />
+        <TemplatePreview id={id} goBack={goBack} />
       </div>
     </div>
   );

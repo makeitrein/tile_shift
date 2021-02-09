@@ -1,27 +1,63 @@
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { ArrowLeftOutline, TemplateOutline } from "heroicons-react";
-import React from "react";
-import { useRecoilState } from "recoil";
+import React, { useCallback } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useCreateInitialArrow } from "../../state/arrow-utils";
 import * as templateState from "../../state/template";
-import { PanzoomObject } from "../board/panzoom/types";
-import { useZoom } from "../zoom-control-toolbar";
+import { useCreateInitialTile } from "../../state/tile-utils";
+import * as tileState from "../../state/tiles";
 import { TemplateDiagram } from "./template-diagram";
 import { TemplateOption } from "./template-option";
+
 interface Props {
   goBack: () => void;
-  panzoom: PanzoomObject;
+  id: string;
 }
 
-export const TemplatePreview = React.memo(({ goBack, panzoom }: Props) => {
-  const [selectedTemplate, setSelectedTemplate] = useRecoilState(
-    templateState.selectedTemplate
+export const TemplatePreview = React.memo(({ goBack, id }: Props) => {
+  const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
+  const [selectedTemplateId, setSelectedTemplateId] = useRecoilState(
+    templateState.selectedTemplateId
   );
 
-  const zoom = useZoom(panzoom);
+  const selectedTemplate = useRecoilValue(templateState.selectedTemplate);
 
-  if (!selectedTemplate.template) return null;
+  const createInitialTile = useCreateInitialTile();
+  const createInitialArrow = useCreateInitialArrow();
 
-  const { tags, arrows } = selectedTemplate.template;
+  const connectTileToTemplate = useCallback(() => {
+    const { tags, arrows } = selectedTemplate(id);
+
+    const random = Math.random();
+
+    const randomizedTileId = (id: number | string) => "new-tile-" + id + random;
+
+    tags.forEach((tag) => {
+      const magicMultiplier = 6;
+      const x = tileDimensions.x + tag.x * magicMultiplier;
+      const y = tileDimensions.y + tag.y * magicMultiplier;
+      createInitialTile({
+        id: randomizedTileId(tag.id),
+        dimensions: { x, y, width: 40, height: 50 },
+        tags: [tag.name],
+        collapsed: true,
+      });
+    });
+
+    arrows.forEach(([startId, endId]) =>
+      createInitialArrow({
+        start: {
+          tileId: randomizedTileId(startId),
+          point: "right",
+        },
+        end: { tileId: randomizedTileId(endId), point: "left" },
+      })
+    );
+
+    setSelectedTemplateId({ templateId: null });
+  }, [selectedTemplateId, tileDimensions]);
+
+  if (!setSelectedTemplateId) return null;
 
   return (
     <>
@@ -31,7 +67,7 @@ export const TemplatePreview = React.memo(({ goBack, panzoom }: Props) => {
 
       {selectedTemplate && (
         <div className="relative w-4/5 bg-white py-4 sm:gap-8 sm:p-8 lg:grid-cols-2">
-          <TemplateOption template={selectedTemplate.template} />
+          <TemplateOption template={selectedTemplate()} />
         </div>
       )}
 
@@ -49,10 +85,7 @@ export const TemplatePreview = React.memo(({ goBack, panzoom }: Props) => {
 
         <div className="flow-root absolute left-1/2 -translate-x-2/4 transform">
           <span
-            onClick={() => {
-              zoom(0.5, false);
-              setSelectedTemplate((data) => ({ ...data, replaceCursor: true }));
-            }}
+            onClick={connectTileToTemplate}
             className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-white hover:bg-blue-400 cursor-pointer bg-blue-500 transition ease-in-out duration-150"
           >
             <TemplateOutline />

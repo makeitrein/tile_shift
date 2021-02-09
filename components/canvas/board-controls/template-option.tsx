@@ -17,7 +17,7 @@ const TileWrapper = styled.div`
 
 interface Props {
   template: Template;
-  selectTemplate?: (template: Template) => void;
+  selectTemplate?: () => void;
 }
 
 export const TemplateOption = ({ template, selectTemplate }: Props) => {
@@ -25,7 +25,7 @@ export const TemplateOption = ({ template, selectTemplate }: Props) => {
   const { icon: Icon, title, description } = template;
   return (
     <span
-      onClick={() => selectTemplate && selectTemplate(template)}
+      onClick={() => selectTemplate && selectTemplate()}
       className={`-m-3 p-3 flex items-start  rounded-lg ${
         selectTemplate && "hover:bg-gray-50 cursor-pointer"
       } transition ease-in-out duration-150`}
