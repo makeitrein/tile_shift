@@ -17,7 +17,6 @@ export const useAddTemplateViaClick = (canvasEditor) => {
 
   return useCallback(
     (e: React.MouseEvent) => {
-      console.log(selectedTemplateId.replaceCursor);
       if (!selectedTemplateId.replaceCursor) {
         return;
       }
@@ -39,8 +38,6 @@ export const useAddTemplateViaClick = (canvasEditor) => {
       const focalTag = tags[focalTagId];
       const focalTagX = focalTag.x + clickX;
       const focalTagY = focalTag.y + clickY;
-
-      console.log(focalTag);
 
       const random = Math.random();
 

@@ -32,8 +32,10 @@ export const TempateCursor = ({ canvasEditor }) => {
   // Primary Mouse Move event
   const onMouseMove = useCallback(({ clientX, clientY }) => {
     setCoords({ x: clientX, y: clientY });
-    cursorInnerRef.current.style.left = clientX + "px";
-    cursorInnerRef.current.style.top = clientY + "px";
+    if (cursorInnerRef.current) {
+      cursorInnerRef.current.style.left = clientX + "px";
+      cursorInnerRef.current.style.top = clientY + "px";
+    }
     endX.current = clientX;
     endY.current = clientY;
   }, []);

@@ -23,6 +23,7 @@ import React, { CSSProperties } from "react";
 import { useSetRecoilState } from "recoil";
 import * as tileState from "../../state/tiles";
 import { noSelectoClass } from "../board/board";
+import { TagTree } from "./tag-tree";
 
 const tagGroups = [
   {
@@ -147,18 +148,7 @@ export const TagPicker = ({ id, closePanel }) => {
 
   return (
     <div className="py-4 px-6 grid grid-cols-4">
-      {tagGroups.map(({ name, tags }) => (
-        <div className="pb-1 px-2">
-          <label className="text-xs mt-2 font-bold -ml-px pb-1.5 text-gray-700 block">
-            {name}:
-          </label>
-          {tags.map(({ name }) => (
-            <div className="pb-1" onClick={() => handleTagClick(name)}>
-              <Tag name={name} />
-            </div>
-          ))}
-        </div>
-      ))}
+      <TagTree />
     </div>
   );
 };

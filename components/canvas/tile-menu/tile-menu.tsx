@@ -1,9 +1,9 @@
+import { Icon } from "@blueprintjs/core";
 import { Classes, Popover2 } from "@blueprintjs/popover2";
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   InformationCircleOutline,
-  LinkOutline,
   PhotographOutline,
   TagOutline,
   TrashOutline,
@@ -14,7 +14,6 @@ import useOnClickOutside from "react-cool-onclickoutside";
 import { useRecoilState } from "recoil";
 import { useRemirror } from "remirror/react";
 import { tagPickerOpen } from "../../state/ui";
-import { LinkWysiwygCreator } from "./link-wysiwyg-creator";
 import { TagPicker } from "./tag-picker";
 import { TooltipMenuItem } from "./tooltip-menu-item";
 
@@ -103,7 +102,7 @@ export const TileMenu = ({ id }) => {
               )}
             />
 
-            <Popover2
+            {/* <Popover2
               interactionKind="click"
               popoverClassName={Classes.POPOVER2_CONTENT}
               placement="top"
@@ -120,7 +119,15 @@ export const TileMenu = ({ id }) => {
                   <LinkOutline className="w-4 h-4 mt-1.5 relative top-px" />
                 </TooltipMenuItem>
               )}
-            />
+            /> */}
+
+            <TooltipMenuItem
+              label="Underline text"
+              onClick={() => commands.toggleUnderline()}
+              active={active.underline()}
+            >
+              <Icon icon="underline" />
+            </TooltipMenuItem>
 
             <TooltipMenuItem
               label="Bold text"
@@ -155,10 +162,8 @@ export const TileMenu = ({ id }) => {
               </svg>
             </TooltipMenuItem>
             <TooltipMenuItem
-              label="Image upload"
+              label="Image upload (Coming Soon!)"
               className="pr-5"
-              onClick={() => commands.toggleUnderline()}
-              active={active.underline()}
             >
               <PhotographOutline className="w-4 h-4" />
             </TooltipMenuItem>
