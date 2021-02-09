@@ -10,6 +10,7 @@ import {
   useSetTileSettings,
 } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
+import * as uiState from "../../state/ui";
 import { ArrowList } from "../arrow/arrow-list";
 import { BoardControls } from "../board-controls/board-controls";
 import { InjectTemplateCursor } from "../board-controls/template-cursor";
@@ -59,8 +60,7 @@ export const Board = () => {
   );
   const selectedTileIds = useRecoilValue(tileState.selectedTileIds);
 
-  const [disablePan, setDisablePan] = React.useState(true);
-  const [zoom, setZoom] = React.useState(1);
+  const [disablePan, setDisablePan] = useRecoilState(uiState.disablePan);
 
   const moveableRef = React.useRef(null);
   const wrapperRef = React.useRef(null);
@@ -249,19 +249,21 @@ export const Board = () => {
           panzoom={panzoomRef.current}
         />
 
-        <Selecto
-          ref={selectoRef}
-          dragContainer={".canvas"}
-          selectableTargets={[".canvas-tile"]}
-          hitRate={0}
-          selectByClick={true}
-          selectFromInside={false}
-          toggleContinueSelect={["shift"]}
-          ratio={0}
-          onDragStart={selectoOnDragStart}
-          onSelect={selectoOnSelect}
-          onSelectEnd={selectoOnSelectEnd}
-        />
+        {disablePan && (
+          <Selecto
+            ref={selectoRef}
+            dragContainer={".canvas"}
+            selectableTargets={[".canvas-tile"]}
+            hitRate={0}
+            selectByClick={true}
+            selectFromInside={false}
+            toggleContinueSelect={["shift"]}
+            ratio={0}
+            onDragStart={selectoOnDragStart}
+            onSelect={selectoOnSelect}
+            onSelectEnd={selectoOnSelectEnd}
+          />
+        )}
         <Canvas ref={canvasRef} className="canvas">
           <Moveable
             ref={moveableRef}

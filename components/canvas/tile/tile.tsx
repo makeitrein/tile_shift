@@ -51,11 +51,13 @@ export const tileTitleElementId = (id: string) => id + "title";
 export const tileDescriptionElementId = (id: string) => id + "description";
 
 export const Tile = React.memo(({ id }: TileProps) => {
-  const ref = useRef(null);
+  const tileRef = useRef(null);
   const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
   const setSelectedTileTargets = useSetRecoilState(
     tileState.selectedTileTargets
   );
+  const disablePan = useRecoilValue(uiState.disablePan);
+
   const [tileSettings, setTileSettings] = useRecoilState(
     tileState.tileSettings(id)
   );
@@ -76,8 +78,16 @@ export const Tile = React.memo(({ id }: TileProps) => {
 
   const disablePanzoomPanningClass = "panzoom-exclude";
 
+  const selectTile = useCallback(() => {
+    if (!disablePan) {
+      setSelectedTileTargets([tileRef.current]);
+    }
+  }, [disablePan, tileRef]);
+
   const toggleCollapse = useCallback(
     (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       setSelectedTileTargets([]);
 
       if (collapsed) {
@@ -102,7 +112,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
         });
 
         setTimeout(() => {
-          const { width, height } = ref.current.getBoundingClientRect();
+          const { width, height } = tileRef.current.getBoundingClientRect();
           setTileDimensions(id, { width, height });
         }, 10);
       }
@@ -112,7 +122,8 @@ export const Tile = React.memo(({ id }: TileProps) => {
 
   return collapsed ? (
     <CollapsedTileWrapper
-      ref={ref}
+      onClick={selectTile}
+      ref={tileRef}
       id={id}
       style={transformStyle}
       className={`${disablePanzoomPanningClass} canvas-tile group p-4  ${
@@ -126,7 +137,8 @@ export const Tile = React.memo(({ id }: TileProps) => {
     </CollapsedTileWrapper>
   ) : (
     <TileWrapper
-      ref={ref}
+      onClick={selectTile}
+      ref={tileRef}
       id={id}
       isDragging={tileSettings.isDragging}
       isSelected={isSelected}

@@ -14,6 +14,11 @@ export const tagPickerOpen = atom({
   default: false,
 });
 
+export const disablePan = atom({
+  key: "UI/disable-pan",
+  default: true,
+});
+
 export const hoveringOverScrollable = atom({
   key: "UI/hover-over-scrollable",
   default: false,
