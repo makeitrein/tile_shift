@@ -42,7 +42,7 @@ export const templateOptions: TemplateOptions = {
     description:
       "Prioritize, track, and manage each of your project's tasks throught its lifecycle",
   }),
-  decision: (selectedTileId = 3) => ({
+  decision: (selectedTileId = 101010) => ({
     icon: ScaleOutline,
     title: "Decision Making",
     description:
@@ -103,10 +103,12 @@ export const templateOptions: TemplateOptions = {
 
 export const selectedTemplateId = atom<{
   templateId: string;
+  replaceCursor: boolean;
 }>({
   key: "TEMPLATE/selected-template-id",
   default: {
     templateId: null,
+    replaceCursor: false,
   },
 });
 
