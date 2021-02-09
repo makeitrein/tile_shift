@@ -19,6 +19,7 @@ import { MiniMap } from "../minimap/minimap";
 import { TileList } from "../tile/tile-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
 import { PanzoomObject } from "./panzoom/types";
+import { useAddTemplateViaClick } from "./use-add-template-via-click";
 import { useAddTileViaClick } from "./use-add-tile-via-click";
 import { useDeleteTilesViaBackspace } from "./use-delete-tiles-via-backspace";
 import { useDeleteTextEffect } from "./use-deselect-text-effect";
@@ -91,6 +92,7 @@ export const Board = () => {
 
   const dragResizeTile = useDragResizeTile();
   const addTileViaClick = useAddTileViaClick(canvasRef.current);
+  const addTemplateViaClick = useAddTemplateViaClick(canvasRef.current);
 
   const toggleDisablePan = useCallback(() => setDisablePan((pan) => !pan), [
     setDisablePan,
@@ -236,11 +238,12 @@ export const Board = () => {
   return (
     <>
       <DiscussionDrawer panzoom={panzoomRef.current} />
-      <InjectTemplateCursor />
+      <InjectTemplateCursor canvasEditor={canvasRef.current} />
 
       <Wrapper
         ref={wrapperRef}
         className="wrapper bg-tan"
+        onClick={addTemplateViaClick}
         onDoubleClick={addTileViaClick}
       >
         <BoardControls

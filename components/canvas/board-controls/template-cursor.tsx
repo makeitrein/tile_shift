@@ -1,74 +1,21 @@
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import React, { useCallback, useRef, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { useEventListener } from "../../general/hooks/useEventListener";
-import { useCreateInitialArrow } from "../../state/arrow-utils";
 import * as templateState from "../../state/template";
-import { useCreateInitialTile } from "../../state/tile-utils";
 import { TemplateDiagram } from "./template-diagram";
 
-export const InjectTemplateCursor = () => {
+export const InjectTemplateCursor = ({ canvasEditor }) => {
   const selectedTemplate = useRecoilValue(templateState.selectedTemplateId);
 
-  return selectedTemplate.replaceCursor ? <TempateCursor /> : null;
+  return selectedTemplate.replaceCursor ? (
+    <TempateCursor canvasEditor={canvasEditor} />
+  ) : null;
 };
 
-export const TempateCursor = () => {
+export const TempateCursor = ({ canvasEditor }) => {
   const cursorInnerRef = useRef(null);
   const [coords, setCoords] = useState({ x: null, y: null });
-
-  const setSelectedTemplateId = useSetRecoilState(
-    templateState.selectedTemplateId
-  );
-
-  const selectedTemplate = useRecoilValue(templateState.selectedTemplate);
-
-  const createInitialTile = useCreateInitialTile();
-  const createInitialArrow = useCreateInitialArrow();
-
-  const injectTemplateAtCursorPosition = useCallback(
-    (e: MouseEvent) => {
-      // const isCanvas = e.target === canvasEditor;
-      // if (!isCanvas) {
-      // return;
-      // }
-
-      const clickX = e.offsetX;
-      const clickY = e.offsetY;
-
-      const { tags, arrows } = selectedTemplate();
-
-      const random = Math.random();
-
-      const randomizedTileId = (id: number | string) =>
-        "new-tile-" + id + random;
-
-      tags.forEach((tag) => {
-        const magicMultiplier = 6;
-        const x = clickX - window.innerWidth + tag.x * magicMultiplier;
-        const y = clickY - window.innerHeight + tag.y * magicMultiplier;
-        createInitialTile({
-          id: randomizedTileId(tag.id),
-          dimensions: { x, y, width: 100, height: 50 },
-          tags: [tag.name],
-          collapsed: true,
-        });
-      });
-
-      arrows.forEach(([startId, endId]) =>
-        createInitialArrow({
-          start: {
-            tileId: randomizedTileId(startId),
-            point: "right",
-          },
-          end: { tileId: randomizedTileId(endId), point: "left" },
-        })
-      );
-
-      setSelectedTemplateId({ templateId: null, replaceCursor: null });
-    },
-    [selectedTemplate]
-  );
 
   let endX = useRef(0);
   let endY = useRef(0);
@@ -83,7 +30,6 @@ export const TempateCursor = () => {
   }, []);
 
   useEventListener("mousemove", onMouseMove);
-  useEventListener("click", injectTemplateAtCursorPosition);
 
   return coords.x && coords.y ? (
     <div className="absolute" ref={cursorInnerRef}>
