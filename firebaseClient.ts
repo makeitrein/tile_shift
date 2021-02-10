@@ -11,10 +11,14 @@ const CLIENT_CONFIG = {
   measurementId: "G-L0TV6RQZL0",
 };
 
+console.log("heya");
 if (typeof window !== "undefined" && !firebaseClient.apps.length) {
+  console.log("initializing");
   firebaseClient.initializeApp(CLIENT_CONFIG);
   firebaseClient
     .auth()
     .setPersistence(firebaseClient.auth.Auth.Persistence.SESSION);
   (window as any).firebase = firebaseClient;
 }
+
+export { firebaseClient };

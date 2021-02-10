@@ -3,7 +3,6 @@ import "@blueprintjs/select/lib/css/blueprint-select.css";
 import Head from "next/head";
 import React from "react";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
-import { RecoilRoot } from "recoil";
 import { Board } from "../components/canvas/board/board";
 
 export default function Home() {
@@ -20,7 +19,7 @@ export default function Home() {
   // }
 
   return (
-    <RecoilRoot>
+    <>
       <Head>
         <title>TileShift</title>
         <link rel="icon" href="/favicon.ico" />
@@ -28,6 +27,6 @@ export default function Home() {
       </Head>
 
       <Board />
-    </RecoilRoot>
+    </>
   );
 }
