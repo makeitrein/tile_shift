@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes, Icon, Intent, ITreeNode, Tree } from "@blueprintjs/core";
-import { Tooltip2 } from "@blueprintjs/popover2";
+import { ITreeNode, Tree } from "@blueprintjs/core";
+import { FlagOutline } from "heroicons-react";
 import * as React from "react";
+import { Tag } from "./tag";
 
 export interface ITreeExampleState {
   nodes: ITreeNode[];
@@ -34,7 +35,6 @@ export class TagTree extends React.Component<ITreeExampleState> {
         onNodeClick={this.handleNodeClick}
         onNodeCollapse={this.handleNodeCollapse}
         onNodeExpand={this.handleNodeExpand}
-        className={"w-92"}
       />
     );
   }
@@ -48,8 +48,10 @@ export class TagTree extends React.Component<ITreeExampleState> {
     if (!e.shiftKey) {
       this.forEachNode(this.state.nodes, (n) => (n.isSelected = false));
     }
-    nodeData.isSelected =
-      originallySelected == null ? true : !originallySelected;
+    nodeData.isSelected = false;
+
+    nodeData.isExpanded = !nodeData.isExpanded;
+
     this.setState(this.state);
   };
 
@@ -75,78 +77,27 @@ export class TagTree extends React.Component<ITreeExampleState> {
   }
 }
 
+const tags = {
+  "Project Scoping": ["Proposal", "Goal", "Risk", "Solution", "Problem"],
+  "Decision Making": ["Proposal", "Goal", "Risk", "Solution", "Problem"],
+};
+
 /* tslint:disable:object-literal-sort-keys so childNodes can come last */
-const INITIAL_STATE: ITreeNode[] = [
-  {
-    id: 0,
-    hasCaret: true,
-    icon: "folder-close",
-    label: "Folder 0",
-  },
-  {
-    id: 1,
-    icon: "folder-close",
-    isExpanded: true,
-    label: (
-      <Tooltip2 content="I'm a folder <3" placement="right">
-        Folder 1
-      </Tooltip2>
-    ),
-    childNodes: [
-      {
-        id: 2,
-        icon: "document",
-        label: "Item 0",
-        secondaryLabel: (
-          <Tooltip2 content="An eye!">
-            <Icon icon="eye-open" />
-          </Tooltip2>
-        ),
-      },
-      {
-        id: 3,
-        icon: (
-          <Icon
-            icon="tag"
-            intent={Intent.PRIMARY}
-            className={Classes.TREE_NODE_ICON}
-          />
-        ),
-        label:
-          "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.",
-      },
-      {
-        id: 4,
-        hasCaret: true,
-        icon: "folder-close",
-        label: (
-          <Tooltip2 content="foo" placement="right">
-            Folder 2
-          </Tooltip2>
-        ),
-        childNodes: [
-          { id: 5, label: "No-Icon Item" },
-          { id: 6, icon: "tag", label: "Item 1" },
-          {
-            id: 7,
-            hasCaret: true,
-            icon: "folder-close",
-            label: "Folder 3",
-            childNodes: [
-              { id: 8, icon: "document", label: "Item 0" },
-              { id: 9, icon: "tag", label: "Item 1" },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    hasCaret: true,
-    icon: "folder-close",
-    label: "Super secret files",
-    disabled: true,
-  },
-];
-/* tslint:enable:object-literal-sort-keys */
+const INITIAL_STATE: ITreeNode[] = Object.entries(tags).map(
+  ([folderLabel, tags]) => {
+    return {
+      id: 1,
+      icon: (
+        <div className="flex-shrink-0 flex items-center justify-center h-8 w-8 mr-2 rounded-md bg-blue-500 text-white ">
+          <FlagOutline size={18} />
+        </div>
+      ),
+      label: folderLabel,
+      childNodes: tags.map((tagName, idx) => ({
+        id: idx,
+
+        label: <Tag className="ml-4" name={tagName} />,
+      })),
+    };
+  }
+);

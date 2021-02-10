@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fromHtml, toHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
@@ -16,6 +16,7 @@ import * as tileState from "../../state/tiles";
 import { TileMenu } from "../tile-menu/tile-menu";
 
 export const articlePadding = 12;
+export const tileHeaderHeight = 30;
 
 export const EditableArticle = styled.article`
   margin: ${articlePadding / 2}px;
@@ -97,12 +98,13 @@ const extensionTemplate = () => [
   new WysiwygPreset({}),
 ];
 
-export const EditorManager = ({ id, showToolbar }) => {
+export const EditorManager = React.memo(({ id, moveable }) => {
   const [tile, setTile] = useRecoilState(tileState.tileContent(id));
   const manager = useManager(extensionTemplate);
   const editableTileId = useRecoilValue(tileState.editableTileId);
   const tileSettings = useRecoilValue(tileState.tileSettings(id));
 
+  const editorRef = useRef(null);
   const isEditable = editableTileId === id && !tileSettings.isDragging;
 
   const [value, setValue] = useState(
@@ -119,7 +121,21 @@ export const EditorManager = ({ id, showToolbar }) => {
       manager={manager}
       value={value}
       placeholder="What's on your mind?"
-      onChange={({ state }) => {
+      onChange={({ state, view }) => {
+        const target = view.dom;
+        const articleHeight =
+          target.offsetHeight + articlePadding + tileHeaderHeight;
+
+        const rect = moveable.getRect();
+        const extraSpacing = 12;
+
+        if (articleHeight + extraSpacing >= rect.offsetHeight) {
+          moveable.request("resizable", {
+            offsetHeight: articleHeight + articlePadding,
+            isInstant: true,
+          });
+        }
+
         setValue(state);
         setTile((tile) => ({
           ...tile,
@@ -127,28 +143,35 @@ export const EditorManager = ({ id, showToolbar }) => {
         }));
       }}
     >
-      <Editor id={id} showToolbar={true} />
+      <Editor ref={editorRef} id={id} showToolbar={true} />
     </RemirrorProvider>
   );
-};
+});
 
-export const Editor = ({ id, showToolbar }) => {
-  const { getRootProps } = useRemirror();
-  const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
+interface EditorProps {
+  id: number;
+  showToolbar: boolean;
+}
+export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
+  ({ id, showToolbar }, ref) => {
+    const { getRootProps } = useRemirror();
+    const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
 
-  const setTileEditorFocus = (isWysiwygEditorFocused: boolean) => {
-    setTileSettings((settings) => ({ ...settings, isWysiwygEditorFocused }));
-  };
+    const setTileEditorFocus = (isWysiwygEditorFocused: boolean) => {
+      setTileSettings((settings) => ({ ...settings, isWysiwygEditorFocused }));
+    };
 
-  return (
-    <>
-      {showToolbar && <TileMenu id={id} />}
-      <EditableArticle
-        onFocus={() => setTileEditorFocus(true)}
-        onBlur={() => setTileEditorFocus(false)}
-        style={{ pointerEvents: !showToolbar && "none" }}
-        {...getRootProps()}
-      />
-    </>
-  );
-};
+    return (
+      <>
+        {showToolbar && <TileMenu id={id} />}
+        <EditableArticle
+          ref={ref}
+          onFocus={() => setTileEditorFocus(true)}
+          onBlur={() => setTileEditorFocus(false)}
+          style={{ pointerEvents: !showToolbar && "none" }}
+          {...getRootProps()}
+        />
+      </>
+    );
+  }
+);

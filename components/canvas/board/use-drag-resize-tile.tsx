@@ -1,5 +1,10 @@
 import { useCallback } from "react";
 import { useSetTileDimensions } from "../../state/tile-utils";
+import {
+  articlePadding,
+  tileHeaderHeight,
+} from "../text-editor/wysiwig-editor";
+import { tileWidth } from "../tile/tile";
 
 export const useDragResizeTile = () => {
   const updateTile = useSetTileDimensions();
@@ -9,9 +14,9 @@ export const useDragResizeTile = () => {
     const article = target.querySelector("article");
 
     if (article) {
-      const minWidth = 140;
-      const minHeight = article.offsetHeight;
-
+      const minWidth = tileWidth;
+      const minHeight =
+        article.offsetHeight + articlePadding + tileHeaderHeight;
       const newWidth = Math.max(minWidth, ev.width);
       const newHeight = Math.max(minHeight, ev.height);
 

@@ -70,6 +70,19 @@ body {
   z-index: 4001 !important;
 }
 
+.bp3-tree-node-content {
+  background: white !important;
+}
+
+.bp3-tree-root > .bp3-tree-node {
+  margin-top: 10px !important;
+}
+
+.bp3-popover2-content,
+.bp3-popover2 {
+  border-radius: 0.375rem !important;
+}
+
 /* End Blueprint overrides */
 
 .will-transform {

@@ -1,4 +1,3 @@
-import { ArrowsExpandOutline } from "heroicons-react";
 import parse from "html-react-parser";
 import React, { useCallback, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -7,11 +6,11 @@ import { useSetTileDimensions } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
 import * as uiState from "../../state/ui";
 import { EditableArticle } from "../text-editor/wysiwig-editor";
-import { Tag } from "../tile-menu/tag-picker";
+import { Tag } from "../tile-menu/tag";
 import { ConnectButton } from "./connect-button";
 
 export const tileWidth = 350;
-export const tileHeight = 190;
+export const tileHeight = 90;
 
 export const TileWrapper = styled.div`
   display: inline-block;
@@ -136,9 +135,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
         className="se-resize"
         onClick={toggleCollapse}
         name={tileSettings.tags[0]}
-      >
-        <ArrowsExpandOutline size={18} />
-      </Tag>
+      ></Tag>
     </CollapsedTileWrapper>
   ) : (
     <TileWrapper
@@ -147,7 +144,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
       id={id}
       isDragging={tileSettings.isDragging}
       isSelected={isSelected}
-      className={`${disablePanzoomPanningClass} canvas-tile group p-2 bg-white
+      className={`${disablePanzoomPanningClass} canvas-tile group py-2 px-2 pb-4 bg-white
       ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
       ${isSearchedFor && "animate-searched"}`}
       style={{

@@ -4,7 +4,7 @@ import { LineOrientation } from "react-simple-arrows";
 import { useRecoilValue } from "recoil";
 import * as templateState from "../../state/template";
 import { BasicArrowSvg } from "../react-simple-arrows/ArrowSvg/BasicArrowSvg";
-import { Tag } from "../tile-menu/tag-picker";
+import { Tag } from "../tile-menu/tag";
 
 export const TemplateDiagram = React.memo(() => {
   const selectedTemplate = useRecoilValue(templateState.selectedTemplate);

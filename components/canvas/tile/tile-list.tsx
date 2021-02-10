@@ -5,7 +5,7 @@ import * as tileState from "../../state/tiles";
 import { EditorManager } from "../text-editor/wysiwig-editor";
 import { Tile } from "./tile";
 
-export const TileList = React.memo(() => {
+export const TileList = React.memo(({ moveable }) => {
   const tileIds = useRecoilValue(tileState.undeletedTileIds);
   // const arrows = useRecoilValue(arrowState.arrows);
   const editableTileId = useRecoilValue(tileState.editableTileId);
@@ -15,7 +15,11 @@ export const TileList = React.memo(() => {
   return (
     <>
       <Portal key={editableTileId} id={`editor-${editableTileId}`}>
-        <EditorManager id={editableTileId} showToolbar={true} />
+        <EditorManager
+          moveable={moveable}
+          id={editableTileId}
+          showToolbar={true}
+        />
       </Portal>
 
       {/* {arrows.map((arrow) => (

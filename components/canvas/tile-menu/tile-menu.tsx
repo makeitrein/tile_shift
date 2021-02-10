@@ -60,7 +60,7 @@ export const TileMenu = ({ id }) => {
   return (
     <div
       ref={tooltipRef}
-      className={`absolute top-0 w-full -mt-11	z-overlay left-0 cursor-pointer flex justify-center`}
+      className={`absolute top-0 w-full -mt-11	 z-overlay left-0 cursor-pointer flex justify-center`}
     >
       <AnimatePresence>
         {!altToolbar ? (

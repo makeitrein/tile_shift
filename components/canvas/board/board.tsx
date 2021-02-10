@@ -26,7 +26,6 @@ import { useDeleteTextEffect } from "./use-deselect-text-effect";
 import { useDragResizeTile } from "./use-drag-resize-tile";
 import { usePanzoomEffects } from "./use-panzoom-effects";
 import { useResetSearchedForTile } from "./use-reset-searched-for";
-import { useResizeTileEffect } from "./use-resize-tile-effect";
 import { useShareMousePosition } from "./use-share-mouse-position";
 
 export const totalCanvasPixelSize = 10000;
@@ -71,7 +70,7 @@ export const Board = () => {
   const range = useRef<HTMLInputElement>(null);
 
   useDeleteTilesViaBackspace();
-  useResizeTileEffect(moveableRef.current);
+  // useResizeTileEffect(moveableRef.current);
   useDeleteTextEffect(selectedTileIds);
   useResetSearchedForTile();
   useShareMousePosition(canvasRef);
@@ -302,7 +301,7 @@ export const Board = () => {
             onDragGroup={onDragGroup}
           />
 
-          <TileList />
+          <TileList moveable={moveableRef.current} />
           <ArrowList />
         </Canvas>
         <MiniMap panzoom={panzoomRef.current} canvas={canvasRef.current} />

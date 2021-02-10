@@ -1,5 +1,8 @@
 import { useEffect } from "react";
-import { articlePadding } from "../text-editor/wysiwig-editor";
+import {
+  articlePadding,
+  tileHeaderHeight,
+} from "../text-editor/wysiwig-editor";
 
 export const useResizeTileEffect = (moveable) => {
   useEffect(() => {
@@ -8,7 +11,8 @@ export const useResizeTileEffect = (moveable) => {
 
       const target = e.target as HTMLDivElement;
 
-      const articleHeight = target.offsetHeight + articlePadding;
+      const articleHeight =
+        target.offsetHeight + articlePadding + tileHeaderHeight;
 
       const rect = moveable.getRect();
 

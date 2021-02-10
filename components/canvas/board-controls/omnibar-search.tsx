@@ -7,7 +7,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useGetTileDimensions } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
 import { TileSearchResult } from "../../state/tiles";
-import { Tag } from "../tile-menu/tag-picker";
+import { Tag } from "../tile-menu/tag";
 const { htmlToText } = require("html-to-text");
 
 export function escapeRegExpChars(text: string) {
