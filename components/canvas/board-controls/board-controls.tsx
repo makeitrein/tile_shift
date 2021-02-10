@@ -19,7 +19,7 @@ export const BoardControls = React.memo(
     const bgColor = disablePan ? "white" : "blue-100";
 
     return (
-      <div className="fixed z-force top-1/2 left-6 flex flex-col z-0 shadow-sm rounded-md">
+      <div className="fixed z-force top-1/2 -translate-y-2/4 transform left-6 flex flex-col z-0 shadow-sm rounded-md">
         <button
           onClick={toggleDisablePan}
           type="button"
