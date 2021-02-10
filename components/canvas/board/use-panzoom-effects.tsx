@@ -34,7 +34,7 @@ export const usePanzoomEffects = ({
     }
   };
 
-  useEventListener("mousewheel", panCanvas, canvasRef.current, false);
+  useEventListener("mousewheel", panCanvas, window, false);
 
   useEventListener(
     "panzoomchange",
