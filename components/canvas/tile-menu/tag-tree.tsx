@@ -19,14 +19,14 @@ import { FlagOutline } from "heroicons-react";
 import * as React from "react";
 import { Tag } from "./tag";
 
-export interface ITreeExampleState {
-  nodes: ITreeNode[];
+export interface ITreeExampleProps {
+  handleTagClick: (tagName: string) => void;
 }
 
 // use Component so it re-renders everytime: `nodes` are not a primitive type
 // and therefore aren't included in shallow prop comparison
-export class TagTree extends React.Component<ITreeExampleState> {
-  public state: ITreeExampleState = { nodes: INITIAL_STATE };
+export class TagTree extends React.Component<ITreeExampleProps> {
+  public state = { nodes: INITIAL_STATE };
 
   public render() {
     return (
@@ -51,6 +51,10 @@ export class TagTree extends React.Component<ITreeExampleState> {
     nodeData.isSelected = false;
 
     nodeData.isExpanded = !nodeData.isExpanded;
+
+    if (nodeData.tagName) {
+      this.props.handleTagClick(nodeData.tagName);
+    }
 
     this.setState(this.state);
   };
@@ -86,7 +90,7 @@ const tags = {
 const INITIAL_STATE: ITreeNode[] = Object.entries(tags).map(
   ([folderLabel, tags]) => {
     return {
-      id: 1,
+      id: folderLabel,
       icon: (
         <div className="flex-shrink-0 flex items-center justify-center h-8 w-8 mr-2 rounded-md bg-blue-500 text-white ">
           <FlagOutline size={18} />
@@ -94,8 +98,8 @@ const INITIAL_STATE: ITreeNode[] = Object.entries(tags).map(
       ),
       label: folderLabel,
       childNodes: tags.map((tagName, idx) => ({
-        id: idx,
-
+        id: tagName + folderLabel,
+        tagName,
         label: <Tag className="ml-4" name={tagName} />,
       })),
     };

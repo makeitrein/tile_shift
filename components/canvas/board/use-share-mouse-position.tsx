@@ -6,17 +6,17 @@ export const useShareMousePosition = (canvasRef) => {
   const hoveringOverScrollable = useRecoilValue(uiState.hoveringOverScrollable);
 
   useEffect(() => {
-    canvasRef.current.addEventListener(
-      "mousemove",
-      (e: WheelEvent) => {
-        if (hoveringOverScrollable) {
-          return;
-        }
-
-        const x = e.offsetX;
-        const y = e.offsetY;
-      },
-      { passive: false }
-    );
+    // useEventListener("mousemove", shareMousePosition, canvasRef.current);
+    // canvasRef.current.addEventListener(
+    //   "mousemove",
+    //   (e: WheelEvent) => {
+    //     if (hoveringOverScrollable) {
+    //       return;
+    //     }
+    //     const x = e.offsetX;
+    //     const y = e.offsetY;
+    //   },
+    //   { passive: false }
+    // );
   }, []);
 };

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useEventListener } from "../../general/hooks/useEventListener";
 import * as uiState from "../../state/ui";
 import { tagPickerOpen } from "../../state/ui";
 import { totalCanvasPixelSize } from "./board";
@@ -14,6 +15,34 @@ export const usePanzoomEffects = ({
 }) => {
   const setTagPickerOpen = useSetRecoilState(tagPickerOpen);
   const hoveringOverScrollable = useRecoilValue(uiState.hoveringOverScrollable);
+
+  const panCanvas = (e: WheelEvent) => {
+    if (hoveringOverScrollable) {
+      return;
+    }
+
+    const isPinchZoom = e.ctrlKey;
+    const x = -e.deltaX;
+    const y = -e.deltaY;
+
+    e.preventDefault();
+
+    if (isPinchZoom) {
+      panzoom.zoomWithWheel(e);
+    } else {
+      panzoom.pan(x, y, { relative: true, force: true });
+    }
+  };
+
+  useEventListener("mousewheel", panCanvas, canvasRef.current, false);
+
+  useEventListener(
+    "panzoomchange",
+    () => {
+      setTagPickerOpen(false);
+    },
+    canvasRef.current
+  );
 
   useEffect(() => {
     const maxX = totalCanvasPixelSize - window.innerWidth * 1.5;
@@ -41,37 +70,6 @@ export const usePanzoomEffects = ({
     });
 
     panzoom.pan(centerX, centerY, { force: true });
-
-    canvasRef.current.addEventListener(
-      "mousewheel",
-      (e: WheelEvent) => {
-        if (hoveringOverScrollable) {
-          return;
-        }
-
-        const isPinchZoom = e.ctrlKey;
-        const x = -e.deltaX;
-        const y = -e.deltaY;
-
-        e.preventDefault();
-
-        if (isPinchZoom) {
-          // e.stopPropagation();
-          panzoom.zoomWithWheel(e);
-        } else {
-          panzoom.pan(x, y, { relative: true, force: true });
-        }
-
-        // const { x, y } = panzoom.getPan();
-        // const scale = panzoom.getScale();
-        // setTimeout(() => setPanZoomState({ x, y, scale }), 100);
-      },
-      { passive: false }
-    );
-
-    canvasRef.current.addEventListener("panzoomchange", () => {
-      setTagPickerOpen(false);
-    });
   }, []);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { throttle } from "lodash";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
+import { useEventListener } from "../../general/hooks/useEventListener";
 import { totalCanvasPixelSize } from "../board/board";
 import { PanzoomObject } from "../board/panzoom/types";
 import { MiniMapArrows } from "./minimap-arrows";
@@ -24,11 +25,7 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
     []
   );
 
-  useEffect(() => {
-    canvas?.addEventListener("panzoomchange", () => {
-      rerenderMinimapThrottled();
-    });
-  }, [canvas]);
+  useEventListener("panzoomchange", rerenderMinimapThrottled, canvas);
 
   if (!panzoom) return null;
 

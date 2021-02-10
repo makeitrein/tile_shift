@@ -8,7 +8,8 @@ import { useEffect, useRef } from "react";
 export function useEventListener(
   eventName: string,
   handler: (props: any) => void,
-  element: HTMLElement | Window = window
+  element: HTMLElement | Window = window,
+  passive: boolean = true
 ) {
   // Create a ref that stores handler
   const savedHandler = useRef(null);
@@ -28,7 +29,7 @@ export function useEventListener(
       const eventListener = (event) => savedHandler.current(event);
 
       // Add event listener
-      element.addEventListener(eventName, eventListener);
+      element.addEventListener(eventName, eventListener, { passive });
 
       // Remove event listener on cleanup
       return () => {

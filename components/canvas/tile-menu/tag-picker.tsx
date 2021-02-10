@@ -16,7 +16,7 @@ export const TagPicker = ({ id, closePanel }) => {
       <h3 className="text-sm px-5 pt-2 pb-2 font-medium tracking-wide text-gray-500 uppercase">
         TileShift Categories
       </h3>
-      <TagTree />
+      <TagTree handleTagClick={handleTagClick} />
     </div>
   );
 };
