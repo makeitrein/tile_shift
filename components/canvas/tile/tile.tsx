@@ -78,8 +78,8 @@ export const Tile = React.memo(({ id }: TileProps) => {
   const disablePanzoomPanningClass = "panzoom-exclude";
 
   const selectTile = useCallback(() => {
-    //
-    if (!disablePan || (disablePan && selectedTileTargets.length <= 1)) {
+    // || (disablePan && selectedTileTargets.length <= 1)
+    if (!disablePan) {
       setSelectedTileTargets([tileRef.current]);
     }
   }, [disablePan, tileRef]);
