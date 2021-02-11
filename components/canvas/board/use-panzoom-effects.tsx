@@ -59,7 +59,6 @@ export const usePanzoomEffects = ({
       startX: centerX,
       startY: centerY,
       handleStartEvent: (event) => {
-        console.log(event.target.classList);
         if (
           !disablePan &&
           Array.from(event.target.classList).includes("canvas-tile")

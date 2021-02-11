@@ -1,40 +1,8 @@
-import nookies from "nookies";
 import { atom } from "recoil";
-import { firebaseClient } from "../../firebaseClient";
 
 export const authState = atom({
   key: "AUTH/auth-state",
   default: null,
-  effects_UNSTABLE: [
-    ({ setSelf }) => {
-      if (typeof window !== undefined) {
-        (window as any).nookies = nookies;
-      }
-      return firebaseClient.auth().onIdTokenChanged(async (user) => {
-        console.log(`token changed!`);
-        if (!user) {
-          console.log(`no token found...`);
-          setSelf(null);
-          nookies.destroy(null, "token");
-          nookies.set(null, "token", "", {});
-          return;
-        }
-
-        console.log(`updating token...`);
-        const token = await user.getIdToken();
-        setSelf(user);
-        nookies.destroy(null, "token");
-        nookies.set(null, "token", token, {});
-      });
-    },
-    () => {
-      const handle = setInterval(async () => {
-        const user = firebaseClient.auth().currentUser;
-        if (user) await user.getIdToken(true);
-      }, 10 * 60 * 1000);
-
-      // clean up setInterval
-      return () => clearInterval(handle);
-    },
-  ],
 });
+
+// Using context to manage authentication - Next.js was not happy about Recoil during SSR... AuthContext sets authState values in a useEffect, check out auth-context.tsx to see the flow

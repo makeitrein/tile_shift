@@ -1,5 +1,6 @@
 import firebaseClient from "firebase/app";
 import "firebase/auth";
+import "firebase/database";
 
 const CLIENT_CONFIG = {
   apiKey: "AIzaSyCc09tT1QK-fz7L-OPM4lvvFJHOtvHlaXI",
@@ -11,8 +12,7 @@ const CLIENT_CONFIG = {
   measurementId: "G-L0TV6RQZL0",
 };
 
-console.log("heya");
-if (typeof window !== "undefined" && !firebaseClient.apps.length) {
+if (!firebaseClient.apps.length) {
   console.log("initializing");
   firebaseClient.initializeApp(CLIENT_CONFIG);
   firebaseClient
@@ -21,4 +21,5 @@ if (typeof window !== "undefined" && !firebaseClient.apps.length) {
   (window as any).firebase = firebaseClient;
 }
 
-export { firebaseClient };
+const db = firebaseClient.database();
+export { firebaseClient, db };

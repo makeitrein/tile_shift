@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { useRecoilCallback } from "recoil";
+import { db } from "../../firebaseClient";
 import { tileHeight, tileWidth } from "../canvas/tile/tile";
 import * as tileState from "./tiles";
 import { Tile, TileDimensions } from "./tiles";
@@ -38,19 +39,33 @@ export const useCreateInitialTile = () =>
       tags?: string[];
       collapsed?: boolean;
     }) => {
-      const newTileId = id || tileId();
-      set(tileState.initialTileValues, (tiles) => ({
-        ...tiles,
-        [newTileId]: {
-          ...defaultTileValues,
-          content,
-          id: newTileId,
-          ...dimensions,
-          tags,
-          createdAt: getISODateTime(),
-          collapsed,
-        },
-      }));
+      const tilesRef = db.ref("tiles");
+      const newTilesRef = tilesRef.push();
+
+      const tile = {
+        ...defaultTileValues,
+        content,
+        id: newTilesRef.key,
+        ...dimensions,
+        tags,
+        createdAt: getISODateTime(),
+        collapsed,
+      };
+
+      newTilesRef.set(tile);
+      // db.collection("tiles").doc(tile.id).set(tile);
+      // set(tileState.initialTileValues, (tiles) => ({
+      //   ...tiles,
+      //   [newTileId]: {
+      //     ...defaultTileValues,
+      //     content,
+      //     id: newTileId,
+      //     ...dimensions,
+      //     tags,
+      //     createdAt: getISODateTime(),
+      //     collapsed,
+      //   },
+      // }));
     };
   });
 

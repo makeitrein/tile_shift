@@ -1,13 +1,24 @@
 import nookies from "nookies";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useRecoilCallback } from "recoil";
 import { firebaseClient } from "../../firebaseClient";
+import { authState } from "../state/auth";
 
 const AuthContext = createContext<{ user: firebaseClient.User | null }>({
   user: null,
 });
 
+export const useSetRecoilAuthUser = () =>
+  useRecoilCallback(({ set }) => {
+    return (user: { uid: string; email: string } | null) => {
+      set(authState, user);
+    };
+  });
+
 export function AuthProvider({ children }: any) {
   const [user, setUser] = useState<firebaseClient.User | null>(null);
+
+  const setRecoilAuthUser = useSetRecoilAuthUser();
 
   useEffect(() => {
     if (typeof window !== undefined) {
@@ -18,6 +29,7 @@ export function AuthProvider({ children }: any) {
       if (!user) {
         console.log(`no token found...`);
         setUser(null);
+        setRecoilAuthUser(null);
         nookies.destroy(null, "token");
         nookies.set(null, "token", "", {});
         return;
@@ -25,7 +37,9 @@ export function AuthProvider({ children }: any) {
 
       console.log(`updating token...`);
       const token = await user.getIdToken();
+      const { uid, email } = user;
       setUser(user);
+      setRecoilAuthUser({ uid, email });
       nookies.destroy(null, "token");
       nookies.set(null, "token", token, {});
     });
