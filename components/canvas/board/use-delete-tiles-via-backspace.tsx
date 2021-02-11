@@ -11,8 +11,11 @@ export const useDeleteTilesViaBackspace = () => {
   const setTileSettings = useSetTileSettings();
 
   useHotkeys(
-    "ctrl+backspace,command+backspace",
+    "backspace",
     () => {
+      if (editableTileSettings?.isWysiwygEditorFocused) {
+        return;
+      }
       selectedTileIds.forEach((tileId) =>
         setTileSettings(tileId, { deleted: true })
       );

@@ -246,11 +246,85 @@ export const templateOptions: TemplateOptions = {
       [13, 14],
     ],
   }),
-  idea: () => ({
+  idea: ({ x = 0, y = 0, multiplier = 1 } = {}) => ({
     icon: LightBulbOutline,
     title: "Idea Validation",
     description:
-      "Explore the hidden assumptions and supporting Benefits behind your hypotheses",
+      "Explore the hidden assumptions and supporting evidence behind your hypotheses",
+    focalTagId: 55,
+    tags: {
+      1: { name: "Question", x: x + 40 * multiplier, y: y + 0 * multiplier },
+      2: {
+        name: "Question",
+        x: x + 40 * multiplier,
+        y: y + 200 * multiplier,
+      },
+      3: {
+        name: "Question",
+        x: x + 40 * multiplier,
+        y: y + 100 * multiplier,
+      },
+      55: {
+        name: "Idea",
+        x: x + 200 * multiplier,
+        y: y + 100 * multiplier,
+      },
+      4: { name: "Assumption", x: x + 360 * multiplier, y: y + 0 * multiplier },
+      5: {
+        name: "Assumption",
+        x: x + 360 * multiplier,
+        y: y + 80 * multiplier,
+      },
+      6: {
+        name: "Assumption",
+        x: x + 360 * multiplier,
+        y: y + 160 * multiplier,
+      },
+      7: {
+        name: "Evidence",
+        x: x + 520 * multiplier,
+        y: y + 0 * multiplier,
+      },
+      8: {
+        name: "Counterpoint",
+        x: x + 520 * multiplier,
+        y: y + 40 * multiplier,
+      },
+      9: {
+        name: "Evidence",
+        x: x + 520 * multiplier,
+        y: y + 80 * multiplier,
+      },
+      10: {
+        name: "Counterpoint",
+        x: x + 520 * multiplier,
+        y: y + 120 * multiplier,
+      },
+      11: {
+        name: "Evidence",
+        x: x + 520 * multiplier,
+        y: y + 160 * multiplier,
+      },
+      12: {
+        name: "Counterpoint",
+        x: x + 520 * multiplier,
+        y: y + 200 * multiplier,
+      },
+    },
+    arrows: [
+      [1, 55],
+      [2, 55],
+      [3, 55],
+      [55, 4],
+      [55, 5],
+      [55, 6],
+      [4, 7],
+      [4, 8],
+      [5, 9],
+      [5, 10],
+      [6, 11],
+      [6, 12],
+    ],
   }),
   brainstorm: () => ({
     icon: LightningBoltOutline,

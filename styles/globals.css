@@ -78,6 +78,28 @@ body {
   margin-top: 10px !important;
 }
 
+.bp3-tree-root .bp3-tree-node-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 53px;
+  padding-top: 1px;
+}
+
+.bp3-tree-root .bp3-tree-node-list .bp3-tree-node-content {
+  padding: 0;
+}
+
+.bp3-tree-node-label {
+  overflow: visible !important;
+}
+
+.bp3-tree-root
+  .bp3-tree-node-list
+  .bp3-tree-node-content
+  .bp3-tree-node-caret-none {
+  display: none;
+}
+
 .bp3-popover2-content,
 .bp3-popover2 {
   border-radius: 0.375rem !important;
