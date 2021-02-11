@@ -37,11 +37,115 @@ export type TemplateMaker = (coordinates?: Coordinates) => Template;
 type TemplateOptions = Record<string, TemplateMaker>;
 
 export const templateOptions: TemplateOptions = {
-  scoping: () => ({
+  scoping: ({ x = 0, y = 0, multiplier = 1 } = {}) => ({
     icon: FlagOutline,
     title: "Project Scoping",
     description:
       "Get consensus on your project goals, deliverables, tasks, costs and deadlines",
+    focalTagId: 55,
+    tags: {
+      1: { name: "Context", x: x + 40 * multiplier, y: y + 0 * multiplier },
+      2: {
+        name: "Stakeholders",
+        x: x + 40 * multiplier,
+        y: y + 160 * multiplier,
+      },
+      33: {
+        name: "Success Definition",
+        x: x + 40 * multiplier,
+        y: y + 240 * multiplier,
+      },
+      3: {
+        name: "Unknowns",
+        x: x + 40 * multiplier,
+        y: y + 80 * multiplier,
+      },
+      55: {
+        name: "Project",
+        x: x + 200 * multiplier,
+        y: y + 100 * multiplier,
+      },
+      4: {
+        name: "Requirement",
+        x: x + 300 * multiplier,
+        y: y + 50 * multiplier,
+      },
+
+      6: {
+        name: "Requirement",
+        x: x + 300 * multiplier,
+        y: y + 150 * multiplier,
+      },
+      7: {
+        name: "Deadline",
+        x: x + 460 * multiplier,
+        y: y - 40 * multiplier,
+      },
+      8: {
+        name: "Deliverable",
+        x: x + 460 * multiplier,
+        y: y + 0 * multiplier,
+      },
+      9: {
+        name: "Resource",
+        x: x + 460 * multiplier,
+        y: y + 40 * multiplier,
+      },
+      10: {
+        name: "Risk",
+        x: x + 460 * multiplier,
+        y: y + 80 * multiplier,
+      },
+
+      12: {
+        name: "Deadline",
+        x: x + 460 * multiplier,
+        y: y + 120 * multiplier,
+      },
+      13: {
+        name: "Deliverable",
+        x: x + 460 * multiplier,
+        y: y + 160 * multiplier,
+      },
+      14: {
+        name: "Resource",
+        x: x + 460 * multiplier,
+        y: y + 200 * multiplier,
+      },
+      15: {
+        name: "Risk",
+        x: x + 460 * multiplier,
+        y: y + 240 * multiplier,
+      },
+      16: {
+        name: "Mitigation",
+        x: x + 560 * multiplier,
+        y: y + 80 * multiplier,
+      },
+      17: {
+        name: "Mitigation",
+        x: x + 560 * multiplier,
+        y: y + 240 * multiplier,
+      },
+    },
+    arrows: [
+      [1, 55],
+      [2, 55],
+      [3, 55],
+      [55, 4],
+      [55, 6],
+      [4, 7],
+      [4, 8],
+      [4, 9],
+      [4, 10],
+      [6, 12],
+      [6, 13],
+      [6, 14],
+      [6, 15],
+      [15, 17],
+      [10, 16],
+      [33, 55],
+    ],
   }),
   task: () => ({
     icon: CheckCircleOutline,

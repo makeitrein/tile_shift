@@ -30,9 +30,9 @@ export const TemplateDiagram = React.memo(() => {
         {arrows.map(([startId, endId]) => {
           const startTag = tags[startId];
           const endTag = tags[endId];
-          const xStartNudge = 80;
+          const xStartNudge = 40;
           const yStartNudge = 10;
-          const xEndNudge = -5;
+          const xEndNudge = 0;
           const yEndNudge = 10;
           return (
             <BasicArrowSvg
