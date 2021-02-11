@@ -2,8 +2,9 @@ import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
 import React, { useCallback } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useCreateInitialArrow } from "../../state/arrow-utils";
+import { generateTileId } from "../../state/db";
 import * as templateState from "../../state/template";
-import { tileId, useCreateInitialTile } from "../../state/tile-utils";
+import { useCreateInitialTile } from "../../state/tile-utils";
 
 export const useAddTemplateViaClick = (canvasEditor) => {
   const [selectedTemplateId, setSelectedTemplateId] = useRecoilState(
@@ -42,7 +43,7 @@ export const useAddTemplateViaClick = (canvasEditor) => {
       const random = Math.random();
 
       const tagIdToDbIdMap = Object.keys(tags).reduce((acc, tagId) => {
-        acc[tagId] = tileId();
+        acc[tagId] = generateTileId();
         return acc;
       }, {});
 

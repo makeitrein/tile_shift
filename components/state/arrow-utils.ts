@@ -1,22 +1,25 @@
 import { useRecoilCallback } from "recoil";
 import * as arrowState from "./arrows";
 import { Arrow } from "./arrows";
-
-export const defaultArrowValues = {
-  theme: "green",
-  content: "",
-  strokeWidth: 3,
-  direction: "right",
-};
+import { generateArrowRef } from "./db";
 
 export const useCreateInitialArrow = () =>
   useRecoilCallback(({ set }) => {
     return (arrowData: Pick<Arrow, "start" | "end">) => {
-      const id = "new-arrow" + Math.random();
-      set(arrowState.initialArrowValues, (arrow) => ({
-        ...arrow,
-        [id]: { ...defaultArrowValues, id, ...arrowData },
-      }));
+      const ref = generateArrowRef();
+
+      const arrow = {
+        ...arrowState.defaultArrowValues,
+        id: ref.key,
+        ...arrowData,
+      };
+
+      ref.set(arrow);
+
+      // set(arrowState.initialArrowValues, (arrow) => ({
+      //   ...arrow,
+      //   [id]: { ...arrowState.defaultArrowValues, id, ...arrowData },
+      // }));
     };
   });
 

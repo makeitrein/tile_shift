@@ -1,7 +1,5 @@
-import { isEmpty, pick } from "lodash";
 import { atom, atomFamily, selector } from "recoil";
-import { db } from "../../firebaseClient";
-import { localStorageEffect } from "./effects";
+import { syncData, syncIds, tileRef, tilesRef } from "./db";
 export interface TileDimensions {
   x: number;
   y: number;
@@ -29,41 +27,6 @@ export interface TileContent {
 export type Tile = Id & TileDimensions & TileSettings & TileContent;
 
 export type TileSearchResult = TileContent & TileSettings & Id;
-
-const syncTileData = (tileId: string, properties: string[]) => ({
-  setSelf,
-  onSet,
-}) => {
-  const tileRef = db.ref(`tiles/${tileId}`);
-
-  tileRef.on("value", (data) => {
-    const relevantData = pick(data.val(), properties);
-    if (!isEmpty(relevantData)) {
-      setSelf(relevantData);
-    }
-  });
-
-  onSet((tileInfo) => {
-    console.log("setting", tileInfo);
-    tileRef.update(tileInfo);
-  });
-
-  return () => {
-    tileRef.off();
-  };
-};
-
-const syncIds = ({ setSelf, onSet, trigger }) => {
-  const tilesRef = db.ref(`tiles`);
-
-  tilesRef.on("child_added", (data) => {
-    setSelf((ids) => [...ids, data.key]);
-  });
-
-  return () => {
-    tilesRef.off();
-  };
-};
 
 export const initialTileValues = atom<Record<string, Tile>>({
   key: "CANVAS/initial-tiles-query",
@@ -104,7 +67,7 @@ export const searchedForTile = atom<null | string>({
 export const tileIds = atom<string[]>({
   key: "CANVAS/tiles-ids",
   default: [],
-  effects_UNSTABLE: [syncIds],
+  effects_UNSTABLE: [syncIds(tilesRef())],
 });
 
 export const undeletedTileIds = selector<string[]>({
@@ -128,7 +91,7 @@ export const tileSearchResults = selector<TileSearchResult[]>({
 export const tileDimensions = atomFamily<TileDimensions, string>({
   key: "CANVAS/tile-dimensions",
   effects_UNSTABLE: (tileId) => [
-    syncTileData(tileId, ["x", "y", "width", "height"]),
+    syncData(tileRef(tileId), ["x", "y", "width", "height"]),
   ],
   default: {
     x: 0,
@@ -141,7 +104,7 @@ export const tileDimensions = atomFamily<TileDimensions, string>({
 export const tileSettings = atomFamily<TileSettings, string>({
   key: "CANVAS/tile-settings",
   effects_UNSTABLE: (tileId) => [
-    syncTileData(tileId, [
+    syncData(tileRef(tileId), [
       "tags",
       "isDragging",
       "isWysiwygEditorFocused",
@@ -162,27 +125,11 @@ export const tileSettings = atomFamily<TileSettings, string>({
 
 export const tileContent = atomFamily<TileContent, string>({
   key: "CANVAS/tile-content",
-  effects_UNSTABLE: (tileId) => [syncTileData(tileId, ["content"])],
+  effects_UNSTABLE: (tileId) => [syncData(tileRef(tileId), ["content"])],
   default: {
     content: "",
   },
 });
-
-// Provides default data for each initial canvas tile, does not contain up-to-date data
-export const TileIds = atom<Partial<Tile>[]>({
-  key: "CANVAS/tiles",
-  default: [],
-  effects_UNSTABLE: [localStorageEffect(`canvas-tile-ids`)],
-});
-
-// // The actual tile data found via the atomFamily
-// export const Tiles = selector<Tile[]>({
-//   key: "CANVAS/canvas-tiles",
-//   get: ({ get }) => {
-//     const tileDefaults = get(TileIds);
-//     return tileDefaults.map((tile) => get(Tile(tile.id)));
-//   },
-// });
 
 // HTML DOM targets that moveable interacts with
 export const selectedTileTargets = atom<(HTMLElement | SVGElement)[]>({

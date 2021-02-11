@@ -1,5 +1,16 @@
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
 import { colorThemes, ThemeMapOption } from "../canvas/arrow-menu/color-picker";
+import { arrowRef, arrowsRef, syncData, syncIds } from "./db";
+
+export const defaultArrowValues = {
+  id: "1",
+  theme: "green",
+  content: "",
+  strokeWidth: 3,
+  direction: "right",
+  start: null,
+  end: null,
+};
 
 export type ArrowPoint =
   | "topLeft"
@@ -16,8 +27,8 @@ export type ArrowPoint =
   | "bottomRight";
 export interface Arrow {
   id: string;
-  start: { tileId: string; point: ArrowPoint };
-  end: { tileId: string; point: ArrowPoint };
+  start: { tileId: string; point: ArrowPoint } | null;
+  end: { tileId: string; point: ArrowPoint } | null;
   theme: string;
   content: string;
   strokeWidth: number;
@@ -29,22 +40,25 @@ export const initialArrowValues = atom<Record<string, Arrow>>({
   default: {},
 });
 
-export const arrowIds = selector<string[]>({
+export const arrowIds = atom<string[]>({
   key: "CANVAS/arrows-ids",
-  get: ({ get }) => {
-    return Object.keys(get(initialArrowValues));
-  },
+  default: [],
+  effects_UNSTABLE: [syncIds(arrowsRef())],
 });
 
 export const arrow = atomFamily<Arrow, string>({
   key: "CANVAS/arrow-settings",
-  default: selectorFamily({
-    key: "CANVAS/arrow-settings-default",
-    get: (arrowId) => ({ get }) => {
-      const arrows = get(initialArrowValues);
-      return arrows[arrowId];
-    },
-  }),
+  default: defaultArrowValues,
+  effects_UNSTABLE: (arrowId) => [
+    syncData(arrowRef(arrowId), [
+      "theme",
+      "content",
+      "stroke",
+      "direction",
+      "start",
+      "end",
+    ]),
+  ],
 });
 
 // HTML DOM targets that moveable interacts with

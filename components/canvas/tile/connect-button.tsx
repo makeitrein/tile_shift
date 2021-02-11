@@ -2,7 +2,8 @@ import * as React from "react";
 import { useRecoilValue } from "recoil";
 import { useCreateInitialArrow } from "../../state/arrow-utils";
 import { ArrowPoint } from "../../state/arrows";
-import { tileId, useCreateInitialTile } from "../../state/tile-utils";
+import { generateTileId } from "../../state/db";
+import { useCreateInitialTile } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
 import { tileHeight, tileWidth } from "./tile";
 
@@ -81,7 +82,7 @@ export const ConnectButton = React.memo(({ id, direction }: Props) => {
   const createInitialArrow = useCreateInitialArrow();
 
   const createAndConnectTile = () => {
-    const newTileId = tileId();
+    const newTileId = generateTileId();
     createInitialTile({ dimensions: newTileDimensions, id: newTileId });
     createInitialArrow({
       start: { tileId: id, point: direction },
