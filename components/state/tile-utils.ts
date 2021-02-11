@@ -22,8 +22,11 @@ export const defaultTileValues: Tile = {
   collapsed: false,
 };
 
-export const tileId = () => "new-tile" + Math.random();
-
+export const tileId = () => {
+  const tilesRef = db.ref("tiles");
+  const newTilesRef = tilesRef.push();
+  return newTilesRef.key;
+};
 export const useCreateInitialTile = () =>
   useRecoilCallback(({ set }) => {
     return ({
@@ -39,33 +42,19 @@ export const useCreateInitialTile = () =>
       tags?: string[];
       collapsed?: boolean;
     }) => {
-      const tilesRef = db.ref("tiles");
-      const newTilesRef = tilesRef.push();
+      const tilesRef = db.ref(`tiles/${id || tileId()}`);
 
       const tile = {
         ...defaultTileValues,
         content,
-        id: newTilesRef.key,
+        id: tilesRef.key,
         ...dimensions,
         tags,
         createdAt: getISODateTime(),
         collapsed,
       };
 
-      newTilesRef.set(tile);
-      // db.collection("tiles").doc(tile.id).set(tile);
-      // set(tileState.initialTileValues, (tiles) => ({
-      //   ...tiles,
-      //   [newTileId]: {
-      //     ...defaultTileValues,
-      //     content,
-      //     id: newTileId,
-      //     ...dimensions,
-      //     tags,
-      //     createdAt: getISODateTime(),
-      //     collapsed,
-      //   },
-      // }));
+      tilesRef.set(tile);
     };
   });
 

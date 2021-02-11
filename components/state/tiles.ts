@@ -1,3 +1,4 @@
+import { isEmpty, pick } from "lodash";
 import { atom, atomFamily, selector } from "recoil";
 import { db } from "../../firebaseClient";
 import { localStorageEffect } from "./effects";
@@ -29,15 +30,22 @@ export type Tile = Id & TileDimensions & TileSettings & TileContent;
 
 export type TileSearchResult = TileContent & TileSettings & Id;
 
-const syncTileData = (tileId) => ({ setSelf, onSet, trigger }) => {
+const syncTileData = (tileId: string, properties: string[]) => ({
+  setSelf,
+  onSet,
+}) => {
   const tileRef = db.ref(`tiles/${tileId}`);
 
   tileRef.on("value", (data) => {
-    setSelf(data.val());
+    const relevantData = pick(data.val(), properties);
+    if (!isEmpty(relevantData)) {
+      setSelf(relevantData);
+    }
   });
 
   onSet((tileInfo) => {
-    tileRef.set(tileInfo);
+    console.log("setting", tileInfo);
+    tileRef.update(tileInfo);
   });
 
   return () => {
@@ -119,7 +127,9 @@ export const tileSearchResults = selector<TileSearchResult[]>({
 
 export const tileDimensions = atomFamily<TileDimensions, string>({
   key: "CANVAS/tile-dimensions",
-  effects_UNSTABLE: (tileId) => [syncTileData(tileId)],
+  effects_UNSTABLE: (tileId) => [
+    syncTileData(tileId, ["x", "y", "width", "height"]),
+  ],
   default: {
     x: 0,
     y: 0,
@@ -130,7 +140,16 @@ export const tileDimensions = atomFamily<TileDimensions, string>({
 
 export const tileSettings = atomFamily<TileSettings, string>({
   key: "CANVAS/tile-settings",
-  effects_UNSTABLE: (tileId) => [syncTileData(tileId)],
+  effects_UNSTABLE: (tileId) => [
+    syncTileData(tileId, [
+      "tags",
+      "isDragging",
+      "isWysiwygEditorFocused",
+      "deleted",
+      "createdAt",
+      "collapsed",
+    ]),
+  ],
   default: {
     tags: [],
     isDragging: false,
@@ -143,7 +162,7 @@ export const tileSettings = atomFamily<TileSettings, string>({
 
 export const tileContent = atomFamily<TileContent, string>({
   key: "CANVAS/tile-content",
-  effects_UNSTABLE: (tileId) => [syncTileData(tileId)],
+  effects_UNSTABLE: (tileId) => [syncTileData(tileId, ["content"])],
   default: {
     content: "",
   },

@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useCreateInitialArrow } from "../../state/arrow-utils";
 import * as templateState from "../../state/template";
-import { useCreateInitialTile } from "../../state/tile-utils";
+import { tileId, useCreateInitialTile } from "../../state/tile-utils";
 
 export const useAddTemplateViaClick = (canvasEditor) => {
   const [selectedTemplateId, setSelectedTemplateId] = useRecoilState(
@@ -41,13 +41,15 @@ export const useAddTemplateViaClick = (canvasEditor) => {
 
       const random = Math.random();
 
-      const randomizedTileId = (id: number | string) =>
-        "new-tile-" + id + random;
+      const tagIdToDbIdMap = Object.keys(tags).reduce((acc, tagId) => {
+        acc[tagId] = tileId();
+        return acc;
+      }, {});
 
       {
         Object.entries(tags).map(([id, { name, x, y }]) => {
           createInitialTile({
-            id: randomizedTileId(id),
+            id: tagIdToDbIdMap[id],
             dimensions: {
               x: x,
               y: y,
@@ -63,10 +65,10 @@ export const useAddTemplateViaClick = (canvasEditor) => {
       arrows.forEach(([startId, endId]) =>
         createInitialArrow({
           start: {
-            tileId: randomizedTileId(startId),
+            tileId: tagIdToDbIdMap[startId],
             point: "right",
           },
-          end: { tileId: randomizedTileId(endId), point: "left" },
+          end: { tileId: tagIdToDbIdMap[endId], point: "left" },
         })
       );
 
