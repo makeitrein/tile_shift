@@ -5,7 +5,7 @@ import * as tileState from "../../state/tiles";
 import { minimapSizeDivider } from "./minimap";
 
 export const MiniMapTiles = React.memo(() => {
-  const tileIds = useRecoilValue(tileState.tileIds);
+  const tileIds = useRecoilValue(tileState.undeletedTileIds);
   return (
     <>
       {tileIds.map((id) => (
