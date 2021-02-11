@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { MoveableInterface } from "react-moveable";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fromHtml, toHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
@@ -98,7 +99,12 @@ const extensionTemplate = () => [
   new WysiwygPreset({}),
 ];
 
-export const EditorManager = React.memo(({ id, moveable }) => {
+interface Props {
+  moveable: MoveableInterface;
+  id: string;
+}
+
+export const EditorManager = React.memo(({ id, moveable }: Props) => {
   const [tile, setTile] = useRecoilState(tileState.tileContent(id));
   const manager = useManager(extensionTemplate);
   const editableTileId = useRecoilValue(tileState.editableTileId);
@@ -122,7 +128,7 @@ export const EditorManager = React.memo(({ id, moveable }) => {
       value={value}
       placeholder="What's on your mind?"
       onChange={({ state, view }) => {
-        const target = view.dom;
+        const target = view.dom as HTMLDivElement;
         const articleHeight =
           target.offsetHeight + articlePadding + tileHeaderHeight;
 
@@ -149,7 +155,7 @@ export const EditorManager = React.memo(({ id, moveable }) => {
 });
 
 interface EditorProps {
-  id: number;
+  id: string;
   showToolbar: boolean;
 }
 export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(

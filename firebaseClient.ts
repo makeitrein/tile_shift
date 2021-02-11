@@ -13,12 +13,13 @@ const CLIENT_CONFIG = {
 };
 
 if (!firebaseClient.apps.length) {
-  console.log("initializing");
   firebaseClient.initializeApp(CLIENT_CONFIG);
-  firebaseClient
-    .auth()
-    .setPersistence(firebaseClient.auth.Auth.Persistence.SESSION);
-  (window as any).firebase = firebaseClient;
+  if (typeof window !== "undefined") {
+    firebaseClient
+      .auth()
+      .setPersistence(firebaseClient.auth.Auth.Persistence.SESSION);
+    (window as any).firebase = firebaseClient;
+  }
 }
 
 const db = firebaseClient.database();

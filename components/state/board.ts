@@ -6,7 +6,7 @@ export const authState = atom({
   key: "BOARD/board",
   default: null,
   effects_UNSTABLE: [
-    ({ setSelf, get }) => {
+    ({ setSelf }) => {
       if (typeof window !== undefined) {
         (window as any).nookies = nookies;
       }

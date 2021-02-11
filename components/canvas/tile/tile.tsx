@@ -82,41 +82,36 @@ export const Tile = React.memo(({ id }: TileProps) => {
     }
   }, [disablePan, tileRef]);
 
-  const toggleCollapse = useCallback(
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setSelectedTileTargets([]);
+  const toggleCollapse = useCallback(() => {
+    setSelectedTileTargets([]);
 
-      if (collapsed) {
-        setTileSettings((settings) => ({
-          ...settings,
-          collapsed: false,
-        }));
+    if (collapsed) {
+      setTileSettings((settings) => ({
+        ...settings,
+        collapsed: false,
+      }));
 
-        setTileDimensions(id, {
-          width: tileDimensions.expandedWidth || tileWidth,
-          height: tileDimensions.expandedHeight || tileHeight,
-        });
-      } else {
-        setTileSettings((settings) => ({
-          ...settings,
-          collapsed: true,
-        }));
+      setTileDimensions(id, {
+        width: tileDimensions.expandedWidth || tileWidth,
+        height: tileDimensions.expandedHeight || tileHeight,
+      });
+    } else {
+      setTileSettings((settings) => ({
+        ...settings,
+        collapsed: true,
+      }));
 
-        setTileDimensions(id, {
-          expandedWidth: tileDimensions.width,
-          expandedHeight: tileDimensions.height,
-        });
+      setTileDimensions(id, {
+        expandedWidth: tileDimensions.width,
+        expandedHeight: tileDimensions.height,
+      });
 
-        setTimeout(() => {
-          const { width, height } = tileRef.current.getBoundingClientRect();
-          setTileDimensions(id, { width, height });
-        }, 10);
-      }
-    },
-    [collapsed, tileDimensions]
-  );
+      setTimeout(() => {
+        const { width, height } = tileRef.current.getBoundingClientRect();
+        setTileDimensions(id, { width, height });
+      }, 10);
+    }
+  }, [collapsed, tileDimensions]);
 
   return collapsed ? (
     <CollapsedTileWrapper

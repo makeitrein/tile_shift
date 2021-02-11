@@ -7,9 +7,7 @@ import { templateOptions } from "../../state/template";
 import { TemplateOption } from "./template-option";
 import { TemplatePreview } from "./template-preview";
 
-interface Props {
-  id: string;
-}
+interface Props {}
 
 export const animateLeft = {
   enter: {
@@ -36,7 +34,7 @@ export const animateRight = {
   },
 };
 
-export const TemplateLibrary = React.memo(({ id }: Props) => {
+export const TemplateLibrary = React.memo(({}: Props) => {
   const containerRef = useRef();
   const setSelectedTemplateId = useSetRecoilState(
     templateState.selectedTemplateId
@@ -111,7 +109,7 @@ export const TemplateLibrary = React.memo(({ id }: Props) => {
           !preview && "pointer-events-none"
         }`}
       >
-        <TemplatePreview id={id} goBack={goBack} />
+        <TemplatePreview goBack={goBack} />
       </div>
     </div>
   );

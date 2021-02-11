@@ -52,8 +52,8 @@ export class TagTree extends React.Component<ITreeExampleProps> {
 
     nodeData.isExpanded = !nodeData.isExpanded;
 
-    if (nodeData.tagName) {
-      this.props.handleTagClick(nodeData.tagName);
+    if ((nodeData as any).tagName) {
+      this.props.handleTagClick((nodeData as any).tagName);
     }
 
     this.setState(this.state);

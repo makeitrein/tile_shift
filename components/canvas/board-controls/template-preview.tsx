@@ -8,10 +8,9 @@ import { TemplateOption } from "./template-option";
 
 interface Props {
   goBack: () => void;
-  id: string;
 }
 
-export const TemplatePreview = React.memo(({ goBack, id }: Props) => {
+export const TemplatePreview = React.memo(({ goBack }: Props) => {
   // const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
   const setSelectedTemplateId = useSetRecoilState(
     templateState.selectedTemplateId
