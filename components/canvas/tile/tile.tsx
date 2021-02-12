@@ -1,5 +1,5 @@
 import parse from "html-react-parser";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { useSetTileDimensions } from "../../state/tile-utils";
@@ -47,7 +47,7 @@ interface TileProps {
 export const tileTitleElementId = (id: string) => id + "title";
 export const tileDescriptionElementId = (id: string) => id + "description";
 
-export const Tile = React.memo(({ id }: TileProps) => {
+const Tile = React.memo(({ id }: TileProps) => {
   const tileRef = useRef(null);
   const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
   const [selectedTileTargets, setSelectedTileTargets] = useRecoilState(
@@ -64,9 +64,13 @@ export const Tile = React.memo(({ id }: TileProps) => {
   const searchedForTile = useRecoilValue(tileState.searchedForTile);
   const setTileDimensions = useSetTileDimensions();
 
-  const transformStyle = {
-    transform: `translate(${tileDimensions.x}px, ${tileDimensions.y}px)`,
-  };
+  const transformStyle = useMemo(
+    () => ({
+      transform: `translate(${tileDimensions.x}px, ${tileDimensions.y}px)`,
+    }),
+    [tileDimensions.x, tileDimensions.y]
+  );
+
   const isSelected = selectedTileIds.includes(id);
   const isEditable = editableTileId === id;
   const isSearchedFor = searchedForTile === id;
@@ -170,7 +174,7 @@ interface AvatarCommentsProps {
   id: string;
 }
 
-export const AvatarComments = React.memo(({ id }: AvatarCommentsProps) => {
+const AvatarComments = React.memo(({ id }: AvatarCommentsProps) => {
   const setDiscussionDrawer = useSetRecoilState(tileState.discussionDrawer);
 
   const openTileDiscussion = React.useCallback(() => {
@@ -233,7 +237,7 @@ interface Props {
   tags: string[];
   onClick: () => void;
 }
-export const Tags = React.memo(({ tags, onClick }: Props) => {
+const Tags = React.memo(({ tags, onClick }: Props) => {
   const setTagPickerOpen = useSetRecoilState(uiState.tagPickerOpen);
 
   return (
@@ -242,3 +246,5 @@ export const Tags = React.memo(({ tags, onClick }: Props) => {
     </div>
   );
 });
+
+export { Tags, Tile, AvatarComments };

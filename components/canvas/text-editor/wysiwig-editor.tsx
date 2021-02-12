@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { MoveableInterface } from "react-moveable";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fromHtml, toHtml } from "remirror/core";
@@ -120,6 +120,32 @@ export const EditorManager = React.memo(({ id, moveable }: Props) => {
     })
   );
 
+  const handleRemirrorChange = useCallback(
+    () => ({ state, view }) => {
+      const target = view.dom as HTMLDivElement;
+      const articleHeight =
+        target.offsetHeight + articlePadding + tileHeaderHeight;
+
+      const rect = moveable.getRect();
+      const extraSpacing = 12;
+
+      if (articleHeight + extraSpacing >= rect.offsetHeight) {
+        moveable.request("resizable", {
+          offsetHeight: articleHeight + articlePadding,
+          isInstant: true,
+        });
+      }
+
+      setValue(state);
+      setTile((tile) => ({
+        ...tile,
+        content: toHtml({ node: state.doc, schema: state.schema }),
+      }));
+    },
+
+    []
+  );
+
   // Add the value and change handler to the editor.
   return (
     <RemirrorProvider
@@ -127,27 +153,7 @@ export const EditorManager = React.memo(({ id, moveable }: Props) => {
       manager={manager}
       value={value}
       placeholder="What's on your mind?"
-      onChange={({ state, view }) => {
-        const target = view.dom as HTMLDivElement;
-        const articleHeight =
-          target.offsetHeight + articlePadding + tileHeaderHeight;
-
-        const rect = moveable.getRect();
-        const extraSpacing = 12;
-
-        if (articleHeight + extraSpacing >= rect.offsetHeight) {
-          moveable.request("resizable", {
-            offsetHeight: articleHeight + articlePadding,
-            isInstant: true,
-          });
-        }
-
-        setValue(state);
-        setTile((tile) => ({
-          ...tile,
-          content: toHtml({ node: state.doc, schema: state.schema }),
-        }));
-      }}
+      onChange={handleRemirrorChange}
     >
       <Editor ref={editorRef} id={id} showToolbar={true} />
     </RemirrorProvider>
@@ -158,8 +164,8 @@ interface EditorProps {
   id: string;
   showToolbar: boolean;
 }
-export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
-  ({ id, showToolbar }, ref) => {
+export const Editor = React.memo(
+  React.forwardRef<HTMLDivElement, EditorProps>(({ id, showToolbar }, ref) => {
     const { getRootProps } = useRemirror();
     const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
 
@@ -179,5 +185,5 @@ export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
         />
       </>
     );
-  }
+  })
 );

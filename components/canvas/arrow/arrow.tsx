@@ -50,6 +50,17 @@ export const Arrow = React.memo(({ id }: Props) => {
   );
   const endTile = useRecoilValue(tileState.tileDimensions(arrow.end.tileId));
 
+  const startTileSettings = useRecoilValue(
+    tileState.tileSettings(arrow.start.tileId)
+  );
+  const endTileSettings = useRecoilValue(
+    tileState.tileSettings(arrow.end.tileId)
+  );
+
+  if (startTileSettings.deleted || endTileSettings.deleted) {
+    return null;
+  }
+
   return (
     <ArrowSvg
       selectArrow={selectArrow}

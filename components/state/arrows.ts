@@ -2,7 +2,7 @@ import { atom, atomFamily, selector, selectorFamily } from "recoil";
 import { colorThemes, ThemeMapOption } from "../canvas/arrow-menu/color-picker";
 import { arrowRef, arrowsRef, syncData, syncIds } from "./db";
 
-export const defaultArrowValues = {
+export const defaultArrowValues: Arrow = {
   id: "1",
   theme: "green",
   content: "",
@@ -10,6 +10,7 @@ export const defaultArrowValues = {
   direction: "right",
   start: null,
   end: null,
+  deleted: false,
 };
 
 export type ArrowPoint =
@@ -33,21 +34,22 @@ export interface Arrow {
   content: string;
   strokeWidth: number;
   direction: string;
+  deleted: boolean;
 }
 
 export const initialArrowValues = atom<Record<string, Arrow>>({
-  key: "CANVAS/initial-arrows-query",
+  key: "ARROW/initial-arrows-query",
   default: {},
 });
 
 export const arrowIds = atom<string[]>({
-  key: "CANVAS/arrows-ids",
+  key: "ARROW/arrows-ids",
   default: [],
   effects_UNSTABLE: [syncIds(arrowsRef())],
 });
 
 export const arrow = atomFamily<Arrow, string>({
-  key: "CANVAS/arrow-settings",
+  key: "ARROW/arrow-settings",
   default: defaultArrowValues,
   effects_UNSTABLE: (arrowId) => [
     syncData(arrowRef(arrowId), [
@@ -61,32 +63,25 @@ export const arrow = atomFamily<Arrow, string>({
   ],
 });
 
-// HTML DOM targets that moveable interacts with
-export const selectedArrowTargets = atom<(HTMLElement | SVGElement)[]>({
-  key: "CANVAS/selected-arrow-targets",
-  default: [],
-});
-
-// IDs that correspond to both a DOM arrow and canvasArrow
-export const selectedArrowIds = selector<string[]>({
-  key: "CANVAS/selected-arrow-ids",
-  get: ({ get }) => {
-    const arrows = get(selectedArrowTargets);
-    return arrows.map((arrow) => arrow.id);
-  },
-});
-
-export const editableArrowId = selector<string | null>({
-  key: "CANVAS/editable-arrow-id",
-  get: ({ get }) => {
-    const ids = get(selectedArrowIds);
-    return ids.length === 1 ? ids[0] : null;
-  },
-});
-
 export const arrowColorTheme = selectorFamily<ThemeMapOption, string>({
-  key: "CANVAS/arrow-color-theme",
+  key: "ARROW/arrow-color-theme",
   get: (id) => ({ get }) => {
     return colorThemes[get(arrow(id)).theme];
+  },
+});
+
+export const selectedArrowIds = selector<string[]>({
+  key: "ARROW/undeleted-arrow-ids",
+  get: ({ get }) => {
+    return get(arrowIds)
+      .map((id) => get(arrow(id)))
+      .filter();
+  },
+});
+
+export const undeletedArrowIds = selector<string[]>({
+  key: "ARROW/undeleted-arrow-ids",
+  get: ({ get }) => {
+    return get(arrowIds).filter((id) => !get(arrow(id)).deleted);
   },
 });

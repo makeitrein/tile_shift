@@ -2,7 +2,6 @@ import { Classes, Popover2 } from "@blueprintjs/popover2";
 import { HandOutline, SearchOutline, TemplateOutline } from "heroicons-react";
 import React, { useState } from "react";
 import { PanzoomObject } from "../board/panzoom/types";
-import { OmnibarSearch } from "./omnibar-search";
 import { TemplateLibrary } from "./template-library";
 
 interface Props {
@@ -11,7 +10,7 @@ interface Props {
   toggleDisablePan: () => void;
 }
 
-export const BoardControls = React.memo(
+const BoardControls = React.memo(
   ({ panzoom, toggleDisablePan, disablePan }: Props) => {
     const [searchOpen, setSearchOpen] = useState(false);
 
@@ -55,12 +54,14 @@ export const BoardControls = React.memo(
           <SearchOutline />
         </button>
 
-        <OmnibarSearch
+        {/* <OmnibarSearch
           panzoom={panzoom}
           closeSearch={() => setSearchOpen(false)}
           isOpen={searchOpen}
-        />
+        /> */}
       </div>
     );
   }
 );
+
+export { BoardControls };
