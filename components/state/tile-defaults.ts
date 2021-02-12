@@ -10,6 +10,7 @@ export const defaultDimensions: TileDimensions = {
   height: tileHeight,
   expandedWidth: tileWidth,
   expandedHeight: tileHeight,
+  updater: "",
 };
 
 export const defaultSettings: TileSettings = {
@@ -19,8 +20,10 @@ export const defaultSettings: TileSettings = {
   deleted: false,
   createdAt: new Date(),
   collapsed: false,
+  updater: "",
 };
 
 export const defaultContent: TileContent = {
   content: "",
+  updater: "",
 };

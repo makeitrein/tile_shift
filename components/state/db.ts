@@ -1,6 +1,6 @@
 import firebase from "firebase";
 import { isEmpty } from "lodash";
-import { db, firebaseClient } from "../../firebaseClient";
+import { db } from "../../firebaseClient";
 import { TileContent, TileDimensions, TileSettings } from "./tiles";
 export const tilesPath = "tiles";
 export const arrowsPath = "arrows";
@@ -48,12 +48,13 @@ export const generateTileId = () => generateId(tilesPath);
 export const generateArrowId = () => generateId(arrowsPath);
 export const generateArrowRef = () => arrowRef(generateId(arrowsPath));
 
+// const updater = firebaseClient.auth().currentUser?.uid || "";
+const updater = "updater-" + Math.random();
+
 export const syncData = (ref: firebase.database.Reference) => ({
   setSelf,
   onSet,
 }) => {
-  const updater = firebaseClient.auth().currentUser.uid;
-
   ref.on("value", (data) => {
     const value = data.val();
     if (!isEmpty(value) && value.updater !== updater) {

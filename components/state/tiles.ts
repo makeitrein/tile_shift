@@ -20,6 +20,7 @@ export interface TileDimensions {
   height: number;
   expandedWidth?: number;
   expandedHeight?: number;
+  updater?: string;
 }
 export interface TileSettings {
   isDragging: boolean;
@@ -28,13 +29,16 @@ export interface TileSettings {
   deleted: boolean;
   createdAt: Date;
   collapsed: boolean;
+  updater?: string;
+}
+
+export interface TileContent {
+  content: string;
+  updater?: string;
 }
 
 export interface Id {
   id: string;
-}
-export interface TileContent {
-  content: string;
 }
 
 export type Tile = Id & TileDimensions & TileSettings & TileContent;
