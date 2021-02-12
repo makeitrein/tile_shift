@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import { MoveableInterface } from "react-moveable";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fromHtml, toHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
 import { HeadingExtension } from "remirror/extension/heading";
@@ -10,7 +10,7 @@ import { UnderlineExtension } from "remirror/extension/underline";
 import { CorePreset } from "remirror/preset/core";
 import { ListPreset } from "remirror/preset/list";
 import { WysiwygPreset } from "remirror/preset/wysiwyg";
-import { RemirrorProvider, useRemirror } from "remirror/react";
+import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import "remirror/styles/all.css";
 import styled from "styled-components";
 import * as tileState from "../../state/tiles";
@@ -105,14 +105,10 @@ interface Props {
 }
 
 export const EditorManager = React.memo(({ id, moveable }: Props) => {
-  // const [tile, setTile] = useRecoilState(tileState.tileContent(id));
-  // const manager = useManager(extensionTemplate);
-  // const editableTileId = useRecoilValue(tileState.editableTileId);
-  return null;
+  const [tile, setTile] = useRecoilState(tileState.tileContent(id));
+  const manager = useManager(extensionTemplate);
+  const editableTileId = useRecoilValue(tileState.editableTileId);
   const tileSettings = useRecoilValue(tileState.tileSettings(id));
-  console.log("tileSettings", tileSettings);
-
-  return null;
   const editorRef = useRef(null);
   const isEditable = editableTileId === id && !tileSettings.isDragging;
 

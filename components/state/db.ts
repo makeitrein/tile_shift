@@ -52,16 +52,24 @@ export const syncData = (ref: firebase.database.Reference) => ({
   setSelf,
   onSet,
 }) => {
+  const updater = firebaseClient.auth().currentUser.uid;
+
   ref.on("value", (data) => {
-    console.log(firebaseClient.auth().currentUser);
-    if (!isEmpty(data.val())) {
-      console.log(data.val());
-      setSelf(data.val());
+    const value = data.val();
+    if (!isEmpty(value) && value.updater !== updater) {
+      setSelf(value);
+    }
+  });
+
+  ref.once("value", (data) => {
+    const value = data.val();
+    if (!isEmpty(value)) {
+      setSelf(value);
     }
   });
 
   onSet((tileInfo) => {
-    ref.update(tileInfo);
+    ref.update({ ...tileInfo, updater });
   });
 
   return () => {

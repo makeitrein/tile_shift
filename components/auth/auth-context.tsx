@@ -1,4 +1,3 @@
-import nookies from "nookies";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRecoilCallback } from "recoil";
 import { firebaseClient } from "../../firebaseClient";
@@ -20,30 +19,30 @@ export function AuthProvider({ children }: any) {
 
   const setRecoilAuthUser = useSetRecoilAuthUser();
 
-  useEffect(() => {
-    if (typeof window !== undefined) {
-      (window as any).nookies = nookies;
-    }
-    return firebaseClient.auth().onIdTokenChanged(async (user) => {
-      console.log(`token changed!`);
-      if (!user) {
-        console.log(`no token found...`);
-        setUser(null);
-        setRecoilAuthUser(null);
-        nookies.destroy(null, "token");
-        nookies.set(null, "token", "", {});
-        return;
-      }
+  // useEffect(() => {
+  //   if (typeof window !== undefined) {
+  //     (window as any).nookies = nookies;
+  //   }
+  //   return firebaseClient.auth().onIdTokenChanged(async (user) => {
+  //     console.log(`token changed!`);
+  //     if (!user) {
+  //       console.log(`no token found...`);
+  //       setUser(null);
+  //       setRecoilAuthUser(null);
+  //       nookies.destroy(null, "token");
+  //       nookies.set(null, "token", "", {});
+  //       return;
+  //     }
 
-      console.log(`updating token...`);
-      const token = await user.getIdToken();
-      const { uid, email } = user;
-      setUser(user);
-      setRecoilAuthUser({ uid, email });
-      nookies.destroy(null, "token");
-      nookies.set(null, "token", token, {});
-    });
-  }, []);
+  //     console.log(`updating token...`);
+  //     const token = await user.getIdToken();
+  //     const { uid, email } = user;
+  //     setUser(user);
+  //     setRecoilAuthUser({ uid, email });
+  //     nookies.destroy(null, "token");
+  //     nookies.set(null, "token", token, {});
+  //   });
+  // }, []);
 
   // force refresh the token every 10 minutes
   useEffect(() => {
