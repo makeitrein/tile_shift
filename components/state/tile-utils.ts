@@ -1,26 +1,20 @@
 import { DateTime } from "luxon";
 import { useRecoilCallback } from "recoil";
-import { tileHeight, tileWidth } from "../canvas/tile/tile";
-import { generateTileRef, tileChildRef, tileRef } from "./db";
+import {
+  generateTileId,
+  setTileContentRef,
+  setTileDimensionsRef,
+  setTileSettingsRef,
+} from "./db";
+import {
+  defaultContent,
+  defaultDimensions,
+  defaultSettings,
+} from "./tile-defaults";
 import * as tileState from "./tiles";
-import { Tile, TileDimensions } from "./tiles";
+import { TileDimensions } from "./tiles";
 
 export const getISODateTime = () => DateTime.local().toString();
-
-export const defaultTileValues: Tile = {
-  id: "",
-  x: 0,
-  y: 0,
-  width: tileWidth,
-  height: tileHeight,
-  content: "",
-  isDragging: false,
-  isWysiwygEditorFocused: false,
-  tags: [],
-  deleted: false,
-  createdAt: getISODateTime(),
-  collapsed: false,
-};
 
 export const useCreateInitialTile = () =>
   useRecoilCallback(({ set }) => {
@@ -37,24 +31,11 @@ export const useCreateInitialTile = () =>
       tags?: string[];
       collapsed?: boolean;
     }) => {
-      const ref = id ? tileRef(id) : generateTileRef();
+      const tileId = id || generateTileId();
 
-      const tile = {
-        ...defaultTileValues,
-        content,
-        id: ref.key,
-        ...dimensions,
-        tags,
-        createdAt: getISODateTime(),
-        collapsed,
-      };
-
-      const dimensionRef = tileChildRef(ref, "dimensions");
-      const settingsRef = tileChildRef(ref, "settings");
-      const contentRef = tileChildRef(ref, "content");
-      dimensionRef.set(dimensions);
-      settingsRef.set({ tags, collapsed });
-      contentRef.set({ content });
+      setTileDimensionsRef(tileId, { ...defaultDimensions, ...dimensions });
+      setTileSettingsRef(tileId, { ...defaultSettings, tags, collapsed });
+      setTileContentRef(tileId, { ...defaultContent, content });
     };
   });
 
@@ -82,15 +63,3 @@ export const useGetTileDimensions = () =>
   useRecoilCallback(({ snapshot }) => (id: string) => {
     return snapshot.getLoadable(tileState.tileDimensions(id)).getValue();
   });
-
-export const syncStorageEffect = () => ({ setSelf, trigger }) => {
-  // Initialize atom value to the remote storage state
-  if (trigger === "get") {
-    // Avoid expensive initialization
-    setSelf([
-      { id: "alpha", x: 0, y: 0, width: tileWidth },
-      { id: "betta", x: 150, y: 150 },
-      { id: "kenny", x: 350, y: 350 },
-    ]); // Call synchronously to initialize
-  }
-};

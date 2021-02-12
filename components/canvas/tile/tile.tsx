@@ -2,15 +2,13 @@ import parse from "html-react-parser";
 import React, { useCallback, useMemo, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { tileHeight, tileWidth } from "../../state/tile-defaults";
 import { useSetTileDimensions } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
 import * as uiState from "../../state/ui";
 import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { Tag } from "../tile-menu/tag";
 import { ConnectButton } from "./connect-button";
-
-export const tileWidth = 350;
-export const tileHeight = 90;
 
 export const TileWrapper = styled.div`
   display: inline-block;

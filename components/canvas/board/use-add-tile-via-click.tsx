@@ -1,6 +1,6 @@
 import { useCallback } from "react";
+import { tileHeight, tileWidth } from "../../state/tile-defaults";
 import { useCreateInitialTile } from "../../state/tile-utils";
-import { tileHeight, tileWidth } from "../tile/tile";
 
 export const useAddTileViaClick = (canvasEditor) => {
   const createInitialTile = useCreateInitialTile();

@@ -18,7 +18,6 @@ if (!firebaseClient.apps.length) {
     firebaseClient
       .auth()
       .setPersistence(firebaseClient.auth.Auth.Persistence.SESSION);
-    (window as any).firebase = firebaseClient;
   }
 }
 

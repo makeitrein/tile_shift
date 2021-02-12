@@ -4,6 +4,7 @@ import { firebaseClient } from "../firebaseClient";
 const Login = (_props: any) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  console.log(firebaseClient.auth().currentUser);
   return (
     <div>
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -14,7 +15,7 @@ const Login = (_props: any) => {
             alt="Workflow"
           />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Sign Up for TileShift
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 max-w">
             Or{" "}
@@ -30,14 +31,17 @@ const Login = (_props: any) => {
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form
               className="space-y-6"
-              onSubmit={async (e) => {
+              onSubmit={(e) => {
                 e.preventDefault();
-                await firebaseClient
+                firebaseClient
                   .auth()
-                  .signInWithEmailAndPassword(email, pass);
-
-                // console.log(user);
-                window.location.href = "/";
+                  .createUserWithEmailAndPassword(email, pass)
+                  .then((userCredential) => {
+                    window.location.href = "/";
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
               }}
             >
               <div>

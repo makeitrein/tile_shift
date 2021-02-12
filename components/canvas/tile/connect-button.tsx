@@ -2,11 +2,11 @@ import * as React from "react";
 import { useCreateInitialArrow } from "../../state/arrow-utils";
 import { ArrowPoint } from "../../state/arrows";
 import { generateTileId } from "../../state/db";
+import { tileHeight, tileWidth } from "../../state/tile-defaults";
 import {
   useCreateInitialTile,
   useGetTileDimensions,
 } from "../../state/tile-utils";
-import { tileHeight, tileWidth } from "./tile";
 
 const positionStyle: Record<
   string,

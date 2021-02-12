@@ -1,40 +1,62 @@
 import firebase from "firebase";
-import { isEmpty, pick } from "lodash";
-import { db } from "../../firebaseClient";
-
+import { isEmpty } from "lodash";
+import { db, firebaseClient } from "../../firebaseClient";
+import { TileContent, TileDimensions, TileSettings } from "./tiles";
 export const tilesPath = "tiles";
 export const arrowsPath = "arrows";
-export const tileRef = (tileId?: string) => db.ref(`${tilesPath}/${tileId}`);
 
-export const tileChildRef = (
-  ref: firebase.database.Reference,
-  dataType: "dimensions" | "settings" | "content"
-) => ref.child(dataType);
+export const tileDimensionsRef = (tileId: string) =>
+  db.ref(`${tilesPath}/${tileId}/dimensions`);
+export const tileSettingsRef = (tileId: string) =>
+  db.ref(`${tilesPath}/${tileId}/settings`);
+export const tileContentRef = (tileId: string) =>
+  db.ref(`${tilesPath}/${tileId}/content`);
 
-export const arrowRef = (arrowId?: string) =>
-  db.ref(`${arrowsPath}/${arrowId}`);
-export const generateTileRef = () => tileRef(generateTileId());
-export const generateArrowRef = () => arrowRef(generateArrowId());
+export const setTileDimensionsRef = (tileId: string, data: TileDimensions) =>
+  tileDimensionsRef(tileId).set(data);
+export const updateTileDimensionsRef = (
+  tileId: string,
+  data: Partial<TileDimensions>
+) => tileDimensionsRef(tileId).set(data);
+
+export const setTileSettingsRef = (tileId: string, data: TileSettings) =>
+  tileSettingsRef(tileId).set(data);
+export const updateTileSettingsRef = (
+  tileId: string,
+  data: Partial<TileSettings>
+) => tileSettingsRef(tileId).update(data);
+
+export const setTileContentRef = (tileId: string, data: TileContent) =>
+  tileContentRef(tileId).set(data);
+export const updateTileContentRef = (
+  tileId: string,
+  data: Partial<TileDimensions>
+) => tileContentRef(tileId).update(data);
+
+export const arrowRef = (arrowId: string) => db.ref(`${arrowsPath}/${arrowId}`);
+
 export const tilesRef = () => db.ref(tilesPath);
 export const arrowsRef = () => db.ref(arrowsPath);
 
-export const pushDatabaseId = (basePath: string) => {
+export const generateId = (basePath: string) => {
   const ref = db.ref(basePath);
   const newRef = ref.push();
   return newRef.key;
 };
 
-export const generateTileId = () => pushDatabaseId(tilesPath);
-export const generateArrowId = () => pushDatabaseId(arrowsPath);
+export const generateTileId = () => generateId(tilesPath);
+export const generateArrowId = () => generateId(arrowsPath);
+export const generateArrowRef = () => arrowRef(generateId(arrowsPath));
 
-export const syncData = (
-  ref: firebase.database.Reference,
-  properties: string[]
-) => ({ setSelf, onSet }) => {
+export const syncData = (ref: firebase.database.Reference) => ({
+  setSelf,
+  onSet,
+}) => {
   ref.on("value", (data) => {
-    const relevantData = pick(data.val(), properties);
-    if (!isEmpty(relevantData)) {
-      setSelf(relevantData);
+    console.log(firebaseClient.auth().currentUser);
+    if (!isEmpty(data.val())) {
+      console.log(data.val());
+      setSelf(data.val());
     }
   });
 
