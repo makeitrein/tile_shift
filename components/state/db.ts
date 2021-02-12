@@ -5,6 +5,12 @@ import { db } from "../../firebaseClient";
 export const tilesPath = "tiles";
 export const arrowsPath = "arrows";
 export const tileRef = (tileId?: string) => db.ref(`${tilesPath}/${tileId}`);
+
+export const tileChildRef = (
+  ref: firebase.database.Reference,
+  dataType: "dimensions" | "settings" | "content"
+) => ref.child(dataType);
+
 export const arrowRef = (arrowId?: string) =>
   db.ref(`${arrowsPath}/${arrowId}`);
 export const generateTileRef = () => tileRef(generateTileId());

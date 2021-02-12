@@ -1,10 +1,11 @@
 import * as React from "react";
-import { useRecoilValue } from "recoil";
 import { useCreateInitialArrow } from "../../state/arrow-utils";
 import { ArrowPoint } from "../../state/arrows";
 import { generateTileId } from "../../state/db";
-import { useCreateInitialTile } from "../../state/tile-utils";
-import * as tileState from "../../state/tiles";
+import {
+  useCreateInitialTile,
+  useGetTileDimensions,
+} from "../../state/tile-utils";
 import { tileHeight, tileWidth } from "./tile";
 
 const positionStyle: Record<
@@ -74,14 +75,14 @@ interface Props {
 }
 
 export const ConnectButton = React.memo(({ id, direction }: Props) => {
-  const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
-
-  const newTileDimensions = directionDimensionMap[direction](tileDimensions);
-
   const createInitialTile = useCreateInitialTile();
   const createInitialArrow = useCreateInitialArrow();
+  const getTileDimensions = useGetTileDimensions();
 
   const createAndConnectTile = () => {
+    const tileDimensions = getTileDimensions(id);
+    const newTileDimensions = directionDimensionMap[direction](tileDimensions);
+
     const newTileId = generateTileId();
     createInitialTile({ dimensions: newTileDimensions, id: newTileId });
     createInitialArrow({

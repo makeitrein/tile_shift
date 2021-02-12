@@ -89,6 +89,8 @@ const Tile = React.memo(({ id }: TileProps) => {
   const toggleCollapse = useCallback(() => {
     setSelectedTileTargets([]);
 
+    console.log("toggleCOllapse");
+
     if (collapsed) {
       setTileSettings((settings) => ({
         ...settings,
@@ -115,7 +117,13 @@ const Tile = React.memo(({ id }: TileProps) => {
         setTileDimensions(id, { width, height });
       }, 10);
     }
-  }, [collapsed, tileDimensions]);
+  }, [
+    collapsed,
+    tileDimensions.expandedHeight,
+    tileDimensions.expandedHeight,
+    tileDimensions.height,
+    tileDimensions.width,
+  ]);
 
   return collapsed ? (
     <CollapsedTileWrapper
@@ -150,7 +158,7 @@ const Tile = React.memo(({ id }: TileProps) => {
         ...transformStyle,
       }}
     >
-      <Tags onClick={toggleCollapse} tags={tileSettings.tags} />
+      <Tags onClick={toggleCollapse} name={tileSettings.tags[0]} />
       <AvatarComments id={id} />
       <div id={`editor-${id}`} />
 
@@ -234,15 +242,15 @@ const AvatarComments = React.memo(({ id }: AvatarCommentsProps) => {
 });
 
 interface Props {
-  tags: string[];
+  name: string;
   onClick: () => void;
 }
-const Tags = React.memo(({ tags, onClick }: Props) => {
+const Tags = React.memo(({ name, onClick }: Props) => {
   const setTagPickerOpen = useSetRecoilState(uiState.tagPickerOpen);
 
   return (
     <div className="mt-2 ml-2">
-      <Tag className="nw-resize" onClick={onClick} name={tags[0]}></Tag>
+      <Tag className="nw-resize" onClick={onClick} name={name}></Tag>
     </div>
   );
 });

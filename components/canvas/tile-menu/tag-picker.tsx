@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
 import * as tileState from "../../state/tiles";
 import { TagTree } from "./tag-tree";
@@ -6,10 +6,10 @@ import { TagTree } from "./tag-tree";
 export const TagPicker = ({ id, closePanel }) => {
   const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
 
-  const handleTagClick = (clickedTag: string) => {
+  const handleTagClick = useCallback((clickedTag: string) => {
     setTileSettings((tile) => ({ ...tile, tags: [clickedTag] }));
     closePanel();
-  };
+  }, []);
 
   return (
     <div style={{ width: 280 }} className="pb-8 pt-3 pl-2">

@@ -3,7 +3,9 @@ import "@blueprintjs/select/lib/css/blueprint-select.css";
 import Head from "next/head";
 import React from "react";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+import { useRecoilValue } from "recoil";
 import { Board } from "../components/canvas/board/board";
+import { tileIds } from "../components/state/tiles";
 
 export default function Home() {
   if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
@@ -27,8 +29,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </Head>
-
+      <TestTesttings />
       <Board />
     </>
   );
 }
+
+export const TestTesttings = React.memo(() => {
+  // const settings = useRecoilValue(tileSettings("-MTIfUCm_t_WoAs11lyn"));
+  const ids = useRecoilValue(tileIds);
+  console.log(ids);
+  // console.log(settings);
+  return null;
+});

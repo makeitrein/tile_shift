@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { useRecoilCallback } from "recoil";
 import { tileHeight, tileWidth } from "../canvas/tile/tile";
-import { generateTileRef, tileRef } from "./db";
+import { generateTileRef, tileChildRef, tileRef } from "./db";
 import * as tileState from "./tiles";
 import { Tile, TileDimensions } from "./tiles";
 
@@ -49,7 +49,12 @@ export const useCreateInitialTile = () =>
         collapsed,
       };
 
-      ref.set(tile);
+      const dimensionRef = tileChildRef(ref, "dimensions");
+      const settingsRef = tileChildRef(ref, "settings");
+      const contentRef = tileChildRef(ref, "content");
+      dimensionRef.set(dimensions);
+      settingsRef.set({ tags, collapsed });
+      contentRef.set({ content });
     };
   });
 

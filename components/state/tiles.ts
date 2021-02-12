@@ -1,5 +1,5 @@
 import { atom, atomFamily, selector } from "recoil";
-import { syncData, syncIds, tileRef, tilesRef } from "./db";
+import { syncData, syncIds, tileChildRef, tileRef, tilesRef } from "./db";
 export interface TileDimensions {
   x: number;
   y: number;
@@ -91,7 +91,12 @@ export const tileSearchResults = selector<TileSearchResult[]>({
 export const tileDimensions = atomFamily<TileDimensions, string>({
   key: "CANVAS/tile-dimensions",
   effects_UNSTABLE: (tileId) => [
-    syncData(tileRef(tileId), ["x", "y", "width", "height"]),
+    syncData(tileChildRef(tileRef(tileId), "dimensions"), [
+      "x",
+      "y",
+      "width",
+      "height",
+    ]),
   ],
   default: {
     x: 0,
@@ -104,7 +109,7 @@ export const tileDimensions = atomFamily<TileDimensions, string>({
 export const tileSettings = atomFamily<TileSettings, string>({
   key: "CANVAS/tile-settings",
   effects_UNSTABLE: (tileId) => [
-    syncData(tileRef(tileId), [
+    syncData(tileChildRef(tileRef(tileId), "settings"), [
       "tags",
       "isDragging",
       "isWysiwygEditorFocused",
@@ -125,7 +130,9 @@ export const tileSettings = atomFamily<TileSettings, string>({
 
 export const tileContent = atomFamily<TileContent, string>({
   key: "CANVAS/tile-content",
-  effects_UNSTABLE: (tileId) => [syncData(tileRef(tileId), ["content"])],
+  effects_UNSTABLE: (tileId) => [
+    syncData(tileChildRef(tileRef(tileId), "content"), ["content"]),
+  ],
   default: {
     content: "",
   },

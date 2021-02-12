@@ -163,7 +163,7 @@ export const Board = () => {
     const target = ev.target;
 
     const { x, y } = getTileDimensions(target.id);
-    setTileSettings(ev.target.id, { isDragging: true });
+    // setTileSettings(ev.target.id, { isDragging: true });
 
     ev.set([x, y]);
   }, []);
@@ -179,7 +179,7 @@ export const Board = () => {
   }, []);
 
   const onDragEnd = useCallback((e) => {
-    setTileSettings(e.target.id, { isDragging: false });
+    // setTileSettings(e.target.id, { isDragging: false });
   }, []);
 
   const onDragGroupStart = useCallback((e) => {
