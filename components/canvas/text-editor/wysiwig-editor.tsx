@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
+import { MoveableInterface } from "react-moveable";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fromHtml, toHtml } from "remirror/core";
 import { BoldExtension } from "remirror/extension/bold";
@@ -98,12 +99,16 @@ const extensionTemplate = () => [
   new WysiwygPreset({}),
 ];
 
-export const EditorManager = React.memo(({ id, moveable }) => {
+interface Props {
+  moveable: MoveableInterface;
+  id: string;
+}
+
+export const EditorManager = React.memo(({ id, moveable }: Props) => {
   const [tile, setTile] = useRecoilState(tileState.tileContent(id));
   const manager = useManager(extensionTemplate);
   const editableTileId = useRecoilValue(tileState.editableTileId);
   const tileSettings = useRecoilValue(tileState.tileSettings(id));
-
   const editorRef = useRef(null);
   const isEditable = editableTileId === id && !tileSettings.isDragging;
 
@@ -114,6 +119,33 @@ export const EditorManager = React.memo(({ id, moveable }) => {
     })
   );
 
+  const handleRemirrorChange = useCallback(
+    () => ({ state, view }) => {
+      console.log("hihihihihihi");
+      const target = view.dom as HTMLDivElement;
+      const articleHeight =
+        target.offsetHeight + articlePadding + tileHeaderHeight;
+
+      const rect = moveable.getRect();
+      const extraSpacing = 12;
+
+      if (articleHeight + extraSpacing >= rect.offsetHeight) {
+        moveable.request("resizable", {
+          offsetHeight: articleHeight + articlePadding,
+          isInstant: true,
+        });
+      }
+
+      setValue(state);
+      setTile((tile) => ({
+        ...tile,
+        content: toHtml({ node: state.doc, schema: state.schema }),
+      }));
+    },
+
+    []
+  );
+
   // Add the value and change handler to the editor.
   return (
     <RemirrorProvider
@@ -122,7 +154,7 @@ export const EditorManager = React.memo(({ id, moveable }) => {
       value={value}
       placeholder="What's on your mind?"
       onChange={({ state, view }) => {
-        const target = view.dom;
+        const target = view.dom as HTMLDivElement;
         const articleHeight =
           target.offsetHeight + articlePadding + tileHeaderHeight;
 
@@ -149,17 +181,23 @@ export const EditorManager = React.memo(({ id, moveable }) => {
 });
 
 interface EditorProps {
-  id: number;
+  id: string;
   showToolbar: boolean;
 }
-export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
-  ({ id, showToolbar }, ref) => {
+export const Editor = React.memo(
+  React.forwardRef<HTMLDivElement, EditorProps>(({ id, showToolbar }, ref) => {
     const { getRootProps } = useRemirror();
     const setTileSettings = useSetRecoilState(tileState.tileSettings(id));
 
-    const setTileEditorFocus = (isWysiwygEditorFocused: boolean) => {
-      setTileSettings((settings) => ({ ...settings, isWysiwygEditorFocused }));
-    };
+    const setTileEditorFocus = useCallback(
+      (isWysiwygEditorFocused: boolean) => {
+        setTileSettings((settings) => ({
+          ...settings,
+          isWysiwygEditorFocused,
+        }));
+      },
+      []
+    );
 
     return (
       <>
@@ -173,5 +211,5 @@ export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
         />
       </>
     );
-  }
+  })
 );
