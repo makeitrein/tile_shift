@@ -59,7 +59,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
   const isEditable = editableTileId === id;
   const isSearchedFor = searchedForTile === id;
 
-  const { collapsed } = tileSettings;
+  const colorTheme = useRecoilValue(tileState.tileColorTheme(id));
 
   const disablePanzoomPanningClass = "panzoom-exclude";
 
@@ -101,11 +101,11 @@ export const Tile = React.memo(({ id }: TileProps) => {
     >
       <motion.div
         style={{
-          background: "#FFD675",
           height: "100%",
           width: "100%",
           position: "absolute",
           WebkitBackfaceVisibility: "hidden",
+          ...colorTheme,
         }}
         className="p-5 rounded-xl"
         initial={{ rotateY: 0 }}
@@ -135,6 +135,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
           height: "100%",
           width: "100%",
           position: "absolute",
+          zIndex: -1,
           WebkitBackfaceVisibility: "hidden",
         }}
         className="pt-20 p-6 rounded-xl"

@@ -21,6 +21,7 @@ export const defaultSettings: TileSettings = {
   createdAt: new Date(),
   collapsed: false,
   updater: "",
+  theme: "white",
 };
 
 export const defaultContent: TileContent = {

@@ -99,7 +99,7 @@ export const ConnectButton = React.memo(({ id, direction }: Props) => {
       type="button"
       className={`${
         isCoveringToolbar ? "z-force" : "z-overlay"
-      } absolute inline-flex items-center p-1  rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none transition`}
+      } absolute inline-flex items-center p-1.5  rounded-lg text-white bg-blue-500 hover:bg-blue-600 focus:outline-none transition`}
       style={positionStyle[direction]}
     >
       <svg

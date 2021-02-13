@@ -8,6 +8,7 @@ import { tagPickerOpen } from "../../state/ui";
 import { BoldMenuItem } from "./menu-item/bold-menu-item";
 import { BulletListMenuItem } from "./menu-item/bullet-menu-item";
 import { CodeMenuItem } from "./menu-item/code-menu-item";
+import { ColorPickerMenuItem } from "./menu-item/color-picker-menu-item";
 import { HeaderMenuItem } from "./menu-item/header-menu-item";
 import { ImageMenuItem } from "./menu-item/image-menu-item";
 import { ItalicMenuItem } from "./menu-item/italic-menu-item";
@@ -83,11 +84,11 @@ export const TileMenu = React.memo(({ id }: { id: string }) => {
       className={`absolute top-0 w-full -mt-11	 z-overlay left-0 cursor-pointer flex justify-center`}
     >
       <div key={"toolbar"} className="flex absolute justify-center ">
-        {/* <TagPickerMenuItem
+        <ColorPickerMenuItem
           id={id}
           setPopoverOpenCallback={setPopoverOpenCallback}
           popoverOpen={popoverOpen}
-        /> */}
+        />
         <UnderlineMenuItem
           active={active.underline()}
           toggle={toggleUnderline}

@@ -1,4 +1,5 @@
-import { atom, atomFamily, selector } from "recoil";
+import { atom, atomFamily, selector, selectorFamily } from "recoil";
+import { colorThemes, ThemeMapOption } from "../canvas/tile-menu/color-picker";
 import {
   syncData,
   syncIds,
@@ -30,6 +31,7 @@ export interface TileSettings {
   createdAt: Date;
   collapsed: boolean;
   updater?: string;
+  theme: string;
 }
 
 export interface TileContent {
@@ -167,5 +169,12 @@ export const editableTileContent = selector<TileContent | null>({
   get: ({ get }) => {
     const id = get(editableTileId);
     return id ? get(tileContent(id)) : null;
+  },
+});
+
+export const tileColorTheme = selectorFamily<ThemeMapOption, string>({
+  key: "ARROW/arrow-color-theme",
+  get: (id) => ({ get }) => {
+    return colorThemes[get(tileSettings(id)).theme];
   },
 });
