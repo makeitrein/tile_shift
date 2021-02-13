@@ -12,7 +12,6 @@ import { HeaderMenuItem } from "./menu-item/header-menu-item";
 import { ImageMenuItem } from "./menu-item/image-menu-item";
 import { ItalicMenuItem } from "./menu-item/italic-menu-item";
 import { OrderedListMenuItem } from "./menu-item/orderered-list-menu-item";
-import { TagPickerMenuItem } from "./menu-item/tag-picker-menu-item";
 import { UnderlineMenuItem } from "./menu-item/underline-menu-item";
 import { ViewMoreMenuItem } from "./menu-item/view-more-menu-item";
 
@@ -84,11 +83,11 @@ export const TileMenu = React.memo(({ id }: { id: string }) => {
       className={`absolute top-0 w-full -mt-11	 z-overlay left-0 cursor-pointer flex justify-center`}
     >
       <div key={"toolbar"} className="flex absolute justify-center ">
-        <TagPickerMenuItem
+        {/* <TagPickerMenuItem
           id={id}
           setPopoverOpenCallback={setPopoverOpenCallback}
           popoverOpen={popoverOpen}
-        />
+        /> */}
         <UnderlineMenuItem
           active={active.underline()}
           toggle={toggleUnderline}

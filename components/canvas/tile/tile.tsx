@@ -1,3 +1,5 @@
+import { Button } from "@blueprintjs/core";
+import { motion, useAnimation } from "framer-motion";
 import parse from "html-react-parser";
 import React, { useCallback, useMemo, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -8,8 +10,9 @@ import * as tileState from "../../state/tiles";
 import * as uiState from "../../state/ui";
 import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { Tag } from "../tile-menu/tag";
+import { TagPickerMulti } from "../tile-menu/tag-picker-multi";
 import { ConnectButton } from "./connect-button";
-
+import { AvatarComments } from "./tile-comments";
 export const TileWrapper = styled.div`
   display: inline-block;
   position: absolute;
@@ -45,7 +48,7 @@ interface TileProps {
 export const tileTitleElementId = (id: string) => id + "title";
 export const tileDescriptionElementId = (id: string) => id + "description";
 
-const Tile = React.memo(({ id }: TileProps) => {
+export const Tile = React.memo(({ id }: TileProps) => {
   const tileRef = useRef(null);
   const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
   const [selectedTileTargets, setSelectedTileTargets] = useRecoilState(
@@ -84,70 +87,27 @@ const Tile = React.memo(({ id }: TileProps) => {
     }
   }, [disablePan, tileRef]);
 
-  const toggleCollapse = useCallback(() => {
-    setSelectedTileTargets([]);
+  const frontTile = useAnimation();
+  const backTile = useAnimation();
 
-    console.log("toggleCOllapse");
+  const flip = () => {
+    frontTile.start({ rotateY: -180 });
+    backTile.start({ rotateY: 0 });
+  };
 
-    if (collapsed) {
-      setTileSettings((settings) => ({
-        ...settings,
-        collapsed: false,
-      }));
+  const flipBack = () => {
+    frontTile.start({ rotateY: 0 });
+    backTile.start({ rotateY: -180 });
+  };
 
-      setTileDimensions(id, {
-        width: tileDimensions.expandedWidth || tileWidth,
-        height: tileDimensions.expandedHeight || tileHeight,
-      });
-    } else {
-      setTileSettings((settings) => ({
-        ...settings,
-        collapsed: true,
-      }));
-
-      setTileDimensions(id, {
-        expandedWidth: tileDimensions.width,
-        expandedHeight: tileDimensions.height,
-      });
-
-      setTimeout(() => {
-        const { width, height } = tileRef.current.getBoundingClientRect();
-        setTileDimensions(id, { width, height });
-      }, 10);
-    }
-  }, [
-    collapsed,
-    tileDimensions.expandedHeight,
-    tileDimensions.expandedHeight,
-    tileDimensions.height,
-    tileDimensions.width,
-  ]);
-
-  return collapsed ? (
-    <CollapsedTileWrapper
-      onMouseOver={selectTile}
-      ref={tileRef}
-      id={id}
-      style={transformStyle}
-      className={`${disablePanzoomPanningClass} canvas-tile group p-4  ${
-        tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"
-      }
-    ${isSearchedFor && "animate-searched"}`}
-    >
-      <Tag
-        className="se-resize"
-        onClick={toggleCollapse}
-        name={tileSettings.tags[0]}
-      ></Tag>
-    </CollapsedTileWrapper>
-  ) : (
+  return (
     <TileWrapper
       onMouseOver={selectTile}
       ref={tileRef}
       id={id}
       isDragging={tileSettings.isDragging}
       isSelected={isSelected}
-      className={`${disablePanzoomPanningClass} canvas-tile group py-2 px-2 pb-4 bg-white
+      className={`${disablePanzoomPanningClass} canvas-tile group
       ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
       ${isSearchedFor && "animate-searched"}`}
       style={{
@@ -156,101 +116,82 @@ const Tile = React.memo(({ id }: TileProps) => {
         ...transformStyle,
       }}
     >
-      <Tags onClick={toggleCollapse} name={tileSettings.tags[0]} />
-      <AvatarComments id={id} />
-      <div id={`editor-${id}`} />
+      <motion.div
+        style={{
+          background: "#FFD675",
+          height: "100%",
+          width: "100%",
+          padding: 30,
+          position: "absolute",
+          WebkitBackfaceVisibility: "hidden",
+        }}
+        initial={{ rotateY: 0 }}
+        animate={frontTile}
+        transition={{ duration: 1 }}
+      >
+        <Button
+          icon="random"
+          onClick={flip}
+          className="absolute bottom-2 right-2"
+        />
+        <Tags onClick={flip} tags={tileSettings.tags} />
+        <AvatarComments id={id} />
+        <div id={`editor-${id}`} />
 
-      {isEditable && (
-        <>
-          <ConnectButton id={id} direction="top" />
-          <ConnectButton id={id} direction="right" />
-          <ConnectButton id={id} direction="left" />
-          <ConnectButton id={id} direction="bottom" />
-        </>
-      )}
+        {isEditable && (
+          <>
+            <ConnectButton id={id} direction="top" />
+            <ConnectButton id={id} direction="right" />
+            <ConnectButton id={id} direction="left" />
+            <ConnectButton id={id} direction="bottom" />
+          </>
+        )}
 
-      {!isEditable && (
-        <EditableArticle>{parse(tileContent.content || "")}</EditableArticle>
-      )}
+        {!isEditable && (
+          <EditableArticle>{parse(tileContent.content || "")}</EditableArticle>
+        )}
+      </motion.div>
+      <motion.div
+        style={{
+          background: "#19D2A7",
+          height: "100%",
+          width: "100%",
+          padding: 30,
+          position: "absolute",
+          WebkitBackfaceVisibility: "hidden",
+        }}
+        initial={{ rotateY: 180 }}
+        animate={backTile}
+        transition={{ duration: 1 }}
+      >
+        <TagPickerMulti id={id} />
+        <Button
+          icon="random"
+          onClick={flipBack}
+          className="absolute bottom-2 right-2"
+        />
+      </motion.div>
     </TileWrapper>
   );
 });
 
-interface AvatarCommentsProps {
-  id: string;
-}
-
-const AvatarComments = React.memo(({ id }: AvatarCommentsProps) => {
-  const setDiscussionDrawer = useSetRecoilState(tileState.discussionDrawer);
-
-  const openTileDiscussion = React.useCallback(() => {
-    setDiscussionDrawer((state) => ({ ...state, open: true, tileId: id }));
-  }, [id]);
-
-  return (
-    <div
-      onClick={openTileDiscussion}
-      className="cursor-pointer flex text-gray-400 absolute top-3 right-3 justify-evenly z-50"
-    >
-      <>
-        <span className="flex items-center">
-          <span className="inline-block relative mr-1">
-            <img
-              className="h-6 w-6 rounded-full"
-              src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80"
-              alt=""
-            />
-            <span className="absolute bottom-0 right-0 block h-1.5 w-1.5 rounded-full ring-2 ring-white bg-gray-300"></span>
-          </span>
-
-          <span className="inline-block relative mr-1">
-            <img
-              className="h-6 w-6 rounded-full"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt=""
-            />
-            <span className="absolute bottom-0 right-0 block h-1.5 w-1.5 rounded-full ring-2 ring-white bg-rose-300"></span>
-          </span>
-          <span className="inline-block relative mr-1">
-            <img
-              className="h-6 w-6 rounded-full"
-              src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt=""
-            />
-            <span className="absolute bottom-0 right-0 block h-1.5 w-1.5 rounded-full ring-2 ring-white bg-green-300"></span>
-          </span>
-          <span className="inline-block relative mr-1">
-            <img
-              className="h-6 w-6 rounded-full"
-              src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt=""
-            />
-            <span className="absolute bottom-0 right-0 block h-1.5 w-1.5 rounded-full ring-2 ring-white bg-green-300"></span>
-          </span>
-
-          <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-500">
-            <span className="text-xs font-medium leading-none text-white">
-              4+
-            </span>
-          </span>
-        </span>
-      </>
-    </div>
-  );
-});
-
 interface Props {
-  name: string;
+  tags: string[];
   onClick: () => void;
 }
-const Tags = React.memo(({ name, onClick }: Props) => {
+export const Tags = React.memo(({ tags, onClick }: Props) => {
   const setTagPickerOpen = useSetRecoilState(uiState.tagPickerOpen);
 
   return (
-    <div className="mt-2 ml-2">
-      <Tag className="nw-resize" onClick={onClick} name={name}></Tag>
+    <div className="mt-0">
+      {tags.map((tag) => (
+        <Tag
+          className="cursor-pointer mr-1"
+          active={true}
+          onClick={onClick}
+          name={tag}
+        ></Tag>
+      ))}
     </div>
   );
 });
-
-export { Tags, Tile, AvatarComments };

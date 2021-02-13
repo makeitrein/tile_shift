@@ -10,12 +10,14 @@ export const Tag = React.memo(
     style,
     className,
     children,
+    active,
   }: {
     name: string;
     children?: React.ReactNode;
     onClick?: () => void;
     style?: CSSProperties;
     className?: string;
+    active?: boolean;
   }) => {
     const tag = [...allTags].find((tag) => tag.name === name) || {
       icon: BookOpenOutline,
@@ -36,11 +38,15 @@ export const Tag = React.memo(
 
   */
 
+    const tagColors = !active
+      ? `bg-white text-gray-800 hover:bg-${color}-100 hover:text-${color}-800`
+      : `bg-${color}-100 text-${color}-800`;
+
     return (
       <span
         style={style}
         onClick={onClick}
-        className={`${noSelectoClass} ${className} inline-flex  cursor-pointer items-center py-1 px-2 rounded-md text-xs font-medium hover:bg-${color}-200 hover:text-${color}-900 bg-${color}-100 text-${color}-800 `}
+        className={`${noSelectoClass} ${className} ${tagColors}  inline-flex cursor-pointer items-center py-1 px-2 rounded-md text-sm font-medium`}
       >
         {/* <Icon className="no-selecto" width={16} /> */}
 
