@@ -1,46 +1,8 @@
-import {
-  AcademicCapOutline,
-  ArchiveOutline,
-  BeakerOutline,
-  CalculatorOutline,
-  ChartSquareBarOutline,
-  ClipboardListOutline,
-  ExclamationOutline,
-  ExternalLinkOutline,
-  FingerPrintOutline,
-  FireOutline,
-  PencilAltOutline,
-  PhotographOutline,
-  PlusOutline,
-  PuzzleOutline,
-  QuestionMarkCircleOutline,
-} from "heroicons-react";
 import React, { useCallback } from "react";
 import { useRecoilState } from "recoil";
 import * as tileState from "../../state/tiles";
 import { Tag } from "./tag";
-
-const defaultTags = [
-  { name: "Idea", color: "light-blue", icon: AcademicCapOutline },
-  {
-    name: "Context",
-    color: "indigo",
-    icon: BeakerOutline,
-  },
-  { name: "Assumption", color: "amber", icon: PuzzleOutline },
-  { name: "Question", color: "orange", icon: QuestionMarkCircleOutline },
-  { name: "Evidence", color: "green", icon: FingerPrintOutline },
-  { name: "Counterpoint", color: "red", icon: ExclamationOutline },
-  { name: "Solution", color: "green", icon: ChartSquareBarOutline },
-  { name: "Problem", color: "red", icon: FireOutline },
-  { name: "Note", color: "gray", icon: PencilAltOutline },
-  { name: "Data", color: "gray", icon: CalculatorOutline },
-  { name: "Photo", color: "gray", icon: PhotographOutline },
-  { name: "Resource", color: "gray", icon: ExternalLinkOutline },
-  { name: "Todo", color: "gray", icon: ClipboardListOutline },
-  { name: "Archive", color: "gray", icon: ArchiveOutline },
-  { name: "Add Tag", color: "gray", icon: PlusOutline },
-];
+import { defaultTags } from "./tag-data";
 
 export const TagPickerMulti = ({ id }) => {
   const [{ tags }, setTileSettings] = useRecoilState(

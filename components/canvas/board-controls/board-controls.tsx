@@ -17,11 +17,11 @@ export const BoardControls = React.memo(
     const bgColor = disablePan ? "white" : "blue-100";
 
     return (
-      <div className="fixed z-force top-1/2 -translate-y-2/4 transform left-6 flex flex-col z-0 shadow-sm rounded-md">
+      <div className="fixed z-force top-1/2 -translate-y-2/4 transform left-6 flex flex-col z-0 shadow-sm rounded-xl">
         <button
           onClick={toggleDisablePan}
           type="button"
-          className={`relative inline-flex rounded-t-md items-center px-3 py-2 -mt-px  border border-${primaryColor}-300 bg-${bgColor} text-sm font-medium text-${primaryColor}-600 hover:bg-${bgColor}-300 focus:z-10 focus:outline-none`}
+          className={`relative inline-flex rounded-t-xl items-center px-3 py-2 -mt-px  border border-${primaryColor}-300 bg-${bgColor} text-sm font-medium text-${primaryColor}-600 hover:bg-${bgColor}-300 focus:z-10 focus:outline-none`}
         >
           <HandOutline />
         </button>
@@ -48,7 +48,7 @@ export const BoardControls = React.memo(
         <button
           onClick={() => setSearchOpen(true)}
           type="button"
-          className="-mt-px relative inline-flex items-center px-3 py-2 rounded-b-md border border-gray-300 bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+          className="-mt-px relative inline-flex items-center px-3 py-2 rounded-b-xl border border-gray-300 bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
         >
           <SearchOutline />
         </button>

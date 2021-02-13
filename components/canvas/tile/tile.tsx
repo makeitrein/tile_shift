@@ -1,5 +1,5 @@
-import { Button } from "@blueprintjs/core";
 import { motion, useAnimation } from "framer-motion";
+import { ArrowNarrowLeft } from "heroicons-react";
 import parse from "html-react-parser";
 import React, { useCallback, useMemo, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -12,33 +12,16 @@ import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { Tag } from "../tile-menu/tag";
 import { TagPickerMulti } from "../tile-menu/tag-picker-multi";
 import { ConnectButton } from "./connect-button";
-import { AvatarComments } from "./tile-comments";
+import { TileComments } from "./tile-comments";
 export const TileWrapper = styled.div`
   display: inline-block;
   position: absolute;
   width: ${tileWidth}px;
   height: ${tileHeight}px;
   margin: 4px;
-  border-radius: 0.5rem;
   --color: #4af;
   transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
   z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-`;
-
-export const CollapsedTileWrapper = styled.div`
-  display: inline-block;
-  position: absolute;
-  width: auto;
-  margin: 4px;
-  border-radius: 0.5rem;
-  background: white;
-  --color: #4af;
-  transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
-  z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 `;
 
 interface TileProps {
@@ -107,7 +90,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
       id={id}
       isDragging={tileSettings.isDragging}
       isSelected={isSelected}
-      className={`${disablePanzoomPanningClass} canvas-tile group
+      className={`${disablePanzoomPanningClass} canvas-tile group rounded-xl
       ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
       ${isSearchedFor && "animate-searched"}`}
       style={{
@@ -121,21 +104,16 @@ export const Tile = React.memo(({ id }: TileProps) => {
           background: "#FFD675",
           height: "100%",
           width: "100%",
-          padding: 30,
           position: "absolute",
           WebkitBackfaceVisibility: "hidden",
         }}
+        className="p-5 rounded-xl"
         initial={{ rotateY: 0 }}
         animate={frontTile}
         transition={{ duration: 1 }}
       >
-        <Button
-          icon="random"
-          onClick={flip}
-          className="absolute bottom-2 right-2"
-        />
         <Tags onClick={flip} tags={tileSettings.tags} />
-        <AvatarComments id={id} />
+        <TileComments id={id} />
         <div id={`editor-${id}`} />
 
         {isEditable && (
@@ -156,20 +134,21 @@ export const Tile = React.memo(({ id }: TileProps) => {
           background: "#19D2A7",
           height: "100%",
           width: "100%",
-          padding: 30,
           position: "absolute",
           WebkitBackfaceVisibility: "hidden",
         }}
+        className="pt-20 p-6 rounded-xl"
         initial={{ rotateY: 180 }}
         animate={backTile}
         transition={{ duration: 1 }}
       >
         <TagPickerMulti id={id} />
-        <Button
-          icon="random"
+        <div
           onClick={flipBack}
-          className="absolute bottom-2 right-2"
-        />
+          className="absolute top-3 left-3 cursor-pointer rounded-xl bg-gray-100 p-2"
+        >
+          <ArrowNarrowLeft />
+        </div>
       </motion.div>
     </TileWrapper>
   );

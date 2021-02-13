@@ -18,6 +18,10 @@ body {
   background: rgba(59, 130, 246) !important;
 }
 
+.moveable-line.moveable-direction {
+  display: none;
+}
+
 .moveable-control-box {
   /* Fixes hidden dots */
   z-index: 3002 !important;

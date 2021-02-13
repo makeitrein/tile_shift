@@ -1,7 +1,7 @@
 import { BookOpenOutline } from "heroicons-react";
 import React, { CSSProperties } from "react";
 import { noSelectoClass } from "../board/board";
-import { allTags } from "./tag-data";
+import { defaultTags } from "./tag-data";
 
 export const Tag = React.memo(
   ({
@@ -19,7 +19,7 @@ export const Tag = React.memo(
     className?: string;
     active?: boolean;
   }) => {
-    const tag = [...allTags].find((tag) => tag.name === name) || {
+    const tag = [...defaultTags].find((tag) => tag.name === name) || {
       icon: BookOpenOutline,
       color: "blue",
     };
@@ -46,7 +46,7 @@ export const Tag = React.memo(
       <span
         style={style}
         onClick={onClick}
-        className={`${noSelectoClass} ${className} ${tagColors}  inline-flex cursor-pointer items-center py-1 px-2 rounded-md text-sm font-medium`}
+        className={`${noSelectoClass} ${className} ${tagColors}  inline-flex cursor-pointer items-center py-1 px-2 rounded-full text-sm font-medium`}
       >
         {/* <Icon className="no-selecto" width={16} /> */}
 
