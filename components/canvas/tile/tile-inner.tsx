@@ -4,6 +4,7 @@ import React, { CSSProperties, useCallback, useMemo } from "react";
 import { useRecoilValue } from "recoil";
 import * as tileState from "../../state/tiles";
 import { TagPickerMulti } from "../tile-menu/tag-picker-multi";
+import { TileCheckboxProgress } from "./tile-checkbox-progress";
 import { TileConnectButtons } from "./tile-connect-buttons";
 import { TileContent } from "./tile-content";
 import { TileTags } from "./tile-tags";
@@ -65,6 +66,7 @@ export const TileInner = React.memo(({ id }: Props) => {
       >
         <TileTags onClick={flip} id={id} />
         {/* <TileComments id={id} /> */}
+        <TileCheckboxProgress id={id} />
         <div id={`editor-${id}`} />
 
         <TileConnectButtons id={id} />

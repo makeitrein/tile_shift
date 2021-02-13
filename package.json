@@ -55,7 +55,7 @@
     "react-simple-arrows": "^0.2.0",
     "react-speech-recognition": "^3.6.0",
     "recoil": "^0.1.2",
-    "remirror": "^0.0.0-pr706.2",
+    "remirror": "1.0.0-next.60",
     "styled-components": "^5.2.1",
     "tailwindcss": "^2.0.2",
     "use-debounce": "^5.2.0",
