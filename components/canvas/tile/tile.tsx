@@ -135,7 +135,6 @@ export const Tile = React.memo(({ id }: TileProps) => {
           height: "100%",
           width: "100%",
           position: "absolute",
-          zIndex: -1,
           WebkitBackfaceVisibility: "hidden",
         }}
         className="pt-20 p-6 rounded-xl"
