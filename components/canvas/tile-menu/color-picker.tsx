@@ -10,142 +10,40 @@ export type ThemeMapOption = {
 export type ThemeMap = Record<string, ThemeMapOption>;
 
 export const colorThemes: ThemeMap = {
-  blackInverse: {
+  black: {
     color: "#fff",
     background: "#27303f",
     borderColor: "#27303f",
   },
-  black: {
-    color: "#27303f",
-    background: "#f1f5f9",
-    borderColor: "#27303f",
-  },
+
   white: {
     color: "#27303f",
     background: "#fff",
     borderColor: "",
   },
-  pinkInverse: {
-    color: "#fff",
-    background: "#99154b",
-    borderColor: "#99154b",
-  },
-  pink: {
-    color: "#99154b",
-    background: "#fce8f3",
-    borderColor: "#99154b",
-  },
-  pinkBorder: {
-    color: "#99154b",
-    background: "",
-    borderColor: "#99154b",
-  },
-  redInverse: {
-    color: "#fff",
-    background: "#9b1c1c",
-    borderColor: "#9b1c1c",
-  },
+
   red: {
-    color: "#9b1c1c",
-    background: "#fde8e8",
-    borderColor: "#9b1c1c",
-  },
-  redBorder: {
-    color: "#9b1c1c",
-    background: "",
-    borderColor: "#9b1c1c",
-  },
-  orangeInverse: {
     color: "#fff",
-    background: "#723b13",
-    borderColor: "#723b13",
+    background: "#ee6962",
+    borderColor: "#ee6962",
   },
+
   orange: {
-    color: "#723b13",
-    background: "#fdf6b2",
-    borderColor: "#723b13",
-  },
-  orangeBorder: {
-    color: "#723b13",
-    background: "",
-    borderColor: "#723b13",
-  },
-  cyanInverse: {
     color: "#fff",
-    background: "#05505c",
-    borderColor: "#05505c",
+    background: "#fcca48",
+    borderColor: "#fcca48",
   },
-  cyan: {
-    color: "#05505c",
-    background: "#d5f5f6",
-    borderColor: "#05505c",
-  },
-  cyanBorder: {
-    color: "#05505c",
-    background: "",
-    borderColor: "#05505c",
-  },
-  greenInverse: {
-    color: "#fff",
-    background: "#03543f",
-    borderColor: "#03543f",
-  },
+
   green: {
-    color: "#03543f",
-    background: "#def7ec",
-    borderColor: "#03543f",
-  },
-  greenBorder: {
-    color: "#03543f",
-    background: "",
-    borderColor: "#03543f",
-  },
-  blueInverse: {
     color: "#fff",
-    background: "#1e429f",
-    borderColor: "#1e429f",
-  },
-  blue: {
-    color: "#1e429f",
-    background: "#e1effe",
-    borderColor: "#1e429f",
-  },
-  blueBorder: {
-    color: "#1e429f",
-    background: "",
-    borderColor: "#1e429f",
-  },
-  geekblueInverse: {
-    color: "#fff",
-    background: "#42389d",
-    borderColor: "#42389d",
-  },
-  geekblue: {
-    color: "#42389d",
-    background: "#e5edff",
-    borderColor: "#42389d",
+    background: "#8ececa",
+    borderColor: "#8ececa",
   },
 
-  geekblueBorder: {
-    color: "#42389d",
-    background: "",
-    borderColor: "#42389d",
-  },
-  purpleInverse: {
-    color: "#fff",
-    background: "#5521b5",
-    borderColor: "#5521b5",
-  },
   purple: {
-    color: "#5521b5",
-    background: "#edebfe",
-    borderColor: "#5521b5",
-  },
-
-  purpleBorder: {
-    color: "#5521b5",
-    background: "",
-    borderColor: "#5521b5",
+    color: "#fff",
+    background: "#9282f0",
+    borderColor: "#9282f0",
   },
 };
 
@@ -154,8 +52,8 @@ export const ColorPicker = ({ id }) => {
 
   return (
     <div
-      style={{ width: 640 }}
-      className="flex h-64 w-full flex-wrap flex-col align-middle p-8 justify-between"
+      style={{ width: 80 }}
+      className="flex h-92 w-full flex-wrap flex-col align-middle pt-4 pb-1 px-4 justify-between"
     >
       {Object.entries(colorThemes).map(([theme, css]) => (
         <>
@@ -163,7 +61,7 @@ export const ColorPicker = ({ id }) => {
             onClick={() =>
               setTileSettings((settings) => ({ ...settings, theme }))
             }
-            className={`w-12 h-12 mb-1 px-1 rounded-lg border cursor-pointer border-solid transform transition-transform hover:scale-110`}
+            className={`w-12 h-12 mb-3 px-1 rounded-lg border cursor-pointer border-solid transform transition-transform hover:scale-110`}
             style={{
               ...css,
               borderColor: css.borderColor || "rgba(209, 213, 219)",

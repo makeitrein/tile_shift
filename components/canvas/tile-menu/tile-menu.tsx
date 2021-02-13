@@ -81,7 +81,8 @@ export const TileMenu = React.memo(({ id }: { id: string }) => {
   return (
     <div
       ref={tooltipRef}
-      className={`absolute top-0 w-full -mt-11	 z-overlay left-0 cursor-pointer flex justify-center`}
+      style={{ marginTop: -44 }}
+      className={`absolute top-0 w-full z-overlay left-0 cursor-pointer flex justify-center`}
     >
       <div key={"toolbar"} className="flex absolute justify-center ">
         <ColorPickerMenuItem

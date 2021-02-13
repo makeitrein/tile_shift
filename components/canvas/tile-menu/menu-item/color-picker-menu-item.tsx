@@ -40,7 +40,7 @@ export const ColorPickerMenuItem = React.memo(
             {...targetProps}
             rounded="l-md"
           >
-            <TagOutline className="w-4 h-4 mt-1.5 relative top-px" />
+            <TagOutline className="w-4 h-4 mt-2 relative top-px" />
           </TooltipMenuItem>
         )}
       />

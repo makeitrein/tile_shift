@@ -17,7 +17,7 @@ export const TileComments = React.memo(({ id }: TileCommentsProps) => {
   return (
     <div
       onClick={openTileDiscussion}
-      className="absolute top-3 right-3 cursor-pointer rounded-xl bg-gray-100 p-2"
+      className="absolute top-3 right-3 cursor-pointer rounded-xl bg-gray-100 text-gray-800 p-2"
     >
       <ChatAltOutline />
     </div>
