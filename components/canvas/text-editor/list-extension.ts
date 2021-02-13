@@ -15,7 +15,7 @@ import { splitListItem } from "./list-helper";
 class ListItemView implements NodeView {
   public dom: HTMLElement;
   public contentDOM: HTMLElement;
-  private schema: Schema;
+  public schema: Schema;
 
   public constructor(
     node: ProsemirrorNode,
@@ -60,7 +60,10 @@ export class RinoListItemExtension extends NodeExtension {
       defining: true,
       parseDOM: [{ tag: "li" }],
       toDOM(node) {
-        return ["li", 0];
+        // node.firstChild?.type === schema.nodes.rinoCheckbox;
+        const shouldHasClass = node.firstChild?.type?.name === "rinoCheckbox";
+
+        return ["li", { class: shouldHasClass && "selectable-list-item" }, 0];
       },
     };
   }
@@ -233,8 +236,6 @@ export class RinoCheckboxExtension extends NodeExtension {
         },
       ],
       toDOM(node) {
-        console.log(node);
-
         const attrs: Record<string, string> = { type: "checkbox" };
         if (node.attrs.checked) attrs.checked = "";
         return ["input", attrs];

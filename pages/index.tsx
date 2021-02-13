@@ -18,7 +18,6 @@ export default function Home() {
     whyDidYouRender(React, {
       trackAllPureComponents: true,
       exclude: [/^Moveable/],
-      // trackExtraHooks: [useRecoilState, useRecoilValue],
     });
   }
 

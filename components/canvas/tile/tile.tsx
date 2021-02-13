@@ -1,18 +1,16 @@
 import { motion, useAnimation } from "framer-motion";
 import { ArrowNarrowLeft } from "heroicons-react";
-import parse from "html-react-parser";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { CSSProperties, useCallback, useMemo, useRef } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { tileHeight, tileWidth } from "../../state/tile-defaults";
-import { useSetTileDimensions } from "../../state/tile-utils";
 import * as tileState from "../../state/tiles";
 import * as uiState from "../../state/ui";
-import { EditableArticle } from "../text-editor/wysiwig-editor";
 import { Tag } from "../tile-menu/tag";
 import { TagPickerMulti } from "../tile-menu/tag-picker-multi";
-import { ConnectButton } from "./connect-button";
 import { TileComments } from "./tile-comments";
+import { TileConnectButtons } from "./tile-connect-buttons";
+import { TileContent } from "./tile-content";
 export const TileWrapper = styled.div`
   display: inline-block;
   position: absolute;
@@ -34,7 +32,7 @@ export const tileDescriptionElementId = (id: string) => id + "description";
 export const Tile = React.memo(({ id }: TileProps) => {
   const tileRef = useRef(null);
   const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
-  const [selectedTileTargets, setSelectedTileTargets] = useRecoilState(
+  const setSelectedTileTargets = useSetRecoilState(
     tileState.selectedTileTargets
   );
   const disablePan = useRecoilValue(uiState.disablePan);
@@ -42,11 +40,8 @@ export const Tile = React.memo(({ id }: TileProps) => {
   const [tileSettings, setTileSettings] = useRecoilState(
     tileState.tileSettings(id)
   );
-  const editableTileId = useRecoilValue(tileState.editableTileId);
-  const tileContent = useRecoilValue(tileState.tileContent(id));
   const selectedTileIds = useRecoilValue(tileState.selectedTileIds);
   const searchedForTile = useRecoilValue(tileState.searchedForTile);
-  const setTileDimensions = useSetTileDimensions();
 
   const transformStyle = useMemo(
     () => ({
@@ -56,7 +51,6 @@ export const Tile = React.memo(({ id }: TileProps) => {
   );
 
   const isSelected = selectedTileIds.includes(id);
-  const isEditable = editableTileId === id;
   const isSearchedFor = searchedForTile === id;
 
   const colorTheme = useRecoilValue(tileState.tileColorTheme(id));
@@ -73,15 +67,51 @@ export const Tile = React.memo(({ id }: TileProps) => {
   const frontTile = useAnimation();
   const backTile = useAnimation();
 
-  const flip = () => {
+  const flip = useCallback(() => {
     frontTile.start({ rotateY: -180 });
     backTile.start({ rotateY: 0 });
-  };
+  }, []);
 
-  const flipBack = () => {
+  const flipBack = useCallback(() => {
     frontTile.start({ rotateY: 0 });
     backTile.start({ rotateY: -180 });
-  };
+  }, []);
+
+  const flipStyle: CSSProperties = useMemo(() => {
+    return {
+      height: "100%",
+      width: "100%",
+      position: "absolute",
+      WebkitBackfaceVisibility: "hidden",
+      ...colorTheme,
+    };
+  }, [colorTheme]);
+
+  const flipInitial = useMemo(() => {
+    return {
+      rotateY: 0,
+    };
+  }, []);
+
+  const flipTransition = useMemo(() => {
+    return {
+      duration: 1,
+    };
+  }, []);
+
+  const backFlipInitial = useMemo(() => {
+    return {
+      rotateY: 180,
+    };
+  }, []);
+
+  const tileWrapperStyle = useMemo(() => {
+    return {
+      width: tileDimensions.width,
+      height: tileDimensions.height,
+      ...transformStyle,
+    };
+  }, [tileDimensions.width, tileDimensions.height]);
 
   return (
     <TileWrapper
@@ -93,59 +123,33 @@ export const Tile = React.memo(({ id }: TileProps) => {
       className={`${disablePanzoomPanningClass} canvas-tile group rounded-xl
       ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
       ${isSearchedFor && "animate-searched"}`}
-      style={{
-        width: tileDimensions.width,
-        height: tileDimensions.height,
-        ...transformStyle,
-      }}
+      style={tileWrapperStyle}
     >
       <motion.div
-        style={{
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          WebkitBackfaceVisibility: "hidden",
-          ...colorTheme,
-        }}
+        style={flipStyle}
         className="p-5 rounded-xl"
-        initial={{ rotateY: 0 }}
+        initial={flipInitial}
         animate={frontTile}
-        transition={{ duration: 1 }}
+        transition={flipTransition}
       >
         <Tags onClick={flip} tags={tileSettings.tags} />
         <TileComments id={id} />
         <div id={`editor-${id}`} />
 
-        {isEditable && (
-          <>
-            <ConnectButton id={id} direction="top" />
-            <ConnectButton id={id} direction="right" />
-            <ConnectButton id={id} direction="left" />
-            <ConnectButton id={id} direction="bottom" />
-          </>
-        )}
-
-        {!isEditable && (
-          <EditableArticle>{parse(tileContent.content || "")}</EditableArticle>
-        )}
+        <TileConnectButtons id={id} />
+        <TileContent id={id} />
       </motion.div>
       <motion.div
-        style={{
-          background: "#19D2A7",
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          WebkitBackfaceVisibility: "hidden",
-        }}
+        style={flipStyle}
         className="pt-20 p-6 rounded-xl"
-        initial={{ rotateY: 180 }}
+        initial={backFlipInitial}
         animate={backTile}
-        transition={{ duration: 1 }}
+        transition={flipTransition}
       >
         <TagPickerMulti id={id} />
         <div
           onClick={flipBack}
-          className="absolute top-3 left-3 cursor-pointer rounded-xl bg-gray-100 p-2"
+          className="absolute top-3 left-3 cursor-pointer rounded-xl bg-gray-100 text-gray-800 p-2"
         >
           <ArrowNarrowLeft />
         </div>
@@ -159,8 +163,6 @@ interface Props {
   onClick: () => void;
 }
 export const Tags = React.memo(({ tags, onClick }: Props) => {
-  const setTagPickerOpen = useSetRecoilState(uiState.tagPickerOpen);
-
   return (
     <div className="mt-0">
       {tags.map((tag) => (

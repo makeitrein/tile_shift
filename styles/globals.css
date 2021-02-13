@@ -126,6 +126,7 @@ li.selectable-list-item {
   /* CSS4 ':has()' draft can be used here: li:has(> input[type=checkbox]) */
   list-style-type: none;
   padding-left: 40px;
+  position: relative;
 }
 
 .selectable-list-item + .selectable-list-item {
