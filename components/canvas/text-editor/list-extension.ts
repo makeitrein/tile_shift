@@ -60,9 +60,7 @@ export class RinoListItemExtension extends NodeExtension {
       defining: true,
       parseDOM: [{ tag: "li" }],
       toDOM(node) {
-        // node.firstChild?.type === schema.nodes.rinoCheckbox;
         const shouldHasClass = node.firstChild?.type?.name === "rinoCheckbox";
-
         return ["li", { class: shouldHasClass && "selectable-list-item" }, 0];
       },
     };
@@ -89,21 +87,6 @@ export class RinoListItemExtension extends NodeExtension {
       return new ListItemView(node, view, getPos as () => number);
     };
   };
-
-  // public fromMarkdown() {
-  //     return [
-  //         {
-  //             type: ParserRuleType.block,
-  //             token: "list_item",
-  //             node: this.name,
-  //             hasOpenClose: true,
-  //         },
-  //     ] as const
-  // }
-
-  // public toMarkdown({ state, node }: NodeSerializerOptions) {
-  //     state.renderContent(node)
-  // }
 }
 
 export class RinoOrderedListExtension extends NodeExtension {
@@ -139,28 +122,6 @@ export class RinoOrderedListExtension extends NodeExtension {
       ),
     ];
   };
-
-  // public fromMarkdown() {
-  //   return [
-  //     {
-  //       type: ParserRuleType.block,
-  //       token: "ordered_list",
-  //       node: this.name,
-  //       hasOpenClose: true,
-  //       getAttrs: (tok: Token) => ({ order: +(tok.attrGet("order") || 1) }),
-  //     },
-  //   ] as const;
-  // }
-
-  // public toMarkdown({ state, node }: NodeSerializerOptions) {
-  //   const start = (node.attrs.order as number) || 1;
-  //   const maxW = String(start + node.childCount - 1).length;
-  //   const space = state.repeat(" ", maxW + 2);
-  //   state.renderList(node, space, (i) => {
-  //     const nStr = String(start + i);
-  //     return state.repeat(" ", maxW - nStr.length) + nStr + ". ";
-  //   });
-  // }
 }
 
 export class RinoBulletListExtension extends NodeExtension {
@@ -188,28 +149,6 @@ export class RinoBulletListExtension extends NodeExtension {
   createInputRules = (): InputRule[] => {
     return [wrappingInputRule(/^\s*([-+*])\s$/, this.type)];
   };
-
-  // public fromMarkdown() {
-  //   return [
-  //     {
-  //       type: ParserRuleType.block,
-  //       token: "bullet_list",
-  //       node: this.name,
-  //       hasOpenClose: true,
-  //     },
-  //   ] as const;
-  // }
-
-  // public toMarkdown({
-  //   state,
-  //   node,
-  // }: NodeSerializerOptions<SchemaFromExtensionUnion<RinoBulletListExtension>>) {
-  //   state.renderList(
-  //     node,
-  //     "  ",
-  //     () => ((node.attrs.bullet as string) || "*") + " "
-  //   );
-  // }
 }
 
 export class RinoCheckboxExtension extends NodeExtension {
@@ -266,22 +205,6 @@ export class RinoCheckboxExtension extends NodeExtension {
       ),
     ];
   };
-
-  // public fromMarkdown() {
-  //   return [
-  //     {
-  //       type: ParserRuleType.block,
-  //       token: "list_checkbox",
-  //       node: this.name,
-  //       hasOpenClose: false,
-  //       getAttrs: (tok: Token) => ({ checked: tok.attrGet("checked") === "" }),
-  //     },
-  //   ] as const;
-  // }
-
-  // public toMarkdown({ state, node }: NodeSerializerOptions) {
-  //   state.text(node.attrs.checked ? "[x] " : "[ ] ", false);
-  // }
 
   createNodeViews = (): NodeViewMethod => {
     /*
