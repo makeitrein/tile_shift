@@ -6,11 +6,13 @@ import { useRecoilState } from "recoil";
 import { useRemirror } from "remirror/react";
 import { tagPickerOpen } from "../../state/ui";
 import { BoldMenuItem } from "./menu-item/bold-menu-item";
+import { BulletListMenuItem } from "./menu-item/bullet-menu-item";
 import { CodeMenuItem } from "./menu-item/code-menu-item";
 import { ColorPickerMenuItem } from "./menu-item/color-picker-menu-item";
 import { HeaderMenuItem } from "./menu-item/header-menu-item";
 import { ImageMenuItem } from "./menu-item/image-menu-item";
 import { ItalicMenuItem } from "./menu-item/italic-menu-item";
+import { OrderedListMenuItem } from "./menu-item/orderered-list-menu-item";
 import { UnderlineMenuItem } from "./menu-item/underline-menu-item";
 import { ViewMoreMenuItem } from "./menu-item/view-more-menu-item";
 
@@ -76,6 +78,11 @@ export const TileMenu = React.memo(({ id }: { id: string }) => {
     []
   );
 
+  const toggleCheckboxList = React.useCallback(
+    () => commands.toggleCheckboxList(),
+    []
+  );
+
   return (
     <div
       ref={tooltipRef}
@@ -99,15 +106,10 @@ export const TileMenu = React.memo(({ id }: { id: string }) => {
         <ImageMenuItem />
 
         <HeaderMenuItem toggle={toggleStrike} active={active.strike()} />
-        {/* <OrderedListMenuItem
-          toggle={toggleOrderedList}
-          active={active.orderedList()}
-        />
+        <OrderedListMenuItem toggle={toggleOrderedList} active={false} />
 
-        <BulletListMenuItem
-          toggle={toggleBulletList}
-          active={active.bulletList()}
-        /> */}
+        <BulletListMenuItem toggle={toggleBulletList} active={false} />
+        <OrderedListMenuItem toggle={toggleCheckboxList} active={false} />
         <ViewMoreMenuItem />
       </div>
     </div>

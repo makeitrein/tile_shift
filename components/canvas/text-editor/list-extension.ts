@@ -5,11 +5,13 @@ import {
   NodeViewMethod,
 } from "@remirror/core";
 import { isElementDomNode } from "@remirror/core-utils";
+import { CommandFunction } from "@remirror/pm";
 import { InputRule, wrappingInputRule } from "prosemirror-inputrules";
 import { Node as ProsemirrorNode, Schema } from "prosemirror-model";
 import { liftListItem, sinkListItem } from "prosemirror-schema-list";
 import { EditorState } from "prosemirror-state";
 import { EditorView, NodeView } from "prosemirror-view";
+import { toggleCheckboxList, toggleList } from "./list-commands";
 import { splitListItem } from "./list-helper";
 
 class ListItemView implements NodeView {
@@ -111,6 +113,16 @@ export class RinoOrderedListExtension extends NodeExtension {
     };
   }
 
+  createCommands() {
+    return {
+      /**
+       * Toggle the bullet list.
+       */
+      toggleOrderedList: (): CommandFunction =>
+        toggleList(this.type, this.store.schema.nodes.rinoListItem),
+    };
+  }
+
   createInputRules = (): InputRule[] => {
     return [
       wrappingInputRule(
@@ -142,6 +154,23 @@ export class RinoBulletListExtension extends NodeExtension {
       ],
       toDOM(node) {
         return ["ul", 0];
+      },
+    };
+  }
+
+  createCommands() {
+    return {
+      /**
+       * Toggle the bullet list.
+       */
+      toggleBulletList: (): CommandFunction =>
+        toggleList(this.type, this.store.schema.nodes.rinoListItem),
+      toggleCheckboxList: (): CommandFunction => {
+        return toggleCheckboxList(
+          this.type,
+          this.store.schema.nodes.rinoListItem,
+          this.store.schema.nodes.rinoCheckbox
+        );
       },
     };
   }
