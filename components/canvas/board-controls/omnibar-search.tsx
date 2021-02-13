@@ -132,7 +132,7 @@ export const panZoomToTile = (
 };
 
 export const filterTile = (query) => (tile) => {
-  const normalizedTitle = tile.content.toLowerCase();
+  const normalizedTitle = (tile.content || "").toLowerCase();
   const normalizedTag = (tile.tags[0] || "").toLowerCase();
   const normalizedQuery = query.toLowerCase();
 
