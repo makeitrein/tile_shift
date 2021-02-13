@@ -52,8 +52,8 @@ export const ColorPicker = ({ id }) => {
 
   return (
     <div
-      style={{ width: 80 }}
-      className="flex h-92 w-full flex-wrap flex-col align-middle pt-4 pb-1 px-4 justify-between"
+      style={{ width: 380 }}
+      className="flex h-20 w-full flex-wrap flex-col align-middle pt-4 pb-1 px-4 justify-between"
     >
       {Object.entries(colorThemes).map(([theme, css]) => (
         <>

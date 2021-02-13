@@ -7,17 +7,21 @@ import { HeadingExtension } from "remirror/extension/heading";
 import { ItalicExtension } from "remirror/extension/italic";
 import { LinkExtension } from "remirror/extension/link";
 import { UnderlineExtension } from "remirror/extension/underline";
-import { CorePreset } from "remirror/preset/core";
-import { ListPreset } from "remirror/preset/list";
 import { WysiwygPreset } from "remirror/preset/wysiwyg";
 import { RemirrorProvider, useManager, useRemirror } from "remirror/react";
 import "remirror/styles/all.css";
 import styled from "styled-components";
 import * as tileState from "../../state/tiles";
 import { TileMenu } from "../tile-menu/tile-menu";
+import {
+  RinoBulletListExtension,
+  RinoCheckboxExtension,
+  RinoListItemExtension,
+  RinoOrderedListExtension,
+} from "./list-extension";
 
 export const articlePadding = 12;
-export const tileHeaderHeight = 30;
+export const tileHeaderHeight = 72;
 
 export const EditableArticle = styled.article`
   margin: ${articlePadding / 2}px;
@@ -41,16 +45,15 @@ export const EditableArticle = styled.article`
   }
 
   p {
-    font-size: 1rem;
+    font-size: 1.25rem;
     min-height: 1.5rem;
   }
 
-  h2 {
-    line-height: 1.5rem;
-    font-size: 1.125rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-    color: inherit;
+  s {
+    text-decoration: none;
+    font-size: 2rem;
+    line-height: 2.25rem;
+    font-weight: 600;
   }
 
   li * {
@@ -59,13 +62,6 @@ export const EditableArticle = styled.article`
 
   ul li p {
     margin-left: -6px;
-  }
-
-  s {
-    text-decoration: none;
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    font-weight: 600;
   }
 
   code {
@@ -89,14 +85,16 @@ export const EditableArticle = styled.article`
 `;
 
 const extensionTemplate = () => [
-  new CorePreset({}),
   new BoldExtension({}),
   new ItalicExtension(),
   new UnderlineExtension(),
-  new ListPreset({}),
   new HeadingExtension({}),
   new LinkExtension({ extraAttributes: { target: "_blank" } }),
   new WysiwygPreset({}),
+  new RinoOrderedListExtension({}),
+  new RinoBulletListExtension({}),
+  new RinoListItemExtension({}),
+  new RinoCheckboxExtension({}),
 ];
 
 interface Props {

@@ -121,3 +121,22 @@ body {
 .se-resize {
   cursor: se-resize;
 }
+
+li.selectable-list-item {
+  /* CSS4 ':has()' draft can be used here: li:has(> input[type=checkbox]) */
+  list-style-type: none;
+  padding-left: 40px;
+}
+
+.selectable-list-item + .selectable-list-item {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+li.selectable-list-item > input[type="checkbox"] {
+  position: absolute;
+  left: -4px;
+  top: 0.3em;
+  width: 30px;
+  height: 20px;
+}

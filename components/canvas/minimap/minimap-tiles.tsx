@@ -37,6 +37,7 @@ interface Props {
 const MiniMapTile = ({ id }: Props) => {
   const tileDimensions = useRecoilValue(tileState.tileDimensions(id));
   const tileSettings = useRecoilValue(tileState.tileSettings(id));
+  const colorTheme = useRecoilValue(tileState.tileColorTheme(id));
 
   const transformStyle = {
     transform: `translate(${tileDimensions.x / minimapSizeDivider}px, ${
@@ -53,6 +54,7 @@ const MiniMapTile = ({ id }: Props) => {
         width: tileDimensions.width / minimapSizeDivider,
         height: tileDimensions.height / minimapSizeDivider,
         ...transformStyle,
+        ...colorTheme,
       }}
     />
   );

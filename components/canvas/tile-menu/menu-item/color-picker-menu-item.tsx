@@ -1,6 +1,6 @@
 import { Classes, Popover2 } from "@blueprintjs/popover2";
 import "@blueprintjs/popover2/lib/css/blueprint-popover2.css";
-import { TagOutline } from "heroicons-react";
+import { ColorSwatchOutline } from "heroicons-react";
 import * as React from "react";
 import { ColorPicker } from "../color-picker";
 import { TooltipMenuItem } from "../tooltip-menu-item";
@@ -35,12 +35,12 @@ export const ColorPickerMenuItem = React.memo(
         renderTarget={({ isOpen, ref, ...targetProps }) => (
           <TooltipMenuItem
             popoverIsOpen={isOpen}
-            label="Categories"
+            label="Color"
             ref={ref}
             {...targetProps}
             rounded="l-md"
           >
-            <TagOutline className="w-4 h-4 mt-2 relative top-px" />
+            <ColorSwatchOutline className="w-4 h-4 mt-2 relative top-px" />
           </TooltipMenuItem>
         )}
       />

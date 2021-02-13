@@ -14,7 +14,7 @@ export function escapeRegExpChars(text: string) {
   return text.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
 
-export function highlightText(text: string, query: string) {
+export function highlightText(text: string = "", query: string) {
   let lastIndex = 0;
   const words = query
     .split(/\s+/)
