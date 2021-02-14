@@ -51,16 +51,7 @@ export const arrowIds = atom<string[]>({
 export const arrow = atomFamily<Arrow, string>({
   key: "ARROW/arrow-settings",
   default: defaultArrowValues,
-  effects_UNSTABLE: (arrowId) => [
-    syncData(arrowRef(arrowId), [
-      "theme",
-      "content",
-      "stroke",
-      "direction",
-      "start",
-      "end",
-    ]),
-  ],
+  effects_UNSTABLE: (arrowId) => [syncData(arrowRef(arrowId))],
 });
 
 export const arrowColorTheme = selectorFamily<ThemeMapOption, string>({
@@ -70,14 +61,14 @@ export const arrowColorTheme = selectorFamily<ThemeMapOption, string>({
   },
 });
 
-export const selectedArrowIds = selector<string[]>({
-  key: "ARROW/undeleted-arrow-ids",
-  get: ({ get }) => {
-    return get(arrowIds)
-      .map((id) => get(arrow(id)))
-      .filter();
-  },
-});
+// export const selectedArrowIds = selector<string[]>({
+//   key: "ARROW/undeleted-arrow-ids",
+//   get: ({ get }) => {
+//     return get(arrowIds)
+//       .map((id) => get(arrow(id)))
+//       .filter();
+//   },
+// });
 
 export const undeletedArrowIds = selector<string[]>({
   key: "ARROW/undeleted-arrow-ids",

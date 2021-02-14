@@ -10,7 +10,7 @@ export const TileCheckboxProgress = React.memo(({ id }: TileProps) => {
   const tileContent = useRecoilValue(tileState.tileContent(id));
 
   const allCheckboxes =
-    tileContent.content.match(/input type="checkbox"/g) || [];
+    tileContent.content.match(/input type="checkbox"( checked)?/g) || [];
 
   const checkedCheckboxesCount = (
     tileContent.content.match(/input type="checkbox" checked/g) || []
@@ -18,8 +18,9 @@ export const TileCheckboxProgress = React.memo(({ id }: TileProps) => {
 
   return (
     <div className="absolute flex top-7 right-4">
-      {allCheckboxes.map((checkbox, index) => {
-        const isChecked = index < checkedCheckboxesCount;
+      {allCheckboxes.map((checkbox) => {
+        console.log(checkbox);
+        const isChecked = checkbox.includes("checked");
         const activeColor =
           allCheckboxes.length === checkedCheckboxesCount
             ? "bg-green-500"

@@ -31,7 +31,6 @@ export const Tile = React.memo(({ id }: TileProps) => {
 
   const tileSettings = useRecoilValue(tileState.tileSettings(id));
   const selectedTileIds = useRecoilValue(tileState.selectedTileIds);
-  const searchedForTile = useRecoilValue(tileState.searchedForTile);
 
   const transformStyle = useMemo(
     () => ({
@@ -41,7 +40,6 @@ export const Tile = React.memo(({ id }: TileProps) => {
   );
 
   const isSelected = selectedTileIds.includes(id);
-  const isSearchedFor = searchedForTile === id;
 
   const disablePanzoomPanningClass = "panzoom-exclude";
 
@@ -68,8 +66,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
       isDragging={tileSettings.isDragging}
       isSelected={isSelected}
       className={`${disablePanzoomPanningClass} canvas-tile group rounded-xl
-      ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}
-      ${isSearchedFor && "animate-searched"}`}
+      ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}`}
       style={tileWrapperStyle}
     >
       <TileInner id={id} />

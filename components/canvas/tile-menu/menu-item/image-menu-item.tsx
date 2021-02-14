@@ -4,7 +4,7 @@ import { TooltipMenuItem } from "../tooltip-menu-item";
 
 interface Props {}
 
-export const ImageMenuItem = React.memo(({ toggle, active }: Props) => (
+export const ImageMenuItem = React.memo(({}: Props) => (
   <TooltipMenuItem
     label="Image Upload"
     className="pl-4"

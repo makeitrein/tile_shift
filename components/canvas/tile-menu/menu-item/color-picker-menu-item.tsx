@@ -26,10 +26,7 @@ export const ColorPickerMenuItem = React.memo(
         fill={true}
         content={
           <div>
-            <ColorPicker
-              closePanel={() => setPopoverOpenCallback(false)}
-              id={id}
-            />
+            <ColorPicker id={id} />
           </div>
         }
         renderTarget={({ isOpen, ref, ...targetProps }) => (

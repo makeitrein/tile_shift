@@ -35,7 +35,6 @@ body {
 @keyframes pulse {
   0%,
   100% {
-    background: white;
   }
   50% {
     background: rgba(59, 130, 246, 1);
@@ -125,7 +124,7 @@ body {
 li.selectable-list-item {
   /* CSS4 ':has()' draft can be used here: li:has(> input[type=checkbox]) */
   list-style-type: none;
-  padding-left: 40px;
+  padding-left: 24px;
   position: relative;
 }
 
@@ -136,8 +135,9 @@ li.selectable-list-item {
 
 li.selectable-list-item > input[type="checkbox"] {
   position: absolute;
-  left: -4px;
+  left: -5px;
   top: 0.3em;
-  width: 30px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
 }

@@ -35,6 +35,9 @@ export const TileInner = React.memo(({ id }: Props) => {
   const frontTile = useAnimation();
   const backTile = useAnimation();
 
+  const searchedForTile = useRecoilValue(tileState.searchedForTile);
+  const isSearchedFor = searchedForTile === id;
+
   const flip = useCallback(() => {
     frontTile.start({ rotateY: -180 });
     backTile.start({ rotateY: 0 });
@@ -59,7 +62,9 @@ export const TileInner = React.memo(({ id }: Props) => {
     <>
       <motion.div
         style={flipStyle}
-        className="p-5 rounded-xl"
+        className={`p-5 rounded-xl
+            ${isSearchedFor && "animate-searched"}
+        `}
         initial={flipInitial}
         animate={frontTile}
         transition={flipTransition}
