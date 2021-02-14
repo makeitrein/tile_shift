@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const OrderedListMenuItem = React.memo(({ toggle, active }: Props) => (
-  <TooltipMenuItem label="Image Upload" onClick={toggle} active={active}>
+  <TooltipMenuItem label="Ordered List" onClick={toggle} active={active}>
     <svg
       className="w-4 h-4"
       viewBox="64 64 896 896"

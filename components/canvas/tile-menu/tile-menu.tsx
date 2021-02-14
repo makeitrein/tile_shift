@@ -7,6 +7,7 @@ import { useRemirror } from "remirror/react";
 import { tagPickerOpen } from "../../state/ui";
 import { BoldMenuItem } from "./menu-item/bold-menu-item";
 import { BulletListMenuItem } from "./menu-item/bullet-menu-item";
+import { CheckboxListMenuItem } from "./menu-item/checkbox-list-menu-item";
 import { CodeMenuItem } from "./menu-item/code-menu-item";
 import { ColorPickerMenuItem } from "./menu-item/color-picker-menu-item";
 import { HeaderMenuItem } from "./menu-item/header-menu-item";
@@ -109,7 +110,7 @@ export const TileMenu = React.memo(({ id }: { id: string }) => {
         <OrderedListMenuItem toggle={toggleOrderedList} active={false} />
 
         <BulletListMenuItem toggle={toggleBulletList} active={false} />
-        <OrderedListMenuItem toggle={toggleCheckboxList} active={false} />
+        <CheckboxListMenuItem toggle={toggleCheckboxList} active={false} />
         <ViewMoreMenuItem />
       </div>
     </div>

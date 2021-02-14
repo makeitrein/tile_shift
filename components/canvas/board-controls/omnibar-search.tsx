@@ -15,6 +15,9 @@ export function escapeRegExpChars(text: string) {
 }
 
 export function highlightText(text: string = "", query: string) {
+  if (typeof text !== "string") {
+    return [text];
+  }
   let lastIndex = 0;
   const words = query
     .split(/\s+/)
