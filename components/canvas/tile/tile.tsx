@@ -67,7 +67,7 @@ export const Tile = React.memo(({ id }: TileProps) => {
       id={id}
       isDragging={tileSettings.isDragging}
       isSelected={isSelected}
-      className={`${disablePanzoomPanningClass} canvas-tile group rounded-xl
+      className={`${disablePanzoomPanningClass} canvas-tile rounded-xl
       ${tileSettings.isDragging ? "cursor-grabbing" : "cursor-grab"}`}
       style={tileWrapperStyle}
     >

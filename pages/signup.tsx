@@ -4,7 +4,6 @@ import { firebaseClient } from "../firebaseClient";
 const Login = (_props: any) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  console.log(firebaseClient.auth().currentUser);
   return (
     <div>
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

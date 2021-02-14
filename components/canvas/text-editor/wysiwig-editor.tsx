@@ -119,7 +119,6 @@ export const EditorManager = React.memo(({ id, moveable }: Props) => {
 
   const handleRemirrorChange = useCallback(
     ({ state, view }) => {
-      console.log("hihihihihihi");
       const target = view.dom as HTMLDivElement;
       const articleHeight =
         target.offsetHeight + articlePadding + tileHeaderHeight;

@@ -30,7 +30,6 @@ export const getCoordinatesFromDiv = ({
     right: box.right - parentBox.right,
   };
 
-  console.log(coordinates);
   return coordinates;
 };
 export const useCoordinatesPerId = () => {
@@ -46,8 +45,6 @@ export const useCoordinatesPerId = () => {
     parent: HTMLDivElement | null;
   }) => {
     if (!div || !parent) return; // do nothing if div not defined
-
-    console.log(div, parent, "fuck");
 
     const priorCoordinates = coordinates[id];
     const currentCoordinates = getCoordinatesFromDiv({ div, parent });

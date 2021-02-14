@@ -14,8 +14,6 @@ import { ConsensusButtonShell } from "./discussion-form";
 export const DiscussionSummary = React.memo(() => {
   const discussionDrawerTile = useRecoilValue(tileState.discussionDrawerTile);
 
-  console.log(discussionDrawerTile.createdAt);
-
   return (
     <div className="flex items-center justify-between mt-3 -mb-3 z-50 w-96 text-xs ">
       <span className="">
