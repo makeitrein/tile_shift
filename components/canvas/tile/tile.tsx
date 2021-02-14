@@ -9,6 +9,8 @@ import { TileInner } from "./tile-inner";
 export const TileWrapper = styled.div`
   display: inline-block;
   position: absolute;
+  will-change: transform;
+
   width: ${tileWidth}px;
   height: ${tileHeight}px;
   margin: 4px;
