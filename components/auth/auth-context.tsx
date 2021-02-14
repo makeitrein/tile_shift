@@ -1,23 +1,21 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useRecoilCallback } from "recoil";
 import { firebaseClient } from "../../firebaseClient";
-import { authState } from "../state/auth";
 
 const AuthContext = createContext<{ user: firebaseClient.User | null }>({
   user: null,
 });
 
-export const useSetRecoilAuthUser = () =>
-  useRecoilCallback(({ set }) => {
-    return (user: { uid: string; email: string } | null) => {
-      set(authState, user);
-    };
-  });
+// export const useSetRecoilAuthUser = () =>
+//   useRecoilCallback(({ set }) => {
+//     return (user: { uid: string; email: string } | null) => {
+//       set(authState, user);
+//     };
+//   });
 
 export function AuthProvider({ children }: any) {
   const [user, setUser] = useState<firebaseClient.User | null>(null);
 
-  const setRecoilAuthUser = useSetRecoilAuthUser();
+  // const setRecoilAuthUser = useSetRecoilAuthUser();
 
   // useEffect(() => {
   //   if (typeof window !== undefined) {
