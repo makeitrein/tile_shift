@@ -28,7 +28,7 @@ export const usePanzoomEffects = ({
     e.preventDefault();
 
     if (isPinchZoom) {
-      panzoom.zoomWithWheel(e, { step: 0.3 });
+      panzoom.zoomWithWheel(e, { step: 0.05 });
     } else {
       panzoom.pan(x, y, { relative: true, force: true });
     }
