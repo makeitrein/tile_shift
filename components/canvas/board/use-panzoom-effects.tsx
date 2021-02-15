@@ -17,6 +17,24 @@ export const usePanzoomEffects = ({
   const setTagPickerOpen = useSetRecoilState(tagPickerOpen);
   const hoveringOverScrollable = useRecoilValue(uiState.hoveringOverScrollable);
 
+  let now;
+  let fps = 60;
+  let then = Date.now();
+  let interval = 1000 / fps;
+  let delta;
+
+  const panZoomAnimationFrame = (e: WheelEvent) => {
+    e.preventDefault();
+    now = Date.now();
+    delta = now - then;
+
+    if (delta > interval) {
+      then = now - (delta % interval);
+
+      requestAnimationFrame(() => panCanvas(e));
+    }
+  };
+
   const panCanvas = (e: WheelEvent) => {
     if (hoveringOverScrollable) {
       return;
@@ -25,8 +43,6 @@ export const usePanzoomEffects = ({
     const isPinchZoom = e.ctrlKey;
     const x = -e.deltaX;
     const y = -e.deltaY;
-
-    e.preventDefault();
 
     if (isPinchZoom) {
       panzoom.zoomWithWheel(e, { step: 0.05 });
@@ -43,7 +59,12 @@ export const usePanzoomEffects = ({
     []
   );
 
-  useEventListener("mousewheel", panCanvas, canvasRef.current, false);
+  useEventListener(
+    "mousewheel",
+    panZoomAnimationFrame,
+    canvasRef.current,
+    false
+  );
 
   useEventListener(
     "panzoomchange",
