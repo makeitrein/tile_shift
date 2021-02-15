@@ -114,6 +114,7 @@ export function getDimensions(elem: HTMLElement | SVGElement, scale: number) {
   if (cachedResult) {
     return cachedResult;
   } else {
+    console.log("CALCULATE FRESH");
     const parent = elem.parentNode as HTMLElement | SVGElement;
     const style = window.getComputedStyle(elem);
     const parentStyle = window.getComputedStyle(parent);

@@ -13,8 +13,6 @@ import * as tileState from "../../state/tiles";
 import * as uiState from "../../state/ui";
 import { ArrowList } from "../arrow/arrow-list";
 import { BoardControls } from "../board-controls/board-controls";
-import { InjectTemplateCursor } from "../board-controls/template-cursor";
-import { DiscussionDrawer } from "../discussion-slide-over/discussion-slide-over";
 import { MiniMap } from "../minimap/minimap";
 import { TileList } from "../tile/tile-list";
 import { ZoomControlToolbar } from "../zoom-control-toolbar";
@@ -238,9 +236,6 @@ export const Board = () => {
 
   return (
     <>
-      <DiscussionDrawer panzoom={panzoomRef.current} />
-      <InjectTemplateCursor canvasEditor={canvasRef.current} />
-
       <Wrapper
         ref={wrapperRef}
         className="wrapper bg-tan"

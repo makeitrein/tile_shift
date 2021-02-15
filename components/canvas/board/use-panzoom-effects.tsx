@@ -40,6 +40,8 @@ export const usePanzoomEffects = ({
       return;
     }
 
+    e.preventDefault();
+
     const isPinchZoom = e.ctrlKey;
     const x = -e.deltaX;
     const y = -e.deltaY;
@@ -59,12 +61,7 @@ export const usePanzoomEffects = ({
     []
   );
 
-  useEventListener(
-    "mousewheel",
-    panZoomAnimationFrame,
-    canvasRef.current,
-    false
-  );
+  useEventListener("mousewheel", panCanvas, canvasRef.current, false);
 
   useEventListener(
     "panzoomchange",

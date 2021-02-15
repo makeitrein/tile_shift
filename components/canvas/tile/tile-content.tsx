@@ -12,8 +12,6 @@ export const TileContent = React.memo(({ id }: TileProps) => {
   const tileContent = useRecoilValue(tileState.tileContent(id));
   const editableTileId = useRecoilValue(tileState.editableTileId);
 
-  console.log(tileContent.content);
-
   const allCheckboxesCount = (
     tileContent.content.match(/input type="checkbox"/g) || []
   ).length;
@@ -21,8 +19,6 @@ export const TileContent = React.memo(({ id }: TileProps) => {
   const checkedCheckboxesCount = (
     tileContent.content.match(/input type="checkbox" checked/g) || []
   ).length;
-
-  console.log(allCheckboxesCount, checkedCheckboxesCount);
 
   const isEditable = id === editableTileId;
   return isEditable ? null : (
