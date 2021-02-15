@@ -1,5 +1,6 @@
 import { throttle } from "lodash";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
+import { useAnimationFrame } from "../../general/hooks/useAnimationFrame";
 import { totalCanvasPixelSize } from "../board/board";
 import { PanzoomObject } from "../board/panzoom/types";
 import { MiniMapArrows } from "./minimap-arrows";
@@ -110,33 +111,16 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
     [panzoom?.getPan()?.minX, panzoom?.getPan()?.minY]
   );
 
-  useEffect(() => {
-    var fps = 40;
-    var now;
-    var then = Date.now();
-    var interval = 1000 / fps;
-    var delta;
-
-    function draw() {
-      if (!panzoom) return null;
-
-      requestAnimationFrame(draw);
-
-      now = Date.now();
-      delta = now - then;
-
-      if (delta > interval) {
-        then = now - (delta % interval);
-
-        Object.assign(
-          viewPortRef.current.style,
-          calculateViewportDimensions(panzoom.getPan())
-        );
-      }
+  const updateViewportStyle = useCallback(() => {
+    if (viewPortRef.current && panzoom) {
+      Object.assign(
+        viewPortRef.current.style,
+        calculateViewportDimensions(panzoom.getPan())
+      );
     }
+  }, [viewPortRef.current, panzoom]);
 
-    draw();
-  }, [viewPortRef, panzoom]);
+  useAnimationFrame(updateViewportStyle, 40);
 
   if (!panzoom) return null;
 
