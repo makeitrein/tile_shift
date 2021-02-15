@@ -160,7 +160,7 @@ function Panzoom(
 
   function setTransformWithEvent(
     eventName: PanzoomEvent,
-    opts: PanzoomOptions,
+    opts: PanzoomOptions = {},
     originalEvent?: PanzoomEventDetail["originalEvent"]
   ) {
     const value = { x, y, scale, isSVG, originalEvent };
@@ -168,8 +168,8 @@ function Panzoom(
       setStyle(elem, "transition", "none");
       opts.setTransform(elem, value, opts);
     });
-    trigger(eventName, value, opts);
-    trigger("panzoomchange", value, opts);
+    // trigger(eventName, value, opts);
+    // trigger("panzoomchange", value, opts);
     return value;
   }
 
@@ -198,27 +198,18 @@ function Panzoom(
     toScale: number,
     panOptions?: PanOptions
   ) {
-    const opts = { ...options, ...panOptions };
-    const result = { x, y, opts, minX, maxX, minY, maxY };
+    const result = { x, y, minX, maxX, minY, maxY };
 
-    if (
-      !opts.force &&
-      (opts.disablePan || (opts.panOnlyWhenZoomed && scale === opts.startScale))
-    ) {
+    if (!panOptions.force && options.disablePan) {
       return result;
     }
     toX = parseFloat(toX as string);
     toY = parseFloat(toY as string);
 
-    if (!opts.disableXAxis) {
-      result.x = (opts.relative ? x : 0) + toX;
-    }
+    result.x = (panOptions.relative ? x : 0) + toX;
+    result.y = (panOptions.relative ? y : 0) + toY;
 
-    if (!opts.disableYAxis) {
-      result.y = (opts.relative ? y : 0) + toY;
-    }
-
-    if (opts.contain === "inside") {
+    if (options.contain === "inside") {
       const dims = getDimensions(elem, scale);
       result.x = Math.max(
         -dims.elem.margin.left - dims.parent.padding.left,
@@ -244,7 +235,7 @@ function Panzoom(
           result.y
         )
       );
-    } else if (opts.contain === "outside") {
+    } else if (options.contain === "outside") {
       const dims = getDimensions(elem, scale);
       const realWidth = dims.elem.width / scale;
       const realHeight = dims.elem.height / scale;
@@ -298,7 +289,6 @@ function Panzoom(
     originalEvent?: PanzoomEventDetail["originalEvent"]
   ) {
     const result = constrainXY(toX, toY, scale, panOptions);
-    const opts = result.opts;
 
     x = result.x;
     y = result.y;
@@ -307,7 +297,7 @@ function Panzoom(
     maxX = result.maxX || maxX;
     maxY = result.maxY || maxY;
 
-    return setTransformWithEvent("panzoompan", opts, originalEvent);
+    return setTransformWithEvent("panzoompan", options, originalEvent);
   }
 
   function zoom(
