@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { tileHeight, tileWidth } from "../../state/tile-defaults";
@@ -44,13 +44,6 @@ export const Tile = React.memo(({ id }: TileProps) => {
 
   const disablePanzoomPanningClass = "panzoom-exclude";
 
-  const selectTile = useCallback(() => {
-    // || (disablePan && selectedTileTargets.length <= 1)
-    if (!disablePan) {
-      setSelectedTileTargets([tileRef.current]);
-    }
-  }, [disablePan, tileRef]);
-
   const tileWrapperStyle = useMemo(() => {
     return {
       width: tileDimensions.width,
@@ -61,7 +54,6 @@ export const Tile = React.memo(({ id }: TileProps) => {
 
   return (
     <TileWrapper
-      onMouseOver={selectTile}
       ref={tileRef}
       id={id}
       isDragging={tileSettings.isDragging}

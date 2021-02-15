@@ -18,7 +18,7 @@ export const usePanzoomEffects = ({
   const hoveringOverScrollable = useRecoilValue(uiState.hoveringOverScrollable);
 
   let now;
-  let fps = 60;
+  let fps = 70;
   let then = Date.now();
   let interval = 1000 / fps;
   let delta;
