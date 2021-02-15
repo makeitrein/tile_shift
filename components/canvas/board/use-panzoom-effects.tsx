@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { debounce } from "lodash";
+import { useCallback, useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEventListener } from "../../general/hooks/useEventListener";
 import * as uiState from "../../state/ui";
@@ -34,13 +35,19 @@ export const usePanzoomEffects = ({
     }
   };
 
+  const debouncedSetTagPickerOpen = useCallback(
+    debounce(() => setTagPickerOpen(false), 1000, {
+      leading: true,
+      trailing: false,
+    }),
+    []
+  );
+
   useEventListener("mousewheel", panCanvas, canvasRef.current, false);
 
   useEventListener(
     "panzoomchange",
-    () => {
-      setTagPickerOpen(false);
-    },
+    () => debouncedSetTagPickerOpen,
     canvasRef.current
   );
 
