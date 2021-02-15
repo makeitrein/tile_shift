@@ -7,7 +7,7 @@
  * https://github.com/timmywil/panzoom/blob/master/MIT-License.txt
  *
  */
-import { getDimensions, setStyle, setTransform, setTransition } from "./css";
+import { getDimensions, setStyle, setTransform } from "./css";
 import { destroyPointer, eventNames, onPointer } from "./events";
 import isAttached from "./isAttached";
 import isExcluded from "./isExcluded";
@@ -165,13 +165,7 @@ function Panzoom(
   ) {
     const value = { x, y, scale, isSVG, originalEvent };
     requestAnimationFrame(() => {
-      if (typeof opts.animate === "boolean") {
-        if (opts.animate) {
-          setTransition(elem, opts);
-        } else {
-          setStyle(elem, "transition", "none");
-        }
-      }
+      setStyle(elem, "transition", "none");
       opts.setTransform(elem, value, opts);
     });
     trigger(eventName, value, opts);
@@ -181,7 +175,7 @@ function Panzoom(
 
   function setMinMax() {
     if (options.contain) {
-      const dims = getDimensions(elem);
+      const dims = getDimensions(elem, scale);
       const parentWidth =
         dims.parent.width - dims.parent.border.left - dims.parent.border.right;
       const parentHeight =
@@ -225,7 +219,7 @@ function Panzoom(
     }
 
     if (opts.contain === "inside") {
-      const dims = getDimensions(elem);
+      const dims = getDimensions(elem, scale);
       result.x = Math.max(
         -dims.elem.margin.left - dims.parent.padding.left,
         Math.min(
@@ -251,7 +245,7 @@ function Panzoom(
         )
       );
     } else if (opts.contain === "outside") {
-      const dims = getDimensions(elem);
+      const dims = getDimensions(elem, scale);
       const realWidth = dims.elem.width / scale;
       const realHeight = dims.elem.height / scale;
       const scaledWidth = realWidth * toScale;
@@ -372,7 +366,7 @@ function Panzoom(
     zoomOptions?: ZoomOptions,
     originalEvent?: PanzoomEventDetail["originalEvent"]
   ) {
-    const dims = getDimensions(elem);
+    const dims = getDimensions(elem, scale);
 
     // Instead of thinking of operating on the panzoom element,
     // think of operating on the area inside the panzoom
