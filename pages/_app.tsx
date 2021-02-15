@@ -1,5 +1,6 @@
+import "@blueprintjs/select/lib/css/blueprint-select.css";
 import { AuthProvider } from "../components/auth/auth-context";
-import "../styles/globals.css";
+import "../styles/globals.scss";
 
 function App({ Component, pageProps }) {
   return (

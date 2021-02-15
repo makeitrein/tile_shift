@@ -1,5 +1,3 @@
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/select/lib/css/blueprint-select.css";
 import Head from "next/head";
 import React from "react";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";

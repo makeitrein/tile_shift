@@ -14,32 +14,25 @@ interface Props {
   canvas: HTMLDivElement;
 }
 
-export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
-  const [, triggerRerender] = useState(false);
-
-  const minimapRef = useRef(null);
-
-  const rerenderMinimapThrottled = useCallback(
-    throttle(() => triggerRerender((val) => !val), 100),
-    []
-  );
-
-  useEffect(() => {
-    canvas?.addEventListener("panzoomchange", () => {
-      rerenderMinimapThrottled();
-    });
-  }, [canvas]);
-
-  if (!panzoom) return null;
-
+const mapSizeAndDimensions = () => {
   const mapSize = totalCanvasPixelSize / (minimapSizeDivider - 2);
   const mapDimensions = {
     width: mapSize,
     height: mapSize,
   };
 
-  const { x, y, minX, maxX, minY, maxY, scale } = panzoom.getPan();
+  return { mapSize, mapDimensions };
+};
 
+const calculateViewportDimensions = ({
+  x,
+  y,
+  minX,
+  maxX,
+  minY,
+  maxY,
+  scale,
+}) => {
   const trueMinX = -maxX;
   const trueMaxX = -minX;
 
@@ -63,18 +56,7 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
   const xDiff = trueMaxX - trueMinX;
   const yDiff = trueMaxY - trueMinY;
 
-  const zoomToTile = (e: React.MouseEvent<HTMLElement>) => {
-    if (!panzoom) return;
-    const xPercent =
-      (e.clientX - e.currentTarget.offsetLeft) / e.currentTarget.clientWidth;
-    const yPercent =
-      (e.clientY - e.currentTarget.offsetTop) / e.currentTarget.clientHeight;
-
-    const x = xDiff * xPercent + trueMinX;
-    const y = yDiff * yPercent + trueMinY;
-
-    panzoom.pan(-x, -y, { force: true });
-  };
+  const { mapSize } = mapSizeAndDimensions();
 
   const width = (mapSize * viewportWidthPercent) / 100;
   const height = (mapSize * viewportHeightPercent) / 100;
@@ -82,22 +64,90 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
   const translateX = (left * xDiff) / minimapSizeDivider + width / 2;
   const translateY = (top * yDiff) / minimapSizeDivider + height / 2;
 
-  const viewportDimensions = {
+  return {
     transition: ".1s transform",
     transform: `translate(${translateX}px,${translateY}px)`,
     width: width + "px",
     height: height + "px",
   };
+};
+
+export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
+  const [, triggerRerender] = useState(false);
+
+  const viewPortRef = useRef(null);
+
+  const rerenderMinimapThrottled = useCallback(
+    throttle(() => triggerRerender((val) => !val), 100),
+    []
+  );
+
+  const { mapDimensions } = mapSizeAndDimensions();
+
+  const zoomToTile = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      const { minX, maxX, minY, maxY } = panzoom.getPan();
+
+      const trueMinX = -maxX;
+      const trueMaxX = -minX;
+
+      const trueMinY = -maxY;
+      const trueMaxY = -minY;
+
+      const xDiff = trueMaxX - trueMinX;
+      const yDiff = trueMaxY - trueMinY;
+      if (!panzoom) return;
+      const xPercent =
+        (e.clientX - e.currentTarget.offsetLeft) / e.currentTarget.clientWidth;
+      const yPercent =
+        (e.clientY - e.currentTarget.offsetTop) / e.currentTarget.clientHeight;
+
+      const panX = xDiff * xPercent + trueMinX;
+      const panY = yDiff * yPercent + trueMinY;
+
+      panzoom.pan(-panX, -panY, { force: true });
+    },
+    [panzoom?.getPan()?.minX, panzoom?.getPan()?.minY]
+  );
+
+  useEffect(() => {
+    var fps = 40;
+    var now;
+    var then = Date.now();
+    var interval = 1000 / fps;
+    var delta;
+
+    function draw() {
+      if (!panzoom) return null;
+
+      requestAnimationFrame(draw);
+
+      now = Date.now();
+      delta = now - then;
+
+      if (delta > interval) {
+        then = now - (delta % interval);
+
+        Object.assign(
+          viewPortRef.current.style,
+          calculateViewportDimensions(panzoom.getPan())
+        );
+      }
+    }
+
+    draw();
+  }, [viewPortRef, panzoom]);
+
+  if (!panzoom) return null;
 
   return (
     <div
       onClick={zoomToTile}
-      ref={minimapRef}
       style={{ borderBottomLeftRadius: "0.375rem", ...mapDimensions }}
       id="minimap"
       className="panzoom-exclude fixed top-4 cursor-pointer right-4 bg-gray-500 rounded-r-md border-gray-400 border-2 z-overlay  bg-opacity-40	bg-gray-minimapSizeDivider0 border-gray-300 overflow-hidden"
     >
-      <div style={viewportDimensions} className="absolute bg-blue-400" />
+      <div ref={viewPortRef} className="absolute bg-blue-400" />
       <MiniMapTiles />
       <MiniMapArrows />
     </div>
