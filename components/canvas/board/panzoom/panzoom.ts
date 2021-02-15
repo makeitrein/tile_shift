@@ -165,7 +165,6 @@ function Panzoom(
   ) {
     const value = { x, y, scale, isSVG, originalEvent };
     requestAnimationFrame(() => {
-      setStyle(elem, "transition", "none");
       opts.setTransform(elem, value, opts);
     });
     // trigger(eventName, value, opts);
