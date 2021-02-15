@@ -39,6 +39,7 @@ const Wrapper = styled.div`
 const Canvas = styled.div`
   width: ${totalCanvasPixelSize}px;
   will-change: transform;
+  position: fixed;
   height: ${totalCanvasPixelSize}px;
   &:before {
     content: " ";

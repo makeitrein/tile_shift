@@ -65,12 +65,7 @@ const calculateViewportDimensions = ({
   const translateX = (left * xDiff) / minimapSizeDivider + width / 2;
   const translateY = (top * yDiff) / minimapSizeDivider + height / 2;
 
-  return {
-    transition: ".1s transform",
-    transform: `translate(${translateX}px,${translateY}px)`,
-    width: width + "px",
-    height: height + "px",
-  };
+  return `transition: .1s transform; transform: translate(${translateX}px,${translateY}px); width: ${width}px; height: ${height}px;`;
 };
 
 export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
@@ -113,9 +108,8 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
 
   const updateViewportStyle = useCallback(() => {
     if (viewPortRef.current && panzoom) {
-      Object.assign(
-        viewPortRef.current.style,
-        calculateViewportDimensions(panzoom.getPan())
+      viewPortRef.current.style.cssText = calculateViewportDimensions(
+        panzoom.getPan()
       );
     }
   }, [viewPortRef.current, panzoom]);
