@@ -65,7 +65,7 @@ export const usePanzoomEffects = ({
 
   useEventListener(
     "panzoomchange",
-    () => debouncedSetTagPickerOpen,
+    () => debouncedSetTagPickerOpen(),
     canvasRef.current
   );
 

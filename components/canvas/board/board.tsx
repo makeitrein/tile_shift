@@ -39,6 +39,7 @@ const Canvas = styled.div`
   will-change: transform;
   position: fixed;
   height: ${totalCanvasPixelSize}px;
+  transition: 0s all;
   &:before {
     content: " ";
     // background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cstyle%3E.st0%7Bfill:none;stroke:%23e7e8eB;stroke-miterlimit:10%7D%3C/style%3E%3Cpath class='st0' d='M9.5 20h21M20 30.5v-21'/%3E%3C/svg%3E");
