@@ -172,7 +172,7 @@ function Panzoom(
     // opts.setTransform(elem, value, opts);
     // });
     // } else {
-    gsap.to(elem, { x, y, scale });
+    gsap.to(elem, { x, y, scale, duration: 0 });
     // }
 
     // trigger(eventName, value, opts);
