@@ -65,7 +65,7 @@ const calculateViewportDimensions = ({
   const translateX = (left * xDiff) / minimapSizeDivider + width / 2;
   const translateY = (top * yDiff) / minimapSizeDivider + height / 2;
 
-  return `transition: .1s transform; transform: translate(${translateX}px,${translateY}px); width: ${width}px; height: ${height}px;`;
+  return `transition: .1s transform; transform: translate3d(${translateX}px,${translateY}px, 0); width: ${width}px; height: ${height}px;`;
 };
 
 export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
