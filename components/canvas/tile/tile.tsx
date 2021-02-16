@@ -9,12 +9,8 @@ import { TileInner } from "./tile-inner";
 export const TileWrapper = styled.div`
   display: inline-block;
   position: absolute;
-  will-change: transform, width, height;
   width: ${tileWidth}px;
   height: ${tileHeight}px;
-  margin: 4px;
-  --color: #4af;
-  transition: 0.2s box-shadow, 0.2s border-color, 0.2s background, 0.2s color;
   z-index: ${({ isSelected }) => (isSelected ? 3001 : 100)};
 `;
 
