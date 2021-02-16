@@ -73,22 +73,6 @@ export function setStyle(
 }
 
 /**
- * Constructs the transition from panzoom options
- * and takes care of prefixing the transition and transform
- */
-export function setTransition(
-  elem: HTMLElement | SVGElement,
-  options: PanzoomOptions
-) {
-  const transform = getPrefixedName("transform");
-  setStyle(
-    elem,
-    "transition",
-    `${transform} ${options.duration}ms ${options.easing}`
-  );
-}
-
-/**
  * Set the transform using the proper prefix
  */
 export function setTransform(
@@ -96,13 +80,7 @@ export function setTransform(
   { x, y, scale, isSVG }: CurrentValues,
   _options?: PanzoomOptions
 ) {
-  setStyle(elem, "transform", `scale(${scale}) translate(${x}px, ${y}px)`);
-  if (isSVG && isIE) {
-    const matrixValue = window
-      .getComputedStyle(elem)
-      .getPropertyValue("transform");
-    elem.setAttribute("transform", matrixValue);
-  }
+  setStyle(elem, "transform", `scale(${scale}) translate3d(${x}px, ${y}px, 0)`);
 }
 
 /**
