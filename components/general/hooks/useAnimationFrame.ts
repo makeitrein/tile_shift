@@ -22,3 +22,14 @@ export const useAnimationFrame = (cb: () => void, fps: number = 40) =>
 
     invokeCallback();
   }, [fps, cb]);
+
+export const useAnimationFrameInfinite = (cb: () => void) =>
+  useEffect(() => {
+    function invokeCallback() {
+      requestAnimationFrame(cb);
+
+      requestAnimationFrame(invokeCallback);
+    }
+
+    invokeCallback();
+  }, [cb]);
