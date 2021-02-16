@@ -1,3 +1,4 @@
+import gsap from "gsap";
 import { throttle } from "lodash";
 import React, { useCallback, useRef, useState } from "react";
 import { useAnimationFrame } from "../../general/hooks/useAnimationFrame";
@@ -65,7 +66,9 @@ const calculateViewportDimensions = ({
   const translateX = (left * xDiff) / minimapSizeDivider + width / 2;
   const translateY = (top * yDiff) / minimapSizeDivider + height / 2;
 
-  return `transition: .1s transform; transform: translate3d(${translateX}px,${translateY}px, 0); width: ${width}px; height: ${height}px;`;
+  return { translateX, translateY, width, height };
+
+  // return `transition: .1s transform; transform: translate3d(${translateX}px,${translateY}px, 0); width: ${width}px; height: ${height}px;`;
 };
 
 export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
@@ -108,13 +111,24 @@ export const MiniMap = React.memo(({ panzoom, canvas }: Props) => {
 
   const updateViewportStyle = useCallback(() => {
     if (viewPortRef.current && panzoom) {
-      viewPortRef.current.style.cssText = calculateViewportDimensions(
-        panzoom.getPan()
-      );
+      const {
+        translateX,
+        translateY,
+        width,
+        height,
+      } = calculateViewportDimensions(panzoom.getPan());
+      gsap.to(viewPortRef.current, {
+        x: translateX,
+        y: translateY,
+        width,
+        height,
+        overwrite: true,
+        ease: "quad",
+      });
     }
   }, [viewPortRef.current, panzoom]);
 
-  useAnimationFrame(updateViewportStyle, 40);
+  useAnimationFrame(updateViewportStyle, 100);
 
   if (!panzoom) return null;
 

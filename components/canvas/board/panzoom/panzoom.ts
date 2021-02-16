@@ -7,6 +7,7 @@
  * https://github.com/timmywil/panzoom/blob/master/MIT-License.txt
  *
  */
+import gsap from "gsap";
 import { getDimensions, setStyle, setTransform } from "./css";
 import { destroyPointer, eventNames, onPointer } from "./events";
 import isAttached from "./isAttached";
@@ -158,15 +159,22 @@ function Panzoom(
     elem.dispatchEvent(event);
   }
 
+  let lastScale = 1;
   function setTransformWithEvent(
     eventName: PanzoomEvent,
     opts: PanzoomOptions = {},
     originalEvent?: PanzoomEventDetail["originalEvent"]
   ) {
     const value = { x, y, scale, isSVG, originalEvent };
-    requestAnimationFrame(() => {
-      opts.setTransform(elem, value, opts);
-    });
+
+    // if (scale !== lastScale) {
+    // requestAnimationFrame(() => {
+    // opts.setTransform(elem, value, opts);
+    // });
+    // } else {
+    gsap.to(elem, { x, y, scale, overwrite: true, ease: "quad" });
+    // }
+
     // trigger(eventName, value, opts);
     // trigger("panzoomchange", value, opts);
     return value;
