@@ -2,7 +2,7 @@ import parse from "html-react-parser";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import * as tileState from "../../state/tiles";
-import { EditableArticle } from "../text-editor/wysiwig-editor";
+import { EditableArticle } from "../text-editor/editor";
 
 interface TileProps {
   id: string;

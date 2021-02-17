@@ -64,7 +64,7 @@ export const TileMenu = React.memo(({ id }: { id: string }) => {
 
   const toggleBold = React.useCallback(() => commands.toggleBold(), []);
   const toggleUnderline = React.useCallback(
-    () => commands.toggleUnderline(),
+    () => commands.createCodeMirror({ language: "js" }),
     []
   );
   const toggleItalic = React.useCallback(() => commands.toggleBold(), []);

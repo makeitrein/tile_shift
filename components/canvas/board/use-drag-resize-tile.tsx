@@ -1,10 +1,7 @@
 import { useCallback } from "react";
 import { tileWidth } from "../../state/tile-defaults";
 import { useSetTileDimensions } from "../../state/tile-utils";
-import {
-  articlePadding,
-  tileHeaderHeight,
-} from "../text-editor/wysiwig-editor";
+import { articlePadding, tileHeaderHeight } from "../text-editor/editor";
 
 export const useDragResizeTile = () => {
   const updateTile = useSetTileDimensions();
