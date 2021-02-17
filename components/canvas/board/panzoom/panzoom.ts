@@ -7,7 +7,6 @@
  * https://github.com/timmywil/panzoom/blob/master/MIT-License.txt
  *
  */
-import gsap from "gsap";
 import { getDimensions, setStyle, setTransform } from "./css";
 import { destroyPointer, eventNames, onPointer } from "./events";
 import isAttached from "./isAttached";
@@ -168,11 +167,11 @@ function Panzoom(
     const value = { x, y, scale, isSVG, originalEvent };
 
     // if (scale !== lastScale) {
-    // requestAnimationFrame(() => {
-    // opts.setTransform(elem, value, opts);
-    // });
+    requestAnimationFrame(() => {
+      opts.setTransform(elem, value, opts);
+    });
     // } else {
-    gsap.to(elem, { x, y, scale, duration: 0 });
+    // gsap.to(elem, { x, y, duration: 0 });
     // }
 
     // trigger(eventName, value, opts);
@@ -341,7 +340,19 @@ function Panzoom(
     maxY = panResult.maxY;
     scale = toScale;
 
-    return setTransformWithEvent("panzoomzoom", opts, originalEvent);
+    requestAnimationFrame(() => {
+      opts.setTransform(elem, { x, y, scale }, opts);
+    });
+
+    // gsap.to(elem, {
+    //   scale,
+    //   duration: 0,
+    //   transformOrigin: "center",
+    //   onComplete: () => {
+    //     console.log(elem);
+    //   },
+    // });
+    // return setTransformWithEvent("panzoomzoom", opts, originalEvent);
   }
 
   function zoomInOut(isIn: boolean, zoomOptions?: ZoomOptions) {

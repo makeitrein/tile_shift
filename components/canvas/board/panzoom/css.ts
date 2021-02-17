@@ -1,5 +1,5 @@
+import gsap from "gsap";
 import { CurrentValues, PanzoomOptions } from "./types";
-
 const isIE =
   typeof document !== "undefined" && !!(document as any).documentMode;
 
@@ -81,6 +81,14 @@ export function setTransform(
   _options?: PanzoomOptions
 ) {
   setStyle(elem, "transform", `scale(${scale}) translate3d(${x}px, ${y}px, 0)`);
+}
+
+export function setScale(
+  elem: HTMLElement | SVGElement,
+  { x, y, scale, isSVG }: CurrentValues,
+  _options?: PanzoomOptions
+) {
+  gsap.to(elem, { scale, transformOrigin: "50% 50%" });
 }
 
 /**
