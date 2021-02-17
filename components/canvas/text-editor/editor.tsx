@@ -52,11 +52,11 @@ export const EditableArticle = styled.article`
     margin-left: -6px;
   }
 
-  code {
-    font-family: inherit !important;
-    position: relative;
-    background: rgba(234, 221, 6, 0.3);
-  }
+  // code {
+  //   font-family: inherit !important;
+  //   position: relative;
+  //   background: rgba(234, 221, 6, 0.3);
+  // }
 
   ol {
     list-style-type: decimal;

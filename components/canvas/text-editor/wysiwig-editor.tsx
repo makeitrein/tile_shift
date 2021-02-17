@@ -1,6 +1,5 @@
 import { CodeMirrorExtension } from "@remirror/extension-codemirror5";
 import CodeMirror from "codemirror";
-import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/meta"; // This must be imported.
 import "codemirror/mode/yaml/yaml";
@@ -38,7 +37,10 @@ const extensionTemplate = () => [
   new RinoBulletListExtension({}),
   new RinoListItemExtension({}),
   new RinoCheckboxExtension({}),
-  new CodeMirrorExtension({ CodeMirror }),
+  new CodeMirrorExtension({
+    CodeMirror,
+    defaultCodeMirrorConfig: { lineNumbers: true, mode: "typescript" },
+  }),
 ];
 
 interface Props {
